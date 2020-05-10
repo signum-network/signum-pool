@@ -142,7 +142,7 @@ function formatMinerName(explorer, rs, id, name, includeLink) {
     name = escapeHtml(name);
     rs = escapeHtml(rs);
     if (includeLink) {
-        return "<a href=\"" + getAccountExplorerLink(explorer, id) + "\">" + (name == null || name === "" ? rs : name) + "</a>";
+        return "<a href=\"" + getAccountExplorerLink(explorer, id) + "\" target=\"_blank\">" + (name == null || name === "" ? rs : name) + "</a>";
     }
     return name == null || name === "" ? rs : name;
 }
