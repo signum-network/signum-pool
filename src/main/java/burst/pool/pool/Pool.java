@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class Pool {
     private static final Logger logger = LoggerFactory.getLogger(Pool.class);
     
-    private static final double LN_FACTOR =  240.0/Math.log(240.0);
+    public static final double LN_FACTOR =  240.0/Math.log(240.0);
 
     private final BurstNodeService nodeService;
     private final BurstCrypto burstCrypto = BurstCrypto.getInstance();

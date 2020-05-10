@@ -239,6 +239,7 @@ public class Server extends NanoHTTPD {
                         JsonObject wonBlockJson = new JsonObject();
                         wonBlockJson.addProperty("height", wonBlock.getBlockHeight());
                         wonBlockJson.addProperty("id", wonBlock.getBlockId().getID());
+                        wonBlockJson.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
                         wonBlockJson.addProperty("generator", wonBlock.getGeneratorId().getID());
                         wonBlockJson.addProperty("generatorRS", wonBlock.getGeneratorId().getFullAddress());
                         wonBlockJson.addProperty("reward", wonBlock.getFullReward().toFormattedString());
@@ -246,7 +247,6 @@ public class Server extends NanoHTTPD {
                     });
             JsonObject response = new JsonObject();
             response.add("wonBlocks", wonBlocks);
-            response.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
             return response.toString();
         } else {
             return "null";
@@ -342,7 +342,11 @@ public class Server extends NanoHTTPD {
         minerJson.addProperty("minimumPayout", miner.getMinimumPayout().toFormattedString());
         BigInteger bestDeadline = miner.getBestDeadline(getCurrentHeight());
         if (bestDeadline != null) {
-            minerJson.addProperty("currentRoundBestDeadline", miner.getBestDeadline(getCurrentHeight()).toString());
+        	BigInteger deadline = bestDeadline;
+        	if(getCurrentHeight() >= propertyService.getInt(Props.sodiumHeight))
+        		deadline = BigInteger.valueOf((long)(Math.log(deadline.doubleValue()) * Pool.LN_FACTOR));
+
+            minerJson.addProperty("currentRoundBestDeadline", deadline.toString());
         }
         if (!Objects.equals(miner.getName(), "")) {
             minerJson.addProperty("name", miner.getName());
