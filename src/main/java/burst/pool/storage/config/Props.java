@@ -41,6 +41,7 @@ public class Props {
     public static final Prop<String> siteDiscordLink = new Prop<>("site.discord", "https://discord.gg/ms6eagX");
     public static final Prop<String> siteInfo = new Prop<>("site.info", "<p>Coming soon...</p>");
     public static final Prop<String> siteExplorerURL = new Prop<>("site.explorer", "https://explorer.burstcoin.network/");
+    public static final Prop<String> siteFaucetURL = new Prop<>("site.faucet", "http://faucet.burst-alliance.org/");
     public static final Prop<String> siteExplorerAccount = new Prop<>("site.explorerAccount", "?action=account&account=");
 
     public static void validateProperties(PropertyService propertyService) {

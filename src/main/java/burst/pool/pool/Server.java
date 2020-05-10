@@ -317,6 +317,7 @@ public class Server extends NanoHTTPD {
                     .replace("{SOFTWARE}", propertyService.getString(Props.softwarePackagesAddress))
                     .replace("{DISCORD}", propertyService.getString(Props.siteDiscordLink))
                     .replace("{INFO}", propertyService.getString(Props.siteInfo))
+                    .replace("{FAUCET}", propertyService.getString(Props.siteFaucetURL))
                     .replace("{EXPLORER}", propertyService.getString(Props.siteExplorerURL));
         }
         fileCache.put(session.getUri(), response);
