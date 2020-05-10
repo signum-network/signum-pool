@@ -78,7 +78,7 @@ function formatTime(secs) {
 }
 
 function formatBaseTarget(baseTarget) {
-    return (genesisBaseTarget / baseTarget).toFixed(3) + " TB"
+    return (genesisBaseTarget / baseTarget).toFixed(3) + " Tb"
 }
 
 function getPoolInfo() {
@@ -87,7 +87,7 @@ function getPoolInfo() {
     }).then(response => {
         maxSubmissions = response.nAvg + response.processLag;
         document.getElementById("poolName").innerText = response.poolName;
-        document.getElementById("poolAccount").innerHTML = formatMinerName(response.poolAccountRS, response.poolAccount, response.poolAccount, true);
+        document.getElementById("poolAccount").innerHTML = formatMinerName(response.explorer, response.poolAccountRS, response.poolAccount, response.poolAccount, true);
         document.getElementById("nAvg").innerText = response.nAvg;
         document.getElementById("nMin").innerText = response.nMin;
         document.getElementById("maxDeadline").innerText = response.maxDeadline;
@@ -117,7 +117,7 @@ function getCurrentRound() {
         document.getElementById("netDiff").innerText = formatBaseTarget(response.miningInfo.baseTarget);
         if (response.bestDeadline != null) {
             document.getElementById("bestDeadline").innerText = formatTime(response.bestDeadline.deadline);
-            document.getElementById("bestMiner").innerHTML = formatMinerName(response.bestDeadline.minerRS, response.bestDeadline.miner, null, true);
+            document.getElementById("bestMiner").innerHTML = formatMinerName(response.bestDeadline.explorer, response.bestDeadline.minerRS, response.bestDeadline.miner, null, true);
             document.getElementById("bestNonce").innerText = response.bestDeadline.nonce;
         } else {
             document.getElementById("bestDeadline").innerText = noneFoundYet;
@@ -127,11 +127,11 @@ function getCurrentRound() {
     });
 }
 
-function getAccountExplorerLink(id) {
-    return "https://explorer.burstcoin.network/?action=account&account=" + id;
+function getAccountExplorerLink(explorer, id) {
+    return explorer + id;
 }
 
-function formatMinerName(rs, id, name, includeLink) {
+function formatMinerName(explorer, rs, id, name, includeLink) {
     if (name == null) {
         miners.forEach(miner => {
             if (miner.address === id || miner.addressRS === rs) {
@@ -142,9 +142,9 @@ function formatMinerName(rs, id, name, includeLink) {
     name = escapeHtml(name);
     rs = escapeHtml(rs);
     if (includeLink) {
-        rs = "<a href=\"" + getAccountExplorerLink(id) + "\">" + rs + "</a>";
+        return "<a href=\"" + getAccountExplorerLink(explorer, id) + "\">" + (name == null || name === "" ? rs : name) + "</a>";
     }
-    return name == null || name === "" ? rs : rs + " (" + name + ")";
+    return name == null || name === "" ? rs : name;
 }
 
 function getTop10Miners() {
@@ -157,14 +157,14 @@ function getTop10Miners() {
         let minerColors = colors.slice(0, topTenMiners.length + 1);
         for (let i = 0; i < topTenMiners.length; i++) {
             let miner = topTenMiners[i];
-            topMinerNames.push(formatMinerName(miner.addressRS, miner.address, miner.name, false));
+            topMinerNames.push(formatMinerName(miner.explorer, miner.addressRS, miner.address, miner.name, false));
             topMinerShares.push(miner.share * 100);
         }
         topMinerNames.push("Other");
         topMinerShares.push(response.othersShare * 100);
         if (chart == null) {
             chart = new Chart(document.getElementById("sharesChart"), {
-                type: "pie",
+                type: "doughnut",
                 data: {
                     datasets: [{
                         data: topMinerShares,
@@ -176,6 +176,9 @@ function getTop10Miners() {
                     title: {
                         display: true,
                         text: "Pool Shares"
+                    },
+                    legend: {
+                    	position: 'bottom'
                     },
                     responsive: true,
                     maintainAspectRatio: false,
@@ -199,7 +202,7 @@ function getMiners() {
         for (let i = 0; i < response.miners.length; i++) {
             let miner = response.miners[i];
             let currentRoundDeadline = miner.currentRoundBestDeadline == null ? "" : formatTime(miner.currentRoundBestDeadline);
-            let minerAddress = formatMinerName(miner.addressRS, miner.address, miner.name, true);
+            let minerAddress = formatMinerName(miner.explorer, miner.addressRS, miner.address, miner.name, true);
             let userAgent = escapeHtml(miner.userAgent == null? "Unknown" : miner.userAgent);
             table.innerHTML += "<tr><td>"+minerAddress+"</td><td>"+currentRoundDeadline+"</td><td>"+miner.pendingBalance+"</td><td>"+formatCapacity(miner.estimatedCapacity)+" TB</td><td>"+miner.nConf+" / " + maxSubmissions + "</td><td>"+(parseFloat(miner.share)*100).toFixed(3)+"%</td><td>"+userAgent+"</td></tr>";
         }
@@ -313,7 +316,7 @@ function getWonBlocks() {
             let height = escapeHtml(wonBlock.height);
             let id = escapeHtml(wonBlock.id);
             let reward = escapeHtml(wonBlock.reward);
-            let minerName = formatMinerName(wonBlock.generatorRS, wonBlock.generator, null, true);
+            let minerName = formatMinerName(wonBlock.explorer, wonBlock.generatorRS, wonBlock.generator, null, true);
             table.innerHTML += "<tr><td>"+height+"</td><td>"+id+"</td><td>"+minerName+"</td><td>"+reward+"</td></tr>";
         }
     });

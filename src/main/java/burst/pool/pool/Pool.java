@@ -32,6 +32,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class Pool {
     private static final Logger logger = LoggerFactory.getLogger(Pool.class);
+    
+    private static final double LN_FACTOR =  240.0/Math.log(240.0);
 
     private final BurstNodeService nodeService;
     private final BurstCrypto burstCrypto = BurstCrypto.getInstance();
@@ -317,11 +319,15 @@ public class Pool {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("roundStart", roundStartTime.get().getEpochSecond());
         if (bestSubmission.get() != null) {
+        	BigInteger deadline = bestDeadline.get();
+        	if(miningInfo.get().getHeight() >= propertyService.getInt(Props.sodiumHeight))
+        		deadline = BigInteger.valueOf((long)(Math.log(deadline.doubleValue()) * LN_FACTOR));
             JsonObject bestDeadlineJson = new JsonObject();
+            bestDeadlineJson.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
             bestDeadlineJson.addProperty("miner", bestSubmission.get().getMiner().getID());
             bestDeadlineJson.addProperty("minerRS", bestSubmission.get().getMiner().getFullAddress());
             bestDeadlineJson.addProperty("nonce", bestSubmission.get().getNonce());
-            bestDeadlineJson.addProperty("deadline", bestDeadline.get());
+            bestDeadlineJson.addProperty("deadline", deadline);
             jsonObject.add("bestDeadline", bestDeadlineJson);
         } else {
             jsonObject.add("bestDeadline", JsonNull.INSTANCE);

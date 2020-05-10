@@ -8,6 +8,7 @@ public class Props {
     public static final Prop<Integer> serverPort = new Prop<>("serverPort", 80); // Must be > 0, < 2^16
     public static final Prop<String> nodeAddresses = new Prop<>("nodeAddresses", ""); // Must be non-empty
     public static final Prop<String> poolName = new Prop<>("poolName", "");
+    public static final Prop<Integer> sodiumHeight = new Prop<>("sodiumHeight", 765_000);
 
     public static final Prop<String> passphrase = new Prop<>("passphrase", ""); // Must be non-empty
 
@@ -38,6 +39,9 @@ public class Props {
     public static final Prop<String> siteNodeAddress = new Prop<>("site.nodeAddress", "https://wallet.burst-alliance.org:8125/");
     public static final Prop<String> softwarePackagesAddress = new Prop<>("site.softwarePackagesAddress", "https://github.com/burst-apps-team");
     public static final Prop<String> siteDiscordLink = new Prop<>("site.discord", "https://discord.gg/ms6eagX");
+    public static final Prop<String> siteInfo = new Prop<>("site.info", "<p>Coming soon...</p>");
+    public static final Prop<String> siteExplorerURL = new Prop<>("site.explorer", "https://explorer.burstcoin.network/");
+    public static final Prop<String> siteExplorerAccount = new Prop<>("site.explorerAccount", "?action=account&account=");
 
     public static void validateProperties(PropertyService propertyService) {
         int serverPort = propertyService.getInt(Props.serverPort);

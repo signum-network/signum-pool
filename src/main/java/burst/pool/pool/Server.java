@@ -125,6 +125,7 @@ public class Server extends NanoHTTPD {
                     });
             JsonObject jsonObject = new JsonObject();
             jsonObject.add("miners", minersJson);
+            jsonObject.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
             jsonObject.addProperty("poolCapacity", poolCapacity.get());
             return jsonObject.toString();
         } else if (session.getUri().startsWith("/api/getMiner/")) {
@@ -133,6 +134,7 @@ public class Server extends NanoHTTPD {
         } else if (session.getUri().startsWith("/api/getConfig")) {
             JsonObject response = new JsonObject();
             response.addProperty("version", Constants.VERSION);
+            response.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
             response.addProperty(Props.poolName.getName(), propertyService.getString(Props.poolName));
             response.addProperty("poolAccount", pool.getAccount().getID());
             response.addProperty("poolAccountRS", pool.getAccount().getFullAddress());
@@ -219,6 +221,7 @@ public class Server extends NanoHTTPD {
                     });
             JsonObject response = new JsonObject();
             response.add("topMiners", topMiners);
+            response.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
             response.addProperty("othersShare", othersShare.get());
             return response.toString();
         } else if (session.getUri().startsWith("/api/getSetMinimumMessage")) {
@@ -243,6 +246,7 @@ public class Server extends NanoHTTPD {
                     });
             JsonObject response = new JsonObject();
             response.add("wonBlocks", wonBlocks);
+            response.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
             return response.toString();
         } else {
             return "null";
@@ -311,7 +315,9 @@ public class Server extends NanoHTTPD {
                     .replace("{TITLE}", propertyService.getString(Props.siteTitle))
                     .replace("{PUBLICNODE}", propertyService.getString(Props.siteNodeAddress))
                     .replace("{SOFTWARE}", propertyService.getString(Props.softwarePackagesAddress))
-                    .replace("{DISCORD}", propertyService.getString(Props.siteDiscordLink));
+                    .replace("{DISCORD}", propertyService.getString(Props.siteDiscordLink))
+                    .replace("{INFO}", propertyService.getString(Props.siteInfo))
+                    .replace("{EXPLORER}", propertyService.getString(Props.siteExplorerURL));
         }
         fileCache.put(session.getUri(), response);
         return NanoHTTPD.newFixedLengthResponse(Response.Status.OK, URLConnection.guessContentTypeFromName(session.getUri()), response);
@@ -327,6 +333,7 @@ public class Server extends NanoHTTPD {
         if (miner == null) return JsonNull.INSTANCE;
         JsonObject minerJson = new JsonObject();
         minerJson.addProperty("address", miner.getAddress().getID());
+        minerJson.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
         minerJson.addProperty("addressRS", miner.getAddress().getFullAddress());
         minerJson.addProperty("pendingBalance", miner.getPending().toFormattedString());
         minerJson.addProperty("estimatedCapacity", miner.getCapacity());

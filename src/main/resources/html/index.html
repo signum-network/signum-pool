@@ -32,7 +32,7 @@
                 <a class="nav-link" href="#" data-toggle="modal" data-target="#infoModal">Info</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="https://explore.burstcoin.network" target="_blank">Explorer</a>
+                <a class="nav-link" href="{EXPLORER}" target="_blank">Explorer</a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="{SOFTWARE}" target="_blank">Software Packages</a>
@@ -73,18 +73,18 @@
                 </div>
                 <div class="col-lg-3 col-md-6 p-3">
                     <div class="col-xl-12 bg-light border-top border-right border-left rounded-top p-2 overflow-auto">
-                        <p class="d-inline">Best Miner</p>
-                    </div>
-                    <div class="col-xl-12 border-bottom border-right border-left rounded-bottom p-2 overflow-auto">
-                        <p class="d-inline" id="bestMiner">Loading...</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 p-3">
-                    <div class="col-xl-12 bg-light border-top border-right border-left rounded-top p-2 overflow-auto">
                         <p class="d-inline">Best Nonce</p>
                     </div>
                     <div class="col-xl-12 border-bottom border-right border-left rounded-bottom p-2 overflow-auto">
                         <p class="d-inline" id="bestNonce">Loading...</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 p-3">
+                    <div class="col-xl-12 bg-light border-top border-right border-left rounded-top p-2 overflow-auto">
+                        <p class="d-inline">Best Miner</p>
+                    </div>
+                    <div class="col-xl-12 border-bottom border-right border-left rounded-bottom p-2 overflow-auto">
+                        <p class="d-inline" id="bestMiner">Loading...</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 p-3">
@@ -97,7 +97,7 @@
                 </div>
                 <div class="col-lg-3 col-md-6 p-3">
                     <div class="col-xl-12 bg-light border-top border-right border-left rounded-top p-2 overflow-auto">
-                        <p class="d-inline">Network Difficulty</p>
+                        <p class="d-inline">Network Size</p>
                     </div>
                     <div class="col-xl-12 border-bottom border-right border-left rounded-bottom p-2 overflow-auto">
                         <p class="d-inline" id="netDiff">Loading...</p>
@@ -340,7 +340,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <b>Coming Soon!</b>
+                {INFO}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
