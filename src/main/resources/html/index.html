@@ -16,7 +16,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <h1 class="navbar-brand">
         <img id="icon" height="50" width="50" src="img/poolIcon.png" />
-        {TITLE}s
+        {TITLE}
     </h1>
     <div class="navbar-header">
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,29 +26,28 @@
     <div class="collapse navbar-collapse" id="navbarContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="#" onclick="getWonBlocks()" data-toggle="modal" data-target="#wonBlocksModal">Won Blocks</a>
+                <a class="nav-link" href="#" onclick="getWonBlocks()" data-toggle="modal" data-target="#wonBlocksModal">WON BLOCKS</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#" data-toggle="modal" data-target="#infoModal">Info</a>
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#infoModal">HOW TO JOIN</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="{EXPLORER}" target="_blank">Explorer</a>
+                <a class="nav-link" href="{EXPLORER}" target="_blank">EXPLORER</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="{FAUCET}" target="_blank">Faucet</a>
+                <a class="nav-link" href="{FAUCET}" target="_blank">FAUCET</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="{SOFTWARE}" target="_blank">Software Packages</a>
+                <a class="nav-link" href="{SOFTWARE}" target="_blank">SOFTWARE</a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="{PUBLICNODE}" target="_blank">
-                    <img width="20" height="20" src="img/burstwallet.png" />
-                    Wallet
+                    WALLET
                 </a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="{DISCORD}" target="_blank">
-                    <img width="70" height="25" src="img/discord.png" />
+                	DISCORD
                 </a>
             </li>
         </ul>
@@ -124,14 +123,14 @@
                 </div>
                 <div class="col-xl-12">
                     <div class="row">
-                        <div class="col-xl-8 col-lg-6 col-md-8 p-3">
+                        <div class="col-xl-6 col-lg-6 col-md-8 p-3">
                             <input type="text" id="addressInput" class="form-control" placeholder="BURST-XXXX-XXXX-XXXX-XXXXX">
                         </div>
-                        <div class="col-xl-2 col-lg-3 col-md-2 col-6 overflow-auto text-nowrap p-3">
-                            <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#minerInfoModal" id="getMinerButton">Get Miner</button>
+                        <div class="col-xl-3 col-lg-3 col-md-2 col-6 overflow-auto text-nowrap p-3">
+                            <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#minerInfoModal" id="getMinerButton">CHECK MINER</button>
                         </div>
-                        <div class="col-xl-2 col-lg-3 col-md-2 col-6 overflow-auto text-nowrap p-3">
-                            <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#poolInfoModal">Pool Info</button>
+                        <div class="col-xl-3 col-lg-3 col-md-2 col-6 overflow-auto text-nowrap p-3">
+                            <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#poolInfoModal">POOL INFO</button>
                         </div>
                     </div>
                 </div>
@@ -166,7 +165,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="minerInfoTitle">Miner Info</h5>
+                <h5 class="modal-title" id="minerInfoTitle">CHECK MINER</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -216,7 +215,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="poolInfoTitle">Pool Info</h5>
+                <h5 class="modal-title" id="poolInfoTitle">POOL INFO</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -317,7 +316,7 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="wonBlocksTitle">Won Blocks</h5>
+                <h5 class="modal-title" id="wonBlocksTitle">WON BLOCKS</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -337,7 +336,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="helpTitle">Help / Info</h5>
+                <h5 class="modal-title" id="helpTitle">HOW TO JOIN</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
