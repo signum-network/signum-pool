@@ -78,7 +78,7 @@ function formatTime(secs) {
 }
 
 function formatBaseTarget(baseTarget) {
-    return (genesisBaseTarget / baseTarget).toFixed(3) + " Tb"
+    return (genesisBaseTarget / baseTarget).toFixed(3) + " TiB"
 }
 
 function getPoolInfo() {
@@ -204,10 +204,10 @@ function getMiners() {
             let currentRoundDeadline = miner.currentRoundBestDeadline == null ? "" : formatTime(miner.currentRoundBestDeadline);
             let minerAddress = formatMinerName(miner.explorer, miner.addressRS, miner.address, miner.name, true);
             let userAgent = escapeHtml(miner.userAgent == null? "Unknown" : miner.userAgent);
-            table.innerHTML += "<tr><td>"+minerAddress+"</td><td>"+currentRoundDeadline+"</td><td>"+miner.pendingBalance+"</td><td>"+formatCapacity(miner.estimatedCapacity)+" Tb</td><td>"+miner.nConf+" / " + maxSubmissions + "</td><td>"+(parseFloat(miner.share)*100).toFixed(3)+"%</td><td>"+userAgent+"</td></tr>";
+            table.innerHTML += "<tr><td>"+minerAddress+"</td><td>"+currentRoundDeadline+"</td><td>"+miner.pendingBalance+"</td><td>"+formatCapacity(miner.estimatedCapacity)+" TiB</td><td>"+miner.nConf+" / " + maxSubmissions + "</td><td>"+(parseFloat(miner.share)*100).toFixed(3)+"%</td><td>"+userAgent+"</td></tr>";
         }
         document.getElementById("minerCount").innerText = response.miners.length;
-        document.getElementById("poolCapacity").innerText = formatCapacity(response.poolCapacity) + " Tb";
+        document.getElementById("poolCapacity").innerText = formatCapacity(response.poolCapacity) + " TiB";
         miners = response.miners;
     });
 }

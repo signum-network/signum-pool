@@ -24,8 +24,6 @@ import org.slf4j.LoggerFactory;
 import java.math.BigInteger;
 import java.time.Instant;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -318,10 +316,13 @@ public class Pool {
     public JsonObject getCurrentRoundInfo(Gson gson) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("roundStart", roundStartTime.get().getEpochSecond());
+        boolean sodiumActive = miningInfo.get().getHeight() >= propertyService.getInt(Props.sodiumHeight);
+
         if (bestSubmission.get() != null) {
         	BigInteger deadline = bestDeadline.get();
-        	if(miningInfo.get().getHeight() >= propertyService.getInt(Props.sodiumHeight))
+        	if(sodiumActive) {
         		deadline = BigInteger.valueOf((long)(Math.log(deadline.doubleValue()) * LN_FACTOR));
+        	}
             JsonObject bestDeadlineJson = new JsonObject();
             bestDeadlineJson.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
             bestDeadlineJson.addProperty("miner", bestSubmission.get().getMiner().getID());
@@ -332,9 +333,14 @@ public class Pool {
         } else {
             jsonObject.add("bestDeadline", JsonNull.INSTANCE);
         }
+
         MiningInfo miningInfo = Pool.this.miningInfo.get();
         if (miningInfo != null) {
-            jsonObject.add("miningInfo", gson.toJsonTree(new MiningInfoResponse(burstCrypto.toHexString(miningInfo.getGenerationSignature()), miningInfo.getBaseTarget(), miningInfo.getHeight())));
+            long baseTarget = miningInfo.getBaseTarget();
+            if(sodiumActive) {
+                baseTarget = (long)(baseTarget * 1.83f);
+            }
+            jsonObject.add("miningInfo", gson.toJsonTree(new MiningInfoResponse(burstCrypto.toHexString(miningInfo.getGenerationSignature()), baseTarget, miningInfo.getHeight())));
         }
         return jsonObject;
     }
