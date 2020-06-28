@@ -148,48 +148,69 @@ function formatMinerName(explorer, rs, id, name, includeLink) {
 }
 
 function getTop10Miners() {
-    fetch("api/getTop10Miners").then(http => {
+    fetch("/api/getTop10Miners").then(http => {
         return http.json();
     }).then(response => {
         let topTenMiners = response.topMiners;
         let topMinerNames = Array();
-        let topMinerShares = Array();
+        let topMinerData = Array();
         let minerColors = colors.slice(0, topTenMiners.length + 1);
         for (let i = 0; i < topTenMiners.length; i++) {
             let miner = topTenMiners[i];
             topMinerNames.push(formatMinerName(miner.explorer, miner.addressRS, miner.address, miner.name, false));
-            topMinerShares.push(miner.share * 100);
+            topMinerData.push({value: miner.share * 100, name: topMinerNames[topMinerNames.length - 1]});
         }
         topMinerNames.push("Other");
-        topMinerShares.push(response.othersShare * 100);
+        topMinerData.push({value: response.othersShare * 100, name: topMinerNames[topMinerNames.length - 1]});
         if (chart == null) {
-            chart = new Chart(document.getElementById("sharesChart"), {
-                type: "doughnut",
-                data: {
-                    datasets: [{
-                        data: topMinerShares,
-                        backgroundColor: minerColors
-                    }],
-                    labels: topMinerNames
-                },
-                options: {
-                    title: {
-                        display: true,
-                        text: "Pool Shares"
-                    },
-                    legend: {
-                    	position: 'bottom'
-                    },
-                    responsive: true,
-                    maintainAspectRatio: false,
-                }
-            });
-        } else {
-            chart.data.datasets[0].data = topMinerShares;
-            chart.data.datasets[0].backgroundColor = minerColors;
-            chart.data.labels = topMinerNames;
-            chart.update();
+            chart = echarts.init(document.getElementById("sharesChart"));
         }
+        
+        var option = {
+            
+            textStyle: {
+                 color: 'rgba(255, 255, 255, 0.8)'
+                       },
+
+            tooltip: {
+                trigger: 'item',
+                formatter: '{b} ({d}%)'
+            },
+            legend: {
+                textStyle: {
+                 color: 'rgba(255, 255, 255, 0.8)'
+                       },
+                orient: 'vertical',
+                left: 40,
+                top: 10,
+                data: topMinerNames
+            },
+            series: [
+                {
+                    name: 'Pool Shares',
+                    type: 'pie',
+		    radius: '80%', 
+                    center: ['65%', '50%'],
+                    avoidLabelOverlap: true,
+                    label: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        label: {
+                        show: true,
+                        fontSize: '20'
+                        }
+                    },
+                    labelLine: {
+                        show: true
+                    },
+                    data: topMinerData
+                }
+            ]
+        };
+        chart.setOption(option);
+        
     });
 }
 
