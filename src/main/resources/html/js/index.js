@@ -181,7 +181,7 @@ function getTop10Miners() {
                  color: 'rgba(255, 255, 255, 0.8)'
                        },
                 orient: 'vertical',
-                left: 40,
+                left: 320,
                 top: 10,
                 data: topMinerNames
             },
@@ -190,7 +190,7 @@ function getTop10Miners() {
                     name: 'Pool Shares',
                     type: 'pie',
 		    radius: '80%', 
-                    center: ['65%', '50%'],
+                    center: ['30%', '50%'],
                     avoidLabelOverlap: true,
                     label: {
                         show: false,
@@ -219,13 +219,21 @@ function getMiners() {
         return http.json();
     }).then(response => {
         let table = document.getElementById("miners");
-        table.innerHTML = "<tr><th>Miner</th><th>Current Deadline</th><th>Pending Balance</th><th>Effective Capacity</th><th>Confirmed Deadlines</th><th>Share</th><th>Software</th></tr>";
+        table.innerHTML = "<tr><th>Miner</th><th>Current Deadline</th><th>Pending Balance</th><th>Shared Capacity</th><th>Pool Percent</th><th>Confirmed Deadlines</th><th>Pool Share</th><th>Software</th></tr>";
         for (let i = 0; i < response.miners.length; i++) {
             let miner = response.miners[i];
             let currentRoundDeadline = miner.currentRoundBestDeadline == null ? "" : formatTime(miner.currentRoundBestDeadline);
             let minerAddress = formatMinerName(miner.explorer, miner.addressRS, miner.address, miner.name, true);
             let userAgent = escapeHtml(miner.userAgent == null? "Unknown" : miner.userAgent);
-            table.innerHTML += "<tr><td>"+minerAddress+"</td><td>"+currentRoundDeadline+"</td><td>"+miner.pendingBalance+"</td><td>"+formatCapacity(miner.estimatedCapacity)+" TiB</td><td>"+miner.nConf+" / " + maxSubmissions + "</td><td>"+(parseFloat(miner.share)*100).toFixed(3)+"%</td><td>"+userAgent+"</td></tr>";
+            table.innerHTML += "<tr><td>"+minerAddress+"</td>"
+              +"<td>"+currentRoundDeadline+"</td>"
+              +"<td>"+miner.pendingBalance+"</td>"
+              +"<td>"+formatCapacity(miner.sharedCapacity)+" TiB</td>"
+              +"<td>"+miner.sharePercent+" %</td>"
+              +"<td>"+miner.nConf+" / " + maxSubmissions+"</td>"
+              +"<td>"+(parseFloat(miner.share)*100).toFixed(3)+" %</td>"
+              +"<td>"+userAgent+"</td>"
+              +"</tr>";
         }
         document.getElementById("minerCount").innerText = response.miners.length;
         document.getElementById("poolCapacity").innerText = formatCapacity(response.poolCapacity) + " TiB";

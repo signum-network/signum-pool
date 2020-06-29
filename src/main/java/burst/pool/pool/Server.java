@@ -345,9 +345,7 @@ public class Server extends NanoHTTPD {
         BigInteger bestDeadline = miner.getBestDeadline(getCurrentHeight());
         if (bestDeadline != null) {
         	BigInteger deadline = bestDeadline;
-        	if(getCurrentHeight() >= propertyService.getInt(Props.sodiumHeight)) {
-        		deadline = BigInteger.valueOf((long)(Math.log(deadline.doubleValue()) * Pool.LN_FACTOR));
-        	}
+       		deadline = BigInteger.valueOf((long)(Math.log(deadline.doubleValue()) * Pool.LN_FACTOR));
 
             minerJson.addProperty("currentRoundBestDeadline", deadline.toString());
         }

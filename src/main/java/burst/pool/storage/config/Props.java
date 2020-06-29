@@ -8,7 +8,6 @@ public class Props {
     public static final Prop<Integer> serverPort = new Prop<>("serverPort", 80); // Must be > 0, < 2^16
     public static final Prop<String> nodeAddresses = new Prop<>("nodeAddresses", ""); // Must be non-empty
     public static final Prop<String> poolName = new Prop<>("poolName", "");
-    public static final Prop<Integer> sodiumHeight = new Prop<>("sodiumHeight", 765_000);
 
     public static final Prop<String> passphrase = new Prop<>("passphrase", ""); // Must be non-empty
 

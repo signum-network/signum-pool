@@ -145,7 +145,7 @@ public class Pool {
                 Transaction []txs = nodeService.getAccountTransactions(poolAddress).blockingGet();
                 for(Transaction tx : txs) {
                     if(tx.getBlockHeight() != block.getHeight())
-                        break;
+                        continue;
 
                     Miner miner = storageService.getMiner(tx.getSender());
                     if(miner == null)
@@ -343,13 +343,11 @@ public class Pool {
     public JsonObject getCurrentRoundInfo(Gson gson) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("roundStart", roundStartTime.get().getEpochSecond());
-        boolean sodiumActive = miningInfo.get().getHeight() >= propertyService.getInt(Props.sodiumHeight);
 
         if (bestSubmission.get() != null) {
         	BigInteger deadline = bestDeadline.get();
-        	if(sodiumActive) {
-        		deadline = BigInteger.valueOf((long)(Math.log(deadline.doubleValue()) * LN_FACTOR));
-        	}
+       		deadline = BigInteger.valueOf((long)(Math.log(deadline.doubleValue()) * LN_FACTOR));
+       		
             JsonObject bestDeadlineJson = new JsonObject();
             bestDeadlineJson.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
             bestDeadlineJson.addProperty("miner", bestSubmission.get().getMiner().getID());
@@ -364,9 +362,7 @@ public class Pool {
         MiningInfo miningInfo = Pool.this.miningInfo.get();
         if (miningInfo != null) {
             long baseTarget = miningInfo.getBaseTarget();
-            if(sodiumActive) {
-                baseTarget = (long)(baseTarget * 1.83f);
-            }
+            baseTarget = (long)(baseTarget * 1.83f);
             jsonObject.add("miningInfo", gson.toJsonTree(new MiningInfoResponse(burstCrypto.toHexString(miningInfo.getGenerationSignature()), baseTarget, miningInfo.getHeight())));
         }
         return jsonObject;
