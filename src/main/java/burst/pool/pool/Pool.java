@@ -142,8 +142,8 @@ public class Pool {
                 
                 // Check for commands from miners
                 BurstAddress poolAddress = burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase));
-                // FIXME: add paging to avoid loading all transaction history every call
-                Transaction []txs = nodeService.getAccountTransactions(poolAddress).blockingGet();
+                // Having 100 should be enough to not get past it
+                Transaction []txs = nodeService.getAccountTransactions(poolAddress, 0, 100).blockingGet();
                 for(Transaction tx : txs) {
                     if(tx.getBlockHeight() != block.getHeight())
                         continue;
