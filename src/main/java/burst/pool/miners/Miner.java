@@ -51,7 +51,7 @@ public class Miner implements Payable {
             store.setShare(0d);
             return;
         }
-        double newShare = store.getEstimatedCapacity() / poolCapacity;
+        double newShare = getSharedCapacity() / poolCapacity;
         if (Double.isNaN(newShare)) newShare = 0d;
         store.setShare(newShare);
     }
@@ -99,6 +99,14 @@ public class Miner implements Payable {
 
     public double getCapacity() {
         return store.getEstimatedCapacity();
+    }
+    
+    public double getSharedCapacity() {
+      return store.getEstimatedCapacity() * store.getShareRatio();
+    }
+    
+    public double getShareRatio() {
+        return store.getShareRatio();
     }
 
     @Override

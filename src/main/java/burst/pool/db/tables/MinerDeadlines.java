@@ -41,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class MinerDeadlines extends TableImpl<MinerDeadlinesRecord> {
 
-    private static final long serialVersionUID = 1156355474;
+    private static final long serialVersionUID = 1908881783;
 
     /**
      * The reference instance of <code>miner_deadlines</code>
@@ -80,6 +80,11 @@ public class MinerDeadlines extends TableImpl<MinerDeadlinesRecord> {
      * The column <code>miner_deadlines.base_target</code>.
      */
     public final TableField<MinerDeadlinesRecord, Long> BASE_TARGET = createField("base_target", org.jooq.impl.SQLDataType.BIGINT.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>miner_deadlines.share_ratio</code>.
+     */
+    public final TableField<MinerDeadlinesRecord, Double> SHARE_RATIO = createField("share_ratio", org.jooq.impl.SQLDataType.DOUBLE.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.DOUBLE)), this, "");
 
     /**
      * Create a <code>miner_deadlines</code> table reference

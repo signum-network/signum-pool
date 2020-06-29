@@ -5,11 +5,13 @@ import java.math.BigInteger;
 public class Deadline {
     private final BigInteger deadline;
     private final BigInteger baseTarget;
+    private final double shareRatio;
     private final long height;
 
-    public Deadline(BigInteger deadline, BigInteger baseTarget, long height) {
+    public Deadline(BigInteger deadline, BigInteger baseTarget, double shareRatio, long height) {
         this.deadline = deadline;
         this.baseTarget = baseTarget;
+        this.shareRatio = shareRatio;
         this.height = height;
     }
 
@@ -23,6 +25,10 @@ public class Deadline {
 
     public long getHeight() {
         return height;
+    }
+    
+    public double getShareRatio() {
+      return shareRatio;
     }
 
     public BigInteger calculateHit() {

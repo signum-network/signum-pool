@@ -42,7 +42,7 @@ public class MinerTracker {
     public void onMinerSubmittedDeadline(StorageService storageService, BurstAddress minerAddress, BigInteger deadline, BigInteger baseTarget, long blockHeight, String userAgent) {
         waitUntilNotProcessingBlock();
         Miner miner = getOrCreate(storageService, minerAddress);
-        miner.processNewDeadline(new Deadline(deadline, baseTarget, blockHeight));
+        miner.processNewDeadline(new Deadline(deadline, baseTarget, miner.getShareRatio(), blockHeight));
         miner.setUserAgent(userAgent);
         compositeDisposable.add(nodeService.getAccount(minerAddress).subscribe(accountResponse -> onMinerAccount(storageService, accountResponse), this::onMinerAccountError));
     }
@@ -68,10 +68,11 @@ public class MinerTracker {
         PoolFeeRecipient poolFeeRecipient = transactionalStorageService.getPoolFeeRecipient();
         poolFeeRecipient.increasePending(poolTake);
 
-        // Take winner fee
-        BurstValue winnerTake = reward.multiply(propertyService.getFloat(Props.winnerRewardPercentage));
-        reward = reward.subtract(winnerTake);
+        // Take winner share
         Miner winningMiner = getOrCreate(transactionalStorageService, winner);
+        double winnerShare = 1.0D - winningMiner.getShareRatio();
+        BurstValue winnerTake = reward.multiply(winnerShare);
+        reward = reward.subtract(winnerTake);
         winningMiner.increasePending(winnerTake);
 
         List<Miner> miners = transactionalStorageService.getMiners();
@@ -106,7 +107,7 @@ public class MinerTracker {
 
         // Calculate pool capacity
         AtomicReference<Double> poolCapacity = new AtomicReference<>(0d);
-        miners.forEach(miner -> poolCapacity.updateAndGet(v -> (double) (v + miner.getCapacity())));
+        miners.forEach(miner -> poolCapacity.updateAndGet(v -> (double) (v + miner.getSharedCapacity())));
 
         // Update each miner's share
         miners.forEach(miner -> miner.recalculateShare(poolCapacity.get()));

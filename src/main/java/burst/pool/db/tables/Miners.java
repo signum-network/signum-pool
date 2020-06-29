@@ -41,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Miners extends TableImpl<MinersRecord> {
 
-    private static final long serialVersionUID = 1128856611;
+    private static final long serialVersionUID = 360448814;
 
     /**
      * The reference instance of <code>miners</code>
@@ -95,6 +95,16 @@ public class Miners extends TableImpl<MinersRecord> {
      * The column <code>miners.user_agent</code>.
      */
     public final TableField<MinersRecord, String> USER_AGENT = createField("user_agent", org.jooq.impl.SQLDataType.CLOB.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.CLOB)), this, "");
+
+    /**
+     * The column <code>miners.share_ratio</code>.
+     */
+    public final TableField<MinersRecord, Double> SHARE_RATIO = createField("share_ratio", org.jooq.impl.SQLDataType.DOUBLE.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.DOUBLE)), this, "");
+
+    /**
+     * The column <code>miners.share_ratio_height</code>.
+     */
+    public final TableField<MinersRecord, Integer> SHARE_RATIO_HEIGHT = createField("share_ratio_height", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * Create a <code>miners</code> table reference

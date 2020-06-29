@@ -3,7 +3,6 @@ package burst.pool.storage.persistent;
 import burst.kit.entity.BurstValue;
 import burst.pool.miners.Deadline;
 
-import java.math.BigInteger;
 import java.util.List;
 
 public interface MinerStore {
@@ -12,6 +11,9 @@ public interface MinerStore {
     
     double getEstimatedCapacity();
     void setEstimatedCapacity(double estimatedCapacity);
+    
+    double getShareRatio();
+    void setShareRatio(double shareRatio);
     
     double getShare();
     void setShare(double share);
