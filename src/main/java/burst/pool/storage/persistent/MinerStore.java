@@ -9,11 +9,11 @@ public interface MinerStore {
     BurstValue getPendingBalance();
     void setPendingBalance(BurstValue pendingBalance);
     
-    double getEstimatedCapacity();
-    void setEstimatedCapacity(double estimatedCapacity);
+    double getSharedCapacity();
+    void setSharedCapacity(double sharedCapacity);
     
-    double getShareRatio();
-    void setShareRatio(double shareRatio);
+    int getSharePercent();
+    void setSharePercent(int sharePercent);
     
     double getShare();
     void setShare(double share);

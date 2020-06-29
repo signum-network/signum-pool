@@ -118,9 +118,9 @@ public class Server extends NanoHTTPD {
             AtomicReference<Double> poolCapacity = new AtomicReference<>(0d);
             storageService.getMinersFiltered()
                     .stream()
-                    .sorted(Comparator.comparing(Miner::getCapacity).reversed())
+                    .sorted(Comparator.comparing(Miner::getSharedCapacity).reversed())
                     .forEach(miner -> {
-                        poolCapacity.updateAndGet(v -> v + miner.getCapacity());
+                        poolCapacity.updateAndGet(v -> v + miner.getSharedCapacity());
                         minersJson.add(minerToJson(miner));
                     });
             JsonObject jsonObject = new JsonObject();
@@ -337,7 +337,8 @@ public class Server extends NanoHTTPD {
         minerJson.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
         minerJson.addProperty("addressRS", miner.getAddress().getFullAddress());
         minerJson.addProperty("pendingBalance", miner.getPending().toFormattedString());
-        minerJson.addProperty("estimatedCapacity", miner.getCapacity());
+        minerJson.addProperty("sharedCapacity", miner.getSharedCapacity());
+        minerJson.addProperty("sharePercent", miner.getSharePercent());
         minerJson.addProperty("nConf", miner.getNConf());
         minerJson.addProperty("share", miner.getShare());
         minerJson.addProperty("minimumPayout", miner.getMinimumPayout().toFormattedString());

@@ -295,8 +295,8 @@ public class DbStorageService implements StorageService {
                     .fetchOne(0, int.class) > 0) {
                 return getMiner(address);
             } else {
-                context.insertInto(MINERS, MINERS.ACCOUNT_ID, MINERS.SHARE_RATIO, MINERS.PENDING_BALANCE, MINERS.ESTIMATED_CAPACITY, MINERS.SHARE, MINERS.MINIMUM_PAYOUT, MINERS.NAME, MINERS.USER_AGENT)
-                        .values(address.getBurstID().getSignedLongId(), 1d - propertyService.getFloat(Props.winnerRewardPercentage),
+                context.insertInto(MINERS, MINERS.ACCOUNT_ID, MINERS.SHARE_PERCENT, MINERS.PENDING_BALANCE, MINERS.ESTIMATED_CAPACITY, MINERS.SHARE, MINERS.MINIMUM_PAYOUT, MINERS.NAME, MINERS.USER_AGENT)
+                        .values(address.getBurstID().getSignedLongId(), 100 - (int)(100*propertyService.getFloat(Props.winnerRewardPercentage)),
                             0L, 0d, 0d, BurstValue.fromBurst(propertyService.getFloat(Props.defaultMinimumPayout)).toPlanck().longValueExact(), "", "")
                         .execute();
                 recalculateMinerCount();
@@ -451,7 +451,7 @@ public class DbStorageService implements StorageService {
         }
 
         @Override
-        public double getEstimatedCapacity() {
+        public double getSharedCapacity() {
             return getFromCacheOr(MINERS, accountIdStr + "estimated", () -> useDslContext(context -> context.select(MINERS.ESTIMATED_CAPACITY)
                     .from(MINERS)
                     .where(MINERS.ACCOUNT_ID.eq(accountId))
@@ -460,7 +460,7 @@ public class DbStorageService implements StorageService {
         }
 
         @Override
-        public void setEstimatedCapacity(double estimatedCapacity) {
+        public void setSharedCapacity(double estimatedCapacity) {
             useDslContextVoid(context -> context.update(MINERS)
                     .set(MINERS.ESTIMATED_CAPACITY, estimatedCapacity)
                     .where(MINERS.ACCOUNT_ID.eq(accountId))
@@ -470,21 +470,21 @@ public class DbStorageService implements StorageService {
         
 
         @Override
-        public double getShareRatio() {
-            return getFromCacheOr(MINERS, accountIdStr + "shareRatio", () -> useDslContext(context -> context.select(MINERS.SHARE_RATIO)
+        public int getSharePercent() {
+            return getFromCacheOr(MINERS, accountIdStr + "sharePrecent", () -> useDslContext(context -> context.select(MINERS.SHARE_PERCENT)
                     .from(MINERS)
                     .where(MINERS.ACCOUNT_ID.eq(accountId))
                     .fetchAny()
-                    .get(MINERS.SHARE_RATIO)));
+                    .get(MINERS.SHARE_PERCENT)));
         }
 
         @Override
-        public void setShareRatio(double shareRatio) {
+        public void setSharePercent(int sharePercent) {
             useDslContextVoid(context -> context.update(MINERS)
-                    .set(MINERS.SHARE_RATIO, shareRatio)
+                    .set(MINERS.SHARE_PERCENT, sharePercent)
                     .where(MINERS.ACCOUNT_ID.eq(accountId))
                     .execute());
-            storeInCache(MINERS, accountIdStr + "shareRatio", shareRatio);
+            storeInCache(MINERS, accountIdStr + "sharePrecent", sharePercent);
         }
 
 
@@ -565,7 +565,7 @@ public class DbStorageService implements StorageService {
                     .from(MINER_DEADLINES)
                     .where(MINER_DEADLINES.ACCOUNT_ID.eq(accountId))
                     .fetch()
-                    .map(record -> new Deadline(BigInteger.valueOf(record.get(MINER_DEADLINES.DEADLINE)), BigInteger.valueOf(record.get(MINER_DEADLINES.BASE_TARGET)), record.get(MINER_DEADLINES.SHARE_RATIO), record.get(MINER_DEADLINES.HEIGHT))));
+                    .map(record -> new Deadline(BigInteger.valueOf(record.get(MINER_DEADLINES.DEADLINE)), BigInteger.valueOf(record.get(MINER_DEADLINES.BASE_TARGET)), record.get(MINER_DEADLINES.SHARE_PERCENT), record.get(MINER_DEADLINES.HEIGHT))));
         }
 
         @Override
@@ -588,11 +588,11 @@ public class DbStorageService implements StorageService {
         @Override
         public Deadline getDeadline(long height) {
             try {
-                return getFromCacheOr(MINER_DEADLINES, accountIdStr + "deadline" + Long.toString(height), () -> useDslContext(context -> context.select(MINER_DEADLINES.BASE_TARGET, MINER_DEADLINES.SHARE_RATIO, MINER_DEADLINES.HEIGHT, MINER_DEADLINES.DEADLINE)
+                return getFromCacheOr(MINER_DEADLINES, accountIdStr + "deadline" + Long.toString(height), () -> useDslContext(context -> context.select(MINER_DEADLINES.BASE_TARGET, MINER_DEADLINES.SHARE_PERCENT, MINER_DEADLINES.HEIGHT, MINER_DEADLINES.DEADLINE)
                         .from(MINER_DEADLINES)
                         .where(MINER_DEADLINES.ACCOUNT_ID.eq(accountId), MINER_DEADLINES.HEIGHT.eq(height))
                         .fetchAny()
-                        .map(record -> new Deadline(BigInteger.valueOf(record.get(MINER_DEADLINES.DEADLINE)), BigInteger.valueOf(record.get(MINER_DEADLINES.BASE_TARGET)), record.get(MINER_DEADLINES.SHARE_RATIO), height))));
+                        .map(record -> new Deadline(BigInteger.valueOf(record.get(MINER_DEADLINES.DEADLINE)), BigInteger.valueOf(record.get(MINER_DEADLINES.BASE_TARGET)), record.get(MINER_DEADLINES.SHARE_PERCENT), height))));
             } catch (NullPointerException e) {
                 return null;
             }
@@ -600,9 +600,9 @@ public class DbStorageService implements StorageService {
 
         @Override
         public void setOrUpdateDeadline(long height, Deadline deadline) {
-            useDslContextVoid(context -> context.mergeInto(MINER_DEADLINES, MINER_DEADLINES.ACCOUNT_ID, MINER_DEADLINES.SHARE_RATIO, MINER_DEADLINES.HEIGHT, MINER_DEADLINES.DEADLINE, MINER_DEADLINES.BASE_TARGET)
+            useDslContextVoid(context -> context.mergeInto(MINER_DEADLINES, MINER_DEADLINES.ACCOUNT_ID, MINER_DEADLINES.SHARE_PERCENT, MINER_DEADLINES.HEIGHT, MINER_DEADLINES.DEADLINE, MINER_DEADLINES.BASE_TARGET)
                     .key(MINER_DEADLINES.ACCOUNT_ID, MINER_DEADLINES.HEIGHT)
-                    .values(accountId, deadline.getShareRatio(), height, deadline.getDeadline().longValue(), deadline.getBaseTarget().longValue())
+                    .values(accountId, deadline.getSharePercent(), height, deadline.getDeadline().longValue(), deadline.getBaseTarget().longValue())
                     .execute());
             storeInCache(MINER_DEADLINES, accountIdStr + "deadline" + Long.toString(height), deadline);
             recalculateCacheDeadlineCount();

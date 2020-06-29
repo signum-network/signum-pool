@@ -4,8 +4,12 @@ import burst.kit.crypto.BurstCrypto;
 import burst.kit.entity.BurstAddress;
 import burst.kit.entity.response.Block;
 import burst.kit.entity.response.MiningInfo;
+import burst.kit.entity.response.Transaction;
+import burst.kit.entity.response.TransactionAppendix;
+import burst.kit.entity.response.appendix.PlaintextMessageAppendix;
 import burst.kit.entity.response.http.MiningInfoResponse;
 import burst.kit.service.BurstNodeService;
+import burst.pool.miners.Miner;
 import burst.pool.miners.MinerTracker;
 import burst.pool.storage.config.PropertyService;
 import burst.pool.storage.config.Props;
@@ -134,6 +138,40 @@ public class Pool {
                 }
 
                 Block block = nodeService.getBlock(transactionalStorageService.getLastProcessedBlock() + 1).blockingGet();
+                
+                // Check for commands from miners
+                BurstAddress poolAddress = burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase));
+                // FIXME: add paging to avoid loading all transaction history every call
+                Transaction []txs = nodeService.getAccountTransactions(poolAddress).blockingGet();
+                for(Transaction tx : txs) {
+                    if(tx.getBlockHeight() != block.getHeight())
+                        break;
+
+                    Miner miner = storageService.getMiner(tx.getSender());
+                    if(miner == null)
+                        continue;
+                    
+                    if(tx.getAppendages()!=null && tx.getAppendages().length > 0 && tx.getRecipient().equals(poolAddress)) {
+                        try {
+                            TransactionAppendix append = tx.getAppendages()[0];
+                            if(append instanceof PlaintextMessageAppendix) {
+                                PlaintextMessageAppendix appendMessage = (PlaintextMessageAppendix) append;
+                                String[] args = appendMessage.getMessage().split(" ");
+                                for (int i = 0; i < args.length-1; i++) {
+                                    if(args[i].equals("share")) {
+                                        int sharePercent = Integer.parseInt(args[++i]);
+                                        if(sharePercent >= 0 && sharePercent <= 100) {
+                                            miner.setSharePercent(sharePercent);
+                                            logger.info("Miner " + miner.getAddress().getID() + " sharePercent=" + sharePercent);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception e) {
+                        }
+                    }
+                }
 
                 List<? extends Submission> submissions = transactionalStorageService.getBestSubmissionsForBlock(block.getHeight());
                 boolean won = false;

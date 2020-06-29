@@ -42,7 +42,7 @@ public class MinerTracker {
     public void onMinerSubmittedDeadline(StorageService storageService, BurstAddress minerAddress, BigInteger deadline, BigInteger baseTarget, long blockHeight, String userAgent) {
         waitUntilNotProcessingBlock();
         Miner miner = getOrCreate(storageService, minerAddress);
-        miner.processNewDeadline(new Deadline(deadline, baseTarget, miner.getShareRatio(), blockHeight));
+        miner.processNewDeadline(new Deadline(deadline, baseTarget, miner.getSharePercent(), blockHeight));
         miner.setUserAgent(userAgent);
         compositeDisposable.add(nodeService.getAccount(minerAddress).subscribe(accountResponse -> onMinerAccount(storageService, accountResponse), this::onMinerAccountError));
     }
@@ -70,7 +70,7 @@ public class MinerTracker {
 
         // Take winner share
         Miner winningMiner = getOrCreate(transactionalStorageService, winner);
-        double winnerShare = 1.0D - winningMiner.getShareRatio();
+        double winnerShare = 1.0d - winningMiner.getSharePercent()/100d;
         BurstValue winnerTake = reward.multiply(winnerShare);
         reward = reward.subtract(winnerTake);
         winningMiner.increasePending(winnerTake);

@@ -37,11 +37,14 @@ public class Miner implements Payable {
         AtomicInteger deadlineCount = new AtomicInteger(store.getDeadlineCount());
         List<Deadline> deadlines = store.getDeadlines();
         deadlines.forEach(deadline -> {
-            hitSum.set(hitSum.get().add(deadline.calculateHit()));
+            BigInteger hit = deadline.calculateHit();
+            hit = hit.divide(BigInteger.valueOf(deadline.getSharePercent()));
+            hit.multiply(BigInteger.valueOf(100L));
+            hitSum.set(hitSum.get().add(hit));
         });
         // Calculate estimated capacity
         try {
-            store.setEstimatedCapacity(minerMaths.estimatedEffectivePlotSize(deadlines.size(), deadlineCount.get(), hitSum.get()));
+            store.setSharedCapacity(minerMaths.estimatedEffectivePlotSize(deadlines.size(), deadlineCount.get(), hitSum.get()));
         } catch (ArithmeticException ignored) {
         }
     }
@@ -97,16 +100,16 @@ public class Miner implements Payable {
         }
     }
 
-    public double getCapacity() {
-        return store.getEstimatedCapacity();
-    }
-    
     public double getSharedCapacity() {
-      return store.getEstimatedCapacity() * store.getShareRatio();
+        return store.getSharedCapacity();
+    }
+
+    public int getSharePercent() {
+        return store.getSharePercent();
     }
     
-    public double getShareRatio() {
-        return store.getShareRatio();
+    public void setSharePercent(int sharePercent) {
+        store.setSharePercent(sharePercent);
     }
 
     @Override
