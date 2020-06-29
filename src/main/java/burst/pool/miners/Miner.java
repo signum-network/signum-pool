@@ -28,7 +28,7 @@ public class Miner implements Payable {
         this.store = store;
     }
 
-    public void recalculateCapacity(long currentBlockHeight, List<Long> fastBlocks) {
+    public void recalculateCapacity(long currentBlockHeight) {
         // Prune older deadlines
         store.getDeadlines().forEach(deadline -> {
             if (currentBlockHeight - deadline.getHeight() >= propertyService.getInt(Props.nAvg)) {
@@ -39,43 +39,14 @@ public class Miner implements Payable {
         AtomicReference<BigInteger> hitSum = new AtomicReference<>(BigInteger.ZERO);
         AtomicInteger deadlineCount = new AtomicInteger(store.getDeadlineCount());
         List<Deadline> deadlines = store.getDeadlines();
-        List<Long> outliers = calculateOutliers(deadlines);
         deadlines.forEach(deadline -> {
-            if (fastBlocks.contains(deadline.getHeight()) || outliers.contains(deadline.getHeight())) {
-                deadlineCount.getAndDecrement();
-            } else {
-                hitSum.set(hitSum.get().add(deadline.calculateHit()));
-            }
+            hitSum.set(hitSum.get().add(deadline.calculateHit()));
         });
         // Calculate estimated capacity
         try {
             store.setEstimatedCapacity(minerMaths.estimatedEffectivePlotSize(deadlines.size(), deadlineCount.get(), hitSum.get()));
         } catch (ArithmeticException ignored) {
         }
-    }
-
-    public List<Long> calculateOutliers(List<Deadline> input) {
-        if (input.size() < 2) return new ArrayList<>();
-        input.sort(Comparator.comparing(Deadline::calculateHit));
-        List<Long> output = new ArrayList<>();
-        List<Deadline> data1;
-        List<Deadline> data2;
-        if (input.size() % 2 == 0) {
-            data1 = input.subList(0, input.size() / 2);
-            data2 = input.subList(input.size() / 2, input.size());
-        } else {
-            data1 = input.subList(0, input.size() / 2);
-            data2 = input.subList(input.size() / 2 + 1, input.size());
-        }
-        double q1 = getMedian(data1);
-        double q3 = getMedian(data2);
-        double iqr = q3 - q1;
-        double upperFence = q3 + 100 * iqr;
-        for (Deadline deadline : input) {
-            if (deadline.getDeadline().longValue() > upperFence)
-                output.add(deadline.getHeight());
-        }
-        return output;
     }
 
     private static long getMedian(List<Deadline> data) { // TODO use calculateHit if it is worth the performance hit

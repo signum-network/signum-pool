@@ -127,17 +127,6 @@ public class Pool {
 
                 minerTracker.setCurrentlyProcessingBlock(true);
 
-                List<Long> fastBlocks = new ArrayList<>();
-                transactionalStorageService.getBestSubmissions().forEach((height, deadline) -> {
-                    long lowestDeadline = deadline.stream()
-                            .map(StoredSubmission::getDeadline)
-                            .min(Long::compare)
-                            .orElse((long) propertyService.getInt(Props.tMin));
-                    if (lowestDeadline < propertyService.getInt(Props.tMin)) {
-                        fastBlocks.add(height);
-                    }
-                });
-
                 List<StoredSubmission> storedSubmissions = transactionalStorageService.getBestSubmissionsForBlock(transactionalStorageService.getLastProcessedBlock() + 1);
                 if (storedSubmissions == null || storedSubmissions.isEmpty()) {
                     onProcessedBlock(transactionalStorageService, false);
@@ -156,12 +145,12 @@ public class Pool {
                     }
                 }
                 if (won) {
-                    minerTracker.onBlockWon(transactionalStorageService, transactionalStorageService.getLastProcessedBlock() + 1, block.getId(), block.getNonce(), block.getGenerator(), block.getBlockReward().add(block.getTotalFee()), fastBlocks);
+                    minerTracker.onBlockWon(transactionalStorageService, transactionalStorageService.getLastProcessedBlock() + 1, block.getId(), block.getNonce(), block.getGenerator(), block.getBlockReward().add(block.getTotalFee()));
                 } else {
                     if (myRewardRecipients.contains(block.getGenerator())) {
                         logger.error("Our miner forged but did not detect block won. Height " + block.getHeight());
                     }
-                    minerTracker.onBlockNotWon(transactionalStorageService, transactionalStorageService.getLastProcessedBlock() + 1, fastBlocks);
+                    minerTracker.onBlockNotWon(transactionalStorageService, transactionalStorageService.getLastProcessedBlock() + 1);
                 }
                 onProcessedBlock(transactionalStorageService, true);
             } catch (Exception e) {

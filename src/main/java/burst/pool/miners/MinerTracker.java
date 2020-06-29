@@ -57,7 +57,7 @@ public class MinerTracker {
         return miner;
     }
 
-    public void onBlockWon(StorageService transactionalStorageService, long blockHeight, BurstID blockId, BigInteger nonce, BurstAddress winner, BurstValue blockReward, List<Long> fastBlocks) {
+    public void onBlockWon(StorageService transactionalStorageService, long blockHeight, BurstID blockId, BigInteger nonce, BurstAddress winner, BurstValue blockReward) {
         logger.info("Block won! Block height: " + blockHeight + ", forger: " + winner.getFullAddress());
 
         transactionalStorageService.addWonBlock(new WonBlock((int) blockHeight, blockId, winner, nonce, blockReward));
@@ -78,7 +78,7 @@ public class MinerTracker {
 
         List<Miner> miners = transactionalStorageService.getMiners();
 
-        updateMiners(miners, blockHeight, fastBlocks);
+        updateMiners(miners, blockHeight);
 
         // Update each miner's pending
         AtomicReference<BurstValue> amountTaken = new AtomicReference<>(BurstValue.fromBurst(0));
@@ -98,13 +98,13 @@ public class MinerTracker {
         logger.info("Finished processing winnings for block " + blockHeight + ". Reward ( + fees) is " + blockReward + ", pool fee is " + poolTake + ", forger take is " + winnerTake + ", miners took " + amountTaken.get());
     }
 
-    public void onBlockNotWon(StorageService transactionalStorageService, long blockHeight, List<Long> fastBlocks) {
-        updateMiners(transactionalStorageService.getMiners(), blockHeight, fastBlocks);
+    public void onBlockNotWon(StorageService transactionalStorageService, long blockHeight) {
+        updateMiners(transactionalStorageService.getMiners(), blockHeight);
     }
 
-    private void updateMiners(List<Miner> miners, long blockHeight, List<Long> fastBlocks) {
+    private void updateMiners(List<Miner> miners, long blockHeight) {
         // Update each miner's effective capacity
-        miners.forEach(miner -> miner.recalculateCapacity(blockHeight, fastBlocks));
+        miners.forEach(miner -> miner.recalculateCapacity(blockHeight));
 
         // Calculate pool capacity
         AtomicReference<Double> poolCapacity = new AtomicReference<>(0d);
