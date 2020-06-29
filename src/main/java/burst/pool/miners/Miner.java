@@ -6,10 +6,7 @@ import burst.pool.storage.config.PropertyService;
 import burst.pool.storage.config.Props;
 import burst.pool.storage.persistent.MinerStore;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -47,13 +44,6 @@ public class Miner implements Payable {
             store.setEstimatedCapacity(minerMaths.estimatedEffectivePlotSize(deadlines.size(), deadlineCount.get(), hitSum.get()));
         } catch (ArithmeticException ignored) {
         }
-    }
-
-    private static long getMedian(List<Deadline> data) { // TODO use calculateHit if it is worth the performance hit
-        if (data.size() % 2 == 0)
-            return (data.get(data.size() / 2).getDeadline().longValue() + data.get(data.size() / 2 - 1).getDeadline().longValue()) / 2;
-        else
-            return data.get(data.size() / 2).getDeadline().longValue();
     }
 
     public void recalculateShare(double poolCapacity) {
