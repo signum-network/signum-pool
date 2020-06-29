@@ -6,6 +6,7 @@ import burst.kit.entity.response.Block;
 import burst.kit.entity.response.MiningInfo;
 import burst.kit.entity.response.Transaction;
 import burst.kit.entity.response.TransactionAppendix;
+import burst.kit.entity.response.appendix.EncryptedMessageAppendix;
 import burst.kit.entity.response.appendix.PlaintextMessageAppendix;
 import burst.kit.entity.response.http.MiningInfoResponse;
 import burst.kit.service.BurstNodeService;
@@ -153,10 +154,19 @@ public class Pool {
                     
                     if(tx.getAppendages()!=null && tx.getAppendages().length > 0 && tx.getRecipient().equals(poolAddress)) {
                         try {
+                            String message = null;
                             TransactionAppendix append = tx.getAppendages()[0];
                             if(append instanceof PlaintextMessageAppendix) {
                                 PlaintextMessageAppendix appendMessage = (PlaintextMessageAppendix) append;
-                                String[] args = appendMessage.getMessage().split(" ");
+                                message = appendMessage.getMessage();
+                            }
+                            if(append instanceof EncryptedMessageAppendix) {
+                                EncryptedMessageAppendix appendMessage = (EncryptedMessageAppendix) append;
+                                byte[] rawMessage = appendMessage.getEncryptedMessage().decrypt(burstCrypto.getPublicKey(propertyService.getString(Props.passphrase)), tx.getSenderPublicKey());
+                                message = new String(rawMessage);
+                            }
+                            if(message !=null) {
+                                String[] args = message.split(" ");
                                 for (int i = 0; i < args.length-1; i++) {
                                     if(args[i].equals("share")) {
                                         int sharePercent = Integer.parseInt(args[++i]);
