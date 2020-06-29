@@ -38,8 +38,8 @@ public class Miner implements Payable {
         List<Deadline> deadlines = store.getDeadlines();
         deadlines.forEach(deadline -> {
             BigInteger hit = deadline.calculateHit();
-            hit = hit.divide(BigInteger.valueOf(deadline.getSharePercent()));
-            hit.multiply(BigInteger.valueOf(100L));
+            hit = hit.divide(BigInteger.valueOf(deadline.getSharePercent()))
+                    .multiply(BigInteger.valueOf(100L));
             hitSum.set(hitSum.get().add(hit));
         });
         // Calculate estimated capacity
