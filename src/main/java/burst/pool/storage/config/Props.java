@@ -85,6 +85,11 @@ public class Props {
             throw new IllegalArgumentException("Illegal feeRecipient (not set)");
         }
 
+        BurstAddress donationRecipient = propertyService.getBurstAddress(Props.donationRecipient);
+        if (donationRecipient == null) {
+            throw new IllegalArgumentException("Illegal donationRecipient (not set)");
+        }
+
         float poolFeePercentage = propertyService.getFloat(Props.poolFeePercentage);
         if (poolFeePercentage < 0f || poolFeePercentage > 1f) {
             throw new IllegalArgumentException("Illegal poolFeePercentage: " + poolFeePercentage + " (Must be 0-1)");
