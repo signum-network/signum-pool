@@ -219,7 +219,7 @@ function getMiners() {
         return http.json();
     }).then(response => {
         let table = document.getElementById("miners");
-        table.innerHTML = "<tr><th>Miner</th><th>Current Deadline</th><th>Pending Balance</th><th>Shared Capacity</th><th>Pool Percent</th><th>Confirmed Deadlines</th><th>Pool Share</th><th>Software</th></tr>";
+        table.innerHTML = "<tr><th>Miner</th><th>Current Deadline</th><th>Pending Balance</th><th>Total Capacity</th><th>Pool Percent</th><th>Confirmed Deadlines</th><th>Pool Share</th><th>Software</th></tr>";
         for (let i = 0; i < response.miners.length; i++) {
             let miner = response.miners[i];
             let currentRoundDeadline = miner.currentRoundBestDeadline == null ? "" : formatTime(miner.currentRoundBestDeadline);
@@ -228,7 +228,7 @@ function getMiners() {
             table.innerHTML += "<tr><td>"+minerAddress+"</td>"
               +"<td>"+currentRoundDeadline+"</td>"
               +"<td>"+miner.pendingBalance+"</td>"
-              +"<td>"+formatCapacity(miner.sharedCapacity)+" TiB</td>"
+              +"<td>"+formatCapacity(miner.totalCapacity)+" TiB</td>"
               +"<td>"+miner.sharePercent+" %</td>"
               +"<td>"+miner.nConf+" / " + maxSubmissions+"</td>"
               +"<td>"+(parseFloat(miner.share)*100).toFixed(3)+" %</td>"
@@ -288,7 +288,7 @@ function prepareMinerInfo(address) {
     minerName.innerText = name;
     minerPending.innerText = miner.pendingBalance;
     minerMinimumPayout.innerText = miner.minimumPayout;
-    minerCapacity.innerText = formatCapacity(miner.estimatedCapacity);
+    minerCapacity.innerText = formatCapacity(miner.totalCapacity);
     minerNConf.innerText = miner.nConf;
     minerShare.innerText = (parseFloat(miner.share)*100).toFixed(3) + "%";
     minerSoftware.innerText = userAgent;
