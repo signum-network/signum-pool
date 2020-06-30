@@ -55,6 +55,7 @@ import static burst.pool.db.tables.WonBlocks.WON_BLOCKS;
 public class DbStorageService implements StorageService {
 
     private static final String POOL_STATE_FEE_RECIPIENT_BALANCE = "feeRecipientBalance";
+    private static final String POOL_STATE_DONATION_RECIPIENT_BALANCE = "donationRecipientBalance";
     private static final String POOL_STATE_LAST_PROCESSED_BLOCK = "lastProcessedBlock";
 
     private final PropertyService propertyService;
@@ -307,7 +308,12 @@ public class DbStorageService implements StorageService {
 
     @Override
     public PoolFeeRecipient getPoolFeeRecipient() {
-        return new PoolFeeRecipient(propertyService, new DbFeeRecipientStore());
+        return new PoolFeeRecipient(propertyService, new DbRecipientStore(POOL_STATE_FEE_RECIPIENT_BALANCE));
+    }
+
+    @Override
+    public PoolFeeRecipient getPoolDonationRecipient() {
+        return new PoolFeeRecipient(propertyService, new DbRecipientStore(POOL_STATE_DONATION_RECIPIENT_BALANCE));
     }
 
     private void setLastProcessedBlock(int block) {
@@ -609,14 +615,20 @@ public class DbStorageService implements StorageService {
         }
     }
 
-    private final class DbFeeRecipientStore implements MinerStore.FeeRecipientStore {
+    private final class DbRecipientStore implements MinerStore.FeeRecipientStore {
+        
+        private final String key;
+        
+        public DbRecipientStore(String key) {
+            this.key = key;
+        }
 
         @Override
         public BurstValue getPendingBalance() {
             try {
-                BurstValue pending = getFromCacheOr(POOL_STATE, POOL_STATE_FEE_RECIPIENT_BALANCE, () -> useDslContext(context -> context.select(POOL_STATE.VALUE)
+                BurstValue pending = getFromCacheOr(POOL_STATE, key, () -> useDslContext(context -> context.select(POOL_STATE.VALUE)
                         .from(POOL_STATE)
-                        .where(POOL_STATE.KEY.eq(POOL_STATE_FEE_RECIPIENT_BALANCE))
+                        .where(POOL_STATE.KEY.eq(key))
                         .fetchAny(record -> BurstValue.fromPlanck(record.get(POOL_STATE.VALUE)))));
                 return pending == null ? BurstValue.ZERO : pending;
             } catch (NullPointerException e) {
@@ -628,9 +640,9 @@ public class DbStorageService implements StorageService {
         public void setPendingBalance(BurstValue pending) {
             useDslContextVoid(context -> context.mergeInto(POOL_STATE, POOL_STATE.KEY, POOL_STATE.VALUE)
                     .key(POOL_STATE.KEY)
-                    .values(POOL_STATE_FEE_RECIPIENT_BALANCE, pending.toPlanck().toString())
+                    .values(key, pending.toPlanck().toString())
                     .execute());
-            storeInCache(POOL_STATE, POOL_STATE_FEE_RECIPIENT_BALANCE, pending);
+            storeInCache(POOL_STATE, key, pending);
         }
     }
 }

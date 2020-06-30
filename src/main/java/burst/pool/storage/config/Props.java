@@ -21,6 +21,7 @@ public class Props {
     public static final Prop<Integer> processLag = new Prop<>("processLag", 10); // Must be > 0
 
     public static final Prop<BurstAddress> feeRecipient = new Prop<>("feeRecipient", null); // Must be non null
+    public static final Prop<BurstAddress> donationRecipient = new Prop<>("donationRecipient", null); // Must be non null
     public static final Prop<Float> poolFeePercentage = new Prop<>("poolFeePercentage", 0f); // Must be 0-1
     public static final Prop<Float> winnerRewardPercentage = new Prop<>("winnerRewardPercentage", 0f); // Must be 0-1
 

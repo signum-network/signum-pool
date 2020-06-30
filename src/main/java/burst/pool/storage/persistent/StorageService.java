@@ -22,6 +22,7 @@ public interface StorageService extends AutoCloseable {
     Miner newMiner(BurstAddress address);
 
     PoolFeeRecipient getPoolFeeRecipient();
+    PoolFeeRecipient getPoolDonationRecipient();
 
     int getLastProcessedBlock();
     void incrementLastProcessedBlock();
