@@ -2,11 +2,11 @@ package burst.pool.pool;
 
 import burst.kit.crypto.BurstCrypto;
 import burst.kit.entity.BurstAddress;
+import burst.kit.entity.BurstValue;
 import burst.kit.entity.response.Block;
 import burst.kit.entity.response.MiningInfo;
 import burst.kit.entity.response.Transaction;
 import burst.kit.entity.response.TransactionAppendix;
-import burst.kit.entity.response.appendix.EncryptedMessageAppendix;
 import burst.kit.entity.response.appendix.PlaintextMessageAppendix;
 import burst.kit.entity.response.http.MiningInfoResponse;
 import burst.kit.service.BurstNodeService;
@@ -18,6 +18,7 @@ import burst.pool.storage.persistent.StorageService;
 import com.google.gson.Gson;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
+
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -156,23 +157,30 @@ public class Pool {
                         try {
                             String message = null;
                             TransactionAppendix append = tx.getAppendages()[0];
+                            // Public messages only, so it is all on chain and we can easily verify
                             if(append instanceof PlaintextMessageAppendix) {
                                 PlaintextMessageAppendix appendMessage = (PlaintextMessageAppendix) append;
                                 message = appendMessage.getMessage();
                             }
-                            if(append instanceof EncryptedMessageAppendix) {
-                                EncryptedMessageAppendix appendMessage = (EncryptedMessageAppendix) append;
-                                byte[] rawMessage = appendMessage.getEncryptedMessage().decrypt(burstCrypto.getPublicKey(propertyService.getString(Props.passphrase)), tx.getSenderPublicKey());
-                                message = new String(rawMessage);
-                            }
-                            if(message !=null) {
-                                String[] args = message.split(" ");
-                                for (int i = 0; i < args.length-1; i++) {
-                                    if(args[i].equals("share")) {
-                                        int sharePercent = Integer.parseInt(args[++i]);
+                            if(message != null) {
+                                StringTokenizer tokens = new StringTokenizer(message, " ");
+                                while(tokens.hasMoreElements()) {
+                                    String cmd = tokens.nextToken();
+                                    
+                                    if(cmd.equals("share") && tokens.hasMoreTokens()) {
+                                        // Allows to configure the amount a miner wants to "share" with the pool
+                                        int sharePercent = Integer.parseInt(tokens.nextToken());
                                         if(sharePercent >= 0 && sharePercent <= 100) {
                                             miner.setSharePercent(sharePercent);
                                             logger.info("Miner " + miner.getAddress().getID() + " sharePercent=" + sharePercent);
+                                        }
+                                    }
+                                    else if(cmd.equals("pay") && tokens.hasMoreTokens()) {
+                                        // Allows a miner to increase the minimum payout (less frequent payments)
+                                        BurstValue newMinimumPayout = BurstValue.fromBurst(tokens.nextToken());
+                                        if (newMinimumPayout.compareTo(BurstValue.fromBurst(propertyService.getFloat(Props.minimumMinimumPayout))) > 0) {
+                                            minerTracker.setMinerMinimumPayout(storageService, miner.getAddress(), newMinimumPayout);
+                                            logger.info("Miner " + miner.getAddress().getID() + " new minimum payout " + newMinimumPayout.toFormattedString());
                                         }
                                     }
                                 }
