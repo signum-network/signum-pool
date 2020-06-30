@@ -120,7 +120,7 @@ public class Server extends NanoHTTPD {
                     .stream()
                     .sorted(Comparator.comparing(Miner::getSharedCapacity).reversed())
                     .forEach(miner -> {
-                        poolCapacity.updateAndGet(v -> v + miner.getSharedCapacity());
+                        poolCapacity.updateAndGet(v -> v + miner.getTotalCapacity());
                         minersJson.add(minerToJson(miner));
                     });
             JsonObject jsonObject = new JsonObject();
@@ -144,6 +144,8 @@ public class Server extends NanoHTTPD {
             response.addProperty(Props.processLag.getName(), propertyService.getInt(Props.processLag));
             response.addProperty(Props.feeRecipient.getName(), propertyService.getBurstAddress(Props.feeRecipient).getID());
             response.addProperty(Props.feeRecipient.getName() + "RS", propertyService.getBurstAddress(Props.feeRecipient).getFullAddress());
+            response.addProperty(Props.donationRecipient.getName(), propertyService.getBurstAddress(Props.donationRecipient).getID());
+            response.addProperty(Props.donationRecipient.getName() + "RS", propertyService.getBurstAddress(Props.donationRecipient).getFullAddress());
             response.addProperty(Props.poolFeePercentage.getName(), propertyService.getFloat(Props.poolFeePercentage));
             response.addProperty(Props.winnerRewardPercentage.getName(), propertyService.getFloat(Props.winnerRewardPercentage));
             response.addProperty(Props.defaultMinimumPayout.getName(), propertyService.getFloat(Props.defaultMinimumPayout));
@@ -153,62 +155,6 @@ public class Server extends NanoHTTPD {
             return response.toString();
         } else if (session.getUri().startsWith("/api/getCurrentRound")) {
             return pool.getCurrentRoundInfo(gson).toString();
-        } else if (session.getUri().startsWith("/api/setMinerMinimumPayout")) { // TODO the flow of this is horrible
-            if (session.getMethod() != Method.POST) {
-                return new JsonPrimitive("This endpoint requires POST").toString();
-            }
-            String assignment = params.get("assignment");
-            String publicKey = params.get("publicKey");
-            String signature = params.get("signature");
-            if (assignment == null || signature == null || publicKey == null || Objects.equals(assignment, "") || Objects.equals(publicKey, "") || Objects.equals(signature, "")) {
-                return new JsonPrimitive("Missing parameter").toString();
-            }
-            StringTokenizer stringTokenizer = new StringTokenizer(assignment, ":");
-            if (stringTokenizer.countTokens() != 4) {
-                return new JsonPrimitive("Incorrect assignment").toString();
-            }
-            BurstAddress minerAddress = BurstAddress.fromEither(stringTokenizer.nextToken());
-            BurstAddress poolAddress = BurstAddress.fromEither(stringTokenizer.nextToken());
-            long currentTime = Long.parseLong(stringTokenizer.nextToken());
-            BurstValue newMinimumPayout = BurstValue.fromPlanck(stringTokenizer.nextToken());
-            if (minerAddress == null || storageService.getMiner(minerAddress) == null) {
-                return new JsonPrimitive("Address not found").toString();
-            }
-            if (!Objects.equals(poolAddress, burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase)))) {
-                return new JsonPrimitive("Address does not match pool").toString();
-            }
-            if (Instant.now().getEpochSecond() - currentTime > 60*60) { // 1 Hour
-                return new JsonPrimitive("Assignment has expired").toString();
-            }
-            if (newMinimumPayout.compareTo(BurstValue.fromBurst(propertyService.getFloat(Props.minimumMinimumPayout))) <= 0) {
-                return new JsonPrimitive("New minimum payout is below the amount allowed by the pool").toString();
-            }
-            byte[] signatureBytes;
-            try {
-                signatureBytes = burstCrypto.parseHexString(signature);
-            } catch (Exception e) {
-                return new JsonPrimitive("Could not parse signature").toString();
-            }
-            if (signatureBytes.length != 64) {
-                return new JsonPrimitive("Incorrect signature length").toString();
-            }
-            byte[] publicKeyBytes;
-            try {
-                publicKeyBytes = burstCrypto.parseHexString(publicKey);
-            } catch (Exception e) {
-                return new JsonPrimitive("Could not parse publicKey").toString();
-            }
-            if (publicKeyBytes.length != 32) {
-                return new JsonPrimitive("Incorrect public key length").toString();
-            }
-            if (!Objects.equals(burstCrypto.getBurstAddressFromPublic(publicKeyBytes), minerAddress)) { // TODO ideally would validate with node to avoid collisions
-                return new JsonPrimitive("Public key did not match miner's address.").toString();
-            }
-            if (!burstCrypto.verify(signatureBytes, assignment.getBytes(), publicKeyBytes, true)) {
-                return new JsonPrimitive("Invalid signature").toString();
-            }
-            minerTracker.setMinerMinimumPayout(storageService, minerAddress, newMinimumPayout);
-            return new JsonPrimitive("Success").toString();
         } else if (session.getUri().startsWith("/api/getTop10Miners")) {
             AtomicReference<Double> othersShare = new AtomicReference<>(1d);
             JsonArray topMiners = new JsonArray();
@@ -337,6 +283,7 @@ public class Server extends NanoHTTPD {
         minerJson.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
         minerJson.addProperty("addressRS", miner.getAddress().getFullAddress());
         minerJson.addProperty("pendingBalance", miner.getPending().toFormattedString());
+        minerJson.addProperty("totalCapacity", miner.getTotalCapacity());
         minerJson.addProperty("sharedCapacity", miner.getSharedCapacity());
         minerJson.addProperty("sharePercent", miner.getSharePercent());
         minerJson.addProperty("nConf", miner.getNConf());

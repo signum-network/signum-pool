@@ -12,6 +12,9 @@ public interface MinerStore {
     double getSharedCapacity();
     void setSharedCapacity(double sharedCapacity);
     
+    double getTotalCapacity();
+    void setTotalCapacity(double totalCapacity);
+    
     int getSharePercent();
     void setSharePercent(int sharePercent);
     

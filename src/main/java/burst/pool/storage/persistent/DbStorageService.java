@@ -458,6 +458,24 @@ public class DbStorageService implements StorageService {
 
         @Override
         public double getSharedCapacity() {
+            return getFromCacheOr(MINERS, accountIdStr + "sharedCapacity", () -> useDslContext(context -> context.select(MINERS.ESTIMATED_CAPACITY)
+                    .from(MINERS)
+                    .where(MINERS.ACCOUNT_ID.eq(accountId))
+                    .fetchAny()
+                    .get(MINERS.SHARED_CAPACITY)));
+        }
+
+        @Override
+        public void setSharedCapacity(double estimatedCapacity) {
+            useDslContextVoid(context -> context.update(MINERS)
+                    .set(MINERS.SHARED_CAPACITY, estimatedCapacity)
+                    .where(MINERS.ACCOUNT_ID.eq(accountId))
+                    .execute());
+            storeInCache(MINERS, accountIdStr + "sharedCapacity", estimatedCapacity);
+        }
+        
+        @Override
+        public double getTotalCapacity() {
             return getFromCacheOr(MINERS, accountIdStr + "estimated", () -> useDslContext(context -> context.select(MINERS.ESTIMATED_CAPACITY)
                     .from(MINERS)
                     .where(MINERS.ACCOUNT_ID.eq(accountId))
@@ -466,7 +484,7 @@ public class DbStorageService implements StorageService {
         }
 
         @Override
-        public void setSharedCapacity(double estimatedCapacity) {
+        public void setTotalCapacity(double estimatedCapacity) {
             useDslContextVoid(context -> context.update(MINERS)
                     .set(MINERS.ESTIMATED_CAPACITY, estimatedCapacity)
                     .where(MINERS.ACCOUNT_ID.eq(accountId))
