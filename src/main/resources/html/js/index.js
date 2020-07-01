@@ -87,16 +87,16 @@ function getPoolInfo() {
     }).then(response => {
         maxSubmissions = response.nAvg + response.processLag;
         document.getElementById("poolName").innerText = response.poolName;
-        document.getElementById("poolAccount").innerHTML = formatMinerName(response.explorer, response.poolAccountRS, response.poolAccount, response.poolAccount, true);
+        document.getElementById("poolAccount").innerHTML = formatMinerName(response.explorer, response.poolAccountRS, response.poolAccount, null, true);
         document.getElementById("nAvg").innerText = response.nAvg;
         document.getElementById("nMin").innerText = response.nMin;
         document.getElementById("maxDeadline").innerText = response.maxDeadline;
         document.getElementById("processLag").innerText = response.processLag + " Blocks";
-        document.getElementById("feeRecipient").innerText = response.feeRecipientRS;
-        document.getElementById("poolFee").innerText = (parseFloat(response.poolFeePercentage)*100).toFixed(3) + " %";
-        document.getElementById("donationRecipient").innerText = response.donationRecipientRS;
-        document.getElementById("donationPercent").innerText = response.donationPercent + " %";
-        document.getElementById("poolShare").innerText = (100 - parseFloat(response.winnerRewardPercentage)*100).toFixed(3) + " %";
+        document.getElementById("feeRecipient").innerHTML = formatMinerName(response.explorer, response.feeRecipientRS, response.feeRecipient, null, true);
+        document.getElementById("poolFee").innerText = (parseFloat(response.poolFeePercentage)*100).toFixed(2) + " %";
+        document.getElementById("donationRecipient").innerHTML = formatMinerName(response.explorer, response.donationRecipientRS, response.donationRecipient, null, true);
+        document.getElementById("donationPercent").innerText = parseFloat(response.donationPercent).toFixed(2) + " %"; + " %";
+        document.getElementById("poolShare").innerText = (100 - parseFloat(response.winnerRewardPercentage)*100).toFixed(2) + " %";
         document.getElementById("minimumPayout").innerText = response.defaultMinimumPayout + " BURST";
         document.getElementById("minPayoutsAtOnce").innerText = response.minPayoutsPerTransaction;
         document.getElementById("payoutTxFee").innerText = response.transactionFee + " BURST";
@@ -221,21 +221,21 @@ function getMiners() {
         return http.json();
     }).then(response => {
         let table = document.getElementById("miners");
-        table.innerHTML = "<tr><th>Miner</th><th>Current Deadline</th><th>Pending Balance</th><th>Total Capacity</th><th>Pool Percent</th><th>Donation Percent</th><th>Confirmed Deadlines</th><th>Pool Share</th><th>Software</th></tr>";
+        table.innerHTML = "<tr><th>Miner</th><th class=\"d-none d-sm-table-cell\">Current Deadline</th><th>Pending Balance</th><th>Total Capacity</th><th class=\"d-none d-sm-table-cell\">Pool Percent</th><th class=\"d-none d-sm-table-cell\">Donation Percent</th><th>Confirmed Deadlines</th><th>Pool Share</th><th class=\"d-none d-sm-table-cell\">Software</th></tr>";
         for (let i = 0; i < response.miners.length; i++) {
             let miner = response.miners[i];
             let currentRoundDeadline = miner.currentRoundBestDeadline == null ? "" : formatTime(miner.currentRoundBestDeadline);
             let minerAddress = formatMinerName(miner.explorer, miner.addressRS, miner.address, miner.name, true);
             let userAgent = escapeHtml(miner.userAgent == null? "Unknown" : miner.userAgent);
             table.innerHTML += "<tr><td>"+minerAddress+"</td>"
-              +"<td>"+currentRoundDeadline+"</td>"
+              +"<td class=\"d-none d-sm-table-cell\">"+currentRoundDeadline+"</td>"
               +"<td>"+miner.pendingBalance+"</td>"
               +"<td>"+formatCapacity(miner.totalCapacity)+" TiB</td>"
-              +"<td>"+miner.sharePercent+" %</td>"
-              +"<td>"+miner.donationPercent+" %</td>"
+              +"<td class=\"d-none d-sm-table-cell\">"+miner.sharePercent+" %</td>"
+              +"<td class=\"d-none d-sm-table-cell\">"+miner.donationPercent+" %</td>"
               +"<td>"+miner.nConf+" / " + maxSubmissions+"</td>"
               +"<td>"+(parseFloat(miner.share)*100).toFixed(3)+" %</td>"
-              +"<td>"+userAgent+"</td>"
+              +"<td class=\"d-none d-sm-table-cell\">"+userAgent+"</td>"
               +"</tr>";
         }
         document.getElementById("minerCount").innerText = response.miners.length;
@@ -250,6 +250,8 @@ function prepareMinerInfo(address) {
     let minerName = escapeHtml(document.getElementById("minerName"));
     let minerPending = escapeHtml(document.getElementById("minerPending"));
     let minerMinimumPayout = escapeHtml(document.getElementById("minerMinimumPayout"));
+    let minerSharePercent = escapeHtml(document.getElementById("minerSharePercent"));
+    let minerDonationPercent = escapeHtml(document.getElementById("minerDonationPercent"));
     let minerCapacity = escapeHtml(document.getElementById("minerCapacity"));
     let minerNConf = escapeHtml(document.getElementById("minerNConf"));
     let minerShare = escapeHtml(document.getElementById("minerShare"));
@@ -260,6 +262,8 @@ function prepareMinerInfo(address) {
     minerName.innerText = loading;
     minerPending.innerText = loading;
     minerMinimumPayout.innerText = loading;
+    minerSharePercent.innerText = loading;
+    minerDonationPercent.innerText = loading;
     minerCapacity.innerText = loading;
     minerNConf.innerText = loading;
     minerShare.innerText = loading;
@@ -276,6 +280,8 @@ function prepareMinerInfo(address) {
         minerName.innerText = minerNotFound;
         minerPending.innerText = minerNotFound;
         minerMinimumPayout.innerText = minerNotFound;
+        minerSharePercent.innerText = minerNotFound;
+        minerDonationPercent.innerText = minerNotFound;
         minerCapacity.innerText = minerNotFound;
         minerNConf.innerText = minerNotFound;
         minerShare.innerText = minerNotFound;
@@ -291,6 +297,8 @@ function prepareMinerInfo(address) {
     minerName.innerText = name;
     minerPending.innerText = miner.pendingBalance;
     minerMinimumPayout.innerText = miner.minimumPayout;
+    minerSharePercent.innerText = parseFloat(miner.sharePercent).toFixed(2) + "%";
+    minerDonationPercent.innerText = parseFloat(miner.donationPercent).toFixed(2) + "%";
     minerCapacity.innerText = formatCapacity(miner.totalCapacity);
     minerNConf.innerText = miner.nConf;
     minerShare.innerText = (parseFloat(miner.share)*100).toFixed(3) + "%";
