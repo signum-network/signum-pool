@@ -310,12 +310,12 @@ public class DbStorageService implements StorageService {
 
     @Override
     public PoolFeeRecipient getPoolFeeRecipient() {
-        return new PoolFeeRecipient(propertyService, new DbRecipientStore(POOL_STATE_FEE_RECIPIENT_BALANCE));
+        return new PoolFeeRecipient(propertyService, new DbRecipientStore(POOL_STATE_FEE_RECIPIENT_BALANCE), propertyService.getBurstAddress(Props.feeRecipient));
     }
 
     @Override
     public PoolFeeRecipient getPoolDonationRecipient() {
-        return new PoolFeeRecipient(propertyService, new DbRecipientStore(POOL_STATE_DONATION_RECIPIENT_BALANCE));
+        return new PoolFeeRecipient(propertyService, new DbRecipientStore(POOL_STATE_DONATION_RECIPIENT_BALANCE), propertyService.getBurstAddress(Props.donationRecipient));
     }
 
     private void setLastProcessedBlock(int block) {

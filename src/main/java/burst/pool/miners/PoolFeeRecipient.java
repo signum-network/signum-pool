@@ -9,10 +9,12 @@ import burst.pool.storage.persistent.MinerStore;
 public class PoolFeeRecipient implements Payable {
     private final PropertyService propertyService;
     private final MinerStore.FeeRecipientStore store;
+    private final BurstAddress address;
 
-    public PoolFeeRecipient(PropertyService propertyService, MinerStore.FeeRecipientStore store) {
+    public PoolFeeRecipient(PropertyService propertyService, MinerStore.FeeRecipientStore store, BurstAddress address) {
         this.propertyService = propertyService;
         this.store = store;
+        this.address = address;
     }
 
     @Override
@@ -43,6 +45,6 @@ public class PoolFeeRecipient implements Payable {
 
     @Override
     public BurstAddress getAddress() {
-        return propertyService.getBurstAddress(Props.feeRecipient);
+        return address;
     }
 }
