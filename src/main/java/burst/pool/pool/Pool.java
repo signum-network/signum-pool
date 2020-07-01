@@ -179,7 +179,7 @@ public class Pool {
                                         // Allows a miner to increase the minimum payout (less frequent payments)
                                         BurstValue newMinimumPayout = BurstValue.fromBurst(tokens.nextToken());
                                         if (newMinimumPayout.compareTo(BurstValue.fromBurst(propertyService.getFloat(Props.minimumMinimumPayout))) > 0) {
-                                            minerTracker.setMinerMinimumPayout(storageService, miner.getAddress(), newMinimumPayout);
+                                            miner.setMinimumPayout(newMinimumPayout);
                                             logger.info("Miner " + miner.getAddress().getID() + " new minimum payout " + newMinimumPayout.toFormattedString());
                                         }
                                     }
