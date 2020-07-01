@@ -183,6 +183,14 @@ public class Pool {
                                             logger.info("Miner " + miner.getAddress().getID() + " new minimum payout " + newMinimumPayout.toFormattedString());
                                         }
                                     }
+                                    else if(cmd.equals("donate") && tokens.hasMoreTokens()) {
+                                        // Allows a miner to change the amount to donate
+                                        int donationPercent = Integer.parseInt(tokens.nextToken());
+                                        if(donationPercent >= 0 && donationPercent <= 100) {
+                                            miner.setDonationPercent(donationPercent);
+                                            logger.info("Miner " + miner.getAddress().getID() + " donationPercent=" + donationPercent);
+                                        }
+                                    }
                                 }
                             }
                         }

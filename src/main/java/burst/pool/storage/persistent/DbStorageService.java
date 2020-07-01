@@ -296,10 +296,12 @@ public class DbStorageService implements StorageService {
                     .fetchOne(0, int.class) > 0) {
                 return getMiner(address);
             } else {
-                context.insertInto(MINERS, MINERS.ACCOUNT_ID, MINERS.SHARE_PERCENT, MINERS.PENDING_BALANCE, MINERS.ESTIMATED_CAPACITY, MINERS.SHARE, MINERS.MINIMUM_PAYOUT, MINERS.NAME, MINERS.USER_AGENT)
-                        .values(address.getBurstID().getSignedLongId(), 100 - (int)(100*propertyService.getFloat(Props.winnerRewardPercentage)),
-                            0L, 0d, 0d, BurstValue.fromBurst(propertyService.getFloat(Props.defaultMinimumPayout)).toPlanck().longValueExact(), "", "")
-                        .execute();
+                context.insertInto(MINERS, MINERS.ACCOUNT_ID, MINERS.SHARE_PERCENT, MINERS.DONATION_PERCENT, MINERS.PENDING_BALANCE, MINERS.ESTIMATED_CAPACITY, MINERS.SHARE, MINERS.MINIMUM_PAYOUT, MINERS.NAME, MINERS.USER_AGENT)
+                .values(address.getBurstID().getSignedLongId(),
+                        100 - (int)(100*propertyService.getFloat(Props.winnerRewardPercentage)),
+                        propertyService.getInt(Props.donationPercent),
+                        0L, 0d, 0d, BurstValue.fromBurst(propertyService.getFloat(Props.defaultMinimumPayout)).toPlanck().longValueExact(), "", "")
+                .execute();
                 recalculateMinerCount();
                 return getMiner(address);
             }
@@ -509,6 +511,24 @@ public class DbStorageService implements StorageService {
                     .where(MINERS.ACCOUNT_ID.eq(accountId))
                     .execute());
             storeInCache(MINERS, accountIdStr + "sharePrecent", sharePercent);
+        }
+
+        @Override
+        public int getDonationPercent() {
+            return getFromCacheOr(MINERS, accountIdStr + "donationPrecent", () -> useDslContext(context -> context.select(MINERS.SHARE_PERCENT)
+                    .from(MINERS)
+                    .where(MINERS.ACCOUNT_ID.eq(accountId))
+                    .fetchAny()
+                    .get(MINERS.DONATION_PERCENT)));
+        }
+
+        @Override
+        public void setDonationPercent(int donationPercent) {
+            useDslContextVoid(context -> context.update(MINERS)
+                    .set(MINERS.DONATION_PERCENT, donationPercent)
+                    .where(MINERS.ACCOUNT_ID.eq(accountId))
+                    .execute());
+            storeInCache(MINERS, accountIdStr + "donationPrecent", donationPercent);
         }
 
 

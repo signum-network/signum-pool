@@ -66,14 +66,16 @@ public class MinerTracker {
         BurstValue poolTake = reward.multiply(propertyService.getFloat(Props.poolFeePercentage));
         reward = reward.subtract(poolTake);
         PoolFeeRecipient poolFeeRecipient = transactionalStorageService.getPoolFeeRecipient();
-        poolFeeRecipient.increasePending(poolTake);
+        poolFeeRecipient.increasePending(poolTake, null);
+        
+        PoolFeeRecipient donationRecipient = transactionalStorageService.getPoolDonationRecipient();
 
         // Take winner share
         Miner winningMiner = getOrCreate(transactionalStorageService, winner);
         double winnerShare = 1.0d - winningMiner.getSharePercent()/100d;
         BurstValue winnerTake = reward.multiply(winnerShare);
         reward = reward.subtract(winnerTake);
-        winningMiner.increasePending(winnerTake);
+        winningMiner.increasePending(winnerTake, donationRecipient);
 
         List<Miner> miners = transactionalStorageService.getMiners();
 
@@ -82,7 +84,7 @@ public class MinerTracker {
         // Update each miner's pending
         AtomicReference<BurstValue> amountTaken = new AtomicReference<>(BurstValue.fromBurst(0));
         BurstValue poolReward = reward;
-        miners.forEach(miner -> amountTaken.updateAndGet(a -> a.add(miner.takeShare(poolReward))));
+        miners.forEach(miner -> amountTaken.updateAndGet(a -> a.add(miner.takeShare(poolReward, donationRecipient))));
 
         // Evenly share result. This makes sure that poolReward is taken, even if the amountTaken was greater than poolReward
         // Essentially prevents the pool from overpaying or underpaying. Even if it gave out too much to the fee recipient and reward recipient, it will now take the extra from the pending of miners.
@@ -91,7 +93,7 @@ public class MinerTracker {
             if (logger.isInfoEnabled()) {
                 logger.info("Amount remaining each is {}", amountRemainingEach.toPlanck());
             }
-            miners.forEach(miner -> miner.increasePending(amountRemainingEach));
+            miners.forEach(miner -> miner.increasePending(amountRemainingEach, donationRecipient));
         }
 
         logger.info("Finished processing winnings for block " + blockHeight + ". Reward ( + fees) is " + blockReward + ", pool fee is " + poolTake + ", forger take is " + winnerTake + ", miners took " + amountTaken.get());
@@ -143,6 +145,11 @@ public class MinerTracker {
         PoolFeeRecipient poolFeeRecipient = storageService.getPoolFeeRecipient();
         if (poolFeeRecipient.getMinimumPayout().compareTo(poolFeeRecipient.getPending()) <= 0) {
             payableMinersSet.add(poolFeeRecipient);
+        }
+        
+        PoolFeeRecipient poolDonationRecipient = storageService.getPoolDonationRecipient();
+        if (poolDonationRecipient.getMinimumPayout().compareTo(poolDonationRecipient.getPending()) <= 0) {
+            payableMinersSet.add(poolDonationRecipient);
         }
 
         if (payableMinersSet.size() < 2 || (payableMinersSet.size() < propertyService.getInt(Props.minPayoutsPerTransaction) && payableMinersSet.size() < storageService.getMinerCount())) {

@@ -63,7 +63,12 @@ public class Miner implements Payable {
     }
 
     @Override
-    public void increasePending(BurstValue delta) {
+    public void increasePending(BurstValue delta, Payable donationRecipient) {
+        if(donationRecipient != null) {
+            BurstValue donation = delta.multiply(store.getDonationPercent()/100d);
+            delta = delta.subtract(donation);
+            donationRecipient.increasePending(donation, null);
+        }
         store.setPendingBalance(store.getPendingBalance().add(delta));
     }
 
@@ -78,9 +83,9 @@ public class Miner implements Payable {
     }
 
     @Override
-    public BurstValue takeShare(BurstValue availableReward) {
+    public BurstValue takeShare(BurstValue availableReward, Payable donationRecipient) {
         BurstValue share = availableReward.multiply(store.getShare());
-        increasePending(share);
+        increasePending(share, donationRecipient);
         return share;
     }
 
@@ -115,9 +120,15 @@ public class Miner implements Payable {
     public int getSharePercent() {
         return store.getSharePercent();
     }
-    
     public void setSharePercent(int sharePercent) {
         store.setSharePercent(sharePercent);
+    }
+    
+    public int getDonationPercent() {
+        return store.getDonationPercent();
+    }
+    public void setDonationPercent(int donationPercent) {
+        store.setDonationPercent(donationPercent);
     }
 
     @Override

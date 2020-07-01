@@ -41,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Miners extends TableImpl<MinersRecord> {
 
-    private static final long serialVersionUID = -548187230;
+    private static final long serialVersionUID = 661471612;
 
     /**
      * The reference instance of <code>miners</code>
@@ -105,6 +105,11 @@ public class Miners extends TableImpl<MinersRecord> {
      * The column <code>miners.shared_capacity</code>.
      */
     public final TableField<MinersRecord, Double> SHARED_CAPACITY = createField("shared_capacity", org.jooq.impl.SQLDataType.DOUBLE.defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.DOUBLE)), this, "");
+
+    /**
+     * The column <code>miners.donation_percent</code>.
+     */
+    public final TableField<MinersRecord, Integer> DONATION_PERCENT = createField("donation_percent", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.field("1", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * Create a <code>miners</code> table reference

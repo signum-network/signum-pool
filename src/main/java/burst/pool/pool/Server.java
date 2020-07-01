@@ -144,9 +144,10 @@ public class Server extends NanoHTTPD {
             response.addProperty(Props.processLag.getName(), propertyService.getInt(Props.processLag));
             response.addProperty(Props.feeRecipient.getName(), propertyService.getBurstAddress(Props.feeRecipient).getID());
             response.addProperty(Props.feeRecipient.getName() + "RS", propertyService.getBurstAddress(Props.feeRecipient).getFullAddress());
+            response.addProperty(Props.poolFeePercentage.getName(), propertyService.getFloat(Props.poolFeePercentage));
             response.addProperty(Props.donationRecipient.getName(), propertyService.getBurstAddress(Props.donationRecipient).getID());
             response.addProperty(Props.donationRecipient.getName() + "RS", propertyService.getBurstAddress(Props.donationRecipient).getFullAddress());
-            response.addProperty(Props.poolFeePercentage.getName(), propertyService.getFloat(Props.poolFeePercentage));
+            response.addProperty(Props.donationPercent.getName(), propertyService.getInt(Props.donationPercent));
             response.addProperty(Props.winnerRewardPercentage.getName(), propertyService.getFloat(Props.winnerRewardPercentage));
             response.addProperty(Props.defaultMinimumPayout.getName(), propertyService.getFloat(Props.defaultMinimumPayout));
             response.addProperty(Props.minimumMinimumPayout.getName(), propertyService.getFloat(Props.minimumMinimumPayout));
@@ -286,6 +287,7 @@ public class Server extends NanoHTTPD {
         minerJson.addProperty("totalCapacity", miner.getTotalCapacity());
         minerJson.addProperty("sharedCapacity", miner.getSharedCapacity());
         minerJson.addProperty("sharePercent", miner.getSharePercent());
+        minerJson.addProperty("donationPercent", miner.getDonationPercent());
         minerJson.addProperty("nConf", miner.getNConf());
         minerJson.addProperty("share", miner.getShare());
         minerJson.addProperty("minimumPayout", miner.getMinimumPayout().toFormattedString());

@@ -22,6 +22,7 @@ public class Props {
 
     public static final Prop<BurstAddress> feeRecipient = new Prop<>("feeRecipient", null); // Must be non null
     public static final Prop<BurstAddress> donationRecipient = new Prop<>("donationRecipient", null); // Must be non null
+    public static final Prop<Integer> donationPercent = new Prop<>("donationPercent", 1); // Default is 1
     public static final Prop<Float> poolFeePercentage = new Prop<>("poolFeePercentage", 0f); // Must be 0-1
     public static final Prop<Float> winnerRewardPercentage = new Prop<>("winnerRewardPercentage", 0f); // Must be 0-1
 
@@ -88,6 +89,11 @@ public class Props {
         BurstAddress donationRecipient = propertyService.getBurstAddress(Props.donationRecipient);
         if (donationRecipient == null) {
             throw new IllegalArgumentException("Illegal donationRecipient (not set)");
+        }
+        
+        int donationPercent = propertyService.getInt(Props.donationPercent);
+        if (donationPercent < 0 || donationPercent > 100) {
+            throw new IllegalArgumentException("Illegal donationPercent: " + donationPercent + " (Must be 0-100)");
         }
 
         float poolFeePercentage = propertyService.getFloat(Props.poolFeePercentage);

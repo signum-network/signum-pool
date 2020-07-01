@@ -18,6 +18,9 @@ public interface MinerStore {
     int getSharePercent();
     void setSharePercent(int sharePercent);
     
+    int getDonationPercent();
+    void setDonationPercent(int donationPercent);
+    
     double getShare();
     void setShare(double share);
 

@@ -16,7 +16,7 @@ public class PoolFeeRecipient implements Payable {
     }
 
     @Override
-    public void increasePending(BurstValue delta) {
+    public void increasePending(BurstValue delta, Payable donationRecipient) {
         store.setPendingBalance(store.getPendingBalance()
                 .add(delta));
     }
@@ -32,7 +32,7 @@ public class PoolFeeRecipient implements Payable {
     }
 
     @Override
-    public BurstValue takeShare(BurstValue availableReward) {
+    public BurstValue takeShare(BurstValue availableReward, Payable donationRecipient) {
         return BurstValue.fromBurst(0);
     }
 
