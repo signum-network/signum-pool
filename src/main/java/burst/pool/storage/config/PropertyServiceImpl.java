@@ -26,7 +26,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     private <T> String valueOrDefault(Prop<T> prop) {
         String property = properties.getProperty(prop.getName());
-        if (property == null) property = prop.getDefaultValue().toString();
+        if (property == null) property = prop.getDefaultValue() == null ? null : prop.getDefaultValue().toString();
         return property;
     }
 
