@@ -515,7 +515,7 @@ public class DbStorageService implements StorageService {
 
         @Override
         public int getDonationPercent() {
-            return getFromCacheOr(MINERS, accountIdStr + "donationPrecent", () -> useDslContext(context -> context.select(MINERS.SHARE_PERCENT)
+            return getFromCacheOr(MINERS, accountIdStr + "donationPrecent", () -> useDslContext(context -> context.select(MINERS.DONATION_PERCENT)
                     .from(MINERS)
                     .where(MINERS.ACCOUNT_ID.eq(accountId))
                     .fetchAny()
