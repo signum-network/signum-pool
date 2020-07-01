@@ -93,8 +93,10 @@ function getPoolInfo() {
         document.getElementById("maxDeadline").innerText = response.maxDeadline;
         document.getElementById("processLag").innerText = response.processLag + " Blocks";
         document.getElementById("feeRecipient").innerText = response.feeRecipientRS;
-        document.getElementById("poolFee").innerText = (parseFloat(response.poolFeePercentage)*100).toFixed(3) + "%";
-        document.getElementById("winnerReward").innerText = (parseFloat(response.winnerRewardPercentage)*100).toFixed(3) + "%";
+        document.getElementById("poolFee").innerText = (parseFloat(response.poolFeePercentage)*100).toFixed(3) + " %";
+        document.getElementById("donationRecipient").innerText = response.donationRecipientRS;
+        document.getElementById("donationPercent").innerText = response.donationPercent + " %";
+        document.getElementById("poolShare").innerText = (100 - parseFloat(response.winnerRewardPercentage)*100).toFixed(3) + " %";
         document.getElementById("minimumPayout").innerText = response.defaultMinimumPayout + " BURST";
         document.getElementById("minPayoutsAtOnce").innerText = response.minPayoutsPerTransaction;
         document.getElementById("payoutTxFee").innerText = response.transactionFee + " BURST";
@@ -219,7 +221,7 @@ function getMiners() {
         return http.json();
     }).then(response => {
         let table = document.getElementById("miners");
-        table.innerHTML = "<tr><th>Miner</th><th>Current Deadline</th><th>Pending Balance</th><th>Total Capacity</th><th>Pool Percent</th><th>Confirmed Deadlines</th><th>Pool Share</th><th>Software</th></tr>";
+        table.innerHTML = "<tr><th>Miner</th><th>Current Deadline</th><th>Pending Balance</th><th>Total Capacity</th><th>Pool Percent</th><th>Donation Percent</th><th>Confirmed Deadlines</th><th>Pool Share</th><th>Software</th></tr>";
         for (let i = 0; i < response.miners.length; i++) {
             let miner = response.miners[i];
             let currentRoundDeadline = miner.currentRoundBestDeadline == null ? "" : formatTime(miner.currentRoundBestDeadline);
@@ -230,6 +232,7 @@ function getMiners() {
               +"<td>"+miner.pendingBalance+"</td>"
               +"<td>"+formatCapacity(miner.totalCapacity)+" TiB</td>"
               +"<td>"+miner.sharePercent+" %</td>"
+              +"<td>"+miner.donationPercent+" %</td>"
               +"<td>"+miner.nConf+" / " + maxSubmissions+"</td>"
               +"<td>"+(parseFloat(miner.share)*100).toFixed(3)+" %</td>"
               +"<td>"+userAgent+"</td>"
