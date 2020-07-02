@@ -1,4 +1,4 @@
-const noneFoundYet = "None found yet!";
+const noneFoundYet = "Not yet!";
 const loading = "Loading...";
 const minerNotFound = "Miner not found";
 
@@ -119,12 +119,12 @@ function getCurrentRound() {
         document.getElementById("netDiff").innerText = formatBaseTarget(response.miningInfo.baseTarget);
         if (response.bestDeadline != null) {
             document.getElementById("bestDeadline").innerText = formatTime(response.bestDeadline.deadline);
-            document.getElementById("bestMiner").innerHTML = formatMinerName(response.bestDeadline.explorer, response.bestDeadline.minerRS, response.bestDeadline.miner, null, true);
-            document.getElementById("bestNonce").innerText = response.bestDeadline.nonce;
+            document.getElementById("bestMiner").innerHTML = formatMinerName(response.bestDeadline.explorer, response.bestDeadline.minerRS, response.bestDeadline.miner, response.bestDeadline.name, true);
+            /* document.getElementById("bestNonce").innerText = response.bestDeadline.nonce;*/
         } else {
             document.getElementById("bestDeadline").innerText = noneFoundYet;
             document.getElementById("bestMiner").innerText = noneFoundYet;
-            document.getElementById("bestNonce").innerText = noneFoundYet;
+            /* document.getElementById("bestNonce").innerText = noneFoundYet; */
         }
     });
 }
@@ -134,13 +134,6 @@ function getAccountExplorerLink(explorer, id) {
 }
 
 function formatMinerName(explorer, rs, id, name, includeLink) {
-    if (name == null) {
-        miners.forEach(miner => {
-            if (miner.address === id || miner.addressRS === rs) {
-                name = miner.name;
-            }
-        })
-    }
     name = escapeHtml(name);
     rs = escapeHtml(rs);
     if (includeLink) {
@@ -221,7 +214,7 @@ function getMiners() {
         return http.json();
     }).then(response => {
         let table = document.getElementById("miners");
-        table.innerHTML = "<tr><th>Miner</th><th class=\"d-none d-sm-table-cell\">Current Deadline</th><th>Pending Balance</th><th>Total Capacity</th><th class=\"d-none d-sm-table-cell\">Share Model</th><th class=\"d-none d-sm-table-cell\">Donation Percent</th><th>Confirmed Deadlines</th><th>Pool Share</th><th class=\"d-none d-sm-table-cell\">Software</th></tr>";
+        table.innerHTML = "<tr><th>Miner</th><th class=\"d-none d-sm-table-cell\">Current Deadline</th><th>Pending Balance</th><th>Total Capacity</th><th class=\"d-none d-sm-table-cell\">Shared Capacity</th><th class=\"d-none d-sm-table-cell\">Share Model</th><th class=\"d-none d-sm-table-cell\">Donation Percent</th><th>Confirmed Deadlines</th><th>Pool Share</th><th class=\"d-none d-sm-table-cell\">Software</th></tr>";
         for (let i = 0; i < response.miners.length; i++) {
             let miner = response.miners[i];
             let currentRoundDeadline = miner.currentRoundBestDeadline == null ? "" : formatTime(miner.currentRoundBestDeadline);
@@ -231,6 +224,7 @@ function getMiners() {
               +"<td class=\"d-none d-sm-table-cell\">"+currentRoundDeadline+"</td>"
               +"<td>"+miner.pendingBalance+"</td>"
               +"<td>"+formatCapacity(miner.totalCapacity)+" TiB</td>"
+              +"<td class=\"d-none d-sm-table-cell\">"+formatCapacity(miner.sharedCapacity)+" TiB</td>"
               +"<td class=\"d-none d-sm-table-cell\">"+miner.sharePercent+" %</td>"
               +"<td class=\"d-none d-sm-table-cell\">"+miner.donationPercent+" %</td>"
               +"<td>"+miner.nConf+" / " + maxSubmissions+"</td>"
@@ -253,10 +247,10 @@ function prepareMinerInfo(address) {
     let minerSharePercent = escapeHtml(document.getElementById("minerSharePercent"));
     let minerDonationPercent = escapeHtml(document.getElementById("minerDonationPercent"));
     let minerCapacity = escapeHtml(document.getElementById("minerCapacity"));
+    let minerSharedCapacity = escapeHtml(document.getElementById("minerSharedCapacity"));
     let minerNConf = escapeHtml(document.getElementById("minerNConf"));
     let minerShare = escapeHtml(document.getElementById("minerShare"));
     let minerSoftware = escapeHtml(document.getElementById("minerSoftware"));
-    let setMinimumPayoutButton = $("#setMinimumPayoutButton");
     
     minerAddress.innerText = address;
     minerName.innerText = loading;
@@ -265,6 +259,7 @@ function prepareMinerInfo(address) {
     minerSharePercent.innerText = loading;
     minerDonationPercent.innerText = loading;
     minerCapacity.innerText = loading;
+    minerSharedCapacity.innerText = loading;
     minerNConf.innerText = loading;
     minerShare.innerText = loading;
     minerSoftware.innerText = loading;
@@ -283,27 +278,27 @@ function prepareMinerInfo(address) {
         minerSharePercent.innerText = minerNotFound;
         minerDonationPercent.innerText = minerNotFound;
         minerCapacity.innerText = minerNotFound;
+        minerSharedCapacity.innerText = minerNotFound;
         minerNConf.innerText = minerNotFound;
         minerShare.innerText = minerNotFound;
         minerSoftware.innerText = minerNotFound;
-        setMinimumPayoutButton.hide();
         return;
     }
 
     let name = escapeHtml(miner.name == null ? "Not Set" : miner.name);
-    let userAgent = escapeHtml(miner.userAgent == null ? "Unknown" : miner.userAgent);
+    let userAgent = miner.userAgent == null ? "Unknown" : miner.userAgent;
 
     minerAddress.innerText = miner.addressRS;
     minerName.innerText = name;
     minerPending.innerText = miner.pendingBalance;
     minerMinimumPayout.innerText = miner.minimumPayout;
-    minerSharePercent.innerText = parseFloat(miner.sharePercent).toFixed(2) + "%";
-    minerDonationPercent.innerText = parseFloat(miner.donationPercent).toFixed(2) + "%";
+    minerSharePercent.innerText = parseFloat(miner.sharePercent).toFixed(2) + " %";
+    minerDonationPercent.innerText = parseFloat(miner.donationPercent).toFixed(2) + " %";
     minerCapacity.innerText = formatCapacity(miner.totalCapacity);
+    minerSharedCapacity.innerText = formatCapacity(miner.sharedCapacity);
     minerNConf.innerText = miner.nConf;
-    minerShare.innerText = (parseFloat(miner.share)*100).toFixed(3) + "%";
+    minerShare.innerText = (parseFloat(miner.share)*100).toFixed(3) + " %";
     minerSoftware.innerText = userAgent;
-    setMinimumPayoutButton.show();
 }
 
 function formatCapacity(capacity) {
@@ -315,10 +310,6 @@ function onPageLoad() {
     $('#minerInfoModal').on('show.bs.modal', function (event) {
         prepareMinerInfo(document.getElementById("addressInput").value);
     });
-    $('#setMinimumPayoutModal').on('show.bs.modal', function (event) {
-        document.getElementById("setMinimumAddress").value = escapeHtml(document.getElementById("minerAddress").innerText);
-        $("#setMinimumResult").hide();
-    });
     document.getElementById("addressInput").addEventListener("keyup", function (event) {
         if (event.keyCode === 13) {
             event.preventDefault();
@@ -328,20 +319,6 @@ function onPageLoad() {
     document.getElementById("icon").onerror = function () {
         this.style.display = "none";
     }
-}
-
-function generateSetMinimumMessage() {
-    let address = escapeHtml(document.getElementById("setMinimumAddress").value);
-    let newPayout = escapeHtml(document.getElementById("setMinimumAmount").value);
-    if (document.getElementById("setMinimumAmount").value === "") {
-        alert("Please set new minimum payout");
-        return;
-    }
-    fetch("/api/getSetMinimumMessage?address="+address+"&newPayout="+newPayout).then(http => {
-        return http.json();
-    }).then(response => {
-        document.getElementById("setMinimumMessage").value = escapeHtml(response.message);
-    });
 }
 
 function getWonBlocks() {
@@ -380,30 +357,6 @@ function getCookie(name) {
         }
     }
     return "";
-}
-
-function setMinimumPayout() {
-    var message = escapeHtml(document.getElementById("setMinimumMessage").value);
-    var publicKey = escapeHtml(document.getElementById("setMinimumPublicKey").value);
-    var signature = escapeHtml(document.getElementById("setMinimumSignature").value);
-    if (message === "") {
-        alert("Please generate message");
-        return;
-    }
-    if (publicKey === "") {
-        alert("Please enter public key");
-        return;
-    }
-    if (signature === "") {
-        alert("Please enter signature");
-        return;
-    }
-    fetch("/api/setMinerMinimumPayout?assignment="+message+"&publicKey="+publicKey+"&signature="+signature, { method: "POST" }).then(http => {
-        return http.json();
-    }).then(response => {
-        document.getElementById("setMinimumResultText").innerText = response;
-        $("#setMinimumResult").show();
-    });
 }
 
 getPoolInfo();

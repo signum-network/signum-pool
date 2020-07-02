@@ -47,7 +47,7 @@ public class Miner implements Payable {
         // Calculate estimated capacity
         try {
             store.setSharedCapacity(minerMaths.estimatedEffectivePlotSize(deadlines.size(), deadlineCount.get(), hitSumShared.get()));
-            store.setTotalCapacity(minerMaths.estimatedEffectivePlotSize(deadlines.size(), deadlineCount.get(), hitSum.get()));
+            store.setTotalCapacity(minerMaths.estimatedTotalPlotSize(deadlines.size(), hitSum.get()));
         } catch (ArithmeticException ignored) {
         }
     }

@@ -378,6 +378,10 @@ public class Pool {
             bestDeadlineJson.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
             bestDeadlineJson.addProperty("miner", bestSubmission.get().getMiner().getID());
             bestDeadlineJson.addProperty("minerRS", bestSubmission.get().getMiner().getFullAddress());
+            Miner miner = storageService.getMiner(bestSubmission.get().getMiner());
+            if(miner != null && !Objects.equals(miner.getName(), "")) {
+                bestDeadlineJson.addProperty("name", miner.getName());
+            }
             bestDeadlineJson.addProperty("nonce", bestSubmission.get().getNonce());
             bestDeadlineJson.addProperty("deadline", deadline);
             jsonObject.add("bestDeadline", bestDeadlineJson);
