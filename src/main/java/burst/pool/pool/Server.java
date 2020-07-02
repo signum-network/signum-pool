@@ -113,6 +113,8 @@ public class Server extends NanoHTTPD {
     }
 
     private String handleApiCall(IHTTPSession session, Map<String, String> params) {
+        int maxNConf = propertyService.getInt(Props.processLag) + propertyService.getInt(Props.nAvg);
+        
         if (session.getUri().startsWith("/api/getMiners")) {
             JsonArray minersJson = new JsonArray();
             AtomicReference<Double> poolCapacity = new AtomicReference<>(0d);
@@ -121,7 +123,7 @@ public class Server extends NanoHTTPD {
                     .sorted(Comparator.comparing(Miner::getSharedCapacity).reversed())
                     .forEach(miner -> {
                         poolCapacity.updateAndGet(v -> v + miner.getTotalCapacity());
-                        minersJson.add(minerToJson(miner));
+                        minersJson.add(minerToJson(miner, maxNConf));
                     });
             JsonObject jsonObject = new JsonObject();
             jsonObject.add("miners", minersJson);
@@ -130,7 +132,7 @@ public class Server extends NanoHTTPD {
             return jsonObject.toString();
         } else if (session.getUri().startsWith("/api/getMiner/")) {
             BurstAddress minerAddress = BurstAddress.fromEither(session.getUri().substring(14));
-            return minerToJson(storageService.getMiner(minerAddress)).toString();
+            return minerToJson(storageService.getMiner(minerAddress), maxNConf).toString();
         } else if (session.getUri().startsWith("/api/getConfig")) {
             JsonObject response = new JsonObject();
             response.addProperty("version", Constants.VERSION);
@@ -163,7 +165,7 @@ public class Server extends NanoHTTPD {
                     .sorted((m1, m2) -> Double.compare(m2.getShare(), m1.getShare())) // Reverse order - highest to lowest
                     .limit(10)
                     .forEach(miner -> {
-                        topMiners.add(minerToJson(miner));
+                        topMiners.add(minerToJson(miner, maxNConf));
                         othersShare.updateAndGet(share -> share - miner.getShare());
                     });
             JsonObject response = new JsonObject();
@@ -277,7 +279,7 @@ public class Server extends NanoHTTPD {
         return r;
     }
 
-    private JsonElement minerToJson(Miner miner) {
+    private JsonElement minerToJson(Miner miner, int maxNConf) {
         if (miner == null) return JsonNull.INSTANCE;
         JsonObject minerJson = new JsonObject();
         minerJson.addProperty("address", miner.getAddress().getID());
@@ -288,7 +290,7 @@ public class Server extends NanoHTTPD {
         minerJson.addProperty("sharedCapacity", miner.getSharedCapacity());
         minerJson.addProperty("sharePercent", miner.getSharePercent());
         minerJson.addProperty("donationPercent", miner.getDonationPercent());
-        minerJson.addProperty("nConf", miner.getNConf());
+        minerJson.addProperty("nConf", Math.min(maxNConf, miner.getNConf()));
         minerJson.addProperty("share", miner.getShare());
         minerJson.addProperty("minimumPayout", miner.getMinimumPayout().toFormattedString());
         BigInteger bestDeadline = miner.getBestDeadline(getCurrentHeight());
