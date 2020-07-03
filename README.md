@@ -1,10 +1,13 @@
-# Burstcoin Pool
+# Burstcoin Pool with Multi-Share Support
 
-[![Build Status](https://travis-ci.com/burst-apps-team/burstpool.svg?branch=master)](https://travis-ci.com/burst-apps-team/burstpool)
+A Burstcoin Pool where miners can choose their *Share Model* where their capacity can be shared from 0 % (solo mining) up to 100 %.
 
-A Burstcoin Pool
+Miners can configure not only the share model but also the percent they want to donate and the minimum payout.
+Configuration changes are accomplished by sending text messages to the pool.
 
-Built by [Harry1453](https://github.com/harry1453) (Donation address [BURST-W5YR-ZZQC-KUBJ-G78KB](https://explorer.burstcoin.network/?action=account&account=16484518239061020631))
+Check the [testnet version demo](http://nivbox.co.uk:9000).
+
+Originally by [Harry1453](https://github.com/harry1453) (Donation address [BURST-W5YR-ZZQC-KUBJ-G78KB](https://explorer.burstcoin.network/?action=account&account=16484518239061020631)), updated by [jjos](https://github.com/jjos2372).
 
 ## Requirements
 
