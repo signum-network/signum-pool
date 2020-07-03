@@ -41,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class WonBlocks extends TableImpl<WonBlocksRecord> {
 
-    private static final long serialVersionUID = -766117034;
+    private static final long serialVersionUID = 1031045256;
 
     /**
      * The reference instance of <code>won_blocks</code>
@@ -85,6 +85,11 @@ public class WonBlocks extends TableImpl<WonBlocksRecord> {
      * The column <code>won_blocks.full_reward</code>.
      */
     public final TableField<WonBlocksRecord, Long> FULL_REWARD = createField("full_reward", org.jooq.impl.SQLDataType.BIGINT.defaultValue(org.jooq.impl.DSL.field("NULL", org.jooq.impl.SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>won_blocks.pool_share</code>.
+     */
+    public final TableField<WonBlocksRecord, Long> POOL_SHARE = createField("pool_share", org.jooq.impl.SQLDataType.BIGINT.defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.BIGINT)), this, "");
 
     /**
      * Create a <code>won_blocks</code> table reference

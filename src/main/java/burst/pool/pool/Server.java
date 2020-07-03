@@ -197,6 +197,7 @@ public class Server extends NanoHTTPD {
                             wonBlockJson.addProperty("name", miner.getName());
                         }
                         wonBlockJson.addProperty("reward", wonBlock.getFullReward().toFormattedString());
+                        wonBlockJson.addProperty("poolShare", wonBlock.getPoolShare().toFormattedString());
                         wonBlocks.add(wonBlockJson);
                     });
             JsonObject response = new JsonObject();

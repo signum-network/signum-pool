@@ -327,14 +327,15 @@ function getWonBlocks() {
     }).then(response => {
         let wonBlocks = response.wonBlocks;
         let table = document.getElementById("wonBlocksTable");
-        table.innerHTML = "<tr><th>Height</th><th>ID</th><th>Winner</th><th>Reward + Fees</th></tr>";
+        table.innerHTML = "<tr><th>Height</th><th>ID</th><th>Winner</th><th>Reward + Fees</th><th>Pool Share</th></tr>";
         for (let i = 0; i < wonBlocks.length; i++) {
             let wonBlock = wonBlocks[i];
             let height = escapeHtml(wonBlock.height);
             let id = escapeHtml(wonBlock.id);
             let reward = escapeHtml(wonBlock.reward);
+            let poolShare = escapeHtml(wonBlock.poolShare);
             let minerName = formatMinerName(wonBlock.explorer, wonBlock.generatorRS, wonBlock.generator, wonBlock.name, true);
-            table.innerHTML += "<tr><td>"+height+"</td><td>"+id+"</td><td>"+minerName+"</td><td>"+reward+"</td></tr>";
+            table.innerHTML += "<tr><td>"+height+"</td><td>"+id+"</td><td>"+minerName+"</td><td>"+reward+"</td><td>"+poolShare+"</td></tr>";
         }
     });
 }

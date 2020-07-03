@@ -58,8 +58,6 @@ public class MinerTracker {
     public void onBlockWon(StorageService transactionalStorageService, long blockHeight, BurstID blockId, BigInteger nonce, BurstAddress winner, BurstValue blockReward) {
         logger.info("Block won! Block height: " + blockHeight + ", forger: " + winner.getFullAddress());
 
-        transactionalStorageService.addWonBlock(new WonBlock((int) blockHeight, blockId, winner, nonce, blockReward));
-
         BurstValue reward = blockReward;
 
         // Take pool fee
@@ -74,8 +72,10 @@ public class MinerTracker {
         Miner winningMiner = getOrCreate(transactionalStorageService, winner);
         double winnerShare = 1.0d - winningMiner.getSharePercent()/100d;
         BurstValue winnerTake = reward.multiply(winnerShare);
-        reward = reward.subtract(winnerTake);
         winningMiner.increasePending(winnerTake, donationRecipient);
+        reward = reward.subtract(winnerTake);
+        
+        transactionalStorageService.addWonBlock(new WonBlock((int) blockHeight, blockId, winner, nonce, blockReward, reward));
 
         List<Miner> miners = transactionalStorageService.getMiners();
 

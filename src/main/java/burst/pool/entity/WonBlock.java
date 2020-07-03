@@ -12,13 +12,15 @@ public class WonBlock {
     private final BurstAddress generatorId;
     private final BigInteger nonce;
     private final BurstValue fullReward;
+    private final BurstValue poolShare;
 
-    public WonBlock(int blockHeight, BurstID blockId, BurstAddress generatorId, BigInteger nonce, BurstValue fullReward) {
+    public WonBlock(int blockHeight, BurstID blockId, BurstAddress generatorId, BigInteger nonce, BurstValue fullReward, BurstValue poolShare) {
         this.blockHeight = blockHeight;
         this.blockId = blockId;
         this.generatorId = generatorId;
         this.nonce = nonce;
         this.fullReward = fullReward;
+        this.poolShare = poolShare;
     }
 
     public int getBlockHeight() {
@@ -39,5 +41,9 @@ public class WonBlock {
 
     public BurstValue getFullReward() {
         return fullReward;
+    }
+    
+    public BurstValue getPoolShare() {
+        return poolShare;
     }
 }
