@@ -185,12 +185,17 @@ public class Server extends NanoHTTPD {
             JsonArray wonBlocks = new JsonArray();
             storageService.getWonBlocks(100)
                     .forEach(wonBlock -> {
+                        
                         JsonObject wonBlockJson = new JsonObject();
                         wonBlockJson.addProperty("height", wonBlock.getBlockHeight());
                         wonBlockJson.addProperty("id", wonBlock.getBlockId().getID());
                         wonBlockJson.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
                         wonBlockJson.addProperty("generator", wonBlock.getGeneratorId().getID());
                         wonBlockJson.addProperty("generatorRS", wonBlock.getGeneratorId().getFullAddress());
+                        Miner miner = storageService.getMiner(wonBlock.getGeneratorId());
+                        if (miner!= null && !Objects.equals(miner.getName(), "")) {
+                            wonBlockJson.addProperty("name", miner.getName());
+                        }
                         wonBlockJson.addProperty("reward", wonBlock.getFullReward().toFormattedString());
                         wonBlocks.add(wonBlockJson);
                     });

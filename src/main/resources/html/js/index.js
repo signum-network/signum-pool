@@ -333,7 +333,7 @@ function getWonBlocks() {
             let height = escapeHtml(wonBlock.height);
             let id = escapeHtml(wonBlock.id);
             let reward = escapeHtml(wonBlock.reward);
-            let minerName = formatMinerName(wonBlock.explorer, wonBlock.generatorRS, wonBlock.generator, null, true);
+            let minerName = formatMinerName(wonBlock.explorer, wonBlock.generatorRS, wonBlock.generator, wonBlock.name, true);
             table.innerHTML += "<tr><td>"+height+"</td><td>"+id+"</td><td>"+minerName+"</td><td>"+reward+"</td></tr>";
         }
     });
