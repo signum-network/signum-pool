@@ -32,6 +32,9 @@
                 <a class="nav-link" href="#" data-toggle="modal" data-target="#infoModal">HOW TO JOIN</a>
             </li>
             <li class="nav-item active">
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#confModal">CONFIGURE</a>
+            </li>
+            <li class="nav-item active">
                 <a class="nav-link" href="{EXPLORER}" target="_blank">EXPLORER</a>
             </li>
             <li class="nav-item active">
@@ -305,6 +308,44 @@
             </div>
             <div class="modal-body">
                 {INFO}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="confModal" tabindex="-1" role="dialog" aria-labelledby="helpTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confTitle">CONFIGURE</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>If you have already joined the pool, you can further configure it by sending text messages from your miner account to the pool account:<br>
+                <code><b>{POOL_ACCOUNT}</b></code></p>
+                   
+                <h5 class="modal-title">Share Model</h5>
+                <p>Change your share model to 80 % by sending the following text message (any number from 0 up to 100 is accepted):<br>
+                <code>share 80</code><br>
+                </p>
+
+                <h5 class="modal-title">Donation Percent</h5>
+                <p>Change your donation percent to 5 % by sending the following text message (any number from 0 up to 100 is accepted):<br>
+                <code>donate 5</code><br>
+                </p>
+
+                <h5 class="modal-title">Minimum Payout</h5>
+                <p>Change your minimum payout to 100 BURST by sending the following text message (any number higher than {MIN_PAYOUT} is accepted):<br>
+                <code>pay 100</code><br>
+                </p>
+                
+                <p>You can also configure multiple parameters with a single message, for instance:<br>
+                <code>share 80 donate 5 pay 100</code><br>
+                </p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>

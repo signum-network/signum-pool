@@ -266,6 +266,8 @@ public class Server extends NanoHTTPD {
                     .replace("{SOFTWARE}", propertyService.getString(Props.softwarePackagesAddress))
                     .replace("{DISCORD}", propertyService.getString(Props.siteDiscordLink))
                     .replace("{INFO}", propertyService.getString(Props.siteInfo))
+                    .replace("{POOL_ACCOUNT}", burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase)).getFullAddress())
+                    .replace("{MIN_PAYOUT}", BurstValue.fromBurst(propertyService.getFloat(Props.minimumMinimumPayout)).toUnformattedString())
                     .replace("{FAUCET}", propertyService.getString(Props.siteFaucetURL))
                     .replace("{EXPLORER}", propertyService.getString(Props.siteExplorerURL));
         }
