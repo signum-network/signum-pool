@@ -78,7 +78,7 @@ function formatTime(secs) {
 }
 
 function formatBaseTarget(baseTarget) {
-    return (genesisBaseTarget / baseTarget).toFixed(3) + " TiB"
+    return formatCapacity(genesisBaseTarget / baseTarget);
 }
 
 function getPoolInfo() {
@@ -223,8 +223,8 @@ function getMiners() {
             table.innerHTML += "<tr><td>"+minerAddress+"</td>"
               +"<td class=\"d-none d-sm-table-cell\">"+currentRoundDeadline+"</td>"
               +"<td>"+miner.pendingBalance+"</td>"
-              +"<td>"+formatCapacity(miner.totalCapacity)+" TiB</td>"
-              +"<td class=\"d-none d-sm-table-cell\">"+formatCapacity(miner.sharedCapacity)+" TiB</td>"
+              +"<td>"+formatCapacity(miner.totalCapacity)+"</td>"
+              +"<td class=\"d-none d-sm-table-cell\">"+formatCapacity(miner.sharedCapacity)+"</td>"
               +"<td class=\"d-none d-sm-table-cell\">"+miner.sharePercent+" %</td>"
               +"<td class=\"d-none d-sm-table-cell\">"+miner.donationPercent+" %</td>"
               +"<td>"+miner.nConf+" / " + maxSubmissions+"</td>"
@@ -233,7 +233,7 @@ function getMiners() {
               +"</tr>";
         }
         document.getElementById("minerCount").innerText = response.miners.length;
-        document.getElementById("poolCapacity").innerText = formatCapacity(response.poolCapacity) + " TiB";
+        document.getElementById("poolCapacity").innerText = formatCapacity(response.poolCapacity);
         miners = response.miners;
     });
 }
@@ -302,7 +302,10 @@ function prepareMinerInfo(address) {
 }
 
 function formatCapacity(capacity) {
-    return parseFloat(capacity).toFixed(3);
+    let capacityFloat = parseFloat(capacity);
+    if (capacityFloat > 1024)
+      return (capacityFloat/1024).toFixed(3) + " PiB";
+    return parseFloat(capacity).toFixed(3) + " TiB";
 }
 
 function onPageLoad() {
@@ -327,7 +330,7 @@ function getWonBlocks() {
     }).then(response => {
         let wonBlocks = response.wonBlocks;
         let table = document.getElementById("wonBlocksTable");
-        table.innerHTML = "<tr><th>Height</th><th>ID</th><th>Winner</th><th>Reward + Fees</th><th>Pool Share</th></tr>";
+        table.innerHTML = "<tr><th>Height</th><th class=\"d-none d-sm-table-cell\">ID</th><th>Winner</th><th>Reward + Fees</th><th class=\"d-none d-sm-table-cell\">Pool Share</th></tr>";
         for (let i = 0; i < wonBlocks.length; i++) {
             let wonBlock = wonBlocks[i];
             let height = escapeHtml(wonBlock.height);
@@ -335,7 +338,7 @@ function getWonBlocks() {
             let reward = escapeHtml(wonBlock.reward);
             let poolShare = escapeHtml(wonBlock.poolShare);
             let minerName = formatMinerName(wonBlock.explorer, wonBlock.generatorRS, wonBlock.generator, wonBlock.name, true);
-            table.innerHTML += "<tr><td>"+height+"</td><td>"+id+"</td><td>"+minerName+"</td><td>"+reward+"</td><td>"+poolShare+"</td></tr>";
+            table.innerHTML += "<tr><td>"+height+"</td><td class=\"d-none d-sm-table-cell\">"+id+"</td><td>"+minerName+"</td><td>"+reward+"</td><td class=\"d-none d-sm-table-cell\">"+poolShare+"</td></tr>";
         }
     });
 }

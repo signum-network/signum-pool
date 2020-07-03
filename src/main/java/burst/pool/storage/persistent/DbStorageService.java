@@ -403,7 +403,7 @@ public class DbStorageService implements StorageService {
         return useDslContext(context -> context.selectFrom(WON_BLOCKS)
                 .orderBy(WON_BLOCKS.BLOCK_HEIGHT.desc())
                 .limit(limit)
-                .fetch(record -> new WonBlock(record.getBlockHeight().intValue(), BurstID.fromLong(record.getBlockId()), BurstAddress.fromId(BurstID.fromLong(record.getGeneratorId())), new BigInteger(record.getNonce()), BurstValue.fromPlanck(record.getFullReward()), BurstValue.fromPlanck(record.getPoolShare()))));
+                .fetch(record -> new WonBlock(record.getBlockHeight().intValue(), BurstID.fromLong(record.getBlockId()), BurstAddress.fromId(BurstID.fromLong(record.getGeneratorId())), new BigInteger(record.getNonce()), BurstValue.fromPlanck(record.getFullReward()), BurstValue.fromPlanck(record.getPoolShare() >=0 ? record.getPoolShare() : record.getFullReward()))));
     }
 
     @Override
