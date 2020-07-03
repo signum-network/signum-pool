@@ -394,7 +394,7 @@ public class DbStorageService implements StorageService {
     public void addWonBlock(WonBlock wonBlock) {
         // Won blocks are not cached. TODO cache!
         useDslContextVoid(context -> context.insertInto(WON_BLOCKS, WON_BLOCKS.BLOCK_HEIGHT, WON_BLOCKS.BLOCK_ID, WON_BLOCKS.GENERATOR_ID, WON_BLOCKS.NONCE, WON_BLOCKS.FULL_REWARD, WON_BLOCKS.POOL_SHARE)
-            .values((long) wonBlock.getBlockHeight(), wonBlock.getBlockId().getSignedLongId(), wonBlock.getGeneratorId().getBurstID().getSignedLongId(), wonBlock.getNonce().toString(), wonBlock.getFullReward().toPlanck().longValue(), wonBlock.getPoolShare().toBurst().longValue())
+            .values((long) wonBlock.getBlockHeight(), wonBlock.getBlockId().getSignedLongId(), wonBlock.getGeneratorId().getBurstID().getSignedLongId(), wonBlock.getNonce().toString(), wonBlock.getFullReward().toPlanck().longValue(), wonBlock.getPoolShare().toPlanck().longValue())
             .execute()); 
     }
 
