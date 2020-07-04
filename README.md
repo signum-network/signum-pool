@@ -5,6 +5,9 @@ A Burstcoin Pool where miners can choose their *Share Model* where their capacit
 Please find below a Sankey flow schematic for the block rewards sharing among miners when a miner with 80% sharing forges a block (and 4% mining power on the pool):
 ![Pool Sankey Diagram](/Sankey.png)
 
+The amount each miner contribute to the pool share is also a function of the shared model. In the following image, the schematics for a case where four different miners with 100 TiB capacity have different share models:
+![Pool Sankey Miners Diagram](/Sankey-Miners.png)
+
 Miners can configure not only the share model but also the percent they want to donate and the minimum payout.
 Configuration changes are accomplished by sending text messages to the pool.
 
