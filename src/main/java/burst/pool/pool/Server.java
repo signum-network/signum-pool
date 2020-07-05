@@ -8,7 +8,6 @@ import burst.kit.entity.response.http.MiningInfoResponse;
 import burst.kit.util.BurstKitUtils;
 import burst.pool.Constants;
 import burst.pool.miners.Miner;
-import burst.pool.miners.MinerTracker;
 import burst.pool.storage.config.PropertyService;
 import burst.pool.storage.config.Props;
 import burst.pool.storage.persistent.StorageService;
@@ -38,17 +37,15 @@ public class Server extends NanoHTTPD {
     private final StorageService storageService;
     private final PropertyService propertyService;
     private final Pool pool;
-    private final MinerTracker minerTracker;
     private final Gson gson = BurstKitUtils.buildGson().create();
     private final BurstCrypto burstCrypto = BurstCrypto.getInstance();
     private final Cache<String, String> fileCache;
 
-    public Server(StorageService storageService, PropertyService propertyService, Pool pool, MinerTracker minerTracker) {
+    public Server(StorageService storageService, PropertyService propertyService, Pool pool) {
         super(propertyService.getInt(Props.serverPort));
         this.storageService = storageService;
         this.propertyService = propertyService;
         this.pool = pool;
-        this.minerTracker = minerTracker;
         this.fileCache = CacheManagerBuilder.newCacheManagerBuilder()
                 .withCache("file", CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, String.class, ResourcePoolsBuilder.heap(1024*1024)))
                 .build(true)
@@ -154,7 +151,7 @@ public class Server extends NanoHTTPD {
             response.addProperty(Props.defaultMinimumPayout.getName(), propertyService.getFloat(Props.defaultMinimumPayout));
             response.addProperty(Props.minimumMinimumPayout.getName(), propertyService.getFloat(Props.minimumMinimumPayout));
             response.addProperty(Props.minPayoutsPerTransaction.getName(), propertyService.getInt(Props.minPayoutsPerTransaction));
-            response.addProperty(Props.transactionFee.getName(), propertyService.getFloat(Props.transactionFee));
+            response.addProperty("transactionFee", pool.getTransactionFee().toUnformattedString());
             return response.toString();
         } else if (session.getUri().startsWith("/api/getCurrentRound")) {
             return pool.getCurrentRoundInfo(gson).toString();

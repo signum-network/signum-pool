@@ -4,6 +4,7 @@ import burst.kit.crypto.BurstCrypto;
 import burst.kit.entity.BurstAddress;
 import burst.kit.entity.BurstValue;
 import burst.kit.entity.response.Block;
+import burst.kit.entity.response.FeeSuggestion;
 import burst.kit.entity.response.MiningInfo;
 import burst.kit.entity.response.Transaction;
 import burst.kit.entity.response.TransactionAppendix;
@@ -55,6 +56,7 @@ public class Pool {
     private final AtomicReference<Submission> bestSubmission = new AtomicReference<>();
     private final AtomicReference<BigInteger> bestDeadline = new AtomicReference<>();
     private final AtomicReference<MiningInfo> miningInfo = new AtomicReference<>();
+    private final AtomicReference<BurstValue> transactionFee = new AtomicReference<>();
     private final Set<BurstAddress> myRewardRecipients = new HashSet<>();
 
     public Pool(BurstNodeService nodeService, StorageService storageService, PropertyService propertyService, MinerTracker minerTracker) {
@@ -62,6 +64,7 @@ public class Pool {
         this.minerTracker = minerTracker;
         this.propertyService = propertyService;
         this.nodeService = nodeService;
+        this.transactionFee.set(BurstValue.fromBurst(0.1));
         disposables.add(refreshMiningInfoThread());
         disposables.add(processBlocksThread());
         resetRound(null);
@@ -132,13 +135,16 @@ public class Pool {
                 }
 
                 minerTracker.setCurrentlyProcessingBlock(true);
+                
+                FeeSuggestion feeSuggestion = nodeService.suggestFee().blockingGet();
+                this.transactionFee.set(feeSuggestion.getStandardFee());
 
                 List<StoredSubmission> storedSubmissions = transactionalStorageService.getBestSubmissionsForBlock(transactionalStorageService.getLastProcessedBlock() + 1);
                 if (storedSubmissions == null || storedSubmissions.isEmpty()) {
                     onProcessedBlock(transactionalStorageService, false);
                     return;
                 }
-
+                
                 Block block = nodeService.getBlock(transactionalStorageService.getLastProcessedBlock() + 1).blockingGet();
                 
                 // Check for commands from miners
@@ -246,7 +252,7 @@ public class Pool {
         minerTracker.setCurrentlyProcessingBlock(false);
         processBlockSemaphore.release();
         if (actuallyProcessed) {
-            minerTracker.payoutIfNeeded(storageService);
+            minerTracker.payoutIfNeeded(storageService, transactionFee.get());
         }
     }
 
@@ -400,5 +406,9 @@ public class Pool {
 
     public BurstAddress getAccount() {
         return burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase));
+    }
+    
+    public BurstValue getTransactionFee() {
+        return transactionFee.get();
     }
 }

@@ -40,7 +40,7 @@ public class Launcher {
         }
         MinerTracker minerTracker = new MinerTracker(nodeService, propertyService);
         Pool pool = new Pool(nodeService, storageService, propertyService, minerTracker);
-        Server server = new Server(storageService, propertyService, pool, minerTracker);
+        Server server = new Server(storageService, propertyService, pool);
         try {
             server.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
         } catch (IOException e) {
