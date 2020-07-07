@@ -4,10 +4,10 @@ A Burstcoin Pool where miners can choose their *Share Model*.
 Each miner can have a different share model, ranging from 0 % (solo mining) up to 100 %.
 Further, miners can change their share model at any moment.
 
-As an example, let's consider a miner with 100 TiB of capacity, and that this miner has chosen a share model of 80 %.
-So, this miner actually has 20 % of his capacity *solo mining* and 80 % going to the pool.
-Let's also assume the pool has a total shared capacity (the sum of all shared capacities of all miners) of 1600 TiB.
-Since our miner is sharing 80 TiB he also has 5 % of the pool share (80/1600).
+As an example, let's consider a miner with 10 TiB of capacity, and that this miner has chosen a share model of 80 %.
+So, this miner actually has 20 % of his capacity *solo mining* (2 TiB) and 80 % going to the pool (8 TiB).
+Let's also assume the pool has a total shared capacity (the sum of all shared capacities of all miners) of 160 TiB.
+Since our miner is sharing 8 TiB he also has 5 % of the pool share (8/160).
 Now, when this miner forges a block, the block reward (assumed to be 100 BURST here) would be distributed as follows:
 ![Pool Sankey Diagram](/Sankey.png)
 
