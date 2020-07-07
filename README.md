@@ -1,6 +1,8 @@
 # Burstcoin Pool with Multi-Share Support
 
-A Burstcoin Pool where miners can choose their *Share Model* where their capacity can be shared from 0 % (solo mining) up to 100 %.
+A Burstcoin Pool where miners can choose their *Share Model*.
+Each miner can have a different share model, ranging from 0 % (solo mining) up to 100 %.
+Further, miners can change their share model at any moment.
 
 Please find below a Sankey flow schematic for the block rewards sharing among miners when a miner with 80% sharing forges a block (and has 4% of the shared mining power on the pool):
 ![Pool Sankey Diagram](/Sankey.png)
