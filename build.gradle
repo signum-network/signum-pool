@@ -13,6 +13,8 @@ buildscript {
 
 plugins {
     id "org.flywaydb.flyway" version "6.0.0-beta"
+    id "distribution"
+    id 'com.palantir.git-version' version '0.12.2'
 }
 
 repositories {
@@ -89,10 +91,31 @@ generateBurstPoolJooqSchemaSource.dependsOn flywayMigrate
 generateBurstPoolJooqSchemaSource.onlyIf {System.getProperty("generateSchema") == "true"}
 flywayMigrate.onlyIf {System.getProperty("generateSchema") == "true"}
 
+def details = versionDetails()
+
+task versionProp()  {
+    doFirst {
+        new File(sourceSets.main.output.resourcesDir, "/version.properties").text = "version:${details.lastTag}"
+    }
+}
+
 task buildJar(dependsOn: shadowJar)
 
 jar {
     manifest {
         attributes 'Main-Class': 'burst.pool.Launcher'
+    }
+}
+
+distributions {
+    main {
+        distributionBaseName = "burstpool-${details.lastTag}"
+        contents {
+            from 'icon.ico'
+            from 'icon.png'
+            from 'License'
+            from 'burstPoolLoggingConfig.xml'
+            from project.tasks.shadowJar.outputs.files
+        }
     }
 }
