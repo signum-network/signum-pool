@@ -1,6 +1,6 @@
-# Burstcoin Pool with Multi-Share Support
+# Babel Pool: choose your share (language) freely
 
-A Burstcoin Pool where miners can choose their *Share Model*.
+A Burstcoin Pool where miners can choose their *Share Model* freely.
 Each miner can have a different share model, ranging from 0 % (solo mining) up to 100 %.
 Further, miners can change their share model at any moment.
 
