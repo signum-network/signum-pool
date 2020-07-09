@@ -170,14 +170,6 @@ public class Server extends NanoHTTPD {
             response.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
             response.addProperty("othersShare", othersShare.get());
             return response.toString();
-        } else if (session.getUri().startsWith("/api/getSetMinimumMessage")) {
-            String currentTime = Long.toString(Instant.now().getEpochSecond());
-            String address = BurstAddress.fromEither(params.get("address")).getFullAddress();
-            String newPayout = BurstValue.fromBurst(params.get("newPayout")).toPlanck().toString();
-            String poolAddress = burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase)).getFullAddress();
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("message", address + ":" + poolAddress + ":" + currentTime + ":" + newPayout);
-            return jsonObject.toString();
         } else if (session.getUri().startsWith("/api/getWonBlocks")) {
             JsonArray wonBlocks = new JsonArray();
             storageService.getWonBlocks(100)
