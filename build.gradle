@@ -110,7 +110,7 @@ jar {
 
 distributions {
     main {
-        distributionBaseName = "burstpool-${details.lastTag}"
+        distributionBaseName = "babel-pool-${details.lastTag}"
         contents {
             from 'icon.ico'
             from 'icon.png'
