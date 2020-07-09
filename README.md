@@ -9,7 +9,7 @@ So, this miner actually has 20 % of his capacity *solo mining* (2 TiB) and 80 % 
 Let's also assume the pool has a total shared capacity (the sum of all shared capacities of all miners) of 160 TiB.
 Since our miner is sharing 8 TiB he also has 5 % of the pool share (8/160).
 Now, when this miner forges a block, the block reward (assumed to be 100 BURST here) would be distributed as follows:
-![Pool Sankey Diagram](/Sankey.png)
+![Pool Sankey Diagram](/doc/Sankey.png)
 
 As can be seen, when our miner forges a block, the reward is split between the shared fraction (80% in this case) and the forger fraction (20%) in this case.
 After that, the shared fraction is further split among all miners in the pool accordingly to their pool shares.
@@ -21,7 +21,7 @@ Additionally, each miner can configure a donation fraction, subtracted from thei
 
 As already discussed, the amount each miner contribute to the pool share is a function of the shared model.
 In the following image, the schematics for a case where four different miners with 100 TiB capacity each have different share models:
-![Pool Sankey Miners Diagram](/Sankey-Miners.png)
+![Pool Sankey Miners Diagram](/doc/Sankey-Miners.png)
 
 Miners can configure not only the share model but also the percent they want to donate and the minimum payout.
 Configuration changes are accomplished by sending text messages to the pool.
