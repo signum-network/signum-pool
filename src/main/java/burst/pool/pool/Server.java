@@ -25,7 +25,6 @@ import java.math.BigInteger;
 import java.net.SocketException;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -258,7 +257,6 @@ public class Server extends NanoHTTPD {
                     // Replace links TODO strip tags in links
                     .replace("{TITLE}", propertyService.getString(Props.siteTitle))
                     .replace("{PUBLICNODE}", propertyService.getString(Props.siteNodeAddress))
-                    .replace("{SOFTWARE}", propertyService.getString(Props.softwarePackagesAddress))
                     .replace("{DISCORD}", propertyService.getString(Props.siteDiscordLink))
                     .replace("{INFO}", propertyService.getString(Props.siteInfo))
                     .replace("{POOL_ACCOUNT}", burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase)).getFullAddress())
