@@ -36,7 +36,6 @@ public class Props {
     public static final Prop<String> siteIconIco = new Prop<>("site.icon.ico", "icon.ico");
     public static final Prop<String> siteIconPng = new Prop<>("site.icon.png", "icon.png");
     public static final Prop<String> siteNodeAddress = new Prop<>("site.nodeAddress", "https://wallet.burst-alliance.org:8125/");
-    public static final Prop<String> softwarePackagesAddress = new Prop<>("site.softwarePackagesAddress", "https://github.com/burst-apps-team");
     public static final Prop<String> siteDiscordLink = new Prop<>("site.discord", "https://discord.gg/ms6eagX");
     public static final Prop<String> siteInfo = new Prop<>("site.info", "<p>Coming soon...</p>");
     public static final Prop<String> siteExplorerURL = new Prop<>("site.explorer", "https://explorer.burstcoin.network/");
@@ -65,10 +64,14 @@ public class Props {
         }
 
         int nAvg = propertyService.getInt(Props.nAvg);
-        // Todo
+        if (nAvg < 20) {
+            throw new IllegalArgumentException("Illegal nAvg: " + nAvg + " (Must be > 20)");
+        }
 
         int nMin = propertyService.getInt(Props.nMin);
-        // Todo
+        if (nMin < 2) {
+            throw new IllegalArgumentException("Illegal nMin: " + nMin + " (Must be > 2)");
+        }
 
         long maxDeadline = propertyService.getLong(Props.maxDeadline);
         if (maxDeadline <= 0) {
