@@ -32,15 +32,27 @@ Originally by [Harry1453](https://github.com/harry1453) (Donation address [BURST
 
 ## Requirements
 
-- MariaDB
-- Java 8 or superior (**version 8 is recommended**)
+- Java 64 Bits version 8 or superior (**8 is recommended**)
+- MariaDB (optional, for advanced users)
 
 ## Installation
 
 - [Download The Latest Release](https://github.com/jjos2372/burstpool/releases/latest)
-- Create a new MariaDB Database and create a user to access it.
-- Extract the zip file. Configure `pool.properties` to suit your needs (MariaDB user and password, etc.).
-- You will need to wait some blocks before miners start to show their capacity.
+- Extract the zip file
+- Configure `pool.properties` to suit your needs
+- Run the jar file:
+
+```
+$ java -jar burstcoin-pool.jar
+```
+
+You will need to wait some blocks before miners start to show their capacity
+
+### Advanced Users
+ In addition to the above steps:
+ 
+- Create a new MariaDB Database and create a user to access it
+- Configure `pool.properties` to use your database (server address, user, password, etc.)
 
 ## Configuration
 
@@ -52,7 +64,7 @@ There are many options to customize the web UI in the properties file (explorer,
 Further modifications can be made by changing the contents of the JAR.
 Per the license terms, you must not remove the copyright notice at the bottom of the page, but you may make any other modifications you wish.
 
-## Building
+## Building from source
 
 ### Pre-requisites
 
@@ -61,9 +73,9 @@ Per the license terms, you must not remove the copyright notice at the bottom of
 
 ### Building a release
 
-Run the following command on the project root directory:
+Download or clone this repository and then run the following command on the project root directory:
 
-```$ ./gradlew buildZip```
+```$ ./gradlew build```
 
 
 This will download all the dependencies and build a release JAR and place it under `build/libs/`.
