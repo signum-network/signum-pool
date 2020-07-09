@@ -112,10 +112,10 @@ distributions {
     main {
         distributionBaseName = "babel-pool-${details.lastTag}"
         contents {
-            from 'icon.ico'
-            from 'icon.png'
+            from 'dist/icon.ico'
+            from 'dist/icon.png'
             from 'License'
-            from 'burstPoolLoggingConfig.xml'
+            from 'dist/logging.xml'
             from project.tasks.shadowJar.outputs.files
         }
     }

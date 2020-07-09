@@ -119,3 +119,9 @@ build/
 !gradle-wrapper.jar
 
 *.log
+
+dist/db/
+.classpath
+.project
+org.eclipse*
+bin/

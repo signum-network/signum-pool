@@ -21,7 +21,7 @@ import java.sql.SQLException;
 public class Launcher {
     public static void main(String[] args) { // todo catch exception
         if (System.getProperty("log4j.configurationFile") == null) {
-            System.setProperty("log4j.configurationFile", "burstPoolLoggingConfig.xml");
+            System.setProperty("log4j.configurationFile", "logging.xml");
         }
         Logger logger = LoggerFactory.getLogger(Launcher.class);
         String propertiesFileName = "pool.properties";
