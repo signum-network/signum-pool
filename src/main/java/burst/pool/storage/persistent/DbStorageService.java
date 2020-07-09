@@ -91,14 +91,33 @@ public class DbStorageService implements StorageService {
             throw new SQLException("Could not find SQL driver: " + driverClass + ". If you want to use this Database type, please check if it is supported by JDBC and jOOQ, and then add the driver to the classpath.");
         }
 
-        Flyway flyway = sqlDialect == SQLDialect.MARIADB ? flywayHack(Flyway.configure(), url, username, password).load() : Flyway.configure().dataSource(url, username, password).load();
-        flyway.migrate();
+        Flyway flyway = null;
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(url);
         hikariConfig.setUsername(username);
         hikariConfig.setPassword(password);
         hikariConfig.setMaximumPoolSize(32);
         hikariConfig.setAutoCommit(true);
+
+        if (sqlDialect == SQLDialect.MARIADB) {
+            flyway = flywayHack(Flyway.configure(), url, username, password).load();
+        }
+        else if (sqlDialect == SQLDialect.H2) {
+            flyway = Flyway.configure()
+                    .locations("classpath:/db/migration_h2")
+                    .dataSource(url, username, password).load();
+            
+            hikariConfig.addDataSourceProperty("cachePrepStmts", "true");
+            hikariConfig.addDataSourceProperty("prepStmtCacheSize", "250");
+            hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+            hikariConfig.addDataSourceProperty("DATABASE_TO_UPPER", "false");
+            hikariConfig.addDataSourceProperty("CASE_INSENSITIVE_IDENTIFIERS", "true");
+        }
+        else {
+            throw new SQLException("Unsupported dialect " + sqlDialect.getName());
+        }
+
+        flyway.migrate();
 
         settings = new Settings();
         settings.setRenderSchema(false);
