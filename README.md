@@ -26,9 +26,23 @@ In the following image, the schematics for a case where four different miners wi
 Miners can configure not only the share model but also the percent they want to donate and the minimum payout.
 Configuration changes are accomplished by sending text messages to the pool.
 
+Additionally, multiple pool IDs can be managed in a *single* pool.
+There is the *primary* ID, which makes the payments and receives the miner's *commands* and there can be
+multiple *secondary* IDs.
+Whenever a *secondary* ID forges a block, its balance is transfered automatically to the primary ID so it can manage
+the payments.
+
 Check the [testnet version](http://nivbox.co.uk:9000) for a live demo.
 
 Originally by [Harry1453](https://github.com/harry1453) (Donation address [BURST-W5YR-ZZQC-KUBJ-G78KB](https://explorer.burstcoin.network/?action=account&account=16484518239061020631)), updated by [jjos](https://github.com/jjos2372).
+
+## Features
+
+- Miners can set individually their *share model*
+- Miners can set individually their donation fraction
+- Miners can set individually their minimum payout
+- Payouts by multi-out transactions with the current *standard* fee (variable)
+- Support for multiple pool IDs (a primary and many secondaries)
 
 ## Requirements
 
