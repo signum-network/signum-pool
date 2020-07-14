@@ -310,16 +310,18 @@ public class Pool {
                 
                 // Check for balances on the secondary pools and transfer to the primary one, every processLag/2 blocks
                 int transferBlocks = propertyService.getInt(Props.processLag)/2;
-                long mod = miningInfo.get().getHeight() % (transferBlocks);
-                if(mod == 0L) {
-                    Account balance = nodeService.getAccount(secondaryAddress).blockingGet();
-                    if(balance.getBalance().compareTo(BurstValue.fromBurst(propertyService.getFloat(Props.minimumMinimumPayout))) > 0) {
-                        BurstValue amountToSend = balance.getBalance().subtract(getTransactionFee());
-                        byte[] unsignedBytes = nodeService.generateTransaction(primaryAddress, burstCrypto.getPublicKey(passphrase), amountToSend,
-                                getTransactionFee(), transferBlocks).blockingGet();
-                        byte [] signedBytes = burstCrypto.signTransaction(passphrase, unsignedBytes);
-                        nodeService.broadcastTransaction(signedBytes).blockingGet();
-                        logger.info("Balance of " + amountToSend.toFormattedString() + " from secondary " + secondaryAddress.toString() + " transfered to primary");
+                if(miningInfo.get()!=null) {
+                    long mod = miningInfo.get().getHeight() % (transferBlocks);
+                    if(mod == 0L) {
+                        Account balance = nodeService.getAccount(secondaryAddress).blockingGet();
+                        if(balance.getBalance().compareTo(BurstValue.fromBurst(propertyService.getFloat(Props.minimumMinimumPayout))) > 0) {
+                            BurstValue amountToSend = balance.getBalance().subtract(getTransactionFee());
+                            byte[] unsignedBytes = nodeService.generateTransaction(primaryAddress, burstCrypto.getPublicKey(passphrase), amountToSend,
+                                    getTransactionFee(), transferBlocks).blockingGet();
+                            byte [] signedBytes = burstCrypto.signTransaction(passphrase, unsignedBytes);
+                            nodeService.broadcastTransaction(signedBytes).blockingGet();
+                            logger.info("Balance of " + amountToSend.toFormattedString() + " from secondary " + secondaryAddress.toString() + " transfered to primary");
+                        }
                     }
                 }
             }
