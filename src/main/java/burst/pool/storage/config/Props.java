@@ -10,6 +10,12 @@ public class Props {
     public static final Prop<String> poolName = new Prop<>("poolName", "");
 
     public static final Prop<String> passphrase = new Prop<>("passphrase", ""); // Must be non-empty
+    public static final Prop<?> passphraseSecondary[] = new Prop<?>[8];
+    static {
+        for (int i = 0; i < passphraseSecondary.length; i++) {
+            passphraseSecondary[i] = new Prop<String>("passphrase" + (i+2), "");
+        }
+    }
 
     public static final Prop<String> dbUrl = new Prop<>("dbUrl", "");
     public static final Prop<String> dbUsername = new Prop<>("dbUsername", "");

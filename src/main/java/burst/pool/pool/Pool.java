@@ -3,6 +3,7 @@ package burst.pool.pool;
 import burst.kit.crypto.BurstCrypto;
 import burst.kit.entity.BurstAddress;
 import burst.kit.entity.BurstValue;
+import burst.kit.entity.response.Account;
 import burst.kit.entity.response.Block;
 import burst.kit.entity.response.FeeSuggestion;
 import burst.kit.entity.response.MiningInfo;
@@ -13,6 +14,7 @@ import burst.kit.entity.response.http.MiningInfoResponse;
 import burst.kit.service.BurstNodeService;
 import burst.pool.miners.Miner;
 import burst.pool.miners.MinerTracker;
+import burst.pool.storage.config.Prop;
 import burst.pool.storage.config.PropertyService;
 import burst.pool.storage.config.Props;
 import burst.pool.storage.persistent.StorageService;
@@ -147,7 +149,7 @@ public class Pool {
                 
                 Block block = nodeService.getBlock(transactionalStorageService.getLastProcessedBlock() + 1).blockingGet();
                 
-                // Check for commands from miners
+                // Check for commands from miners (always to the primary address)
                 BurstAddress poolAddress = burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase));
                 // Having 100 should be enough to not get past it
                 Transaction []txs = nodeService.getAccountTransactions(poolAddress, 0, 100).blockingGet();
@@ -201,6 +203,7 @@ public class Pool {
                             }
                         }
                         catch (Exception e) {
+                            logger.error("Could not parse message, tx: " + tx.getId(), e);
                         }
                     }
                 }
@@ -274,10 +277,44 @@ public class Pool {
 
         bestSubmission.set(null);
         bestDeadline.set(BigInteger.valueOf(Long.MAX_VALUE));
-        disposables.add(nodeService.getAccountsWithRewardRecipient(burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase)))
-                .subscribe(this::onRewardRecipients, this::onRewardRecipientsError));
         roundStartTime.set(Instant.now());
         miningInfo.set(newMiningInfo);
+        
+        // get the current reward recipient for the multiple pool IDs and transfer balance to primary if any
+        myRewardRecipients.clear();
+        try {
+            // First for the primary account
+            BurstAddress primaryAddress = burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase));
+            BurstAddress[] rewardRecipients = nodeService.getAccountsWithRewardRecipient(primaryAddress).blockingGet();
+            myRewardRecipients.addAll(Arrays.asList(rewardRecipients));
+            
+            // Next for the secondary accounts (if any)
+            for (int i = 0; i < Props.passphraseSecondary.length; i++) {
+                @SuppressWarnings("unchecked")
+                Prop<String> passphraseProp = (Prop<String>) Props.passphraseSecondary[i];
+                String passphrase = propertyService.getString(passphraseProp);
+                if(passphrase == null || passphrase.length() == 0)
+                    break;
+                
+                BurstAddress secondaryAddress = burstCrypto.getBurstAddressFromPassphrase(passphrase);
+                rewardRecipients = nodeService.getAccountsWithRewardRecipient(secondaryAddress).blockingGet();
+                myRewardRecipients.addAll(Arrays.asList(rewardRecipients));
+                
+                Account balance = nodeService.getAccount(secondaryAddress).blockingGet();
+                if(balance.getBalance().compareTo(BurstValue.fromBurst(propertyService.getFloat(Props.minimumMinimumPayout))) > 0) {
+                    BurstValue amountToSend = balance.getBalance().subtract(getTransactionFee());
+                    byte[] unsignedBytes = nodeService.generateTransaction(primaryAddress, burstCrypto.getPublicKey(passphrase), amountToSend,
+                            getTransactionFee(), 1000).blockingGet();
+                    byte [] signedBytes = burstCrypto.signTransaction(passphrase, unsignedBytes);
+                    nodeService.broadcastTransaction(signedBytes).blockingGet();
+                    logger.info("Balance of " + amountToSend.toFormattedString() + " from secondary " + secondaryAddress.toString() + " transfered to primary");
+                }
+            }
+        }
+        catch (Exception e) {
+            logger.error("Error fetching pool's reward recipients or transfering from secondary pools", e);
+        }
+        
         // Unlock to signal we have finished modifying bestSubmission
         processDeadlineSemaphore.release();
         // Unlock to start accepting requests again
@@ -349,15 +386,6 @@ public class Pool {
         disposables.add(nodeService.submitNonce(propertyService.getString(Props.passphrase), submission.getNonce().toString(), submission.getMiner().getBurstID()) // TODO burstkit4j accept nonce as bigint
                 .retry(propertyService.getInt(Props.submitNonceRetryCount))
                 .subscribe(this::onNonceSubmitted, this::onSubmitNonceError));
-    }
-
-    private void onRewardRecipients(BurstAddress[] rewardRecipients) {
-        myRewardRecipients.clear();
-        myRewardRecipients.addAll(Arrays.asList(rewardRecipients));
-    }
-
-    private void onRewardRecipientsError(Throwable t) {
-        logger.error("Error fetching pool's reward recipients", t);
     }
 
     private void onNonceSubmitted(long deadline) {
