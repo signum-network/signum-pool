@@ -60,6 +60,7 @@ public class Pool {
     private final AtomicReference<MiningInfo> miningInfo = new AtomicReference<>();
     private final AtomicReference<BurstValue> transactionFee = new AtomicReference<>();
     private final Set<BurstAddress> myRewardRecipients = new HashSet<>();
+    private final Set<?> secondaryRewardRecipients[] = new HashSet<?>[Props.passphraseSecondary.length];
 
     public Pool(BurstNodeService nodeService, StorageService storageService, PropertyService propertyService, MinerTracker minerTracker) {
         this.storageService = storageService;
@@ -69,6 +70,9 @@ public class Pool {
         this.transactionFee.set(BurstValue.fromBurst(0.1));
         disposables.add(refreshMiningInfoThread());
         disposables.add(processBlocksThread());
+        for (int i = 0; i < secondaryRewardRecipients.length; i++) {
+            secondaryRewardRecipients[i] = new HashSet<BurstAddress>();
+        }
         resetRound(null);
     }
 
@@ -281,11 +285,11 @@ public class Pool {
         miningInfo.set(newMiningInfo);
         
         // get the current reward recipient for the multiple pool IDs and transfer balance to primary if any
-        myRewardRecipients.clear();
         try {
             // First for the primary account
             BurstAddress primaryAddress = burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase));
             BurstAddress[] rewardRecipients = nodeService.getAccountsWithRewardRecipient(primaryAddress).blockingGet();
+            myRewardRecipients.clear();
             myRewardRecipients.addAll(Arrays.asList(rewardRecipients));
             
             // Next for the secondary accounts (if any)
@@ -298,16 +302,25 @@ public class Pool {
                 
                 BurstAddress secondaryAddress = burstCrypto.getBurstAddressFromPassphrase(passphrase);
                 rewardRecipients = nodeService.getAccountsWithRewardRecipient(secondaryAddress).blockingGet();
-                myRewardRecipients.addAll(Arrays.asList(rewardRecipients));
                 
-                Account balance = nodeService.getAccount(secondaryAddress).blockingGet();
-                if(balance.getBalance().compareTo(BurstValue.fromBurst(propertyService.getFloat(Props.minimumMinimumPayout))) > 0) {
-                    BurstValue amountToSend = balance.getBalance().subtract(getTransactionFee());
-                    byte[] unsignedBytes = nodeService.generateTransaction(primaryAddress, burstCrypto.getPublicKey(passphrase), amountToSend,
-                            getTransactionFee(), 1000).blockingGet();
-                    byte [] signedBytes = burstCrypto.signTransaction(passphrase, unsignedBytes);
-                    nodeService.broadcastTransaction(signedBytes).blockingGet();
-                    logger.info("Balance of " + amountToSend.toFormattedString() + " from secondary " + secondaryAddress.toString() + " transfered to primary");
+                @SuppressWarnings("unchecked")
+                Set<BurstAddress> mySecondaryRewardRecipients = (Set<BurstAddress>) secondaryRewardRecipients[i];
+                mySecondaryRewardRecipients.clear();
+                mySecondaryRewardRecipients.addAll(Arrays.asList(rewardRecipients));
+                
+                // Check for balances on the secondary pools and transfer to the primary one, every processLag/2 blocks
+                int transferBlocks = propertyService.getInt(Props.processLag)/2;
+                long mod = miningInfo.get().getHeight() % (transferBlocks);
+                if(mod == 0L) {
+                    Account balance = nodeService.getAccount(secondaryAddress).blockingGet();
+                    if(balance.getBalance().compareTo(BurstValue.fromBurst(propertyService.getFloat(Props.minimumMinimumPayout))) > 0) {
+                        BurstValue amountToSend = balance.getBalance().subtract(getTransactionFee());
+                        byte[] unsignedBytes = nodeService.generateTransaction(primaryAddress, burstCrypto.getPublicKey(passphrase), amountToSend,
+                                getTransactionFee(), transferBlocks).blockingGet();
+                        byte [] signedBytes = burstCrypto.signTransaction(passphrase, unsignedBytes);
+                        nodeService.broadcastTransaction(signedBytes).blockingGet();
+                        logger.info("Balance of " + amountToSend.toFormattedString() + " from secondary " + secondaryAddress.toString() + " transfered to primary");
+                    }
                 }
             }
         }
@@ -326,7 +339,16 @@ public class Pool {
             throw new SubmissionException("Pool does not have mining info");
         }
 
-        if (!myRewardRecipients.contains(submission.getMiner())) {
+        boolean recipientSet = myRewardRecipients.contains(submission.getMiner());
+        for (int i = 0; i < secondaryRewardRecipients.length; i++) {
+            if(recipientSet)
+                break;
+            
+            @SuppressWarnings("unchecked")
+            Set<BurstAddress> mySecondaryRewardRecipients = (Set<BurstAddress>) secondaryRewardRecipients[i];
+            recipientSet = mySecondaryRewardRecipients.contains(submission.getMiner());
+        }
+        if (!recipientSet) {
             throw new SubmissionException("Reward recipient not set to pool");
         }
 
@@ -382,8 +404,23 @@ public class Pool {
         storageService.addBestSubmissionForBlock(blockHeight, new StoredSubmission(submission.getMiner(), submission.getNonce(), deadline.longValue()));
     }
 
+    @SuppressWarnings("unchecked")
     private void submitDeadline(Submission submission) {
-        disposables.add(nodeService.submitNonce(propertyService.getString(Props.passphrase), submission.getNonce().toString(), submission.getMiner().getBurstID()) // TODO burstkit4j accept nonce as bigint
+        String passphrase = null;
+        
+        if(myRewardRecipients.contains(submission.getMiner()))
+            passphrase = propertyService.getString(Props.passphrase);
+        
+        for (int i = 0; i < secondaryRewardRecipients.length; i++) {
+            if(passphrase != null)
+                break;
+            
+            Set<BurstAddress> mySecondaryRewardRecipients = (Set<BurstAddress>) secondaryRewardRecipients[i];
+            if(mySecondaryRewardRecipients.contains(submission.getMiner()))
+                passphrase = propertyService.getString((Prop<String>) Props.passphraseSecondary[i]);
+        }
+        
+        disposables.add(nodeService.submitNonce(passphrase, submission.getNonce().toString(), submission.getMiner().getBurstID()) // TODO burstkit4j accept nonce as bigint
                 .retry(propertyService.getInt(Props.submitNonceRetryCount))
                 .subscribe(this::onNonceSubmitted, this::onSubmitNonceError));
     }
