@@ -32,9 +32,12 @@ multiple *secondary* IDs.
 Whenever a *secondary* ID forges a block, its balance is transfered automatically to the primary ID so it can manage
 the payments.
 
-Check the [testnet version](http://nivbox.co.uk:9000) for a live demo.
+Check a [testnet live demo](http://nivbox.co.uk:9000).
 
-Originally by [Harry1453](https://github.com/harry1453) (Donation address [BURST-W5YR-ZZQC-KUBJ-G78KB](https://explorer.burstcoin.network/?action=account&account=16484518239061020631)), updated by [jjos](https://github.com/jjos2372).
+Originally by [Harry1453](https://github.com/harry1453),
+updated by [jjos](https://github.com/jjos2372).
+
+Donations are very welcome at [BURST-JJQS-MMA4-GHB4-4ZNZU](https://explorer.burstcoin.network/?action=account&account=3278233074628313816).
 
 ## Features
 
