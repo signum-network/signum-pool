@@ -114,6 +114,7 @@ distributions {
         contents {
             from 'dist/icon.ico'
             from 'dist/icon.png'
+            from 'dist/pool.properties'
             from 'License'
             from 'dist/logging.xml'
             from project.tasks.shadowJar.outputs.files
