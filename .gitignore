@@ -125,3 +125,4 @@ dist/db/
 .project
 org.eclipse*
 bin/
+/test/
