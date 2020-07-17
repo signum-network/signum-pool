@@ -58,7 +58,8 @@ public class Server extends NanoHTTPD {
         this.storageService = storageService;
         this.propertyService = propertyService;
         this.pool = pool;
-        this.fileCache = CacheManagerBuilder.newCacheManagerBuilder()
+        this.fileCache = propertyService.getBoolean(Props.siteDisableCache) ? null :
+            CacheManagerBuilder.newCacheManagerBuilder()
                 .withCache("file", CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, String.class, ResourcePoolsBuilder.heap(1024*1024)))
                 .build(true)
                 .getCache("file", String.class, String.class);
@@ -222,7 +223,7 @@ public class Server extends NanoHTTPD {
             return NanoHTTPD.newFixedLengthResponse(Response.Status.FORBIDDEN, "text/html", "<h1>Access Forbidden</h1>");
         }
 
-        if (fileCache.containsKey(uri)) {
+        if (fileCache != null && fileCache.containsKey(uri)) {
             return NanoHTTPD.newFixedLengthResponse(Response.Status.OK, URLConnection.guessContentTypeFromName(uri), fileCache.get(uri));
         }
 
@@ -280,7 +281,9 @@ public class Server extends NanoHTTPD {
                     .replace("{FAUCET}", propertyService.getString(Props.siteFaucetURL))
                     .replace("{EXPLORER}", propertyService.getString(Props.siteExplorerURL));
         }
-        fileCache.put(uri, response);
+        if(fileCache != null) {
+            fileCache.put(uri, response);
+        }
         return NanoHTTPD.newFixedLengthResponse(Response.Status.OK, URLConnection.guessContentTypeFromName(session.getUri()), response);
     }
 
