@@ -297,7 +297,6 @@ public class Server extends NanoHTTPD {
         if (miner == null) return JsonNull.INSTANCE;
         JsonObject minerJson = new JsonObject();
         minerJson.addProperty("address", miner.getAddress().getID());
-        minerJson.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
         minerJson.addProperty("addressRS", miner.getAddress().getFullAddress());
         minerJson.addProperty("pendingBalance", miner.getPending().toFormattedString());
         minerJson.addProperty("totalCapacity", miner.getTotalCapacity());

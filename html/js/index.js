@@ -119,7 +119,7 @@ function getCurrentRound() {
         document.getElementById("netDiff").innerText = formatBaseTarget(response.miningInfo.baseTarget);
         if (response.bestDeadline != null) {
             document.getElementById("bestDeadline").innerText = formatTime(response.bestDeadline.deadline);
-            document.getElementById("bestMiner").innerHTML = formatMinerName(response.bestDeadline.explorer, response.bestDeadline.minerRS, response.bestDeadline.miner, response.bestDeadline.name, true);
+            document.getElementById("bestMiner").innerHTML = formatMinerName(response.explorer, response.bestDeadline.minerRS, response.bestDeadline.miner, response.bestDeadline.name, true);
             /* document.getElementById("bestNonce").innerText = response.bestDeadline.nonce;*/
         } else {
             document.getElementById("bestDeadline").innerText = noneFoundYet;
@@ -152,7 +152,7 @@ function getTop10Miners() {
         let minerColors = colors.slice(0, topTenMiners.length + 1);
         for (let i = 0; i < topTenMiners.length; i++) {
             let miner = topTenMiners[i];
-            topMinerNames.push(formatMinerName(miner.explorer, miner.addressRS, miner.address, miner.name, false));
+            topMinerNames.push(formatMinerName(response.explorer, miner.addressRS, miner.address, miner.name, false));
             topMinerData.push({value: miner.share * 100, name: topMinerNames[topMinerNames.length - 1]});
         }
         topMinerNames.push("Other");
@@ -218,7 +218,7 @@ function getMiners() {
         for (let i = 0; i < response.miners.length; i++) {
             let miner = response.miners[i];
             let currentRoundDeadline = miner.currentRoundBestDeadline == null ? "" : formatTime(miner.currentRoundBestDeadline);
-            let minerAddress = formatMinerName(miner.explorer, miner.addressRS, miner.address, miner.name, true);
+            let minerAddress = formatMinerName(response.explorer, miner.addressRS, miner.address, miner.name, true);
             let userAgent = escapeHtml(miner.userAgent == null? "Unknown" : miner.userAgent);
             table.innerHTML += "<tr><td>"+minerAddress+"</td>"
               +"<td class=\"d-none d-sm-table-cell\">"+currentRoundDeadline+"</td>"
@@ -337,7 +337,7 @@ function getWonBlocks() {
             let id = escapeHtml(wonBlock.id);
             let reward = escapeHtml(wonBlock.reward);
             let poolShare = escapeHtml(wonBlock.poolShare);
-            let minerName = formatMinerName(wonBlock.explorer, wonBlock.generatorRS, wonBlock.generator, wonBlock.name, true);
+            let minerName = formatMinerName(response.explorer, wonBlock.generatorRS, wonBlock.generator, wonBlock.name, true);
             table.innerHTML += "<tr><td>"+height+"</td><td class=\"d-none d-sm-table-cell\">"+id+"</td><td>"+minerName+"</td><td>"+reward+"</td><td class=\"d-none d-sm-table-cell\">"+poolShare+"</td></tr>";
         }
     });
