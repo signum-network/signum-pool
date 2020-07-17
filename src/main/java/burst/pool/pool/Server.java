@@ -1,5 +1,33 @@
 package burst.pool.pool;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.math.BigInteger;
+import java.net.SocketException;
+import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
+
+import org.ehcache.Cache;
+import org.ehcache.config.builders.CacheConfigurationBuilder;
+import org.ehcache.config.builders.CacheManagerBuilder;
+import org.ehcache.config.builders.ResourcePoolsBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
+
 import burst.kit.crypto.BurstCrypto;
 import burst.kit.entity.BurstAddress;
 import burst.kit.entity.BurstValue;
@@ -11,22 +39,7 @@ import burst.pool.miners.Miner;
 import burst.pool.storage.config.PropertyService;
 import burst.pool.storage.config.Props;
 import burst.pool.storage.persistent.StorageService;
-import com.google.gson.*;
 import fi.iki.elonen.NanoHTTPD;
-import org.ehcache.Cache;
-import org.ehcache.config.builders.CacheConfigurationBuilder;
-import org.ehcache.config.builders.CacheManagerBuilder;
-import org.ehcache.config.builders.ResourcePoolsBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.*;
-import java.math.BigInteger;
-import java.net.SocketException;
-import java.net.URLConnection;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class Server extends NanoHTTPD {
     private static final Logger logger = LoggerFactory.getLogger(Server.class);
@@ -197,36 +210,39 @@ public class Server extends NanoHTTPD {
     }
 
     private Response handleCall(IHTTPSession session, Map<String, String> params) throws IOException {
-        if (Objects.equals(session.getUri(), "") || Objects.equals(session.getUri(), "/")) {
+        String uri = session.getUri();
+        if (Objects.equals(uri, "") || Objects.equals(uri, "/")) {
             return redirect("/index.html");
         }
         boolean allowedFile = false;
         for (String extension : allowedFileExtensions) {
-            if (session.getUri().endsWith(extension)) allowedFile = true;
+            if (uri.endsWith(extension)) allowedFile = true;
         }
-        if (!allowedFile || session.getUri().contains("../")) {
+        if (!allowedFile || uri.contains("../")) {
             return NanoHTTPD.newFixedLengthResponse(Response.Status.FORBIDDEN, "text/html", "<h1>Access Forbidden</h1>");
         }
 
-        if (fileCache.containsKey(session.getUri())) {
-            return NanoHTTPD.newFixedLengthResponse(Response.Status.OK, URLConnection.guessContentTypeFromName(session.getUri()), fileCache.get(session.getUri()));
+        if (fileCache.containsKey(uri)) {
+            return NanoHTTPD.newFixedLengthResponse(Response.Status.OK, URLConnection.guessContentTypeFromName(uri), fileCache.get(uri));
         }
 
-        InputStream inputStream;
-        if (session.getUri().contains("favicon.ico")) {
+        InputStream inputStream = null;
+        if (uri.contains("favicon.ico")) {
             inputStream = new FileInputStream(propertyService.getString(Props.siteIconIco));
-        } else if (session.getUri().equals("/img/poolIcon.png")) {
+        } else if (uri.equals("/img/poolIcon.png")) {
             inputStream = new FileInputStream(propertyService.getString(Props.siteIconPng));
         } else {
-            inputStream = getClass().getResourceAsStream("/html" + session.getUri());
+            File file = new File("./html" + uri);
+            if(file.exists() && file.isFile() && file.canRead())
+                inputStream = new FileInputStream(file);
         }
 
         if (inputStream == null) {
             return redirect("/404.html");
         }
 
-        if (session.getUri().contains(".png") || session.getUri().contains(".ico")) {
-            return NanoHTTPD.newChunkedResponse(Response.Status.OK, session.getUri().contains(".ico") ? "image/x-icon" : "image/png", inputStream);
+        if (uri.contains(".png") || uri.contains(".ico")) {
+            return NanoHTTPD.newChunkedResponse(Response.Status.OK, uri.contains(".ico") ? "image/x-icon" : "image/png", inputStream);
         }
 
         StringWriter stringWriter = new StringWriter(inputStream.available());
@@ -239,7 +255,7 @@ public class Server extends NanoHTTPD {
 
         boolean minimize = true;
 
-        if (session.getUri().contains(".png") || session.getUri().contains(".ico")) minimize = false;
+        if (uri.contains(".png") || uri.contains(".ico")) minimize = false;
 
         if (minimize) {
             response = response
@@ -264,7 +280,7 @@ public class Server extends NanoHTTPD {
                     .replace("{FAUCET}", propertyService.getString(Props.siteFaucetURL))
                     .replace("{EXPLORER}", propertyService.getString(Props.siteExplorerURL));
         }
-        fileCache.put(session.getUri(), response);
+        fileCache.put(uri, response);
         return NanoHTTPD.newFixedLengthResponse(Response.Status.OK, URLConnection.guessContentTypeFromName(session.getUri()), response);
     }
 
