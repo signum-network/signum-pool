@@ -75,8 +75,8 @@ public class Props {
         }
 
         int nMin = propertyService.getInt(Props.nMin);
-        if (nMin < 2) {
-            throw new IllegalArgumentException("Illegal nMin: " + nMin + " (Must be > 2)");
+        if (nMin < 1) {
+            throw new IllegalArgumentException("Illegal nMin: " + nMin + " (Must be > 1)");
         }
 
         long maxDeadline = propertyService.getLong(Props.maxDeadline);
