@@ -65,11 +65,53 @@ $ java -jar burstcoin-pool.jar
 
 You will need to wait some blocks before miners start to show their capacity
 
-### Advanced Users
+### MariaDB backend (optional, advanced users)
  In addition to the above steps:
  
 - Create a new MariaDB Database and create a user to access it
 - Configure `pool.properties` to use your database (server address, user, password, etc.)
+
+### Create a Systemd Service (optional, Linux advanced users)
+
+Create a file named `/etc/systemd/system/babel-pool` with the following contents (**edit the user and paths**):
+
+```
+[Unit]
+Description=Babel Pool
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=user
+WorkingDirectory=/home/user/babel-pool-v1.4.1
+ExecStart=/usr/bin/java -jar /home/user/babel-pool-v1.4.1/babel-pool.jar
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Now you should be able to start the service with:
+
+```
+sudo service babel-pool start
+```
+
+Similarly you can also stop the service with:
+
+```
+sudo service babel-pool stop
+```
+
+Additionally, it will automatically restart if your machine reboots.
+
+Logs will be available by running:
+
+```
+journalctl -u babel-pool.service
+```
 
 ## Configuration
 
