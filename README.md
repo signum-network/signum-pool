@@ -19,7 +19,7 @@ Just to simplify the share computations, in the above analysis the pool fees wer
 Actually the pool fees are subtracted from the block reward before anything else.
 Additionally, each miner can configure a donation fraction, subtracted from their individual payments.
 
-As already discussed, the amount each miner contribute to the pool share is a function of the shared model.
+As already discussed, the amount each miner contribute to the pool share is a function of their *share model*.
 In the following image, the schematics for a case where four different miners with 100 TiB capacity each have different share models:
 ![Pool Sankey Miners Diagram](/doc/Sankey-Miners.png)
 
@@ -65,6 +65,10 @@ $ java -jar burstcoin-pool.jar
 
 You will need to wait some blocks before miners start to show their capacity
 
+## Configuration
+
+You need to modify the `pool.properties` file to suit your needs. Properties are explained in that file.
+
 ### MariaDB backend (optional, advanced users)
  In addition to the above steps:
  
@@ -73,7 +77,7 @@ You will need to wait some blocks before miners start to show their capacity
 
 ### Create a Systemd Service (optional, Linux advanced users)
 
-Create a file named `/etc/systemd/system/babel-pool` with the following contents (**edit the user and paths**):
+Create a file named `/etc/systemd/system/babel-pool.service` with the following contents (**edit the user and paths**):
 
 ```
 [Unit]
@@ -113,14 +117,10 @@ Logs will be available by running:
 journalctl -u babel-pool.service
 ```
 
-## Configuration
-
-You need to modify `pool.properties` to suit your needs. Properties are explained in that file.
-
 ## Customizing the Web UI
 
 There are many options to customize the web UI in the properties file (explorer, faucet, discord server, ...).
-Further modifications can be made by changing the contents of the JAR.
+Further modifications can be made by changing the contents of the `html` folder.
 Per the license terms, you must not remove the copyright notice at the bottom of the page, but you may make any other modifications you wish.
 
 ## Building from source
