@@ -213,7 +213,7 @@ public class Server extends NanoHTTPD {
     private Response handleCall(IHTTPSession session, Map<String, String> params) throws IOException {
         String uri = session.getUri();
         if (Objects.equals(uri, "") || Objects.equals(uri, "/")) {
-            return redirect("/index.html");
+            uri = "/index.html";
         }
         boolean allowedFile = false;
         for (String extension : allowedFileExtensions) {
