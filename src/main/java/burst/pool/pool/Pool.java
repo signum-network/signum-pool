@@ -156,7 +156,7 @@ public class Pool {
                 // Check for commands from miners (always to the primary address)
                 BurstAddress poolAddress = burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase));
                 // Having 100 should be enough to not get past it
-                Transaction []txs = nodeService.getAccountTransactions(poolAddress, 0, 100).blockingGet();
+                Transaction []txs = nodeService.getAccountTransactions(poolAddress, 0, 100, false).blockingGet();
                 for(Transaction tx : txs) {
                     if(tx.getBlockHeight() != block.getHeight())
                         continue;
