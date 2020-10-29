@@ -119,7 +119,7 @@ function getCurrentRound() {
         document.getElementById("netDiff").innerText = formatBaseTarget(response.miningInfo.baseTarget);
         if (response.bestDeadline != null) {
             document.getElementById("bestDeadline").innerText = formatTime(response.bestDeadline.deadline);
-            document.getElementById("bestMiner").innerHTML = formatMinerName(response.explorer, response.bestDeadline.minerRS, response.bestDeadline.miner, response.bestDeadline.name, true);
+            document.getElementById("bestMiner").innerHTML = formatMinerName(response.bestDeadline.explorer, response.bestDeadline.minerRS, response.bestDeadline.miner, response.bestDeadline.name, true);
             /* document.getElementById("bestNonce").innerText = response.bestDeadline.nonce;*/
         } else {
             document.getElementById("bestDeadline").innerText = noneFoundYet;
