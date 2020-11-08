@@ -10,4 +10,6 @@ public interface PropertyService {
     String getString(Prop<String> prop);
     String[] getStringList(Prop<String> prop);
     BurstAddress getBurstAddress(Prop<BurstAddress> prop);
+
+    void reload(String fileName);
 }

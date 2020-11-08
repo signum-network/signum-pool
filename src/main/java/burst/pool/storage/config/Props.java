@@ -1,7 +1,6 @@
 package burst.pool.storage.config;
 
 import burst.kit.entity.BurstAddress;
-
 import java.util.Objects;
 
 public class Props {
@@ -11,6 +10,7 @@ public class Props {
 
     public static final Prop<String> passphrase = new Prop<>("passphrase", ""); // Must be non-empty
     public static final Prop<?> passphraseSecondary[] = new Prop<?>[8];
+
     static {
         for (int i = 0; i < passphraseSecondary.length; i++) {
             passphraseSecondary[i] = new Prop<String>("passphrase" + (i+2), "");
@@ -48,6 +48,8 @@ public class Props {
     public static final Prop<String> siteFaucetURL = new Prop<>("site.faucet", "http://faucet.burst-alliance.org/");
     public static final Prop<String> siteExplorerAccount = new Prop<>("site.explorerAccount", "?action=account&account=");
     public static final Prop<Boolean> siteDisableCache = new Prop<>("site.disableCache", false);
+    public static final Prop<Long> reload = new Prop<>("reload", 60000l);
+    public static final Prop<Integer> limit = new Prop<>("limit", 10);
 
     public static void validateProperties(PropertyService propertyService) {
         int serverPort = propertyService.getInt(Props.serverPort);
@@ -99,7 +101,7 @@ public class Props {
         if (donationRecipient == null) {
             throw new IllegalArgumentException("Illegal donationRecipient (not set)");
         }
-        
+
         int donationPercent = propertyService.getInt(Props.donationPercent);
         if (donationPercent < 0 || donationPercent > 100) {
             throw new IllegalArgumentException("Illegal donationPercent: " + donationPercent + " (Must be 0-100)");

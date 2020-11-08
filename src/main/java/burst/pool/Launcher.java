@@ -14,11 +14,12 @@ import fi.iki.elonen.NanoHTTPD;
 import org.flywaydb.core.api.FlywayException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Timer;
 
 public class Launcher {
+    static PropertyService propertyService;
     public static void main(String[] args) { // todo catch exception
         if (System.getProperty("log4j.configurationFile") == null) {
             System.setProperty("log4j.configurationFile", "logging.xml");
@@ -28,7 +29,11 @@ public class Launcher {
         if (args.length > 0) {
             propertiesFileName = args[0];
         }
-        PropertyService propertyService = new PropertyServiceImpl(propertiesFileName);
+        propertyService = new PropertyServiceImpl(propertiesFileName);
+
+        Timer timer = new Timer();
+        timer.schedule(new Reload(propertyService, propertiesFileName), 0, propertyService.getLong(Props.reload));
+
         MinerMaths minerMaths = new MinerMaths(propertyService.getInt(Props.nAvg), propertyService.getInt(Props.nMin));
         BurstNodeService nodeService = BurstNodeService.getCompositeInstanceWithUserAgent(Constants.USER_AGENT, propertyService.getStringList(Props.nodeAddresses));
         StorageService storageService = null;

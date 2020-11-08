@@ -14,20 +14,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
-
 import org.ehcache.Cache;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.CacheManagerBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
-
 import burst.kit.crypto.BurstCrypto;
 import burst.kit.entity.BurstAddress;
 import burst.kit.entity.BurstValue;
@@ -124,7 +121,7 @@ public class Server extends NanoHTTPD {
 
     private String handleApiCall(IHTTPSession session, Map<String, String> params) {
         int maxNConf = propertyService.getInt(Props.processLag) + propertyService.getInt(Props.nAvg);
-        
+
         if (session.getUri().startsWith("/api/getMiners")) {
             JsonArray minersJson = new JsonArray();
             AtomicReference<Double> poolCapacity = new AtomicReference<>(0d);
@@ -173,7 +170,7 @@ public class Server extends NanoHTTPD {
             JsonArray topMiners = new JsonArray();
             storageService.getMinersFiltered().stream()
                     .sorted((m1, m2) -> Double.compare(m2.getShare(), m1.getShare())) // Reverse order - highest to lowest
-                    .limit(10)
+                    .limit(propertyService.getInt(Props.limit))
                     .forEach(miner -> {
                         topMiners.add(minerToJson(miner, maxNConf));
                         othersShare.updateAndGet(share -> share - miner.getShare());
@@ -187,7 +184,7 @@ public class Server extends NanoHTTPD {
             JsonArray wonBlocks = new JsonArray();
             storageService.getWonBlocks(100)
                     .forEach(wonBlock -> {
-                        
+
                         JsonObject wonBlockJson = new JsonObject();
                         wonBlockJson.addProperty("height", wonBlock.getBlockHeight());
                         wonBlockJson.addProperty("id", wonBlock.getBlockId().getID());
