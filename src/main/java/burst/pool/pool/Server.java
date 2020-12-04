@@ -124,18 +124,21 @@ public class Server extends NanoHTTPD {
 
         if (session.getUri().startsWith("/api/getMiners")) {
             JsonArray minersJson = new JsonArray();
-            AtomicReference<Double> poolCapacity = new AtomicReference<>(0d);
+            AtomicReference<Double> poolTotalCapacity = new AtomicReference<>(0d);
+            AtomicReference<Double> poolSharedCapacity = new AtomicReference<>(0d);
             storageService.getMinersFiltered()
                     .stream()
                     .sorted(Comparator.comparing(Miner::getSharedCapacity).reversed())
                     .forEach(miner -> {
-                        poolCapacity.updateAndGet(v -> v + miner.getTotalCapacity());
+                        poolTotalCapacity.updateAndGet(v -> v + miner.getTotalCapacity());
+                        poolSharedCapacity.updateAndGet(v -> v + miner.getSharedCapacity());
                         minersJson.add(minerToJson(miner, maxNConf));
                     });
             JsonObject jsonObject = new JsonObject();
             jsonObject.add("miners", minersJson);
             jsonObject.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
-            jsonObject.addProperty("poolCapacity", poolCapacity.get());
+            jsonObject.addProperty("poolTotalCapacity", poolTotalCapacity.get());
+            jsonObject.addProperty("poolSharedCapacity", poolSharedCapacity.get());
             return jsonObject.toString();
         } else if (session.getUri().startsWith("/api/getMiner/")) {
             BurstAddress minerAddress = BurstAddress.fromEither(session.getUri().substring(14));
@@ -182,7 +185,7 @@ public class Server extends NanoHTTPD {
             return response.toString();
         } else if (session.getUri().startsWith("/api/getWonBlocks")) {
             JsonArray wonBlocks = new JsonArray();
-            storageService.getWonBlocks(100)
+            storageService.getWonBlocks(propertyService.getInt(Props.limitWonBlocks))
                     .forEach(wonBlock -> {
 
                         JsonObject wonBlockJson = new JsonObject();
