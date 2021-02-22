@@ -5,6 +5,7 @@ import burst.kit.entity.BurstAddress;
 import burst.kit.entity.BurstID;
 import burst.kit.entity.BurstValue;
 import burst.kit.entity.response.Account;
+import burst.kit.entity.response.MiningInfo;
 import burst.kit.service.BurstNodeService;
 import burst.pool.entity.Payout;
 import burst.pool.entity.WonBlock;
@@ -39,12 +40,38 @@ public class MinerTracker {
         this.propertyService = propertyService;
     }
 
-    public void onMinerSubmittedDeadline(StorageService storageService, BurstAddress minerAddress, BigInteger deadline, BigInteger baseTarget, long blockHeight, String userAgent) {
+    public void onMinerSubmittedDeadline(StorageService storageService, BurstAddress minerAddress, BigInteger deadline, BigInteger baseTarget, MiningInfo miningInfo, String userAgent) {
         waitUntilNotProcessingBlock();
         Miner miner = getOrCreate(storageService, minerAddress);
+        
+        int blockHeight = (int) miningInfo.getHeight();
+        
+        if(miner.getCommitmentHeight() != blockHeight) {
+            miner.setUserAgent(userAgent);
+            try {
+                Account accountResponse = nodeService.getAccount(minerAddress, blockHeight, true).blockingGet();
+                onMinerAccount(storageService, accountResponse, blockHeight);                
+            }
+            catch (Exception e) {
+                miner.setCommitment(null, blockHeight);
+                onMinerAccountError(e);
+            }
+        }
+        
+        if(blockHeight >= propertyService.getInt(Props.pocPlusBlock)) {
+            // PoC+ logic
+            BurstValue commitment = miner.getCommitment();
+            
+            double commitmentFactor = commitment.doubleValue()/miningInfo.getAverageCommitment();
+            commitmentFactor = Math.pow(commitmentFactor, 0.4515449935);
+            commitmentFactor = Math.min(8.0, commitmentFactor);
+            commitmentFactor = Math.max(0.125, commitmentFactor);
+            
+            double newDeadline = deadline.longValue()/commitmentFactor;
+            
+            deadline = BigInteger.valueOf((long)newDeadline);
+        }
         miner.processNewDeadline(new Deadline(deadline, baseTarget, miner.getSharePercent(), blockHeight));
-        miner.setUserAgent(userAgent);
-        compositeDisposable.add(nodeService.getAccount(minerAddress).subscribe(accountResponse -> onMinerAccount(storageService, accountResponse), this::onMinerAccountError));
     }
 
     private Miner getOrCreate(StorageService storageService, BurstAddress minerAddress) {
@@ -220,12 +247,13 @@ public class MinerTracker {
     }
 
 
-    private void onMinerAccount(StorageService storageService, Account accountResponse) {
+    private void onMinerAccount(StorageService storageService, Account accountResponse, int height) {
         waitUntilNotProcessingBlock();
         Miner miner = storageService.getMiner(accountResponse.getId());
         if (miner == null) return;
         if (accountResponse.getName() == null) return;
         miner.setName(accountResponse.getName());
+        miner.setCommitment(accountResponse.getCommitment(), height);
     }
 
     private void onMinerAccountError(Throwable throwable) {

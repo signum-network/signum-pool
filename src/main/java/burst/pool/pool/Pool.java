@@ -313,7 +313,7 @@ public class Pool {
                 if(miningInfo.get()!=null) {
                     long mod = miningInfo.get().getHeight() % (transferBlocks);
                     if(mod == 0L) {
-                        Account balance = nodeService.getAccount(secondaryAddress).blockingGet();
+                        Account balance = nodeService.getAccount(secondaryAddress, null, null).blockingGet();
                         if(balance.getBalance().compareTo(BurstValue.fromBurst(propertyService.getFloat(Props.minimumMinimumPayout))) > 0) {
                             BurstValue amountToSend = balance.getBalance().subtract(getTransactionFee());
                             byte[] unsignedBytes = nodeService.generateTransaction(primaryAddress, burstCrypto.getPublicKey(passphrase), amountToSend,
@@ -392,7 +392,7 @@ public class Pool {
                 onNewBestDeadline(miningInfo.get().getHeight(), submission, deadline);
             }
 
-            minerTracker.onMinerSubmittedDeadline(storageService, submission.getMiner(), deadline, BigInteger.valueOf(miningInfo.get().getBaseTarget()), miningInfo.get().getHeight(), userAgent);
+            minerTracker.onMinerSubmittedDeadline(storageService, submission.getMiner(), deadline, BigInteger.valueOf(miningInfo.get().getBaseTarget()), miningInfo.get(), userAgent);
             return deadline;
         } finally {
             processDeadlineSemaphore.release();
@@ -466,7 +466,7 @@ public class Pool {
         if (miningInfo != null) {
             long baseTarget = miningInfo.getBaseTarget();
             baseTarget = (long)(baseTarget * 1.83f);
-            jsonObject.add("miningInfo", gson.toJsonTree(new MiningInfoResponse(burstCrypto.toHexString(miningInfo.getGenerationSignature()), baseTarget, miningInfo.getHeight())));
+            jsonObject.add("miningInfo", gson.toJsonTree(new MiningInfoResponse(burstCrypto.toHexString(miningInfo.getGenerationSignature()), baseTarget, miningInfo.getHeight(), miningInfo.getAverageCommitment())));
         }
         return jsonObject;
     }

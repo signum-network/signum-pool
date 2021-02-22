@@ -25,6 +25,7 @@ public class Props {
     public static final Prop<Integer> nMin = new Prop<>("nMin", 1); // Must be ?
     public static final Prop<Long> maxDeadline = new Prop<>("maxDeadline", Long.MAX_VALUE); // Must be > 0
     public static final Prop<Integer> processLag = new Prop<>("processLag", 10); // Must be > 0
+    public static final Prop<Integer> pocPlusBlock = new Prop<>("pocPlusBlock", 271_000);
 
     public static final Prop<BurstAddress> feeRecipient = new Prop<>("feeRecipient", null); // Must be non null
     public static final Prop<BurstAddress> donationRecipient = new Prop<>("donationRecipient", null); // Must be non null

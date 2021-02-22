@@ -17,6 +17,8 @@ public class Miner implements Payable {
 
     private final BurstAddress address;
     private final MinerStore store;
+    private int commitmentHeight;
+    private AtomicReference<BurstValue> commitment = new AtomicReference<>();
 
     public Miner(MinerMaths minerMaths, PropertyService propertyService, BurstAddress address, MinerStore store) {
         this.minerMaths = minerMaths;
@@ -156,7 +158,23 @@ public class Miner implements Payable {
     public void setName(String name) {
         store.setName(name);
     }
-
+    
+    public void setCommitment(BurstValue commitment, int height) {
+        this.commitment.set(commitment);
+        this.commitmentHeight = height;
+    }
+    
+    public BurstValue getCommitment() {
+        BurstValue value = commitment.get();
+        if(value == null)
+            value = BurstValue.fromBurst(0);
+        return value;
+    }
+    
+    public int getCommitmentHeight() {
+        return this.commitmentHeight;
+    }
+    
     public String getUserAgent() {
         return store.getUserAgent();
     }
