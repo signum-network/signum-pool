@@ -102,8 +102,8 @@ public class Props {
         }
         
         int donationPercent = propertyService.getInt(Props.donationPercent);
-        if (donationPercent < 0 || donationPercent > 100) {
-            throw new IllegalArgumentException("Illegal donationPercent: " + donationPercent + " (Must be 0-100)");
+        if (donationPercent < 1 || donationPercent > 100) {
+            throw new IllegalArgumentException("Illegal donationPercent: " + donationPercent + " (Must be 1-100)");
         }
 
         float poolFeePercentage = propertyService.getFloat(Props.poolFeePercentage);
