@@ -378,19 +378,19 @@ public class Pool {
                 throw new SubmissionException("Server Interrupted");
             }
             
-            deadline = minerTracker.onMinerSubmittedDeadline(storageService, submission.getMiner(), deadline, BigInteger.valueOf(miningInfo.get().getBaseTarget()), miningInfo.get(), userAgent);
+            BigInteger newDeadline = minerTracker.onMinerSubmittedDeadline(storageService, submission.getMiner(), deadline, BigInteger.valueOf(miningInfo.get().getBaseTarget()), miningInfo.get(), userAgent);
 
             if (bestSubmission.get() != null) {
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Best deadline is {}, new deadline is {}", bestDeadline.get(), deadline);
+                    logger.debug("Best deadline is {}, new deadline is {}", bestDeadline.get(), newDeadline);
                 }
-                if (deadline.compareTo(bestDeadline.get()) < 0) {
+                if (newDeadline.compareTo(bestDeadline.get()) < 0) {
                     logger.debug("Newer deadline is better! Submitting...");
-                    onNewBestDeadline(miningInfo.get().getHeight(), submission, deadline);
+                    onNewBestDeadline(miningInfo.get().getHeight(), submission, newDeadline);
                 }
             } else {
                 logger.debug("This is the first deadline, submitting...");
-                onNewBestDeadline(miningInfo.get().getHeight(), submission, deadline);
+                onNewBestDeadline(miningInfo.get().getHeight(), submission, newDeadline);
             }
 
             return deadline;
