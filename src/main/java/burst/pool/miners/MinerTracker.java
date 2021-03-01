@@ -40,7 +40,7 @@ public class MinerTracker {
         this.propertyService = propertyService;
     }
 
-    public void onMinerSubmittedDeadline(StorageService storageService, BurstAddress minerAddress, BigInteger deadline, BigInteger baseTarget, MiningInfo miningInfo, String userAgent) {
+    public BigInteger onMinerSubmittedDeadline(StorageService storageService, BurstAddress minerAddress, BigInteger deadline, BigInteger baseTarget, MiningInfo miningInfo, String userAgent) {
         waitUntilNotProcessingBlock();
         Miner miner = getOrCreate(storageService, minerAddress);
         
@@ -72,6 +72,8 @@ public class MinerTracker {
             deadline = BigInteger.valueOf((long)newDeadline);
         }
         miner.processNewDeadline(new Deadline(deadline, baseTarget, miner.getSharePercent(), blockHeight));
+        
+        return deadline;
     }
 
     private Miner getOrCreate(StorageService storageService, BurstAddress minerAddress) {

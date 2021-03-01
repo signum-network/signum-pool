@@ -360,7 +360,6 @@ public class Pool {
         }
 
         MiningInfo localMiningInfo = miningInfo.get();
-        // TODO poc2 switch
         BigInteger deadline = burstCrypto.calculateDeadline(submission.getMiner(), Long.parseUnsignedLong(submission.getNonce().toString()), localMiningInfo.getGenerationSignature(), burstCrypto.calculateScoop(localMiningInfo.getGenerationSignature(), localMiningInfo.getHeight()), localMiningInfo.getBaseTarget(), 2);
 
         if (deadline.compareTo(BigInteger.valueOf(propertyService.getLong(Props.maxDeadline))) >= 0) {
@@ -378,6 +377,8 @@ public class Pool {
                 Thread.currentThread().interrupt();
                 throw new SubmissionException("Server Interrupted");
             }
+            
+            deadline = minerTracker.onMinerSubmittedDeadline(storageService, submission.getMiner(), deadline, BigInteger.valueOf(miningInfo.get().getBaseTarget()), miningInfo.get(), userAgent);
 
             if (bestSubmission.get() != null) {
                 if (logger.isDebugEnabled()) {
@@ -392,7 +393,6 @@ public class Pool {
                 onNewBestDeadline(miningInfo.get().getHeight(), submission, deadline);
             }
 
-            minerTracker.onMinerSubmittedDeadline(storageService, submission.getMiner(), deadline, BigInteger.valueOf(miningInfo.get().getBaseTarget()), miningInfo.get(), userAgent);
             return deadline;
         } finally {
             processDeadlineSemaphore.release();
