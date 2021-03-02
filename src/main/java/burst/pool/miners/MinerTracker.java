@@ -49,7 +49,7 @@ public class MinerTracker {
         if(miner.getCommitmentHeight() != blockHeight) {
             miner.setUserAgent(userAgent);
             try {
-                Account accountResponse = nodeService.getAccount(minerAddress, blockHeight, true).blockingGet();
+                Account accountResponse = nodeService.getAccount(minerAddress, blockHeight-1, true).blockingGet();
                 onMinerAccount(storageService, accountResponse, blockHeight);                
             }
             catch (Exception e) {
