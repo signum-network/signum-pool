@@ -62,7 +62,7 @@ public class MinerTracker {
             // PoC+ logic
             BurstValue commitment = miner.getCommitment();
             
-            double commitmentFactor = commitment.doubleValue()/miningInfo.getAverageCommitment();
+            double commitmentFactor = ((double)commitment.longValue())/miningInfo.getAverageCommitment();
             commitmentFactor = Math.pow(commitmentFactor, 0.4515449935);
             commitmentFactor = Math.min(8.0, commitmentFactor);
             commitmentFactor = Math.max(0.125, commitmentFactor);
