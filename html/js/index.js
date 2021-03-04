@@ -117,14 +117,16 @@ function getCurrentRound() {
         roundStart = response.roundStart;
         document.getElementById("blockHeight").innerText = response.miningInfo.height;
         document.getElementById("netDiff").innerText = formatBaseTarget(response.miningInfo.baseTarget);
+        document.getElementById("avgCommitment").innerText = Math.round(response.miningInfo.averageCommitmentNQT / 1e8).toFixed(2) + " BURST";
         if (response.bestDeadline != null) {
-            document.getElementById("bestDeadline").innerText = formatTime(response.bestDeadline.deadline);
-            document.getElementById("bestMiner").innerHTML = formatMinerName(response.bestDeadline.explorer, response.bestDeadline.minerRS, response.bestDeadline.miner, response.bestDeadline.name, true);
+            /* document.getElementById("bestDeadline").innerText = formatTime(response.bestDeadline.deadline); */
+            document.getElementById("bestMiner").innerHTML =
+              formatTime(response.bestDeadline.deadline) + ' | ' + formatMinerName(response.bestDeadline.explorer, response.bestDeadline.minerRS, response.bestDeadline.miner, response.bestDeadline.name, true);
             /* document.getElementById("bestNonce").innerText = response.bestDeadline.nonce;*/
         } else {
             document.getElementById("bestDeadline").innerText = noneFoundYet;
-            document.getElementById("bestMiner").innerText = noneFoundYet;
-            /* document.getElementById("bestNonce").innerText = noneFoundYet; */
+            /* document.getElementById("bestMiner").innerText = noneFoundYet;
+            document.getElementById("bestNonce").innerText = noneFoundYet; */
         }
     });
 }
