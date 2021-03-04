@@ -317,7 +317,7 @@ public class Pool {
                         if(balance.getBalance().compareTo(BurstValue.fromBurst(propertyService.getFloat(Props.minimumMinimumPayout))) > 0) {
                             BurstValue amountToSend = balance.getBalance().subtract(getTransactionFee());
                             byte[] unsignedBytes = nodeService.generateTransaction(primaryAddress, burstCrypto.getPublicKey(passphrase), amountToSend,
-                                    getTransactionFee(), transferBlocks).blockingGet();
+                                    getTransactionFee(), transferBlocks, null).blockingGet();
                             byte [] signedBytes = burstCrypto.signTransaction(passphrase, unsignedBytes);
                             nodeService.broadcastTransaction(signedBytes).blockingGet();
                             logger.info("Balance of " + amountToSend.toFormattedString() + " from secondary " + secondaryAddress.toString() + " transfered to primary");
@@ -466,7 +466,7 @@ public class Pool {
         if (miningInfo != null) {
             long baseTarget = miningInfo.getBaseTarget();
             baseTarget = (long)(baseTarget * 1.83f);
-            jsonObject.add("miningInfo", gson.toJsonTree(new MiningInfoResponse(burstCrypto.toHexString(miningInfo.getGenerationSignature()), baseTarget, miningInfo.getHeight(), miningInfo.getAverageCommitment())));
+            jsonObject.add("miningInfo", gson.toJsonTree(new MiningInfoResponse(burstCrypto.toHexString(miningInfo.getGenerationSignature()), baseTarget, miningInfo.getHeight(), miningInfo.getAverageCommitmentNQT())));
         }
         return jsonObject;
     }
