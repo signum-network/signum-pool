@@ -117,7 +117,7 @@ function getCurrentRound() {
         roundStart = response.roundStart;
         document.getElementById("blockHeight").innerText = response.miningInfo.height;
         document.getElementById("netDiff").innerText = formatBaseTarget(response.miningInfo.baseTarget);
-        document.getElementById("avgCommitment").innerText = Math.round(response.miningInfo.averageCommitmentNQT / 1e8).toFixed(2) + " BURST";
+        document.getElementById("avgCommitment").innerText = Math.round(response.miningInfo.averageCommitmentNQT / 1e8).toFixed(2) + " BURST/TiB";
         if (response.bestDeadline != null) {
             /* document.getElementById("bestDeadline").innerText = formatTime(response.bestDeadline.deadline); */
             document.getElementById("bestMiner").innerHTML =
