@@ -32,7 +32,6 @@ import burst.kit.crypto.BurstCrypto;
 import burst.kit.entity.BurstAddress;
 import burst.kit.entity.BurstValue;
 import burst.kit.entity.response.MiningInfo;
-import burst.kit.entity.response.http.MiningInfoResponse;
 import burst.kit.util.BurstKitUtils;
 import burst.pool.Constants;
 import burst.pool.miners.Miner;
@@ -116,7 +115,14 @@ public class Server extends NanoHTTPD {
         } else if (Objects.equals(params.get("requestType"), "getMiningInfo")) {
             MiningInfo miningInfo = pool.getMiningInfo();
             if (miningInfo == null) return gson.toJson(JsonNull.INSTANCE);
-            return gson.toJson(new MiningInfoResponse(burstCrypto.toHexString(miningInfo.getGenerationSignature()), miningInfo.getBaseTarget(), miningInfo.getHeight(), miningInfo.getAverageCommitmentNQT()));
+            JsonObject miningInfoObj = new JsonObject();
+            miningInfoObj.addProperty("height", Long.toUnsignedString(miningInfo.getHeight()));
+            miningInfoObj.addProperty("generationSignature", burstCrypto.toHexString(miningInfo.getGenerationSignature()));
+            miningInfoObj.addProperty("baseTarget", Long.toUnsignedString(miningInfo.getBaseTarget()));
+            miningInfoObj.addProperty("averageCommitmentNQT", Long.toUnsignedString(miningInfo.getAverageCommitmentNQT()));
+            
+            return miningInfoObj.toString();
+            // return gson.toJson(new MiningInfoResponse(burstCrypto.toHexString(miningInfo.getGenerationSignature()), miningInfo.getBaseTarget(), miningInfo.getHeight(), miningInfo.getAverageCommitmentNQT()));
         } else {
             return "404 not found";
         }
