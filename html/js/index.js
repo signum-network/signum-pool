@@ -116,8 +116,8 @@ function getCurrentRound() {
     }).then(response => {
         roundStart = response.roundStart;
         document.getElementById("blockHeight").innerText = response.miningInfo.height;
-        document.getElementById("netDiff").innerText = formatBaseTarget(response.miningInfo.baseTarget);
-        document.getElementById("avgCommitment").innerText = Math.round(response.miningInfo.averageCommitmentNQT / 1e8).toFixed(2);
+        document.getElementById("netDiff").innerText = formatBaseTarget(response.miningInfo.baseTarget) + ' | ' +
+          Math.round(response.miningInfo.averageCommitmentNQT / 1e8).toFixed(2) + ' BURST/TiB';
         if (response.bestDeadline != null) {
             /* document.getElementById("bestDeadline").innerText = formatTime(response.bestDeadline.deadline); */
             document.getElementById("bestMiner").innerHTML =
@@ -216,7 +216,7 @@ function getMiners() {
         return http.json();
     }).then(response => {
         let table = document.getElementById("miners");
-        table.innerHTML = "<tr><th>Miner</th><th class=\"d-none d-sm-table-cell\">Current Deadline</th><th>Pending Balance</th><th>Eff. Capacity</th><th>Commitment/TiB</th><th class=\"d-none d-sm-table-cell\">Shared Capacity</th><th class=\"d-none d-sm-table-cell\">Share Model</th><th class=\"d-none d-sm-table-cell\">Donation Percent</th><th>Confirmed Deadlines</th><th>Pool Share</th><th class=\"d-none d-sm-table-cell\">Software</th></tr>";
+        table.innerHTML = "<tr><th>Miner</th><th class=\"d-none d-sm-table-cell\">Current Deadline</th><th>Pending Balance</th><th>Eff. Capacity</th><th>Commitment/TiB</th><th class=\"d-none d-sm-table-cell\">Commitment Ratio | Boost</th><th class=\"d-none d-sm-table-cell\">Shared Capacity</th><th class=\"d-none d-sm-table-cell\">Share Model</th><th class=\"d-none d-sm-table-cell\">Donation Percent</th><th>Confirmed Deadlines</th><th>Pool Share</th><th class=\"d-none d-sm-table-cell\">Software</th></tr>";
         for (let i = 0; i < response.miners.length; i++) {
             let miner = response.miners[i];
             let currentRoundDeadline = miner.currentRoundBestDeadline == null ? "" : formatTime(miner.currentRoundBestDeadline);
@@ -227,6 +227,7 @@ function getMiners() {
               +"<td>"+miner.pendingBalance+"</td>"
               +"<td>"+formatCapacity(miner.totalCapacity)+"</td>"
               +"<td>"+miner.commitment+"</td>"
+              +"<td class=\"d-none d-sm-table-cell\">"+miner.commitmentRatio.toFixed(3) + ' | ' + miner.commitmentFactor.toFixed(3)+"</td>"
               +"<td class=\"d-none d-sm-table-cell\">"+formatCapacity(miner.sharedCapacity)+"</td>"
               +"<td class=\"d-none d-sm-table-cell\">"+miner.sharePercent+" %</td>"
               +"<td class=\"d-none d-sm-table-cell\">"+miner.donationPercent+" %</td>"
@@ -251,6 +252,8 @@ function prepareMinerInfo(address) {
     let minerDonationPercent = escapeHtml(document.getElementById("minerDonationPercent"));
     let minerCapacity = escapeHtml(document.getElementById("minerCapacity"));
     let minerCommitment = escapeHtml(document.getElementById("minerCommitment"));
+    let minerCommitmentRatio = escapeHtml(document.getElementById("minerCommitmentRatio"));
+    let minerCommitmentFactor = escapeHtml(document.getElementById("minerCommitmentFactor"));
     let minerSharedCapacity = escapeHtml(document.getElementById("minerSharedCapacity"));
     let minerNConf = escapeHtml(document.getElementById("minerNConf"));
     let minerShare = escapeHtml(document.getElementById("minerShare"));
@@ -264,6 +267,8 @@ function prepareMinerInfo(address) {
     minerDonationPercent.innerText = loading;
     minerCapacity.innerText = loading;
     minerCommitment.innerText = loading;
+    minerCommitmentRatio.innerText = loading;
+    minerCommitmentFactor.innerText = loading;
     minerSharedCapacity.innerText = loading;
     minerNConf.innerText = loading;
     minerShare.innerText = loading;
@@ -284,6 +289,8 @@ function prepareMinerInfo(address) {
         minerDonationPercent.innerText = minerNotFound;
         minerCapacity.innerText = minerNotFound;
         minerCommitment.innerText = minerNotFound;
+        minerCommitmentRatio.innerText = minerNotFound;
+        minerCommitmentFactor.innerText = minerNotFound;
         minerSharedCapacity.innerText = minerNotFound;
         minerNConf.innerText = minerNotFound;
         minerShare.innerText = minerNotFound;
@@ -302,6 +309,8 @@ function prepareMinerInfo(address) {
     minerDonationPercent.innerText = parseFloat(miner.donationPercent).toFixed(2) + " %";
     minerCapacity.innerText = formatCapacity(miner.totalCapacity);
     minerCommitment.innerText = miner.commitment;
+    minerCommitmentRatio.innerText = miner.commitmentRatio;
+    minerCommitmentFactor.innerText = miner.commitmentFactor;
     minerSharedCapacity.innerText = formatCapacity(miner.sharedCapacity);
     minerNConf.innerText = miner.nConf;
     minerShare.innerText = (parseFloat(miner.share)*100).toFixed(3) + " %";

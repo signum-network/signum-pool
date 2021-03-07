@@ -63,10 +63,7 @@ public class MinerTracker {
             // PoC+ logic
             BurstValue commitment = miner.getCommitment();
             
-            double commitmentFactor = ((double)commitment.longValue())/miningInfo.getAverageCommitmentNQT();
-            commitmentFactor = Math.pow(commitmentFactor, 0.4515449935);
-            commitmentFactor = Math.min(8.0, commitmentFactor);
-            commitmentFactor = Math.max(0.125, commitmentFactor);
+            double commitmentFactor = getCommitmentFactor(commitment, miningInfo);
             
             double newDeadline = deadline.longValue()/commitmentFactor;
             
@@ -75,6 +72,15 @@ public class MinerTracker {
         miner.processNewDeadline(new Deadline(deadline, BigInteger.valueOf(baseTarget), miner.getSharePercent(), blockHeight));
         
         return deadline;
+    }
+    
+    public static double getCommitmentFactor(BurstValue commitment, MiningInfo miningInfo) {
+        double commitmentFactor = ((double)commitment.longValue())/miningInfo.getAverageCommitmentNQT();
+        commitmentFactor = Math.pow(commitmentFactor, 0.4515449935);
+        commitmentFactor = Math.min(8.0, commitmentFactor);
+        commitmentFactor = Math.max(0.125, commitmentFactor);
+        
+        return commitmentFactor;
     }
 
     private Miner getOrCreate(StorageService storageService, BurstAddress minerAddress) {

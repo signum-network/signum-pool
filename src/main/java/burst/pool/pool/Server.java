@@ -35,6 +35,7 @@ import burst.kit.entity.response.MiningInfo;
 import burst.kit.util.BurstKitUtils;
 import burst.pool.Constants;
 import burst.pool.miners.Miner;
+import burst.pool.miners.MinerTracker;
 import burst.pool.storage.config.PropertyService;
 import burst.pool.storage.config.Props;
 import burst.pool.storage.persistent.StorageService;
@@ -301,12 +302,16 @@ public class Server extends NanoHTTPD {
 
     private JsonElement minerToJson(Miner miner, int maxNConf) {
         if (miner == null) return JsonNull.INSTANCE;
+        
+        MiningInfo miningInfo = pool.getMiningInfo();
         JsonObject minerJson = new JsonObject();
         minerJson.addProperty("address", miner.getAddress().getID());
         minerJson.addProperty("addressRS", miner.getAddress().getFullAddress());
         minerJson.addProperty("pendingBalance", miner.getPending().toFormattedString());
         minerJson.addProperty("totalCapacity", miner.getTotalCapacity());
         minerJson.addProperty("commitment", miner.getCommitment().toFormattedString());
+        minerJson.addProperty("commitmentRatio", (double)miner.getCommitment().longValue()/miningInfo.getAverageCommitmentNQT());
+        minerJson.addProperty("commitmentFactor", MinerTracker.getCommitmentFactor(miner.getCommitment(), miningInfo));
         minerJson.addProperty("sharedCapacity", miner.getSharedCapacity());
         minerJson.addProperty("sharePercent", miner.getSharePercent());
         minerJson.addProperty("donationPercent", miner.getDonationPercent());
