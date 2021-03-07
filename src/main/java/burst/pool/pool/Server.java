@@ -306,6 +306,7 @@ public class Server extends NanoHTTPD {
         minerJson.addProperty("addressRS", miner.getAddress().getFullAddress());
         minerJson.addProperty("pendingBalance", miner.getPending().toFormattedString());
         minerJson.addProperty("totalCapacity", miner.getTotalCapacity());
+        minerJson.addProperty("commitment", miner.getCommitment().toFormattedString());
         minerJson.addProperty("sharedCapacity", miner.getSharedCapacity());
         minerJson.addProperty("sharePercent", miner.getSharePercent());
         minerJson.addProperty("donationPercent", miner.getDonationPercent());
