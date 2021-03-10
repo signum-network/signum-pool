@@ -116,7 +116,7 @@ function getCurrentRound() {
     }).then(response => {
         roundStart = response.roundStart;
         document.getElementById("blockHeight").innerText = response.miningInfo.height;
-        document.getElementById("netDiff").innerText = formatBaseTarget(response.miningInfo.baseTarget) + ' | ' +
+        document.getElementById("netDiff").innerText = formatBaseTarget(response.miningInfo.baseTarget) + ' + ' +
           Math.round(response.miningInfo.averageCommitmentNQT / 1e8).toFixed(2) + ' BURST/TiB';
         if (response.bestDeadline != null) {
             /* document.getElementById("bestDeadline").innerText = formatTime(response.bestDeadline.deadline); */
