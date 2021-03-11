@@ -90,7 +90,7 @@ public class MinerTracker {
         }
         submission.setDeadline(deadline, newDeadline);
         miner.registerSubmission(submission);
-        miner.processNewDeadline(new Deadline(deadline, BigInteger.valueOf(baseTarget), miner.getSharePercent(), blockHeight));
+        miner.processNewDeadline(new Deadline(newDeadline, BigInteger.valueOf(baseTarget), miner.getSharePercent(), blockHeight));
     }
     
     public static double getCommitmentFactor(BurstValue commitment, MiningInfo miningInfo) {
