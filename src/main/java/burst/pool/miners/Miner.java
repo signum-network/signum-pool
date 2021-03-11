@@ -2,11 +2,13 @@ package burst.pool.miners;
 
 import burst.kit.entity.BurstAddress;
 import burst.kit.entity.BurstValue;
+import burst.pool.pool.Submission;
 import burst.pool.storage.config.PropertyService;
 import burst.pool.storage.config.Props;
 import burst.pool.storage.persistent.MinerStore;
 
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -17,8 +19,9 @@ public class Miner implements Payable {
 
     private final BurstAddress address;
     private final MinerStore store;
-    private int commitmentHeight;
+    private int submittingHeight;
     private AtomicReference<BurstValue> commitment = new AtomicReference<>();
+    private HashMap<BigInteger, Submission> submissionsOnThisHeight = new HashMap<>();
 
     public Miner(MinerMaths minerMaths, PropertyService propertyService, BurstAddress address, MinerStore store) {
         this.minerMaths = minerMaths;
@@ -159,9 +162,16 @@ public class Miner implements Payable {
         store.setName(name);
     }
     
-    public void setCommitment(BurstValue commitment, int height) {
+    public void setSubmittingHeight(int height) {
+        if(submittingHeight != height) {
+            this.commitment.set(null);
+            submissionsOnThisHeight.clear();
+        }
+        this.submittingHeight = height;
+    }
+    
+    public void setCommitment(BurstValue commitment) {
         this.commitment.set(commitment);
-        this.commitmentHeight = height;
     }
     
     public BurstValue getCommitment() {
@@ -171,8 +181,8 @@ public class Miner implements Payable {
         return value;
     }
     
-    public int getCommitmentHeight() {
-        return this.commitmentHeight;
+    public int getSubmittingHeight() {
+        return this.submittingHeight;
     }
     
     public String getUserAgent() {
@@ -190,5 +200,13 @@ public class Miner implements Payable {
     public BigInteger getBestDeadline(long height) {
         Deadline deadline = store.getDeadline(height);
         return deadline == null ? null : deadline.getDeadline();
+    }
+    
+    public void registerSubmission(Submission submission) {
+        submissionsOnThisHeight.put(submission.getNonce(), submission);
+    }
+    
+    public Submission getPreviousSubmission(BigInteger nonce) {
+        return submissionsOnThisHeight.get(nonce);
     }
 }
