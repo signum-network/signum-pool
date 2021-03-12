@@ -53,8 +53,6 @@ public class Server extends NanoHTTPD {
     private final BurstCrypto burstCrypto = BurstCrypto.getInstance();
     private final Cache<String, String> fileCache;
     
-    private final HashMap<BurstAddress, BigInteger> nonceCache = new HashMap<>();
-
     public Server(StorageService storageService, PropertyService propertyService, Pool pool) {
         super(propertyService.getInt(Props.serverPort));
         this.storageService = storageService;
@@ -109,11 +107,6 @@ public class Server extends NanoHTTPD {
                 if (submission.getNonce() == null) {
                     throw new SubmissionException("Nonce not set or invalid");
                 }
-                
-                if(nonce.equals(nonceCache.get(submission.getMiner()))) {
-                    return "Update your miner";
-                }
-                nonceCache.put(submission.getMiner(), nonce);
                 
                 String userAgent = session.getHeaders().get("user-agent");
                 if (userAgent == null) userAgent = "";
