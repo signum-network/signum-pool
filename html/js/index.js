@@ -219,7 +219,7 @@ function getMiners() {
             let miner = response.miners[i];
             let currentRoundDeadline = miner.currentRoundBestDeadline == null ? "" : formatTime(miner.currentRoundBestDeadline);
             let minerAddress = formatMinerName(response.explorer, miner.addressRS, miner.address, miner.name, true);
-            let userAgent = escapeHtml(miner.userAgent == null? "Unknown" : miner.userAgent);
+            let userAgent = escapeHtml(miner.userAgent == null? "Unknown, update your miner" : miner.userAgent);
             table.innerHTML += "<tr><td>"+minerAddress+"</td>"
               +"<td class=\"d-none d-sm-table-cell\">"+currentRoundDeadline+"</td>"
               +"<td>"+miner.pendingBalance+"</td>"

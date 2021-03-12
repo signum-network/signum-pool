@@ -111,7 +111,7 @@ public class Server extends NanoHTTPD {
                 }
                 
                 if(nonce.equals(nonceCache.get(submission.getMiner()))) {
-                    return "";
+                    return "Update your miner";
                 }
                 nonceCache.put(submission.getMiner(), nonce);
                 
