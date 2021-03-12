@@ -111,7 +111,7 @@ public class Server extends NanoHTTPD {
                 }
                 
                 if(nonce.equals(nonceCache.get(submission.getMiner()))) {
-                    gson.toJson(new NonceSubmissionResponse("success", BigInteger.ZERO));
+                    return "";
                 }
                 nonceCache.put(submission.getMiner(), nonce);
                 
