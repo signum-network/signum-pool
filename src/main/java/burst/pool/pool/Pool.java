@@ -359,6 +359,17 @@ public class Pool {
             throw new SubmissionException("Cannot submit - new round starting");
         }
 
+        MiningInfo localMiningInfo = miningInfo.get();
+        BigInteger deadline = burstCrypto.calculateDeadline(submission.getMiner(), Long.parseUnsignedLong(submission.getNonce().toString()), localMiningInfo.getGenerationSignature(), burstCrypto.calculateScoop(localMiningInfo.getGenerationSignature(), localMiningInfo.getHeight()), localMiningInfo.getBaseTarget(), 2);
+
+        if (deadline.compareTo(BigInteger.valueOf(propertyService.getLong(Props.maxDeadline))) >= 0) {
+            throw new SubmissionException("Deadline exceeds maximum allowed deadline");
+        }
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("New submission from {} of nonce {}, calculated deadline {} seconds.", submission.getMiner(), submission.getNonce(), deadline.toString());
+        }
+
         try {
             try {
                 processDeadlineSemaphore.acquire();
@@ -367,8 +378,7 @@ public class Pool {
                 throw new SubmissionException("Server Interrupted");
             }
             
-            minerTracker.onMinerSubmittedDeadline(storageService, submission, miningInfo.get(), userAgent);
-            BigInteger newDeadline = submission.getNewDeadline();
+            BigInteger newDeadline = minerTracker.onMinerSubmittedDeadline(storageService, submission.getMiner(), deadline, miningInfo.get(), userAgent);
 
             if (bestSubmission.get() != null) {
                 if (logger.isDebugEnabled()) {
@@ -383,7 +393,7 @@ public class Pool {
                 onNewBestDeadline(miningInfo.get().getHeight(), submission, newDeadline);
             }
 
-            return submission.getLegacyDeadline();
+            return deadline;
         } finally {
             processDeadlineSemaphore.release();
         }
