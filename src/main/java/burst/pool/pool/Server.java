@@ -52,6 +52,8 @@ public class Server extends NanoHTTPD {
     private final Gson gson = BurstKitUtils.buildGson().create();
     private final BurstCrypto burstCrypto = BurstCrypto.getInstance();
     private final Cache<String, String> fileCache;
+    
+    private final HashMap<BurstAddress, BigInteger> nonceCache = new HashMap<>();
 
     public Server(StorageService storageService, PropertyService propertyService, Pool pool) {
         super(propertyService.getInt(Props.serverPort));
@@ -107,6 +109,12 @@ public class Server extends NanoHTTPD {
                 if (submission.getNonce() == null) {
                     throw new SubmissionException("Nonce not set or invalid");
                 }
+                
+                if(nonce.equals(nonceCache.get(submission.getMiner()))) {
+                    gson.toJson(new NonceSubmissionResponse("success", BigInteger.ZERO));
+                }
+                nonceCache.put(submission.getMiner(), nonce);
+                
                 String userAgent = session.getHeaders().get("user-agent");
                 if (userAgent == null) userAgent = "";
                 return gson.toJson(new NonceSubmissionResponse("success", pool.checkNewSubmission(submission, userAgent)));
