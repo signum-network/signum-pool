@@ -199,7 +199,6 @@ public class Server extends NanoHTTPD {
                         JsonObject wonBlockJson = new JsonObject();
                         wonBlockJson.addProperty("height", wonBlock.getBlockHeight());
                         wonBlockJson.addProperty("id", wonBlock.getBlockId().getID());
-                        wonBlockJson.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
                         wonBlockJson.addProperty("generator", wonBlock.getGeneratorId().getID());
                         wonBlockJson.addProperty("generatorRS", wonBlock.getGeneratorId().getFullAddress());
                         Miner miner = storageService.getMiner(wonBlock.getGeneratorId());
@@ -212,6 +211,8 @@ public class Server extends NanoHTTPD {
                     });
             JsonObject response = new JsonObject();
             response.add("wonBlocks", wonBlocks);
+            response.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
+
             return response.toString();
         } else {
             return "null";
@@ -285,6 +286,7 @@ public class Server extends NanoHTTPD {
                     .replace("{DISCORD}", propertyService.getString(Props.siteDiscordLink))
                     .replace("{INFO}", propertyService.getString(Props.siteInfo))
                     .replace("{POOL_ACCOUNT}", burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase)).getFullAddress())
+                    .replace("{LAG}", Integer.toString(propertyService.getInt(Props.processLag)))
                     .replace("{MIN_PAYOUT}", BurstValue.fromBurst(propertyService.getFloat(Props.minimumMinimumPayout)).toUnformattedString())
                     .replace("{FAUCET}", propertyService.getString(Props.siteFaucetURL))
                     .replace("{EXPLORER}", propertyService.getString(Props.siteExplorerURL));
@@ -311,6 +313,7 @@ public class Server extends NanoHTTPD {
         minerJson.addProperty("pendingBalance", miner.getPending().toFormattedString());
         minerJson.addProperty("totalCapacity", miner.getTotalCapacity());
         minerJson.addProperty("commitment", miner.getCommitment().toFormattedString());
+        minerJson.addProperty("committedBalance", miner.getCommittedBalance().toFormattedString());
         minerJson.addProperty("commitmentRatio", (double)miner.getCommitment().longValue()/miningInfo.getAverageCommitmentNQT());
         minerJson.addProperty("commitmentFactor", MinerTracker.getCommitmentFactor(miner.getCommitment(), miningInfo));
         minerJson.addProperty("sharedCapacity", miner.getSharedCapacity());

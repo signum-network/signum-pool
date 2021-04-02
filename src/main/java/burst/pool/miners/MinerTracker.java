@@ -50,11 +50,11 @@ public class MinerTracker {
         if(miner.getCommitmentHeight() != blockHeight) {
             miner.setUserAgent(userAgent);
             try {
-                Account accountResponse = nodeService.getAccount(minerAddress, blockHeight-1, true).blockingGet();
+                Account accountResponse = nodeService.getAccount(minerAddress, blockHeight-1, true, true).blockingGet();
                 onMinerAccount(storageService, accountResponse, blockHeight);                
             }
             catch (Exception e) {
-                miner.setCommitment(null, blockHeight);
+                miner.setCommitment(null, null, blockHeight);
                 onMinerAccountError(e);
             }
         }
@@ -262,7 +262,7 @@ public class MinerTracker {
         if (miner == null) return;
         if (accountResponse.getName() == null) return;
         miner.setName(accountResponse.getName());
-        miner.setCommitment(accountResponse.getCommitment(), height);
+        miner.setCommitment(accountResponse.getCommitment(), accountResponse.getCommittedBalance(), height);
     }
 
     private void onMinerAccountError(Throwable throwable) {

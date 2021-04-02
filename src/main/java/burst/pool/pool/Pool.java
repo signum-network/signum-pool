@@ -313,7 +313,7 @@ public class Pool {
                 if(miningInfo.get()!=null) {
                     long mod = miningInfo.get().getHeight() % (transferBlocks);
                     if(mod == 0L) {
-                        Account balance = nodeService.getAccount(secondaryAddress, null, null).blockingGet();
+                        Account balance = nodeService.getAccount(secondaryAddress, null, null, null).blockingGet();
                         if(balance.getBalance().compareTo(BurstValue.fromBurst(propertyService.getFloat(Props.minimumMinimumPayout))) > 0) {
                             BurstValue amountToSend = balance.getBalance().subtract(getTransactionFee());
                             byte[] unsignedBytes = nodeService.generateTransaction(primaryAddress, burstCrypto.getPublicKey(passphrase), amountToSend,
