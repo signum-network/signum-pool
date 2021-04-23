@@ -362,7 +362,9 @@ public class Pool {
         MiningInfo localMiningInfo = miningInfo.get();
         BigInteger deadline = burstCrypto.calculateDeadline(submission.getMiner(), Long.parseUnsignedLong(submission.getNonce().toString()), localMiningInfo.getGenerationSignature(), burstCrypto.calculateScoop(localMiningInfo.getGenerationSignature(), localMiningInfo.getHeight()), localMiningInfo.getBaseTarget(), 2);
 
-        if (deadline.compareTo(BigInteger.valueOf(propertyService.getLong(Props.maxDeadline))) >= 0) {
+        // With PoC+ we have up to a factor of 8, since miner software is unaware of that we need to accept it up to 8 times larger
+        long factor = localMiningInfo.getHeight() >= propertyService.getInt(Props.pocPlusBlock) ? 8 : 1;
+        if (deadline.compareTo(BigInteger.valueOf(propertyService.getLong(Props.maxDeadline) * factor)) >= 0) {
             throw new SubmissionException("Deadline exceeds maximum allowed deadline");
         }
 
