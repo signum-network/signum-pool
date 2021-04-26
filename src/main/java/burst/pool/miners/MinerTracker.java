@@ -259,9 +259,10 @@ public class MinerTracker {
     private void onMinerAccount(StorageService storageService, Account accountResponse, int height) {
         waitUntilNotProcessingBlock();
         Miner miner = storageService.getMiner(accountResponse.getId());
-        if (miner == null) return;
-        if (accountResponse.getName() == null) return;
-        miner.setName(accountResponse.getName());
+        if (miner == null)
+            return;
+        if (accountResponse.getName() != null)
+            miner.setName(accountResponse.getName());
         miner.setCommitment(accountResponse.getCommitment(), accountResponse.getCommittedBalance(), height);
     }
 
