@@ -8,7 +8,7 @@ import java.math.BigInteger;
 public class MinerMaths {
     private final Logger logger = LoggerFactory.getLogger(MinerMaths.class);
 
-    private static final long GenesisBaseTarget = 18325193796L;
+    public static final long GENESIS_BASE_TARGET = 18325193796L;
     private final double[] alphas;
 
     public MinerMaths(int nAvg, int nMin) {
@@ -43,7 +43,7 @@ public class MinerMaths {
         if (hitSum.compareTo(BigInteger.ZERO) == 0) {
             throw new ArithmeticException();
         }
-        double plotSize =  alphaValue * 240d * (((double)nConf)-1d) * (double)GenesisBaseTarget / hitSum.doubleValue();
+        double plotSize =  alphaValue * 240d * (((double)nConf)-1d) * (double)GENESIS_BASE_TARGET / hitSum.doubleValue();
         if (Double.isInfinite(plotSize) || Double.isNaN(plotSize)) {
             logger.debug("Calculated impossible plot size. alpha: " + alphaValue + ", nConf: " + nConf + ", hitSum: " + hitSum);
             throw new ArithmeticException();

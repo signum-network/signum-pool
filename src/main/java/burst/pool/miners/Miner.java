@@ -43,8 +43,14 @@ public class Miner implements Payable {
         deadlines.forEach(deadline -> {
             BigInteger hit = deadline.calculateHit();
             hitSum.set(hitSum.get().add(hit));
-            hit = hit.divide(BigInteger.valueOf(deadline.getSharePercent()))
+            if(deadline.getSharePercent() > 0) {
+                hit = hit.divide(BigInteger.valueOf(deadline.getSharePercent()))
                     .multiply(BigInteger.valueOf(100L));
+            }
+            else {
+                // Set a very high hit to produce a zero shared capacity
+                hit = BigInteger.valueOf(MinerMaths.GENESIS_BASE_TARGET * 10000L);
+            }
             hitSumShared.set(hitSumShared.get().add(hit));
         });
         // Calculate estimated capacity
