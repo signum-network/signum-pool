@@ -32,7 +32,7 @@ public class MinerTracker {
     private final BurstCrypto burstCrypto = BurstCrypto.getInstance();
     private final BurstNodeService nodeService;
     private final AtomicBoolean currentlyProcessingBlock = new AtomicBoolean(false);
-
+    
     private final Semaphore payoutSemaphore = new Semaphore(1);
 
     public MinerTracker(BurstNodeService nodeService, PropertyService propertyService) {
@@ -41,7 +41,7 @@ public class MinerTracker {
     }
 
     public BigInteger onMinerSubmittedDeadline(StorageService storageService, BurstAddress minerAddress, BigInteger deadline, MiningInfo miningInfo, String userAgent) {
-        waitUntilNotProcessingBlock();
+        // waitUntilNotProcessingBlock();
         Miner miner = getOrCreate(storageService, minerAddress);
         
         long baseTarget = miningInfo.getBaseTarget();
@@ -50,11 +50,13 @@ public class MinerTracker {
         if(miner.getCommitmentHeight() != blockHeight) {
             miner.setUserAgent(userAgent);
             try {
-                Account accountResponse = nodeService.getAccount(minerAddress, blockHeight-1, true, true).blockingGet();
-                onMinerAccount(storageService, accountResponse, blockHeight);                
+                // Get the latest available and not an explicit block height because this can generate exceptions
+                // in case the node is doing a roll-back for a short lived fork.
+                Account accountResponse = nodeService.getAccount(minerAddress, null, true, true).blockingGet();
+                onMinerAccount(miner, accountResponse, blockHeight);
             }
             catch (Exception e) {
-                miner.setCommitment(null, null, blockHeight);
+                // miner.setCommitment(null, null, blockHeight);
                 onMinerAccountError(e);
             }
         }
@@ -149,13 +151,6 @@ public class MinerTracker {
 
         // Update each miner's share
         miners.forEach(miner -> miner.recalculateShare(poolCapacity.get()));
-    }
-
-    public void setMinerMinimumPayout(StorageService storageService, BurstAddress minerAddress, BurstValue amount) {
-        waitUntilNotProcessingBlock();
-        Miner miner = storageService.getMiner(minerAddress);
-        if (miner == null) return;
-        miner.setMinimumPayout(amount);
     }
 
     public void payoutIfNeeded(StorageService storageService, BurstValue transactionFee) {
@@ -299,10 +294,7 @@ public class MinerTracker {
         payoutSemaphore.release();
     }
 
-
-    private void onMinerAccount(StorageService storageService, Account accountResponse, int height) {
-        waitUntilNotProcessingBlock();
-        Miner miner = storageService.getMiner(accountResponse.getId());
+    private void onMinerAccount(Miner miner, Account accountResponse, int height) {
         if (miner == null)
             return;
         if (accountResponse.getName() != null)
@@ -317,7 +309,7 @@ public class MinerTracker {
     private void waitUntilNotProcessingBlock() {
         while (currentlyProcessingBlock.get()) {
             try {
-                Thread.sleep(1);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
