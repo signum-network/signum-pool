@@ -51,7 +51,7 @@ public class Pool {
 
     private final Semaphore processBlockSemaphore = new Semaphore(1);
     private final Semaphore resetRoundSemaphore = new Semaphore(1);
-    private final Semaphore processDeadlineSemaphore = new Semaphore(1);
+    private final Semaphore processDeadlineSemaphore = new Semaphore(12);
 
     // Variables
     private final AtomicReference<Instant> roundStartTime = new AtomicReference<>();
@@ -264,13 +264,14 @@ public class Pool {
     }
 
     private void resetRound(MiningInfo newMiningInfo) {
+        
         // Traffic flow - we want to stop new requests but let old ones finish before we go ahead.
         try {
             // Lock the reset round semaphore to stop accepting new requests
             resetRoundSemaphore.acquire();
             // Wait for all requests to be processed
             while (processDeadlineSemaphore.getQueueLength() > 0) {
-                Thread.sleep(1);
+                Thread.sleep(100);
             }
             // Lock the process block semaphore as we are going to be modifying bestSubmission
             processDeadlineSemaphore.acquire();
@@ -279,6 +280,7 @@ public class Pool {
             return;
         }
 
+        
         bestSubmission.set(null);
         bestDeadline.set(BigInteger.valueOf(Long.MAX_VALUE));
         roundStartTime.set(Instant.now());

@@ -12,7 +12,7 @@ buildscript {
 }
 
 plugins {
-    id "org.flywaydb.flyway" version "6.0.0-beta"
+    id "org.flywaydb.flyway" version "7.3.2"
     id "distribution"
     id 'com.palantir.git-version' version '0.12.2'
 }
@@ -32,6 +32,8 @@ targetCompatibility = 1.8
 
 def dburl =  "jdbc:mariadb://localhost:3306/pooldb"
 def dbusername = "root"
+//def dburl =  "jdbc:h2:file:./tmp.h2;DB_CLOSE_ON_EXIT=FALSE"
+//def dbusername = ""
 
 dependencies {
     implementation 'org.apache.poi:poi-ooxml:4.1.0'
@@ -55,13 +57,16 @@ dependencies {
     //compile "com.h2database:h2:1.4.197"
     //jooqRuntime "com.h2database:h2:1.4.197"
     compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'
+    compile group: 'com.h2database', name: 'h2', version: '1.4.199'
     jooqRuntime group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'
+    jooqRuntime group: 'com.h2database', name: 'h2', version: '1.4.199'
 }
 
 flyway {
     url = "${dburl}"
     user = "${dbusername}"
     locations = ["filesystem:"+project.projectDir.toString()+"/src/main/resources/db/migration"]
+    //locations = ["filesystem:"+project.projectDir.toString()+"/src/main/resources/db/migration_h2"]
 }
 
 jooq {
@@ -78,6 +83,8 @@ jooq {
                 includes = ".*"
                 name = "org.jooq.meta.mariadb.MariaDBDatabase"
                 inputSchema = "pooldb"
+                //name = "org.jooq.meta.h2.H2Database"
+                //inputSchema = "tmp.h2"
                 outputSchemaToDefault = true
             }
             target {

@@ -29,20 +29,20 @@ public class Miner implements Payable {
     }
 
     public void recalculateCapacity(long currentBlockHeight) {
-        // Prune older deadlines
-        store.getDeadlines().forEach(deadline -> {
-            if (currentBlockHeight - deadline.getHeight() >= propertyService.getInt(Props.nAvg)) {
-                store.removeDeadline(deadline.getHeight());
-            }
-        });
         // Calculate hitSum
-        AtomicReference<BigInteger> hitSumShared = new AtomicReference<>(BigInteger.ZERO);
-        AtomicReference<BigInteger> hitSum = new AtomicReference<>(BigInteger.ZERO);
+        BigInteger hitSumShared = BigInteger.ZERO;
+        BigInteger hitSum = BigInteger.ZERO;
         AtomicInteger deadlineCount = new AtomicInteger(store.getDeadlineCount());
         List<Deadline> deadlines = store.getDeadlines();
-        deadlines.forEach(deadline -> {
+        for(Deadline deadline : deadlines) {
+            if (currentBlockHeight - deadline.getHeight() >= propertyService.getInt(Props.nAvg)) {
+                // Prune older deadlines
+                store.removeDeadline(deadline.getHeight());
+                continue;
+            }
+            
             BigInteger hit = deadline.calculateHit();
-            hitSum.set(hitSum.get().add(hit));
+            hitSum = hitSum.add(hit);
             if(deadline.getSharePercent() > 0) {
                 hit = hit.divide(BigInteger.valueOf(deadline.getSharePercent()))
                     .multiply(BigInteger.valueOf(100L));
@@ -51,12 +51,12 @@ public class Miner implements Payable {
                 // Set a very high hit to produce a zero shared capacity
                 hit = BigInteger.valueOf(MinerMaths.GENESIS_BASE_TARGET * 10000L);
             }
-            hitSumShared.set(hitSumShared.get().add(hit));
-        });
+            hitSumShared = hitSumShared.add(hit);
+        }
         // Calculate estimated capacity
         try {
-            store.setSharedCapacity(minerMaths.estimatedEffectivePlotSize(deadlines.size(), deadlineCount.get(), hitSumShared.get()));
-            store.setTotalCapacity(minerMaths.estimatedTotalPlotSize(deadlines.size(), hitSum.get()));
+            store.setSharedCapacity(minerMaths.estimatedEffectivePlotSize(deadlines.size(), deadlineCount.get(), hitSumShared));
+            store.setTotalCapacity(minerMaths.estimatedTotalPlotSize(deadlines.size(), hitSum));
         } catch (ArithmeticException ignored) {
         }
     }
