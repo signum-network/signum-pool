@@ -6,7 +6,7 @@ package burst.pool.db.tables.records;
 
 import burst.pool.db.tables.MinerDeadlines;
 
-import javax.annotation.Generated;
+import javax.annotation.processing.*;
 
 import org.jooq.Field;
 import org.jooq.Record1;

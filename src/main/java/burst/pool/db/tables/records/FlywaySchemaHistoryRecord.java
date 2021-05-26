@@ -8,7 +8,7 @@ import burst.pool.db.tables.FlywaySchemaHistory;
 
 import java.sql.Timestamp;
 
-import javax.annotation.Generated;
+import javax.annotation.processing.*;
 
 import org.jooq.Field;
 import org.jooq.Record1;

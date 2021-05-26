@@ -12,7 +12,8 @@ import burst.pool.db.tables.Payouts;
 import burst.pool.db.tables.PoolState;
 import burst.pool.db.tables.WonBlocks;
 
-import javax.annotation.Generated;
+import javax.annotation.processing.*;
+
 
 
 /**

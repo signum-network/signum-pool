@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.Generated;
+import javax.annotation.processing.*;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;

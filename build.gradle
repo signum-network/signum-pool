@@ -14,7 +14,7 @@ buildscript {
 plugins {
     id "org.flywaydb.flyway" version "6.0.0-beta"
     id "distribution"
-    id 'com.palantir.git-version' version '0.12.2'
+    id 'com.palantir.git-version' version '0.12.3'
 }
 
 repositories {
@@ -34,8 +34,9 @@ def dburl =  "jdbc:mariadb://localhost:3306/pooldb"
 def dbusername = "root"
 
 dependencies {
-    implementation 'org.apache.poi:poi-ooxml:4.1.0'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+    implementation 'org.apache.poi:poi-ooxml:5.0.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
     implementation 'com.github.burst-apps-team:burstkit4j:b2e653c0d9'
     //implementation 'com.github.jjos2372:burstkit4j:35fbdae491'
     implementation 'org.nanohttpd:nanohttpd:2.3.1'

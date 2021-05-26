@@ -19,7 +19,7 @@ import burst.pool.db.tables.records.PayoutsRecord;
 import burst.pool.db.tables.records.PoolStateRecord;
 import burst.pool.db.tables.records.WonBlocksRecord;
 
-import javax.annotation.Generated;
+import javax.annotation.processing.*;
 
 import org.jooq.Identity;
 import org.jooq.UniqueKey;
