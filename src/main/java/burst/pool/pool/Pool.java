@@ -31,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -125,6 +126,15 @@ public class Pool {
                 if (miningInfo.get() == null || processBlockSemaphore.availablePermits() == 0 || miningInfo.get().getHeight() - 1 <= storageService.getLastProcessedBlock() + propertyService.getInt(Props.processLag)) {
                     return;
                 }
+                
+                // Leave the process blocks only a minute after starting a new round
+                // TODO: add a configuration for this
+                Duration roundDuration = Duration.between(roundStartTime.get(), Instant.now());
+                if(roundDuration.toMillis() < 60000) {
+                    return;
+                }
+                
+                logger.info("Started processing block {}", storageService.getLastProcessedBlock() + 1);
 
                 try {
                     processBlockSemaphore.acquire();
@@ -261,6 +271,8 @@ public class Pool {
         if (actuallyProcessed) {
             minerTracker.payoutIfNeeded(storageService, transactionFee.get());
         }
+        
+        logger.info("Finished processing block {}", storageService.getLastProcessedBlock());
     }
 
     private void resetRound(MiningInfo newMiningInfo) {

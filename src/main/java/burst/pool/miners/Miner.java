@@ -33,7 +33,7 @@ public class Miner implements Payable {
         // Calculate hitSum
         BigInteger hitSumShared = BigInteger.ZERO;
         BigInteger hitSum = BigInteger.ZERO;
-        AtomicInteger deadlineCount = new AtomicInteger(store.getDeadlineCount());
+        int deadlineCount = store.getDeadlineCount();
         List<Deadline> deadlines = store.getDeadlines();
         for(Deadline deadline : deadlines) {
             if (currentBlockHeight - deadline.getHeight() >= propertyService.getInt(Props.nAvg)) {
@@ -56,7 +56,7 @@ public class Miner implements Payable {
         }
         // Calculate estimated capacity
         try {
-            store.setSharedCapacity(minerMaths.estimatedEffectivePlotSize(deadlines.size(), deadlineCount.get(), hitSumShared));
+            store.setSharedCapacity(minerMaths.estimatedEffectivePlotSize(deadlines.size(), deadlineCount, hitSumShared));
             store.setTotalCapacity(minerMaths.estimatedTotalPlotSize(deadlines.size(), hitSum));
         } catch (ArithmeticException ignored) {
         }
