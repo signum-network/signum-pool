@@ -29,7 +29,7 @@ public class Launcher {
             propertiesFileName = args[0];
         }
         PropertyService propertyService = new PropertyServiceImpl(propertiesFileName);
-        MinerMaths minerMaths = new MinerMaths(propertyService.getInt(Props.nAvg), propertyService.getInt(Props.nMin));
+        MinerMaths minerMaths = new MinerMaths(propertyService.getInt(Props.nAvg) + propertyService.getInt(Props.processLag), propertyService.getInt(Props.nMin));
         BurstNodeService nodeService = BurstNodeService.getCompositeInstanceWithUserAgent(Constants.USER_AGENT, propertyService.getStringList(Props.nodeAddresses));
         StorageService storageService = null;
         try {

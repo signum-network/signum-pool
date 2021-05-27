@@ -402,14 +402,6 @@ public class DbStorageService implements StorageService {
     }
 
     @Override
-    public void removeBestSubmission(long blockHeight) {
-        useDslContextVoid(context -> context.deleteFrom(BEST_SUBMISSIONS)
-                .where(BEST_SUBMISSIONS.HEIGHT.eq(blockHeight))
-                .execute());
-        removeFromCache(BEST_SUBMISSIONS, Long.toString(blockHeight));
-    }
-
-    @Override
     public void addWonBlock(WonBlock wonBlock) {
         // Won blocks are not cached. TODO cache!
         useDslContextVoid(context -> context.insertInto(WON_BLOCKS, WON_BLOCKS.BLOCK_HEIGHT, WON_BLOCKS.BLOCK_ID, WON_BLOCKS.GENERATOR_ID, WON_BLOCKS.NONCE, WON_BLOCKS.FULL_REWARD, WON_BLOCKS.POOL_SHARE)
@@ -432,6 +424,14 @@ public class DbStorageService implements StorageService {
                 .values(payout.getTransactionId().getSignedLongId(), payout.getSenderPublicKey(), payout.getFee().toPlanck().longValue(), (long) payout.getDeadline(), payout.getAttachment())
                 .execute());
     }
+    
+    @Override
+    public void removeDeadlinesBefore(long height) {
+        useDslContextVoid(context -> context.delete(MINER_DEADLINES)
+                .where(MINER_DEADLINES.HEIGHT.le(height))
+                .execute());
+    }
+
 
     @Override
     public void close() throws Exception {
@@ -451,13 +451,6 @@ public class DbStorageService implements StorageService {
         private DbMinerStore(long accountId) {
             this.accountId = accountId;
             this.accountIdStr = Long.toUnsignedString(accountId);
-        }
-
-        private void recalculateCacheDeadlineCount() { // TODO increase / decrease would be faster...
-            useDslContextVoid(context -> storeInCache(MINER_DEADLINES, accountIdStr + "dlcount", context.selectCount()
-                    .from(MINER_DEADLINES)
-                    .where(MINER_DEADLINES.ACCOUNT_ID.eq(accountId))
-                    .fetchAny(0, int.class)));
         }
 
         @Override
@@ -596,23 +589,6 @@ public class DbStorageService implements StorageService {
         }
 
         @Override
-        public int getDeadlineCount() {
-            return getFromCacheOr(MINER_DEADLINES, accountIdStr + "dlcount", () -> useDslContext(context -> context.selectCount()
-                    .from(MINER_DEADLINES)
-                    .where(MINER_DEADLINES.ACCOUNT_ID.eq(accountId))
-                    .fetchAny(0, int.class)));
-        }
-
-        @Override
-        public void removeDeadline(long height) {
-            useDslContextVoid(context -> context.delete(MINER_DEADLINES)
-                    .where(MINER_DEADLINES.ACCOUNT_ID.eq(accountId), MINER_DEADLINES.HEIGHT.eq(height))
-                    .execute());
-            removeFromCache(MINER_DEADLINES, accountIdStr + "deadline" + Long.toString(height));
-            recalculateCacheDeadlineCount();
-        }
-
-        @Override
         public Deadline getDeadline(long height) {
             try {
                 return getFromCacheOr(MINER_DEADLINES, accountIdStr + "deadline" + Long.toString(height), () -> useDslContext(context -> context.select(MINER_DEADLINES.BASE_TARGET, MINER_DEADLINES.SHARE_PERCENT, MINER_DEADLINES.HEIGHT, MINER_DEADLINES.DEADLINE)
@@ -632,7 +608,6 @@ public class DbStorageService implements StorageService {
                     .values(accountId, deadline.getSharePercent(), height, deadline.getDeadline().longValue(), deadline.getBaseTarget().longValue())
                     .execute());
             storeInCache(MINER_DEADLINES, accountIdStr + "deadline" + Long.toString(height), deadline);
-            recalculateCacheDeadlineCount();
         }
     }
 

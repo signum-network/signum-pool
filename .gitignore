@@ -126,3 +126,5 @@ dist/db/
 org.eclipse*
 bin/
 /test/
+/logging.xml
+/pool.properties

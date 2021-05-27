@@ -30,10 +30,10 @@ public interface StorageService extends AutoCloseable {
     Map<Long, List<StoredSubmission>> getBestSubmissions();
     List<StoredSubmission> getBestSubmissionsForBlock(long blockHeight);
     void addBestSubmissionForBlock(long blockHeight, StoredSubmission submission);
-    void removeBestSubmission(long blockHeight); // TODO unused
 
     void addWonBlock(WonBlock wonBlock);
     List<WonBlock> getWonBlocks(int limit);
 
     void addPayout(Payout payout);
+    void removeDeadlinesBefore(long lastHeight);
 }

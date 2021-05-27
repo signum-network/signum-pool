@@ -21,27 +21,32 @@ public class Miner implements Payable {
     private AtomicReference<BurstValue> commitment = new AtomicReference<>();
     private AtomicReference<BurstValue> committedBalance = new AtomicReference<>();
     private String userAgent, name;
+    private AtomicInteger nconf = new AtomicInteger(0);
 
     public Miner(MinerMaths minerMaths, PropertyService propertyService, BurstAddress address, MinerStore store) {
         this.minerMaths = minerMaths;
         this.propertyService = propertyService;
         this.address = address;
         this.store = store;
+        
+        // read the current nconf for each miner
+        List<Deadline> deadlines = store.getDeadlines();
+        nconf.set(deadlines.size());
     }
 
     public void recalculateCapacity(long currentBlockHeight) {
         // Calculate hitSum
         BigInteger hitSumShared = BigInteger.ZERO;
         BigInteger hitSum = BigInteger.ZERO;
-        int deadlineCount = store.getDeadlineCount();
         List<Deadline> deadlines = store.getDeadlines();
+        int deadlinesCount = 0;
         for(Deadline deadline : deadlines) {
-            if (currentBlockHeight - deadline.getHeight() >= propertyService.getInt(Props.nAvg)) {
-                // Prune older deadlines
-                store.removeDeadline(deadline.getHeight());
+            if (deadline.getHeight() > currentBlockHeight + propertyService.getInt(Props.processLag)) {
+                // skip the current round, not yet finished
                 continue;
             }
             
+            deadlinesCount++;
             BigInteger hit = deadline.calculateHit();
             hitSum = hitSum.add(hit);
             if(deadline.getSharePercent() > 0) {
@@ -54,10 +59,12 @@ public class Miner implements Payable {
             }
             hitSumShared = hitSumShared.add(hit);
         }
+        nconf.set(deadlinesCount);
+
         // Calculate estimated capacity
         try {
-            store.setSharedCapacity(minerMaths.estimatedEffectivePlotSize(deadlines.size(), deadlineCount, hitSumShared));
-            store.setTotalCapacity(minerMaths.estimatedTotalPlotSize(deadlines.size(), hitSum));
+            store.setSharedCapacity(minerMaths.estimatedEffectivePlotSize(deadlinesCount, hitSumShared));
+            store.setTotalCapacity(minerMaths.estimatedTotalPlotSize(deadlinesCount, hitSum));
         } catch (ArithmeticException ignored) {
         }
     }
@@ -121,7 +128,6 @@ public class Miner implements Payable {
     public double getSharedCapacity() {
         return store.getSharedCapacity();
     }
-    
 
     public double getTotalCapacity() {
         return store.getTotalCapacity();
@@ -156,7 +162,7 @@ public class Miner implements Payable {
     }
 
     public int getNConf() {
-        return store.getDeadlineCount();
+        return nconf.get();
     }
 
     public String getName() {

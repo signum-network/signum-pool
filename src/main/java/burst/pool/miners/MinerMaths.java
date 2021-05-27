@@ -35,8 +35,8 @@ public class MinerMaths {
         return estimatePlotSize(1.0, nConf, hitSum);
     }
 
-    public double estimatedEffectivePlotSize(int originalNConf, int nConf, BigInteger hitSum) {
-        return estimatePlotSize(alpha(originalNConf), nConf, hitSum);
+    public double estimatedEffectivePlotSize(int nConf, BigInteger hitSum) {
+        return estimatePlotSize(alpha(nConf), nConf, hitSum);
     }
     
     private double estimatePlotSize(double alphaValue, int nConf, BigInteger hitSum) {
