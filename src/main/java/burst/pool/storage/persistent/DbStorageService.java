@@ -587,42 +587,6 @@ public class DbStorageService implements StorageService {
         }
 
         @Override
-        public String getName() {
-            return getFromCacheOr(MINERS, accountIdStr + "name", () -> useDslContext(context -> context.select(MINERS.NAME)
-                    .from(MINERS)
-                    .where(MINERS.ACCOUNT_ID.eq(accountId))
-                    .fetchAny()
-                    .get(MINERS.NAME)));
-        }
-
-        @Override
-        public void setName(String name) {
-            useDslContextVoid(context -> context.update(MINERS)
-                    .set(MINERS.NAME, name)
-                    .where(MINERS.ACCOUNT_ID.eq(accountId))
-                    .execute());
-            storeInCache(MINERS, accountIdStr + "name", name);
-        }
-
-        @Override
-        public String getUserAgent() {
-            return getFromCacheOr(MINERS, accountIdStr + "userAgent", () -> useDslContext(context -> context.select(MINERS.USER_AGENT)
-                    .from(MINERS)
-                    .where(MINERS.ACCOUNT_ID.eq(accountId))
-                    .fetchAny()
-                    .get(MINERS.USER_AGENT)));
-        }
-
-        @Override
-        public void setUserAgent(String userAgent) {
-            useDslContextVoid(context -> context.update(MINERS)
-                    .set(MINERS.USER_AGENT, userAgent)
-                    .where(MINERS.ACCOUNT_ID.eq(accountId))
-                    .execute());
-            storeInCache(MINERS, accountIdStr + "userAgent", userAgent);
-        }
-
-        @Override
         public List<Deadline> getDeadlines() { // TODO cache
             return useDslContext(context -> context.select(MINER_DEADLINES.BASE_TARGET, MINER_DEADLINES.SHARE_PERCENT, MINER_DEADLINES.HEIGHT, MINER_DEADLINES.DEADLINE)
                     .from(MINER_DEADLINES)

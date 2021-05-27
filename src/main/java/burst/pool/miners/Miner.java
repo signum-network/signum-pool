@@ -20,6 +20,7 @@ public class Miner implements Payable {
     private int commitmentHeight;
     private AtomicReference<BurstValue> commitment = new AtomicReference<>();
     private AtomicReference<BurstValue> committedBalance = new AtomicReference<>();
+    private String userAgent, name;
 
     public Miner(MinerMaths minerMaths, PropertyService propertyService, BurstAddress address, MinerStore store) {
         this.minerMaths = minerMaths;
@@ -159,11 +160,11 @@ public class Miner implements Payable {
     }
 
     public String getName() {
-        return store.getName();
+        return name;
     }
 
     public void setName(String name) {
-        store.setName(name);
+        this.name = name;
     }
     
     public void setCommitment(BurstValue commitment, BurstValue comittedBalance, int height) {
@@ -191,11 +192,11 @@ public class Miner implements Payable {
     }
     
     public String getUserAgent() {
-        return store.getUserAgent();
+        return userAgent;
     }
 
     public void setUserAgent(String userAgent) {
-        store.setUserAgent(userAgent);
+        this.userAgent = userAgent;
     }
 
     public void setMinimumPayout(BurstValue minimumPayout) {
