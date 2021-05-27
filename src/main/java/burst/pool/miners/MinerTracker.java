@@ -43,12 +43,12 @@ public class MinerTracker {
     public BigInteger onMinerSubmittedDeadline(StorageService storageService, BurstAddress minerAddress, BigInteger deadline, MiningInfo miningInfo, String userAgent) {
         // waitUntilNotProcessingBlock();
         Miner miner = getOrCreate(storageService, minerAddress);
+        miner.setUserAgent(userAgent);
         
         long baseTarget = miningInfo.getBaseTarget();
         int blockHeight = (int) miningInfo.getHeight();
         
         if(miner.getCommitmentHeight() != blockHeight) {
-            miner.setUserAgent(userAgent);
             try {
                 // Get the latest available and not an explicit block height because this can generate exceptions
                 // in case the node is doing a roll-back for a short lived fork.

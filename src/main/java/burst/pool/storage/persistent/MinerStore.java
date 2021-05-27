@@ -27,12 +27,6 @@ public interface MinerStore {
     BurstValue getMinimumPayout();
     void setMinimumPayout(BurstValue minimumPayout);
     
-    String getName();
-    void setName(String name);
-    
-    String getUserAgent();
-    void setUserAgent(String userAgent);
-
     List<Deadline> getDeadlines();
     int getDeadlineCount();
     void removeDeadline(long height);

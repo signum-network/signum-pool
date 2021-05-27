@@ -31,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.Semaphore;
@@ -125,6 +126,15 @@ public class Pool {
                 if (miningInfo.get() == null || processBlockSemaphore.availablePermits() == 0 || miningInfo.get().getHeight() - 1 <= storageService.getLastProcessedBlock() + propertyService.getInt(Props.processLag)) {
                     return;
                 }
+                
+                // Leave the process blocks only a minute after starting a new round
+                // TODO: add a configuration for this
+                Duration roundDuration = Duration.between(roundStartTime.get(), Instant.now());
+                if(roundDuration.toMillis() < 60000) {
+                    return;
+                }
+                
+                logger.info("Started processing block {}", storageService.getLastProcessedBlock() + 1);
 
                 try {
                     processBlockSemaphore.acquire();
@@ -261,6 +271,8 @@ public class Pool {
         if (actuallyProcessed) {
             minerTracker.payoutIfNeeded(storageService, transactionFee.get());
         }
+        
+        logger.info("Finished processing block {}", storageService.getLastProcessedBlock());
     }
 
     private void resetRound(MiningInfo newMiningInfo) {
@@ -279,13 +291,11 @@ public class Pool {
             Thread.currentThread().interrupt();
             return;
         }
-
         
         bestSubmission.set(null);
         bestDeadline.set(BigInteger.valueOf(Long.MAX_VALUE));
         roundStartTime.set(Instant.now());
-        miningInfo.set(newMiningInfo);
-        
+
         // get the current reward recipient for the multiple pool IDs and transfer balance to primary if any
         try {
             // First for the primary account
@@ -331,6 +341,9 @@ public class Pool {
         catch (Exception e) {
             logger.error("Error fetching pool's reward recipients or transfering from secondary pools", e);
         }
+        
+        // Start the new round for miners
+        miningInfo.set(newMiningInfo);
         
         // Unlock to signal we have finished modifying bestSubmission
         processDeadlineSemaphore.release();
