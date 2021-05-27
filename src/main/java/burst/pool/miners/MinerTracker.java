@@ -117,7 +117,7 @@ public class MinerTracker {
 
         List<Miner> miners = transactionalStorageService.getMiners();
 
-        updateMiners(miners, blockHeight);
+        updateMiners(transactionalStorageService, blockHeight);
 
         // Update each miner's pending
         AtomicReference<BurstValue> amountTaken = new AtomicReference<>(BurstValue.fromBurst(0));
@@ -138,10 +138,17 @@ public class MinerTracker {
     }
 
     public void onBlockNotWon(StorageService transactionalStorageService, long blockHeight) {
-        updateMiners(transactionalStorageService.getMiners(), blockHeight);
+        updateMiners(transactionalStorageService, blockHeight);
     }
 
-    private void updateMiners(List<Miner> miners, long blockHeight) {
+    private void updateMiners(StorageService transactionalStorageService, long blockHeight) {
+        
+        // prune old deadlines from the DB
+        long lastHeight = blockHeight - propertyService.getInt(Props.nAvg);
+        transactionalStorageService.removeDeadlinesBefore(lastHeight);
+        
+        List<Miner> miners = transactionalStorageService.getMiners();
+        
         // Update each miner's effective capacity
         miners.forEach(miner -> miner.recalculateCapacity(blockHeight));
 

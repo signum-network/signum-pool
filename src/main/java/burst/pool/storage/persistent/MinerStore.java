@@ -28,8 +28,6 @@ public interface MinerStore {
     void setMinimumPayout(BurstValue minimumPayout);
     
     List<Deadline> getDeadlines();
-    int getDeadlineCount();
-    void removeDeadline(long height);
     Deadline getDeadline(long height);
     void setOrUpdateDeadline(long height, Deadline deadline);
 
