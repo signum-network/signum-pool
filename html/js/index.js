@@ -216,7 +216,7 @@ function getMiners() {
         return http.json();
     }).then(response => {
         let table = document.getElementById("miners");
-        table.innerHTML = "<tr><th>Miner</th><th class=\"d-none d-sm-table-cell\">Current Deadline</th><th>Pending Balance</th><th>Disk Capacity</th><th class=\"d-none d-sm-table-cell\">Committed Balance</th><th>Commitment/TiB</th><th class=\"d-none d-sm-table-cell\">Commitment Ratio | Boost</th><th class=\"d-none d-sm-table-cell\">Shared Capacity</th><th class=\"d-none d-sm-table-cell\">Share Model</th><th class=\"d-none d-sm-table-cell\">Donation Percent</th><th>Confirmed Deadlines</th><th>Pool Share</th><th class=\"d-none d-sm-table-cell\">Software</th></tr>";
+        table.innerHTML = "<tr><th>Miner</th><th class=\"d-none d-sm-table-cell\">Current Deadline</th><th>Pending Balance</th><th>Physical Capacity</th><th class=\"d-none d-sm-table-cell\">Committed Balance</th><th>Commitment/TiB</th><th class=\"d-none d-sm-table-cell\">Commitment Ratio | Boost</th><th class=\"d-none d-sm-table-cell\">Shared Capacity</th><th class=\"d-none d-sm-table-cell\">Share Model</th><th class=\"d-none d-sm-table-cell\">Donation Percent</th><th>Confirmed Deadlines</th><th>Pool Share</th><th class=\"d-none d-sm-table-cell\">Software</th></tr>";
         for (let i = 0; i < response.miners.length; i++) {
             let miner = response.miners[i];
             let currentRoundDeadline = miner.currentRoundBestDeadline == null ? "" : formatTime(miner.currentRoundBestDeadline);
