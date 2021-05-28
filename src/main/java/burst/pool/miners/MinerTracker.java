@@ -61,17 +61,21 @@ public class MinerTracker {
             }
         }
         
+        double commitmentFactor = 1.0;
         if(blockHeight >= propertyService.getInt(Props.pocPlusBlock)) {
             // PoC+ logic
             BurstValue commitment = miner.getCommitment();
             
-            double commitmentFactor = getCommitmentFactor(commitment, miningInfo);
-            
-            double newDeadline = deadline.longValue()/commitmentFactor;
-            
-            deadline = BigInteger.valueOf((long)newDeadline);
+            commitmentFactor = getCommitmentFactor(commitment, miningInfo);            
         }
-        miner.processNewDeadline(new Deadline(deadline, BigInteger.valueOf(baseTarget), miner.getSharePercent(), blockHeight));
+        // The deadline at this point (to be stored) is the legacy deadline, used to estimate the physical capacity.
+        // The boost factor is being stored by a modified sharePercent.
+        int sharePercent = (int)(miner.getSharePercent() * commitmentFactor);
+        miner.processNewDeadline(new Deadline(deadline, BigInteger.valueOf(baseTarget), sharePercent, blockHeight));
+        
+        // Now the effective deadline 
+        double newDeadline = deadline.longValue()/commitmentFactor;
+        deadline = BigInteger.valueOf((long)newDeadline);
         
         return deadline;
     }
