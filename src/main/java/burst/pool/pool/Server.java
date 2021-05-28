@@ -11,6 +11,7 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -34,6 +35,7 @@ import burst.kit.entity.BurstValue;
 import burst.kit.entity.response.MiningInfo;
 import burst.kit.util.BurstKitUtils;
 import burst.pool.Constants;
+import burst.pool.miners.Deadline;
 import burst.pool.miners.Miner;
 import burst.pool.miners.MinerTracker;
 import burst.pool.storage.config.PropertyService;
@@ -131,7 +133,6 @@ public class Server extends NanoHTTPD {
     }
 
     private String handleApiCall(IHTTPSession session, Map<String, String> params) {
-        int maxNConf = propertyService.getInt(Props.processLag) + propertyService.getInt(Props.nAvg);
         
         if (session.getUri().startsWith("/api/getMiners")) {
             JsonArray minersJson = new JsonArray();
@@ -141,7 +142,7 @@ public class Server extends NanoHTTPD {
                     .sorted(Comparator.comparing(Miner::getSharedCapacity).reversed())
                     .forEach(miner -> {
                         poolCapacity.updateAndGet(v -> v + miner.getTotalCapacity());
-                        minersJson.add(minerToJson(miner, maxNConf));
+                        minersJson.add(minerToJson(miner, false));
                     });
             JsonObject jsonObject = new JsonObject();
             jsonObject.add("miners", minersJson);
@@ -150,7 +151,7 @@ public class Server extends NanoHTTPD {
             return jsonObject.toString();
         } else if (session.getUri().startsWith("/api/getMiner/")) {
             BurstAddress minerAddress = BurstAddress.fromEither(session.getUri().substring(14));
-            return minerToJson(storageService.getMiner(minerAddress), maxNConf).toString();
+            return minerToJson(storageService.getMiner(minerAddress), true).toString();
         } else if (session.getUri().startsWith("/api/getConfig")) {
             JsonObject response = new JsonObject();
             response.addProperty("version", Constants.VERSION);
@@ -183,7 +184,7 @@ public class Server extends NanoHTTPD {
                     .sorted((m1, m2) -> Double.compare(m2.getShare(), m1.getShare())) // Reverse order - highest to lowest
                     .limit(10)
                     .forEach(miner -> {
-                        topMiners.add(minerToJson(miner, maxNConf));
+                        topMiners.add(minerToJson(miner, false));
                         othersShare.updateAndGet(share -> share - miner.getShare());
                     });
             JsonObject response = new JsonObject();
@@ -303,11 +304,12 @@ public class Server extends NanoHTTPD {
         return r;
     }
 
-    private JsonElement minerToJson(Miner miner, int maxNConf) {
+    private JsonElement minerToJson(Miner miner, boolean returnDeadlines) {
         if (miner == null) return JsonNull.INSTANCE;
         
         MiningInfo miningInfo = pool.getMiningInfo();
         JsonObject minerJson = new JsonObject();
+        double commitmentFactor = MinerTracker.getCommitmentFactor(miner.getCommitment(), miningInfo);
         minerJson.addProperty("address", miner.getAddress().getID());
         minerJson.addProperty("addressRS", miner.getAddress().getFullAddress());
         minerJson.addProperty("pendingBalance", miner.getPending().toFormattedString());
@@ -315,17 +317,17 @@ public class Server extends NanoHTTPD {
         minerJson.addProperty("commitment", miner.getCommitment().toFormattedString());
         minerJson.addProperty("committedBalance", miner.getCommittedBalance().toFormattedString());
         minerJson.addProperty("commitmentRatio", (double)miner.getCommitment().longValue()/miningInfo.getAverageCommitmentNQT());
-        minerJson.addProperty("commitmentFactor", MinerTracker.getCommitmentFactor(miner.getCommitment(), miningInfo));
+        minerJson.addProperty("commitmentFactor", commitmentFactor);
         minerJson.addProperty("sharedCapacity", miner.getSharedCapacity());
         minerJson.addProperty("sharePercent", miner.getSharePercent());
         minerJson.addProperty("donationPercent", miner.getDonationPercent());
-        minerJson.addProperty("nConf", Math.min(maxNConf, miner.getNConf()));
+        minerJson.addProperty("nConf", miner.getNConf());
         minerJson.addProperty("share", miner.getShare());
         minerJson.addProperty("minimumPayout", miner.getMinimumPayout().toFormattedString());
         BigInteger bestDeadline = miner.getBestDeadline(getCurrentHeight());
         if (bestDeadline != null) {
         	BigInteger deadline = bestDeadline;
-       		deadline = BigInteger.valueOf((long)(Math.log(deadline.doubleValue()) * Pool.LN_FACTOR));
+       		deadline = BigInteger.valueOf((long)(Math.log(deadline.doubleValue()/commitmentFactor) * Pool.LN_FACTOR));
 
             minerJson.addProperty("currentRoundBestDeadline", deadline.toString());
         }
@@ -335,6 +337,19 @@ public class Server extends NanoHTTPD {
         if (!Objects.equals(miner.getUserAgent(), "")) {
             minerJson.addProperty("userAgent", miner.getUserAgent());
         }
+        
+        if(returnDeadlines) {
+            List<Deadline> deadlines = miner.getDeadlines();
+            JsonArray deadlinesJson = new JsonArray();
+            JsonArray sharesJson = new JsonArray();
+            for(Deadline d : deadlines) {
+                deadlinesJson.add(d.getDeadline().longValue());
+                sharesJson.add(d.getSharePercent());
+            }
+            minerJson.add("deadlines", deadlinesJson);
+            minerJson.add("shares", sharesJson);
+        }
+        
         return minerJson;
     }
 

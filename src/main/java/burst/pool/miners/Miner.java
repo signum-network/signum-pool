@@ -31,7 +31,9 @@ public class Miner implements Payable {
         
         // read the current nconf for each miner
         List<Deadline> deadlines = store.getDeadlines();
-        nconf.set(deadlines.size());
+        if(deadlines!=null && deadlines.size() > 0) {
+            nconf.set(deadlines.size()-1);
+        }
     }
 
     public void recalculateCapacity(long currentBlockHeight) {
@@ -212,5 +214,9 @@ public class Miner implements Payable {
     public BigInteger getBestDeadline(long height) {
         Deadline deadline = store.getDeadline(height);
         return deadline == null ? null : deadline.getDeadline();
+    }
+    
+    public List<Deadline> getDeadlines() {
+        return store.getDeadlines();
     }
 }
