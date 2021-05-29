@@ -1,0 +1,3 @@
+ALTER TABLE miners ADD boost DOUBLE DEFAULT(0.0);
+
+ALTER TABLE miners ADD boost_pool DOUBLE DEFAULT(0.0);
