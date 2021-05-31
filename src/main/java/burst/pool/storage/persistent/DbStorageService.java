@@ -580,34 +580,27 @@ public class DbStorageService implements StorageService {
         }
 
         @Override
-        public List<Deadline> getDeadlines() { // TODO cache
+        public List<Deadline> getDeadlines() {
             return useDslContext(context -> context.select(MINER_DEADLINES.BASE_TARGET, MINER_DEADLINES.SHARE_PERCENT, MINER_DEADLINES.HEIGHT, MINER_DEADLINES.DEADLINE)
                     .from(MINER_DEADLINES)
                     .where(MINER_DEADLINES.ACCOUNT_ID.eq(accountId))
                     .fetch()
-                    .map(record -> new Deadline(BigInteger.valueOf(record.get(MINER_DEADLINES.DEADLINE)), BigInteger.valueOf(record.get(MINER_DEADLINES.BASE_TARGET)), record.get(MINER_DEADLINES.SHARE_PERCENT), record.get(MINER_DEADLINES.HEIGHT))));
-        }
-
-        @Override
-        public Deadline getDeadline(long height) {
-            try {
-                return getFromCacheOr(MINER_DEADLINES, accountIdStr + "deadline" + Long.toString(height), () -> useDslContext(context -> context.select(MINER_DEADLINES.BASE_TARGET, MINER_DEADLINES.SHARE_PERCENT, MINER_DEADLINES.HEIGHT, MINER_DEADLINES.DEADLINE)
-                        .from(MINER_DEADLINES)
-                        .where(MINER_DEADLINES.ACCOUNT_ID.eq(accountId), MINER_DEADLINES.HEIGHT.eq(height))
-                        .fetchAny()
-                        .map(record -> new Deadline(BigInteger.valueOf(record.get(MINER_DEADLINES.DEADLINE)), BigInteger.valueOf(record.get(MINER_DEADLINES.BASE_TARGET)), record.get(MINER_DEADLINES.SHARE_PERCENT), height))));
-            } catch (NullPointerException e) {
-                return null;
-            }
+                    .map(record -> new Deadline(BigInteger.valueOf(record.get(MINER_DEADLINES.DEADLINE)),
+                            BigInteger.valueOf(record.get(MINER_DEADLINES.BASE_TARGET)),
+                            record.get(MINER_DEADLINES.SHARE_PERCENT), record.get(MINER_DEADLINES.HEIGHT),
+                            record.field(MINER_DEADLINES.BOOST) != null ? record.get(MINER_DEADLINES.BOOST) : 0d,
+                            record.field(MINER_DEADLINES.BOOST_POOL) != null ? record.get(MINER_DEADLINES.BOOST_POOL) : 0d)));
         }
 
         @Override
         public void setOrUpdateDeadline(long height, Deadline deadline) {
-            useDslContextVoid(context -> context.mergeInto(MINER_DEADLINES, MINER_DEADLINES.ACCOUNT_ID, MINER_DEADLINES.SHARE_PERCENT, MINER_DEADLINES.HEIGHT, MINER_DEADLINES.DEADLINE, MINER_DEADLINES.BASE_TARGET)
+            useDslContextVoid(context -> context.mergeInto(MINER_DEADLINES, MINER_DEADLINES.ACCOUNT_ID, MINER_DEADLINES.SHARE_PERCENT,
+                    MINER_DEADLINES.HEIGHT, MINER_DEADLINES.DEADLINE, MINER_DEADLINES.BASE_TARGET,
+                    MINER_DEADLINES.BOOST, MINER_DEADLINES.BOOST_POOL)
                     .key(MINER_DEADLINES.ACCOUNT_ID, MINER_DEADLINES.HEIGHT)
-                    .values(accountId, deadline.getSharePercent(), height, deadline.getDeadline().longValue(), deadline.getBaseTarget().longValue())
+                    .values(accountId, deadline.getSharePercent(), height, deadline.getDeadline().longValue(), deadline.getBaseTarget().longValue(),
+                            deadline.getBoost(), deadline.getBoostPool())
                     .execute());
-            storeInCache(MINER_DEADLINES, accountIdStr + "deadline" + Long.toString(height), deadline);
         }
     }
 

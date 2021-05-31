@@ -41,12 +41,12 @@ public class MinerMaths {
     
     private double estimatePlotSize(double alphaValue, int nConf, BigInteger hitSum) {
         if (hitSum.compareTo(BigInteger.ZERO) == 0) {
-            throw new ArithmeticException();
+            return 0.0;
         }
         double plotSize =  alphaValue * 240d * (((double)nConf)-1d) * (double)GENESIS_BASE_TARGET / hitSum.doubleValue();
         if (Double.isInfinite(plotSize) || Double.isNaN(plotSize)) {
             logger.debug("Calculated impossible plot size. alpha: " + alphaValue + ", nConf: " + nConf + ", hitSum: " + hitSum);
-            throw new ArithmeticException();
+            return 0.0;
         }
         return plotSize;
     }

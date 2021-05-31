@@ -309,7 +309,7 @@ public class Server extends NanoHTTPD {
         
         MiningInfo miningInfo = pool.getMiningInfo();
         JsonObject minerJson = new JsonObject();
-        double commitmentFactor = MinerTracker.getCommitmentFactor(miner.getCommitment(), miningInfo);
+        double commitmentFactor = MinerTracker.getCommitmentFactor(miner.getCommitment(), miningInfo.getAverageCommitmentNQT());
         minerJson.addProperty("address", miner.getAddress().getID());
         minerJson.addProperty("addressRS", miner.getAddress().getFullAddress());
         minerJson.addProperty("pendingBalance", miner.getPending().toFormattedString());
@@ -342,12 +342,18 @@ public class Server extends NanoHTTPD {
             List<Deadline> deadlines = miner.getDeadlines();
             JsonArray deadlinesJson = new JsonArray();
             JsonArray sharesJson = new JsonArray();
+            JsonArray boostJson = new JsonArray();
+            JsonArray boostPoolJson = new JsonArray();
             for(Deadline d : deadlines) {
                 deadlinesJson.add(d.getDeadline().longValue());
                 sharesJson.add(d.getSharePercent());
+                boostJson.add(d.getBoost());
+                boostPoolJson.add(d.getBoostPool());
             }
             minerJson.add("deadlines", deadlinesJson);
             minerJson.add("shares", sharesJson);
+            minerJson.add("boost", boostJson);
+            minerJson.add("boostPool", boostPoolJson);
         }
         
         return minerJson;

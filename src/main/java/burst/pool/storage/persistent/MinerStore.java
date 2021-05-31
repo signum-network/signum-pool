@@ -28,7 +28,7 @@ public interface MinerStore {
     void setMinimumPayout(BurstValue minimumPayout);
     
     List<Deadline> getDeadlines();
-    Deadline getDeadline(long height);
+    
     void setOrUpdateDeadline(long height, Deadline deadline);
 
     interface FeeRecipientStore {

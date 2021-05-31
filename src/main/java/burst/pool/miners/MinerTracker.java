@@ -5,6 +5,7 @@ import burst.kit.entity.BurstAddress;
 import burst.kit.entity.BurstID;
 import burst.kit.entity.BurstValue;
 import burst.kit.entity.response.Account;
+import burst.kit.entity.response.Block;
 import burst.kit.entity.response.MiningInfo;
 import burst.kit.service.BurstNodeService;
 import burst.pool.entity.Payout;
@@ -66,12 +67,10 @@ public class MinerTracker {
             // PoC+ logic
             BurstValue commitment = miner.getCommitment();
             
-            commitmentFactor = getCommitmentFactor(commitment, miningInfo);            
+            commitmentFactor = getCommitmentFactor(commitment, miningInfo.getAverageCommitmentNQT());            
         }
-        // The deadline at this point (to be stored) is the legacy deadline, used to estimate the physical capacity.
-        // The boost factor is being stored by a modified sharePercent.
-        int sharePercent = (int)(miner.getSharePercent() * commitmentFactor);
-        miner.processNewDeadline(new Deadline(deadline, BigInteger.valueOf(baseTarget), sharePercent, blockHeight));
+        miner.processNewDeadline(new Deadline(deadline, BigInteger.valueOf(baseTarget), miner.getSharePercent(), blockHeight,
+                commitmentFactor, commitmentFactor));
         
         // Now the effective deadline 
         double newDeadline = deadline.longValue()/commitmentFactor;
@@ -80,8 +79,8 @@ public class MinerTracker {
         return deadline;
     }
     
-    public static double getCommitmentFactor(BurstValue commitment, MiningInfo miningInfo) {
-        double commitmentFactor = ((double)commitment.longValue())/miningInfo.getAverageCommitmentNQT();
+    public static double getCommitmentFactor(BurstValue commitment, long averageCommitment) {
+        double commitmentFactor = ((double)commitment.longValue())/averageCommitment;
         commitmentFactor = Math.pow(commitmentFactor, 0.4515449935);
         commitmentFactor = Math.min(8.0, commitmentFactor);
         commitmentFactor = Math.max(0.125, commitmentFactor);
@@ -97,8 +96,8 @@ public class MinerTracker {
         return miner;
     }
 
-    public void onBlockWon(StorageService transactionalStorageService, long blockHeight, BurstID blockId, BigInteger nonce, BurstAddress winner, BurstValue blockReward) {
-        logger.info("Block won! Block height: " + blockHeight + ", forger: " + winner.getFullAddress());
+    public void onBlockWon(StorageService transactionalStorageService, Block block, BurstValue blockReward) {
+        logger.info("Block won! Block height: " + block.getHeight() + ", forger: " + block.getGenerator().getFullAddress());
 
         BurstValue reward = blockReward;
 
@@ -111,17 +110,17 @@ public class MinerTracker {
         PoolFeeRecipient donationRecipient = transactionalStorageService.getPoolDonationRecipient();
 
         // Take winner share
-        Miner winningMiner = getOrCreate(transactionalStorageService, winner);
+        Miner winningMiner = getOrCreate(transactionalStorageService, block.getGenerator());
         double winnerShare = 1.0d - winningMiner.getSharePercent()/100d;
         BurstValue winnerTake = reward.multiply(winnerShare);
         winningMiner.increasePending(winnerTake, donationRecipient);
         reward = reward.subtract(winnerTake);
         
-        transactionalStorageService.addWonBlock(new WonBlock((int) blockHeight, blockId, winner, nonce, blockReward, reward));
+        transactionalStorageService.addWonBlock(new WonBlock((int) block.getHeight(), block.getId(), block.getGenerator(), block.getNonce(), blockReward, reward));
 
         List<Miner> miners = transactionalStorageService.getMiners();
 
-        updateMiners(transactionalStorageService, blockHeight);
+        updateMiners(transactionalStorageService, block);
 
         // Update each miner's pending
         AtomicReference<BurstValue> amountTaken = new AtomicReference<>(BurstValue.fromBurst(0));
@@ -138,30 +137,35 @@ public class MinerTracker {
             miners.forEach(miner -> miner.increasePending(amountRemainingEach, donationRecipient));
         }
 
-        logger.info("Finished processing winnings for block " + blockHeight + ". Reward ( + fees) is " + blockReward + ", pool fee is " + poolTake + ", forger take is " + winnerTake + ", miners took " + amountTaken.get());
+        logger.info("Finished processing winnings for block " + block.getHeight() + ". Reward ( + fees) is " + blockReward + ", pool fee is " + poolTake + ", forger take is " + winnerTake + ", miners took " + amountTaken.get());
     }
 
-    public void onBlockNotWon(StorageService transactionalStorageService, long blockHeight) {
-        updateMiners(transactionalStorageService, blockHeight);
+    public void onBlockNotWon(StorageService transactionalStorageService, Block block) {
+        updateMiners(transactionalStorageService, block);
     }
 
-    private void updateMiners(StorageService transactionalStorageService, long blockHeight) {
+    private void updateMiners(StorageService transactionalStorageService, Block block) {
         
         // prune old deadlines from the DB
+        long blockHeight = block.getHeight();
         long lastHeight = blockHeight - propertyService.getInt(Props.nAvg);
         transactionalStorageService.removeDeadlinesBefore(lastHeight);
         
         List<Miner> miners = transactionalStorageService.getMiners();
         
-        // Update each miner's effective capacity
-        miners.forEach(miner -> miner.recalculateCapacity(blockHeight));
+        double poolCapacity = 0d;
+        for(Miner miner : miners) {
+            // Update each miner's effective capacity
+            miner.recalculateCapacity(block);
 
-        // Calculate pool capacity
-        AtomicReference<Double> poolCapacity = new AtomicReference<>(0d);
-        miners.forEach(miner -> poolCapacity.updateAndGet(v -> (double) (v + miner.getSharedCapacity())));
+            // Calculate pool capacity
+            poolCapacity += miner.getSharedCapacity();
+        }
 
-        // Update each miner's share
-        miners.forEach(miner -> miner.recalculateShare(poolCapacity.get()));
+        for(Miner miner : miners) {
+            // Update each miner's share
+            miner.recalculateShare(poolCapacity);
+        }
     }
 
     public void payoutIfNeeded(StorageService storageService, BurstValue transactionFee) {

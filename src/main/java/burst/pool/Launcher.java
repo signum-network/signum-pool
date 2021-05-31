@@ -1,6 +1,7 @@
 package burst.pool;
 
 import burst.kit.service.BurstNodeService;
+import burst.kit.util.BurstKitUtils;
 import burst.pool.miners.MinerMaths;
 import burst.pool.miners.MinerTracker;
 import burst.pool.pool.Pool;
@@ -24,12 +25,19 @@ public class Launcher {
             System.setProperty("log4j.configurationFile", "logging.xml");
         }
         Logger logger = LoggerFactory.getLogger(Launcher.class);
+        
         String propertiesFileName = "pool.properties";
         if (args.length > 0) {
             propertiesFileName = args[0];
         }
         PropertyService propertyService = new PropertyServiceImpl(propertiesFileName);
         MinerMaths minerMaths = new MinerMaths(propertyService.getInt(Props.nAvg) + propertyService.getInt(Props.processLag), propertyService.getInt(Props.nMin));
+        
+        // New address prefix
+        BurstKitUtils.setAddressPrefix(propertyService.getBoolean(Props.testnet) ? "TS" : "S");
+        BurstKitUtils.addAddressPrefix("BURST");
+        BurstKitUtils.setValueSuffix("SIGNA");
+        
         BurstNodeService nodeService = BurstNodeService.getCompositeInstanceWithUserAgent(Constants.USER_AGENT, propertyService.getStringList(Props.nodeAddresses));
         StorageService storageService = null;
         try {
