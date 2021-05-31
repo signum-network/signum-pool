@@ -36,7 +36,7 @@ public class Launcher {
         // New address prefix
         BurstKitUtils.setAddressPrefix(propertyService.getBoolean(Props.testnet) ? "TS" : "S");
         BurstKitUtils.addAddressPrefix("BURST");
-        BurstKitUtils.setValueSuffix("SIGNA");
+        BurstKitUtils.setValueSuffix("Signa");
         
         BurstNodeService nodeService = BurstNodeService.getCompositeInstanceWithUserAgent(Constants.USER_AGENT, propertyService.getStringList(Props.nodeAddresses));
         StorageService storageService = null;

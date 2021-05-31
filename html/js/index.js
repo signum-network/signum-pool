@@ -97,9 +97,9 @@ function getPoolInfo() {
         document.getElementById("donationRecipient").innerHTML = formatMinerName(response.explorer, response.donationRecipientRS, response.donationRecipient, null, true);
         document.getElementById("donationPercent").innerText = parseFloat(response.donationPercent).toFixed(2) + " %"; + " %";
         document.getElementById("poolShare").innerText = (100 - parseFloat(response.winnerRewardPercentage)*100).toFixed(2) + " %";
-        document.getElementById("minimumPayout").innerText = response.defaultMinimumPayout + " SIGNA";
+        document.getElementById("minimumPayout").innerText = response.defaultMinimumPayout + " Signa";
         document.getElementById("minPayoutsAtOnce").innerText = response.minPayoutsPerTransaction;
-        document.getElementById("payoutTxFee").innerText = response.transactionFee + " SIGNA";
+        document.getElementById("payoutTxFee").innerText = response.transactionFee + " Signa";
         document.getElementById("poolVersion").innerText = response.version;
     });
 }
@@ -117,7 +117,7 @@ function getCurrentRound() {
         roundStart = response.roundStart;
         document.getElementById("blockHeight").innerText = response.miningInfo.height;
         document.getElementById("netDiff").innerHTML = formatBaseTarget(response.miningInfo.baseTarget) + ' &nbsp; + &nbsp; ' +
-          Math.round(response.miningInfo.averageCommitmentNQT / 1e8).toFixed(2) + ' SIGNA/TiB';
+          Math.round(response.miningInfo.averageCommitmentNQT / 1e8).toFixed(2) + ' Signa/TiB';
         if (response.bestDeadline != null) {
             /* document.getElementById("bestDeadline").innerText = formatTime(response.bestDeadline.deadline); */
             document.getElementById("bestMiner").innerHTML =

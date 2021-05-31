@@ -8,12 +8,12 @@ As an example, let's consider a miner with 10 TiB of capacity, and that this min
 So, this miner actually has 20 % of his capacity *solo mining* (2 TiB) and 80 % going to the pool (8 TiB).
 Let's also assume the pool has a total shared capacity (the sum of all shared capacities of all miners) of 160 TiB.
 Since our miner is sharing 8 TiB he also has 5 % of the pool share (8/160).
-Now, when this miner forges a block, the block reward (assumed to be 100 SIGNA here) would be distributed as follows:
+Now, when this miner forges a block, the block reward (assumed to be 100 Signa here) would be distributed as follows:
 ![Pool Sankey Diagram](/doc/Sankey.png)
 
 As can be seen, when our miner forges a block, the reward is split between the shared fraction (80% in this case) and the forger fraction (20%) in this case.
 After that, the shared fraction is further split among all miners in the pool accordingly to their pool shares.
-In this case, the forger has 5 % of the shared capacity, so he also gets additional 4 SIGNA (5% of 80).
+In this case, the forger has 5 % of the shared capacity, so he also gets additional 4 Signa (5% of 80).
 
 Just to simplify the share computations, in the above analysis the pool fees were assumed to be zero.
 Actually the pool fees are subtracted from the block reward before anything else.
