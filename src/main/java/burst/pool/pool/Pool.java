@@ -295,6 +295,7 @@ public class Pool {
         bestSubmission.set(null);
         bestDeadline.set(BigInteger.valueOf(Long.MAX_VALUE));
         roundStartTime.set(Instant.now());
+        miningInfo.set(newMiningInfo);
 
         // get the current reward recipient for the multiple pool IDs and transfer balance to primary if any
         try {
@@ -341,9 +342,6 @@ public class Pool {
         catch (Exception e) {
             logger.error("Error fetching pool's reward recipients or transfering from secondary pools", e);
         }
-        
-        // Start the new round for miners
-        miningInfo.set(newMiningInfo);
         
         // Unlock to signal we have finished modifying bestSubmission
         processDeadlineSemaphore.release();
