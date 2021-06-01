@@ -39,6 +39,14 @@ updated by [jjos](https://github.com/jjos2372).
 
 Donations are very welcome at [S-JJQS-MMA4-GHB4-4ZNZU](https://explorer.burstcoin.network/?action=account&account=3278233074628313816).
 
+## Pools using the software
+
+ - https://pool.burstcoin.ro/
+ - http://burstpool.de:8080/
+ - http://burst.voiplanparty.com:8124/
+ - http://openburstpool.ddns.net:8126/
+ - http://yabpool.com:8000/
+
 ## Features
 
 - Miners can set individually their *share model*
