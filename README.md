@@ -60,7 +60,7 @@ Donations are very welcome at [S-JJQS-MMA4-GHB4-4ZNZU](https://explorer.burstcoi
 - Run the jar file:
 
 ```
-$ java -jar burstcoin-pool.jar
+$ java -jar signum-pool.jar
 ```
 
 You will need to wait some blocks before miners start to show their capacity
