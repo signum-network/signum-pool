@@ -74,8 +74,8 @@ public class Props {
         }
 
         int nAvg = propertyService.getInt(Props.nAvg);
-        if (nAvg < 20) {
-            throw new IllegalArgumentException("Illegal nAvg: " + nAvg + " (Must be > 20)");
+        if (nAvg < 12) {
+            throw new IllegalArgumentException("Illegal nAvg: " + nAvg + " (Must be > 12)");
         }
 
         int nMin = propertyService.getInt(Props.nMin);

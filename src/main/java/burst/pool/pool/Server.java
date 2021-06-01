@@ -307,27 +307,25 @@ public class Server extends NanoHTTPD {
     private JsonElement minerToJson(Miner miner, boolean returnDeadlines) {
         if (miner == null) return JsonNull.INSTANCE;
         
-        MiningInfo miningInfo = pool.getMiningInfo();
         JsonObject minerJson = new JsonObject();
-        double commitmentFactor = MinerTracker.getCommitmentFactor(miner.getCommitment(), miningInfo.getAverageCommitmentNQT());
         minerJson.addProperty("address", miner.getAddress().getID());
         minerJson.addProperty("addressRS", miner.getAddress().getFullAddress());
         minerJson.addProperty("pendingBalance", miner.getPending().toFormattedString());
         minerJson.addProperty("totalCapacity", miner.getTotalCapacity());
         minerJson.addProperty("commitment", miner.getCommitment().toFormattedString());
         minerJson.addProperty("committedBalance", miner.getCommittedBalance().toFormattedString());
-        minerJson.addProperty("commitmentRatio", (double)miner.getCommitment().longValue()/miningInfo.getAverageCommitmentNQT());
-        minerJson.addProperty("commitmentFactor", commitmentFactor);
+        minerJson.addProperty("boost", miner.getBoost());
+        minerJson.addProperty("boostPool", miner.getBoostPool());
         minerJson.addProperty("sharedCapacity", miner.getSharedCapacity());
         minerJson.addProperty("sharePercent", miner.getSharePercent());
         minerJson.addProperty("donationPercent", miner.getDonationPercent());
         minerJson.addProperty("nConf", miner.getNConf());
         minerJson.addProperty("share", miner.getShare());
         minerJson.addProperty("minimumPayout", miner.getMinimumPayout().toFormattedString());
-        BigInteger bestDeadline = miner.getBestDeadline(getCurrentHeight());
+        Deadline bestDeadline = miner.getBestDeadline(getCurrentHeight());
         if (bestDeadline != null) {
-        	BigInteger deadline = bestDeadline;
-       		deadline = BigInteger.valueOf((long)(Math.log(deadline.doubleValue()/commitmentFactor) * Pool.LN_FACTOR));
+        	BigInteger deadline = bestDeadline.getDeadline();
+       		deadline = BigInteger.valueOf((long)(Math.log(deadline.doubleValue()/bestDeadline.getBoost()) * Pool.LN_FACTOR));
 
             minerJson.addProperty("currentRoundBestDeadline", deadline.toString());
         }
@@ -341,16 +339,19 @@ public class Server extends NanoHTTPD {
         if(returnDeadlines) {
             List<Deadline> deadlines = miner.getDeadlines();
             JsonArray deadlinesJson = new JsonArray();
+            JsonArray heightsJson = new JsonArray();
             JsonArray sharesJson = new JsonArray();
             JsonArray boostJson = new JsonArray();
             JsonArray boostPoolJson = new JsonArray();
             for(Deadline d : deadlines) {
                 deadlinesJson.add(d.getDeadline().longValue());
+                heightsJson.add(d.getHeight());
                 sharesJson.add(d.getSharePercent());
                 boostJson.add(d.getBoost());
                 boostPoolJson.add(d.getBoostPool());
             }
             minerJson.add("deadlines", deadlinesJson);
+            minerJson.add("heights", heightsJson);
             minerJson.add("shares", sharesJson);
             minerJson.add("boost", boostJson);
             minerJson.add("boostPool", boostPoolJson);

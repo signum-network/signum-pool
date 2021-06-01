@@ -27,6 +27,8 @@ public class Miner implements Payable {
     private String userAgent, name;
     private AtomicInteger nconf = new AtomicInteger(0);
     private ConcurrentLinkedQueue<Deadline> deadlines = new ConcurrentLinkedQueue<>();
+    private AtomicReference<Double> boost = new AtomicReference<>();
+    private AtomicReference<Double> boostPool = new AtomicReference<>();
 
     public Miner(MinerMaths minerMaths, PropertyService propertyService, BurstAddress address, MinerStore store) {
         this.minerMaths = minerMaths;
@@ -38,6 +40,8 @@ public class Miner implements Payable {
         deadlines.addAll(store.getDeadlines());
         if(deadlines.size() > 0) {
             nconf.set(deadlines.size()-1);
+            boost.set(deadlines.peek().getBoost());
+            boostPool.set(deadlines.peek().getBoostPool());
         }
         userAgent = "...";
     }
@@ -107,6 +111,8 @@ public class Miner implements Payable {
             
             // store in the database
             store.setOrUpdateDeadline(deadlineToSave.getHeight(), deadlineToSave);
+            this.boost.set(deadlineToSave.getBoost());
+            this.boostPool.set(deadlineToSave.getBoostPool());
         }
 
         // Store the calculated values on the DB
@@ -215,6 +221,14 @@ public class Miner implements Payable {
     public int getNConf() {
         return nconf.get();
     }
+    
+    public double getBoost() {
+        return boost.get();
+    }
+
+    public double getBoostPool() {
+        return boostPool.get();
+    }
 
     public String getName() {
         return name;
@@ -260,10 +274,10 @@ public class Miner implements Payable {
         store.setMinimumPayout(minimumPayout);
     }
 
-    public BigInteger getBestDeadline(long height) {
+    public Deadline getBestDeadline(long height) {
         for(Deadline deadline : deadlines) {
             if(deadline.getHeight() == height)
-                return deadline.getDeadline();
+                return deadline;
         }
         return null;
     }

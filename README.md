@@ -49,7 +49,7 @@ Donations are very welcome at [S-JJQS-MMA4-GHB4-4ZNZU](https://explorer.burstcoi
 
 ## Requirements
 
-- Java 64 Bits version 8 or superior (**8 is recommended**)
+- Java 64 Bits version 8 or 11
 - MariaDB (optional, for advanced users)
 
 ## Installation
