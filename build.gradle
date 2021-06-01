@@ -105,7 +105,7 @@ jar {
 
 distributions {
     main {
-        distributionBaseName = "babel-pool-${details.lastTag}"
+        distributionBaseName = "signum-pool-${details.lastTag}"
         contents {
             from 'dist/icon.ico'
             from 'dist/icon.png'
