@@ -77,11 +77,11 @@ You need to modify the `pool.properties` file to suit your needs. Properties are
 
 ### Create a Systemd Service (optional, Linux advanced users)
 
-Create a file named `/etc/systemd/system/babel-pool.service` with the following contents (**edit the user and paths**):
+Create a file named `/etc/systemd/system/signum-pool.service` with the following contents (**edit the user and paths**):
 
 ```
 [Unit]
-Description=Babel Pool
+Description=Signum Pool
 After=network.target
 StartLimitIntervalSec=0
 
@@ -90,8 +90,8 @@ Type=simple
 Restart=always
 RestartSec=1
 User=user
-WorkingDirectory=/home/user/babel-pool-v1.4.1
-ExecStart=/usr/bin/java -jar /home/user/babel-pool-v1.4.1/babel-pool.jar
+WorkingDirectory=/home/user/signum-pool-v1.7.0
+ExecStart=/usr/bin/java -jar /home/user/signum-pool-v1.7.0/signum-pool.jar
 
 [Install]
 WantedBy=multi-user.target
@@ -100,13 +100,13 @@ WantedBy=multi-user.target
 Now you should be able to start the service with:
 
 ```
-sudo service babel-pool start
+sudo service signum-pool start
 ```
 
 Similarly you can also stop the service with:
 
 ```
-sudo service babel-pool stop
+sudo service signum-pool stop
 ```
 
 Additionally, it will automatically restart if your machine reboots.
@@ -114,7 +114,7 @@ Additionally, it will automatically restart if your machine reboots.
 Logs will be available by running:
 
 ```
-journalctl -u babel-pool.service
+journalctl -u signum-pool.service
 ```
 
 ## Customizing the Web UI
