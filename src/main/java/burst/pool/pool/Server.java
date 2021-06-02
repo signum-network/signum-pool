@@ -339,12 +339,14 @@ public class Server extends NanoHTTPD {
         if(returnDeadlines) {
             List<Deadline> deadlines = miner.getDeadlines();
             JsonArray deadlinesJson = new JsonArray();
+            JsonArray baseTargetJson = new JsonArray();
             JsonArray heightsJson = new JsonArray();
             JsonArray sharesJson = new JsonArray();
             JsonArray boostJson = new JsonArray();
             JsonArray boostPoolJson = new JsonArray();
             for(Deadline d : deadlines) {
                 deadlinesJson.add(d.getDeadline().longValue());
+                baseTargetJson.add(d.getBaseTarget().longValue());
                 heightsJson.add(d.getHeight());
                 sharesJson.add(d.getSharePercent());
                 boostJson.add(d.getBoost());
