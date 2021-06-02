@@ -13,6 +13,7 @@ import burst.pool.entity.WonBlock;
 import burst.pool.storage.config.PropertyService;
 import burst.pool.storage.config.Props;
 import burst.pool.storage.persistent.StorageService;
+import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -227,37 +228,15 @@ public class MinerTracker {
 
         AtomicReference<BurstID> transactionId = new AtomicReference<>();
 
-
-        if(payableMinersSet.size() == 1)
-        {             
-           compositeDisposable.add(nodeService.generateTransaction(payableMiners[0].getAddress(), publicKey, payableMiners[0].getPending().subtract(transactionFee), transactionFee, 1440, null)
-            .retry(propertyService.getInt(Props.payoutRetryCount))
-            .map(response -> burstCrypto.signTransaction(propertyService.getString(Props.passphrase), response))
-            .map(signedBytes -> { // TODO somehow integrate this into burstkit4j
-                byte[] unsigned = new byte[signedBytes.length];
-                byte[] signature = new byte[64];
-                System.arraycopy(signedBytes, 0, unsigned, 0, signedBytes.length);
-                System.arraycopy(signedBytes, 96, signature, 0, 64);
-                for (int i = 96; i < 96 + 64; i++) {
-                    unsigned[i] = 0;
-                }
-                MessageDigest sha256 = burstCrypto.getSha256();
-                byte[] signatureHash = sha256.digest(signature);
-                sha256.update(unsigned);
-                byte[] fullHash = sha256.digest(signatureHash);
-                transactionId.set(burstCrypto.hashToId(fullHash));
-                return signedBytes;
-            })
-            .flatMap(signedBytes -> nodeService.broadcastTransaction(signedBytes)
-                        .retry(propertyService.getInt(Props.payoutRetryCount)))
-            .subscribe(response -> onPaidOut(storageService, transactionId.get(), payees, publicKey, transactionFee, 1440, transactionAttachment.array()), this::onPayoutError));
-
+        Single<byte[]> transaction = null;
+        if(payableMinersSet.size() == 1) {
+            transaction = nodeService.generateTransaction(payableMiners[0].getAddress(), publicKey, payableMiners[0].getPending().subtract(transactionFee), transactionFee, 1440, null);
         }
-        else
-        {
-
-            
-        compositeDisposable.add(nodeService.generateMultiOutTransaction(publicKey, transactionFee, 1440, recipients)
+        else {
+            transaction = nodeService.generateMultiOutTransaction(publicKey, transactionFee, 1440, recipients);
+        }
+        
+        compositeDisposable.add(transaction
         .retry(propertyService.getInt(Props.payoutRetryCount))
         .map(response -> burstCrypto.signTransaction(propertyService.getString(Props.passphrase), response))
         .map(signedBytes -> { // TODO somehow integrate this into burstkit4j
@@ -278,11 +257,6 @@ public class MinerTracker {
         .flatMap(signedBytes -> nodeService.broadcastTransaction(signedBytes)
                     .retry(propertyService.getInt(Props.payoutRetryCount)))
         .subscribe(response -> onPaidOut(storageService, transactionId.get(), payees, publicKey, transactionFee, 1440, transactionAttachment.array()), this::onPayoutError));
-
-        }
-
-
-
     }
 
     private void onPaidOut(StorageService storageService, BurstID transactionID, Map<Payable, BurstValue> paidMiners, byte[] senderPublicKey, BurstValue fee, int deadline, byte[] transactionAttachment) {
