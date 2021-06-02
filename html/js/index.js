@@ -124,9 +124,9 @@ function getCurrentRound() {
               formatTime(response.bestDeadline.deadline) + ' | ' + formatMinerName(response.bestDeadline.explorer, response.bestDeadline.minerRS, response.bestDeadline.miner, response.bestDeadline.name, true);
             /* document.getElementById("bestNonce").innerText = response.bestDeadline.nonce;*/
         } else {
-            document.getElementById("bestDeadline").innerText = noneFoundYet;
-            /* document.getElementById("bestMiner").innerText = noneFoundYet;
-            document.getElementById("bestNonce").innerText = noneFoundYet; */
+            /* document.getElementById("bestDeadline").innerText = noneFoundYet;  */
+            document.getElementById("bestMiner").innerText = noneFoundYet;
+            /* document.getElementById("bestNonce").innerText = noneFoundYet; */
         }
     });
 }
@@ -216,7 +216,7 @@ function getMiners() {
         return http.json();
     }).then(response => {
         let table = document.getElementById("miners");
-        table.innerHTML = "<tr><th>Miner</th><th class=\"d-none d-sm-table-cell\">Current Deadline</th><th>Pending Balance</th><th>Physical Capacity</th><th class=\"d-none d-sm-table-cell\">Effective Capacity</th><th class=\"d-none d-sm-table-cell\">Committed Balance</th><th class=\"d-none d-sm-table-cell\">PoC+ Boost Pool | Chain</th><th class=\"d-none d-sm-table-cell\">Shared Capacity</th><th class=\"d-none d-sm-table-cell\">Share Model</th><th class=\"d-none d-sm-table-cell\">Donation Percent</th><th>Confirmed Deadlines</th><th>Pool Share</th><th class=\"d-none d-sm-table-cell\">Software</th></tr>";
+        table.innerHTML = "<thead><tr><th>Miner</th><th class=\"d-none d-sm-table-cell\">Current Deadline</th><th>Pending Balance</th><th>Physical Capacity</th><th class=\"d-none d-sm-table-cell\">Committed Balance</th><th class=\"d-none d-sm-table-cell\">PoC+ Boost Pool | Chain</th><th class=\"d-none d-sm-table-cell\">Shared Capacity</th><th class=\"d-none d-sm-table-cell\">Share Model</th><th class=\"d-none d-sm-table-cell\">Donation Percent</th><th>Confirmed Deadlines</th><th>Pool Share</th><th class=\"d-none d-sm-table-cell\">Software</th></tr></thead><tbody>";
         for (let i = 0; i < response.miners.length; i++) {
             let miner = response.miners[i];
             let currentRoundDeadline = miner.currentRoundBestDeadline == null ? "" : formatTime(miner.currentRoundBestDeadline);
@@ -226,7 +226,6 @@ function getMiners() {
               +"<td class=\"d-none d-sm-table-cell\">"+currentRoundDeadline+"</td>"
               +"<td>"+miner.pendingBalance+"</td>"
               +"<td>"+formatCapacity(miner.totalCapacity)+"</td>"
-              +"<td class=\"d-none d-sm-table-cell\">"+formatCapacity(miner.totalEffectiveCapacity)+"</td>"
               +"<td class=\"d-none d-sm-table-cell\">"+miner.committedBalance+"</td>"
               +"<td class=\"d-none d-sm-table-cell\">"+miner.boostPool.toFixed(3) + ' | ' + miner.boost.toFixed(3)+"</td>"
               +"<td class=\"d-none d-sm-table-cell\">"+formatCapacity(miner.sharedCapacity)+"</td>"
@@ -237,6 +236,7 @@ function getMiners() {
               +"<td class=\"d-none d-sm-table-cell\">"+userAgent+"</td>"
               +"</tr>";
         }
+        table.innerHTML += "</tbody>";
         document.getElementById("minerCount").innerText = response.miners.length;
         document.getElementById("poolCapacity").innerText = formatCapacity(response.poolCapacity);
         miners = response.miners;
@@ -379,6 +379,13 @@ function getCookie(name) {
     }
     return "";
 }
+
+/* TODO: Needed by the table pagination stuff
+$(document).ready(function () {
+  $('#miners').DataTable();
+  $('.dataTables_length').addClass('bs-select');
+});
+*/
 
 getPoolInfo();
 getCurrentRound();
