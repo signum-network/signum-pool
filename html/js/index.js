@@ -240,6 +240,10 @@ function getMiners() {
         document.getElementById("minerCount").innerText = response.miners.length;
         document.getElementById("poolCapacity").innerText = formatCapacity(response.poolCapacity);
         miners = response.miners;
+        
+        /*TODO: add pagination
+        $('#miners').DataTable();
+        */
     });
 }
 
@@ -379,13 +383,6 @@ function getCookie(name) {
     }
     return "";
 }
-
-/* TODO: Needed by the table pagination stuff
-$(document).ready(function () {
-  $('#miners').DataTable();
-  $('.dataTables_length').addClass('bs-select');
-});
-*/
 
 getPoolInfo();
 getCurrentRound();
