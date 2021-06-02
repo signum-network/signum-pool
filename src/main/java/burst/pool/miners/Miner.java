@@ -29,6 +29,7 @@ public class Miner implements Payable {
     private ConcurrentLinkedQueue<Deadline> deadlines = new ConcurrentLinkedQueue<>();
     private AtomicReference<Double> boost = new AtomicReference<>();
     private AtomicReference<Double> boostPool = new AtomicReference<>();
+    private AtomicReference<Double> totalCapacityEffective = new AtomicReference<>();
 
     public Miner(MinerMaths minerMaths, PropertyService propertyService, BurstAddress address, MinerStore store) {
         this.minerMaths = minerMaths;
@@ -98,6 +99,7 @@ public class Miner implements Payable {
         
         double estimatedCapacity = minerMaths.estimatedTotalPlotSize(deadlinesCount, hitSum);
         double estimatedCapacityWithBoost = minerMaths.estimatedTotalPlotSize(deadlinesCount, hitSumBoost);
+        totalCapacityEffective.set(estimatedCapacityWithBoost);
 
         if(deadlineToSave != null) {
             // we have a new deadline to save to the DB
@@ -187,6 +189,12 @@ public class Miner implements Payable {
     }
 
     public double getTotalCapacity() {
+        return store.getTotalCapacity();
+    }
+    
+    public double getTotalEffectiveCapacity() {
+        if(totalCapacityEffective.get()!=null)
+            return totalCapacityEffective.get();
         return store.getTotalCapacity();
     }
 
