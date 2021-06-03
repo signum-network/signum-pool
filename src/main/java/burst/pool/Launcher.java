@@ -21,6 +21,13 @@ import java.sql.SQLException;
 
 public class Launcher {
     public static void main(String[] args) { // todo catch exception
+        
+        // New address prefixes
+        BurstKitUtils.addAddressPrefix("S");
+        BurstKitUtils.addAddressPrefix("TS");
+        BurstKitUtils.addAddressPrefix("BURST");
+        BurstKitUtils.setValueSuffix("Signa");
+        
         if (System.getProperty("log4j.configurationFile") == null) {
             System.setProperty("log4j.configurationFile", "logging.xml");
         }
@@ -31,13 +38,11 @@ public class Launcher {
             propertiesFileName = args[0];
         }
         PropertyService propertyService = new PropertyServiceImpl(propertiesFileName);
-        MinerMaths minerMaths = new MinerMaths(propertyService.getInt(Props.nAvg) + propertyService.getInt(Props.processLag), propertyService.getInt(Props.nMin));
         
-        // New address prefix
+        // Set the default prefix
         BurstKitUtils.setAddressPrefix(propertyService.getBoolean(Props.testnet) ? "TS" : "S");
-        BurstKitUtils.addAddressPrefix("BURST");
-        BurstKitUtils.setValueSuffix("Signa");
         
+        MinerMaths minerMaths = new MinerMaths(propertyService.getInt(Props.nAvg) + propertyService.getInt(Props.processLag), propertyService.getInt(Props.nMin));
         BurstNodeService nodeService = BurstNodeService.getCompositeInstanceWithUserAgent(Constants.USER_AGENT, propertyService.getStringList(Props.nodeAddresses));
         StorageService storageService = null;
         try {
