@@ -132,4 +132,3 @@ bin/
 /logging.xml
 /pool.properties
 /jooq-schema.mv.db
-/src/main/java/burst/pool/db*

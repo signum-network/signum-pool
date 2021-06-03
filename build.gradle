@@ -50,15 +50,24 @@ dependencies {
 
     // Needed for build script so "compile" needed
     compile "com.h2database:h2:1.4.197"
-    jooqRuntime "com.h2database:h2:1.4.199"
     compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'
     compile group: 'com.h2database', name: 'h2', version: '1.4.199'
+    
+    //jooqRuntime "com.h2database:h2:1.4.199"
+    jooqRuntime group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'
 }
 
-def schema_dburl =  "jdbc:h2:file:./jooq-schema;AUTO_SERVER=TRUE"
+def schema_dburl =  "jdbc:mariadb://localhost:3306/pooldb"
+def schema_dbusername = "user"
+def schema_dbpassword = "pass"
+
+//def schema_dburl =  "jdbc:h2:file:./jooq-schema;AUTO_SERVER=TRUE"
 flyway {
     url = "${schema_dburl}"
-    locations = ["filesystem:"+project.projectDir.toString()+"/src/main/resources/db/migration_h2"]
+    user = "${schema_dbusername}"
+    password = "${schema_dbpassword}"
+    locations = ["filesystem:"+project.projectDir.toString()+"/src/main/resources/db/migration"]
+    //locations = ["filesystem:"+project.projectDir.toString()+"/src/main/resources/db/migration_h2"]
 }
 
 jooq {
@@ -66,16 +75,24 @@ jooq {
     edition = "OSS"
     burstPool(sourceSets.main) {
         jdbc {
-            driver = 'org.h2.Driver'
+            //driver = 'org.h2.Driver'
             url = "${schema_dburl}"
+            user = "${schema_dbusername}"
+            password = "${schema_dbpassword}"
         }
         generator {
             name = 'org.jooq.codegen.JavaGenerator'
             database {
                 includes = ".*"
-                name = "org.jooq.meta.h2.H2Database"
-                inputSchema = 'PUBLIC'
+                
+                name = "org.jooq.meta.mariadb.MariaDBDatabase"
+                inputSchema = "pooldb"
+                
+                //name = "org.jooq.meta.h2.H2Database"
+                //inputSchema = 'PUBLIC'
+                
                 excludes = ''
+                outputSchemaToDefault = true
             }
             target {
                 packageName = "burst.pool.db"
@@ -85,7 +102,11 @@ jooq {
     }
 }
 
+// use the following to generate the schema tables:
+// ./gradlew build -DgenerateSchema=true
 generateBurstPoolJooqSchemaSource.dependsOn flywayMigrate
+generateBurstPoolJooqSchemaSource.onlyIf {System.getProperty("generateSchema") == "true"}
+flywayMigrate.onlyIf {System.getProperty("generateSchema") == "true"}
 
 def details = versionDetails()
 
