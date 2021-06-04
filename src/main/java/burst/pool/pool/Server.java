@@ -54,6 +54,8 @@ public class Server extends NanoHTTPD {
     private final Gson gson = BurstKitUtils.buildGson().create();
     private final BurstCrypto burstCrypto = BurstCrypto.getInstance();
     private final Cache<String, String> fileCache;
+
+    private String apiAllowOrign;
     
     public Server(StorageService storageService, PropertyService propertyService, Pool pool) {
         super(propertyService.getInt(Props.serverPort));
@@ -65,6 +67,7 @@ public class Server extends NanoHTTPD {
                 .withCache("file", CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, String.class, ResourcePoolsBuilder.heap(1024*1024)))
                 .build(true)
                 .getCache("file", String.class, String.class);
+        this.apiAllowOrign = propertyService.getString(Props.apiAllowOrign);
     }
 
     private long getCurrentHeight() {
@@ -82,7 +85,17 @@ public class Server extends NanoHTTPD {
             if (session.getUri().startsWith("/burst")) {
                 return NanoHTTPD.newFixedLengthResponse(Response.Status.OK, "application/json", handleBurstApiCall(session, params));
             } else if (session.getUri().startsWith("/api")) {
-                return NanoHTTPD.newFixedLengthResponse(Response.Status.OK, "application/json", handleApiCall(session, params));
+                Response resp = NanoHTTPD.newFixedLengthResponse(Response.Status.OK, "application/json", handleApiCall(session, params));
+                if(apiAllowOrign.length() > 0) {
+                    // CORS handling
+                    resp.addHeader("Access-Control-Allow-Origin", apiAllowOrign);
+                    resp.addHeader("Access-Control-Max-Age", "3628800");
+                    resp.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS");
+                    resp.addHeader("Access-Control-Allow-Headers", "X-Requested-With");
+                    resp.addHeader("Access-Control-Allow-Headers", "Authorization");
+                }
+                
+                return resp;
             } else {
                 return handleCall(session, params);
             }
