@@ -94,6 +94,7 @@ function getPoolInfo() {
         document.getElementById("processLag").innerText = response.processLag + " Blocks";
         document.getElementById("feeRecipient").innerHTML = formatMinerName(response.explorer, response.feeRecipientRS, response.feeRecipient, null, true);
         document.getElementById("poolFee").innerText = (parseFloat(response.poolFeePercentage)*100).toFixed(2) + " %";
+        document.getElementById("poolSoloFee").innerText = (parseFloat(response.poolSoloFeePercentage)*100).toFixed(2) + " %";
         document.getElementById("donationRecipient").innerHTML = formatMinerName(response.explorer, response.donationRecipientRS, response.donationRecipient, null, true);
         document.getElementById("donationPercent").innerText = parseFloat(response.donationPercent).toFixed(2) + " %"; + " %";
         document.getElementById("poolShare").innerText = (100 - parseFloat(response.winnerRewardPercentage)*100).toFixed(2) + " %";
@@ -216,7 +217,7 @@ function getMiners() {
         return http.json();
     }).then(response => {
         let table = document.getElementById("miners");
-        table.innerHTML = "<thead><tr><th>Miner</th><th class=\"d-none d-sm-table-cell\">Current Deadline</th><th>Pending Balance</th><th>Physical Capacity</th><th class=\"d-none d-sm-table-cell\">Committed Balance</th><th class=\"d-none d-sm-table-cell\">PoC+ Boost Pool | Chain</th><th class=\"d-none d-sm-table-cell\">Shared Capacity</th><th class=\"d-none d-sm-table-cell\">Share Model</th><th class=\"d-none d-sm-table-cell\">Donation Percent</th><th>Confirmed Deadlines</th><th>Pool Share</th><th class=\"d-none d-sm-table-cell\">Software</th></tr></thead><tbody>";
+        table.innerHTML = "<thead><tr><th>Miner</th><th class=\"d-none d-sm-table-cell\">Current Deadline</th><th>Pending Balance</th><th>Physical Capacity</th><th class=\"d-none d-sm-table-cell\">Effective Capacity</th><th class=\"d-none d-sm-table-cell\">Committed Balance</th><th class=\"d-none d-sm-table-cell\">PoC+ Boost</th><th class=\"d-none d-sm-table-cell\">Shared Capacity</th><th class=\"d-none d-sm-table-cell\">Share Model</th><th class=\"d-none d-sm-table-cell\">Donation Percent</th><th>Confirmed Deadlines</th><th>Pool Share</th><th class=\"d-none d-sm-table-cell\">Software</th></tr></thead><tbody>";
         for (let i = 0; i < response.miners.length; i++) {
             let miner = response.miners[i];
             let currentRoundDeadline = miner.currentRoundBestDeadline == null ? "" : formatTime(miner.currentRoundBestDeadline);
@@ -226,8 +227,9 @@ function getMiners() {
               +"<td class=\"d-none d-sm-table-cell\">"+currentRoundDeadline+"</td>"
               +"<td>"+miner.pendingBalance+"</td>"
               +"<td>"+formatCapacity(miner.totalCapacity)+"</td>"
+              +"<td class=\"d-none d-sm-table-cell\">"+formatCapacity(miner.totalEffectiveCapacity)+"</td>"
               +"<td class=\"d-none d-sm-table-cell\">"+miner.committedBalance+"</td>"
-              +"<td class=\"d-none d-sm-table-cell\">"+miner.boostPool.toFixed(3) + ' | ' + miner.boost.toFixed(3)+"</td>"
+              +"<td class=\"d-none d-sm-table-cell\">"+miner.boostPool.toFixed(3)+"</td>"
               +"<td class=\"d-none d-sm-table-cell\">"+formatCapacity(miner.sharedCapacity)+"</td>"
               +"<td class=\"d-none d-sm-table-cell\">"+miner.sharePercent+" %</td>"
               +"<td class=\"d-none d-sm-table-cell\">"+miner.donationPercent+" %</td>"

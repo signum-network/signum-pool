@@ -33,6 +33,7 @@ public class Props {
     public static final Prop<BurstAddress> donationRecipient = new Prop<>("donationRecipient", null); // Must be non null
     public static final Prop<Integer> donationPercent = new Prop<>("donationPercent", 1); // Default is 1
     public static final Prop<Float> poolFeePercentage = new Prop<>("poolFeePercentage", 0f); // Must be 0-1
+    public static final Prop<Float> poolSoloFeePercentage = new Prop<>("poolSoloFeePercentage", 0.01f); // Must be 0-1
     public static final Prop<Float> winnerRewardPercentage = new Prop<>("winnerRewardPercentage", 0f); // Must be 0-1
 
     public static final Prop<Float> defaultMinimumPayout = new Prop<>("defaultMinimumPayout", 100f); // Must be > 0
@@ -112,6 +113,11 @@ public class Props {
         float poolFeePercentage = propertyService.getFloat(Props.poolFeePercentage);
         if (poolFeePercentage < 0f || poolFeePercentage > 1f) {
             throw new IllegalArgumentException("Illegal poolFeePercentage: " + poolFeePercentage + " (Must be 0-1)");
+        }
+
+        float poolSoloFeePercentage = propertyService.getFloat(Props.poolSoloFeePercentage);
+        if (poolSoloFeePercentage < 0f || poolSoloFeePercentage > 1f) {
+            throw new IllegalArgumentException("Illegal poolSoloFeePercentage: " + poolFeePercentage + " (Must be 0-1)");
         }
 
         float winnerRewardPercentage = propertyService.getFloat(Props.winnerRewardPercentage);

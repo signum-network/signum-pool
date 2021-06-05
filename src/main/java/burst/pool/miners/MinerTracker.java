@@ -101,9 +101,17 @@ public class MinerTracker {
         logger.info("Block won! Block height: " + block.getHeight() + ", forger: " + block.getGenerator().getFullAddress());
 
         BurstValue reward = blockReward;
+        
+        Miner winningMiner = getOrCreate(transactionalStorageService, block.getGenerator());
 
         // Take pool fee
-        BurstValue poolTake = reward.multiply(propertyService.getFloat(Props.poolFeePercentage));
+        float feePercentage = propertyService.getFloat(Props.poolFeePercentage);
+        if(winningMiner.getSharePercent() < 20) {
+            // charge the solo fee
+            feePercentage = propertyService.getFloat(Props.poolSoloFeePercentage);
+        }
+        
+        BurstValue poolTake = reward.multiply(feePercentage);
         reward = reward.subtract(poolTake);
         PoolFeeRecipient poolFeeRecipient = transactionalStorageService.getPoolFeeRecipient();
         poolFeeRecipient.increasePending(poolTake, null);
@@ -111,7 +119,6 @@ public class MinerTracker {
         PoolFeeRecipient donationRecipient = transactionalStorageService.getPoolDonationRecipient();
 
         // Take winner share
-        Miner winningMiner = getOrCreate(transactionalStorageService, block.getGenerator());
         double winnerShare = 1.0d - winningMiner.getSharePercent()/100d;
         BurstValue winnerTake = reward.multiply(winnerShare);
         winningMiner.increasePending(winnerTake, donationRecipient);

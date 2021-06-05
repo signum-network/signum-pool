@@ -78,7 +78,7 @@ public class Pool {
     }
 
     private Disposable processBlocksThread() {
-        return Observable.interval(0, 1, TimeUnit.SECONDS)
+        return Observable.interval(0, 100, TimeUnit.MILLISECONDS)
                 .flatMapCompletable(l -> processNextBlock().onErrorComplete(e -> {
                     onProcessBlocksError(e, false);
                     return true;
