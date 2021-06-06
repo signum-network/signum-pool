@@ -192,7 +192,6 @@ public class Server extends NanoHTTPD {
             response.addProperty("publicNode", propertyService.getString(Props.siteNodeAddress));
             response.addProperty("discordLink", propertyService.getString(Props.siteDiscordLink));
             response.addProperty("faucet", propertyService.getString(Props.siteFaucetURL));
-            response.addProperty("explorer", propertyService.getString(Props.siteExplorerURL));
 
             return response.toString();
         } else if (session.getUri().startsWith("/api/getCurrentRound")) {
