@@ -188,6 +188,12 @@ public class Server extends NanoHTTPD {
             response.addProperty(Props.minimumMinimumPayout.getName(), propertyService.getFloat(Props.minimumMinimumPayout));
             response.addProperty(Props.minPayoutsPerTransaction.getName(), propertyService.getInt(Props.minPayoutsPerTransaction));
             response.addProperty("transactionFee", pool.getTransactionFee().toUnformattedString());
+            
+            response.addProperty("publicNode", propertyService.getString(Props.siteNodeAddress));
+            response.addProperty("discordLink", propertyService.getString(Props.siteDiscordLink));
+            response.addProperty("faucet", propertyService.getString(Props.siteFaucetURL));
+            response.addProperty("explorer", propertyService.getString(Props.siteExplorerURL));
+
             return response.toString();
         } else if (session.getUri().startsWith("/api/getCurrentRound")) {
             return pool.getCurrentRoundInfo(gson).toString();

@@ -45,7 +45,7 @@ public class Props {
     public static final Prop<String> siteTitle = new Prop<>("site.title", "Burst Pool");
     public static final Prop<String> siteIconIco = new Prop<>("site.icon.ico", "icon.ico");
     public static final Prop<String> siteIconPng = new Prop<>("site.icon.png", "icon.png");
-    public static final Prop<String> siteNodeAddress = new Prop<>("site.nodeAddress", "https://wallet.burst-alliance.org:8125/");
+    public static final Prop<String> siteNodeAddress = new Prop<>("site.nodeAddress", "https://europe.signum.network/");
     public static final Prop<String> siteDiscordLink = new Prop<>("site.discord", "https://discord.gg/ms6eagX");
     public static final Prop<String> siteInfo = new Prop<>("site.info", "<p>Coming soon...</p>");
     public static final Prop<String> siteExplorerURL = new Prop<>("site.explorer", "https://explorer.burstcoin.network/");
