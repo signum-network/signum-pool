@@ -46,6 +46,10 @@ public class Miner implements Payable {
             boost.set(latestDeadline.getBoost());
             boostPool.set(latestDeadline.getBoostPool());
         }
+        else {
+            boost.set(0.125);
+            boostPool.set(0.125);
+        }
         userAgent = "...";
     }
 
