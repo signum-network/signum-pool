@@ -38,11 +38,13 @@ public class Miner implements Payable {
         this.store = store;
         
         // Read the deadline history from the DB the first time and then keep on memory
-        deadlines.addAll(store.getDeadlines());
-        if(deadlines.size() > 0) {
-            nconf.set(deadlines.size()-1);
-            boost.set(deadlines.peek().getBoost());
-            boostPool.set(deadlines.peek().getBoostPool());
+        List<Deadline> storeDeadlines = store.getDeadlines();
+        deadlines.addAll(storeDeadlines);
+        if(storeDeadlines.size() > 0) {
+            nconf.set(storeDeadlines.size()-1);
+            Deadline latestDeadline = storeDeadlines.get(storeDeadlines.size()-1);
+            boost.set(latestDeadline.getBoost());
+            boostPool.set(latestDeadline.getBoostPool());
         }
         userAgent = "...";
     }
