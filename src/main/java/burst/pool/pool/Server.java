@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.math.BigInteger;
 import java.net.SocketException;
@@ -46,7 +48,7 @@ import fi.iki.elonen.NanoHTTPD;
 public class Server extends NanoHTTPD {
     private static final Logger logger = LoggerFactory.getLogger(Server.class);
 
-    private static final String[] allowedFileExtensions = new String[]{".html", ".css", ".js", ".png", ".ico"};
+    private static final String[] allowedFileExtensions = new String[]{".html", ".css", ".js", ".png", ".ico", ".json", ".svg", ".map"};
 
     private final StorageService storageService;
     private final PropertyService propertyService;
@@ -54,6 +56,8 @@ public class Server extends NanoHTTPD {
     private final Gson gson = BurstKitUtils.buildGson().create();
     private final BurstCrypto burstCrypto = BurstCrypto.getInstance();
     private final Cache<String, String> fileCache;
+    
+    private final File htmlRoot;
 
     private String apiAllowOrign;
     
@@ -68,6 +72,8 @@ public class Server extends NanoHTTPD {
                 .build(true)
                 .getCache("file", String.class, String.class);
         this.apiAllowOrign = propertyService.getString(Props.apiAllowOrign);
+        
+        this.htmlRoot = new File(propertyService.getString(Props.siteRoot));
     }
 
     private long getCurrentHeight() {
@@ -262,27 +268,26 @@ public class Server extends NanoHTTPD {
         } else if (uri.equals("/img/poolIcon.png")) {
             inputStream = new FileInputStream(propertyService.getString(Props.siteIconPng));
         } else {
-            File file = new File("./html" + uri);
-            if(file.exists() && file.isFile() && file.canRead())
-                inputStream = new FileInputStream(file);
-        }
-
-        if (inputStream == null) {
-            return redirect("/404.html");
+            File file = new File(htmlRoot, uri);
+            if(!file.exists() || !file.isFile() || !file.canRead()) {
+                file = new File(htmlRoot, "index.html");
+            }
+            inputStream = new FileInputStream(file);
         }
 
         if (uri.contains(".png") || uri.contains(".ico")) {
             return NanoHTTPD.newChunkedResponse(Response.Status.OK, uri.contains(".ico") ? "image/x-icon" : "image/png", inputStream);
         }
-
-        StringWriter stringWriter = new StringWriter(inputStream.available());
-        byte[] buffer = new byte[1024*1024];
-        int len;
-        while ((len = inputStream.read(buffer)) != -1) {
-            stringWriter.write(new String(buffer, StandardCharsets.UTF_8), 0, len);
+        
+        int bufferSize = 1024*1024;
+        char[] buffer = new char[bufferSize];
+        StringBuilder out = new StringBuilder();
+        Reader in = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+        for (int numRead; (numRead = in.read(buffer, 0, buffer.length)) > 0; ) {
+            out.append(buffer, 0, numRead);
         }
-        String response = stringWriter.toString();
-
+        String response = out.toString();
+        
         boolean minimize = true;
 
         if (uri.contains(".png") || uri.contains(".ico")) minimize = false;
@@ -302,10 +307,13 @@ public class Server extends NanoHTTPD {
                     .replace(", ", ",") TODO this minimization is messing up strings */
                     // Replace links TODO strip tags in links
                     .replace("{TITLE}", propertyService.getString(Props.siteTitle))
+                    .replace("{TITLE}", propertyService.getString(Props.siteTitle))
+                    .replace("{PRICEENDPOINT}", propertyService.getString(Props.sitePrice))
                     .replace("{PUBLICNODE}", propertyService.getString(Props.siteNodeAddress))
                     .replace("{DISCORD}", propertyService.getString(Props.siteDiscordLink))
                     .replace("{INFO}", propertyService.getString(Props.siteInfo))
                     .replace("{POOL_ACCOUNT}", burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase)).getFullAddress())
+                    .replace("{MININGADDRESS}", propertyService.getString(Props.miningURL))
                     .replace("{LAG}", Integer.toString(propertyService.getInt(Props.processLag)))
                     .replace("{MIN_PAYOUT}", BurstValue.fromBurst(propertyService.getFloat(Props.minimumMinimumPayout)).toUnformattedString())
                     .replace("{FAUCET}", propertyService.getString(Props.siteFaucetURL))

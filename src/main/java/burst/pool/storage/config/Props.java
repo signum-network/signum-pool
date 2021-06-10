@@ -42,10 +42,14 @@ public class Props {
     public static final Prop<Integer> payoutRetryCount = new Prop<>("payoutRetryCount", 3);
     public static final Prop<Integer> submitNonceRetryCount = new Prop<>("submitNonceRetryCount", 3);
 
+    public static final Prop<String> miningURL = new Prop<>("miningURL", "http://nivbox.co.uk:9000");
+
     public static final Prop<String> siteTitle = new Prop<>("site.title", "Burst Pool");
+    public static final Prop<String> siteRoot = new Prop<>("site.root", "./html/");
     public static final Prop<String> siteIconIco = new Prop<>("site.icon.ico", "icon.ico");
     public static final Prop<String> siteIconPng = new Prop<>("site.icon.png", "icon.png");
     public static final Prop<String> siteNodeAddress = new Prop<>("site.nodeAddress", "https://europe.signum.network/");
+    public static final Prop<String> sitePrice = new Prop<>("site.price", "https://min-api.cryptocompare.com/data/price?fsym=BURST&tsyms=USD");
     public static final Prop<String> siteDiscordLink = new Prop<>("site.discord", "https://discord.gg/ms6eagX");
     public static final Prop<String> siteInfo = new Prop<>("site.info", "<p>Coming soon...</p>");
     public static final Prop<String> siteExplorerURL = new Prop<>("site.explorer", "https://explorer.burstcoin.network/");
