@@ -26,7 +26,7 @@ public class Launcher {
         BurstKitUtils.addAddressPrefix("S");
         BurstKitUtils.addAddressPrefix("TS");
         BurstKitUtils.addAddressPrefix("BURST");
-        BurstKitUtils.setValueSuffix("Signa");
+        BurstKitUtils.setValueSuffix("SIGNA");
         
         if (System.getProperty("log4j.configurationFile") == null) {
             System.setProperty("log4j.configurationFile", "logging.xml");
