@@ -28,3 +28,4 @@ yarn-error.log*
 #serverless
 .serverless
 serverless.yml
+/package-lock.json
