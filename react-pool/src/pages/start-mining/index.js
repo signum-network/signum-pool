@@ -89,15 +89,15 @@ const StartMining = (props) => {
       >
         {/* First step */}
         <Grid item className={styles.thirSectionItem}>
-          <Typography variant="h6">Step 1 - Account creation</Typography>
+          <Typography variant="h6">Step 1: Account Creation</Typography>
           <Typography gutterBottom>
-            Before assigning the reward recipient, first you must have your
+            Before assigning the reward recipient, you must first set up a
             Signum wallet.{" "}
             <Hidden smDown>
               <br></br>
             </Hidden>
-            Meet the following wallets which you can manage your Signa and also
-            join the pool.
+            Meet the following wallets with which you can manage your Signa and
+            also join the pool.
           </Typography>
 
           <Grid
@@ -146,7 +146,7 @@ const StartMining = (props) => {
 
         {/* Second step */}
         <Grid item className={styles.thirSectionItem}>
-          <Typography variant="h6">Step 2 - Reward recipient</Typography>
+          <Typography variant="h6">Step 2: Reward Recipient</Typography>
           <Typography gutterBottom>
             Now with your wallet, you must set the reward recipient to the
             following address:
@@ -171,16 +171,17 @@ const StartMining = (props) => {
 
         {/* Thrid step */}
         <Grid item className={styles.thirSectionItem}>
-          <Typography variant="h6">Step 3 - Block confirmation</Typography>
+          <Typography variant="h6">Step 3: Block Confirmation</Typography>
           <Typography gutterBottom>
             After you assign the reward recipient successfully, you will need to
-            wait at least for 4 blocks confirmations <b>(Around 20 minutes)</b>.
+            wait for at least 4 block confirmations{" "}
+            <b>(approximately 20 minutes)</b>.
           </Typography>
         </Grid>
 
         {/* Forth step */}
         <Grid item className={styles.thirSectionItem}>
-          <Typography variant="h6">Step 4 - Mining address</Typography>
+          <Typography variant="h6">Step 4: Mining Address</Typography>
           <Typography gutterBottom>
             After the wait, you must configure your miner to use the following
             mining address:
