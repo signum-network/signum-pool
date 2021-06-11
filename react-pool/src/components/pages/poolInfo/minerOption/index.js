@@ -23,11 +23,11 @@ const minerOptions = (props) => {
       }}
     >
       {/* First paragraph */}
-      <Typography variant="h6">Configurations with messages</Typography>
+      <Typography variant="h6">Configuration with messages</Typography>
       <Typography gutterBottom>
         If you have already joined the pool, you can further configure it by{" "}
         <b>sending unencrypted text messages</b> from your miner account to the
-        pool account (effective after {data.processLag} blocks):
+        pool account (effective after {data.processLag}):
       </Typography>
 
       <Typography className={styles.blueLabel}>{data.poolAccountRS}</Typography>
