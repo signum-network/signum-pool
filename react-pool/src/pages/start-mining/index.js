@@ -69,8 +69,8 @@ const StartMining = (props) => {
         component="section"
       >
         <Typography align="center">
-          Are you a new beginner? <br /> Welcome to the community ❤️ <br /> Read
-          this{" "}
+          Are you new to Signum mining? <br /> Welcome to the community ❤️{" "}
+          <br /> Read this{" "}
           <a href={MINING_GUIDEToUse} target="_blank" rel="noreferrer">
             simple mining guide
           </a>{" "}
