@@ -137,7 +137,7 @@ distributions {
             from 'dist/logging.xml'
             from 'License'
             into('html') {
-                from 'html'
+                from 'react-pool/build/'
             }
             from project.tasks.shadowJar.outputs.files
         }

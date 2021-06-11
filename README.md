@@ -62,7 +62,7 @@ Donations are very welcome at [S-JJQS-MMA4-GHB4-4ZNZU](https://explorer.burstcoi
 
 ## Installation
 
-- [Download The Latest Release](https://github.com/jjos2372/burstpool/releases/latest)
+- [Download The Latest Release](https://github.com/signum-network/signum-pool/releases/latest)
 - Extract the zip file
 - Configure `pool.properties` to suit your needs
 - Run the jar file:
@@ -127,9 +127,9 @@ journalctl -u signum-pool.service
 
 ## Customizing the Web UI
 
-There are many options to customize the web UI in the properties file (explorer, faucet, discord server, ...).
-Further modifications can be made by changing the contents of the `html` folder.
-Per the license terms, you must not remove the copyright notice at the bottom of the page, but you may make any other modifications you wish.
+Check the [react-pool folder](react-pool).
+
+Be sure to build `react-pool` code with `npm run build` before building the pool distribution package.
 
 ## Building from source
 
