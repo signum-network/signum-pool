@@ -1,0 +1,117 @@
+.headerContainer {
+  background: #1f1f1f;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+  padding: 0.9rem 2rem;
+  width: 100vw !important;
+  z-index: 99 !important;
+}
+
+.brandingContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding-right: 1rem;
+  margin-right: 1rem !important;
+}
+
+.redirector {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.brandingContainer img {
+  width: 38px;
+  height: 38px;
+  margin-right: 1em;
+  vertical-align: middle !important;
+}
+
+.navLinksContainer {
+  margin-top: 5px !important;
+}
+
+.navLink {
+  border-radius: 8px;
+  background: transparent;
+  margin-right: 1rem;
+  overflow: hidden !important;
+  padding: 0.5em 1.5em !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+  border: 1px solid transparent;
+}
+
+.navLink {
+  font-size: 0.9rem !important;
+}
+
+.navLink:hover,
+.activeNavLink {
+  color: white !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.mainBtn {
+  color: #fff !important;
+  text-transform: none !important;
+  width: 100%;
+  max-width: 290px;
+  font-size: 1rem !important;
+  padding: 0.5rem 4rem !important;
+  border-radius: 8px !important;
+}
+
+/* Hamburger button */
+.hamburguerButton {
+  border-radius: 8px !important;
+  border: 0.5px solid rgba(255, 255, 255, 0.1) !important;
+  padding-left: 9px;
+  padding-right: 9px;
+}
+
+/* Media queries */
+@media (max-width: 1040px) {
+  .navLink {
+    font-size: 0.7rem !important;
+  }
+
+  .mainBtn {
+    padding: 0.5rem 1rem !important;
+  }
+}
+
+@media (max-width: 960px) {
+  .headerContainer {
+    padding-left: 0.7em !important;
+    padding-right: 0.7em !important;
+  }
+
+  .redirector h6 {
+    font-size: 18px !important;
+  }
+
+  .brandingContainer {
+    border: none !important;
+  }
+
+  .menuButtonContainer {
+    padding: 5px !important;
+  }
+
+  .menuButtonContainer {
+    padding: 5px !important;
+  }
+
+  .menuButton {
+    font-size: 38px !important;
+  }
+}
+
+@media (max-width: 325px) {
+  .redirector h6 {
+    font-size: 15px !important;
+  }
+}

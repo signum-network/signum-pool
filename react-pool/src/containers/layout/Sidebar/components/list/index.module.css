@@ -1,0 +1,49 @@
+.listContainer {
+  border: 1px solid transparent !important;
+  border-radius: 8px !important;
+  margin-top: 5px !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+.listText span,
+.listText div {
+  font-size: 0.95rem !important;
+}
+
+.proTag span:last-child {
+  font-size: 12px !important;
+}
+
+.activeList {
+  background: rgba(0, 0, 0, 0.01) !important;
+  border-color: rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.02) !important;
+}
+
+.secondText,
+.secondText span {
+  opacity: 0.8 !important;
+  font-size: 13px !important;
+  margin-top: -3px !important;
+  font-weight: 500 !important;
+}
+
+.fullWidth {
+  width: 100% !important;
+}
+
+/* MEDIA QUERIES */
+@media (min-width: 1200px) {
+  .listContainer:hover {
+    background: rgba(0, 0, 0, 0.01) !important;
+    border-color: rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.02) !important;
+  }
+}
+
+@media (max-width: 350px) {
+  .listText * {
+    font-size: 0.85rem !important;
+  }
+}

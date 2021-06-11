@@ -1,0 +1,30 @@
+.sideBarContainer {
+  width: 100vw;
+  height: 100%;
+  padding: 1rem 1rem;
+  padding-top: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+/* First sidebar section - title */
+.firstTitle {
+  margin-bottom: 10px !important;
+}
+
+/* MEDIA QUERIES */
+@media (max-width: 961px) {
+  .sideBarContainer {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
+@media (max-width: 370px) {
+  .sideBarContainer {
+    padding-left: 0.1rem;
+    padding-right: 0.1rem;
+  }
+}

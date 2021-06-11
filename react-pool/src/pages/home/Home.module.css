@@ -1,0 +1,156 @@
+/* First section */
+.firstSection {
+  background: #171717;
+  padding: 3rem 1em;
+  padding-bottom: 4rem;
+}
+
+.firstSection h6 {
+  font-weight: 400;
+  font-size: 18px !important;
+  margin-top: 4px;
+}
+
+.redirectText {
+  font-size: 18px !important;
+  font-weight: bold !important;
+  margin-top: 4px;
+}
+
+/* Input section */
+.inputContainer {
+  margin-top: -30px;
+  max-width: 575px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2rem;
+}
+
+.inputContainer input {
+  font-size: 16.5px !important;
+  padding: 1em;
+  outline: none !important;
+  border: none !important;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05) !important;
+  border-radius: 8px 0px 0px 8px;
+  width: 88%;
+  background: white !important;
+}
+
+.inputContainer button {
+  width: 12% !important;
+  border-radius: 0px 8px 8px 0px !important;
+}
+
+/* Third section */
+.thirdSection {
+  max-width: 675px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-bottom: 1em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 1.2rem;
+}
+
+.thirdSection div {
+  width: 25%;
+}
+
+.thirdSection div * {
+  width: 100%;
+  text-align: center;
+}
+
+.thirdSection div h5 {
+  font-weight: 700;
+}
+
+.thirdSection div h6 span {
+  font-weight: 300 !important;
+  font-size: 17px !important;
+}
+
+/* Forth section */
+.forthSection {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-bottom: 1.2rem;
+}
+
+.forthSectionTitle {
+  font-size: 18px !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  margin-bottom: 9px;
+}
+
+/* Fifth section */
+.toggleBtn {
+  width: 100%;
+  max-width: 400px;
+  text-transform: none;
+  font-size: 1rem !important;
+  padding: 0.5rem 4rem !important;
+  border-radius: 8px !important;
+  color: white;
+  background: #1f1f1f !important;
+  margin-bottom: 2rem;
+}
+
+.tableBtn {
+  width: 100%;
+  max-width: 1920px;
+  padding-left: 2em;
+  padding-right: 2em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Media queries */
+@media (min-width: 760px) {
+  /* Forth section */
+  .forthSectionTitle {
+    padding-left: 1.7em !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .tableBtn {
+    padding-left: 0.9em;
+    padding-right: 0.9em;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Input section */
+  .inputContainer input {
+    border-radius: 0 !important;
+    width: 80% !important;
+  }
+
+  .inputContainer button {
+    border-radius: 0 !important;
+    width: 20% !important;
+  }
+
+  /* Third section */
+  .thirdSection {
+    padding-bottom: 0 !important;
+  }
+
+  .thirdSection div {
+    width: 50%;
+    margin-bottom: 1em;
+  }
+
+  .toggleBtn {
+    width: 92%;
+    max-width: 400px;
+    font-size: 18px !important;
+    padding: 1rem !important;
+  }
+}

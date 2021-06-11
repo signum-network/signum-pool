@@ -1,0 +1,14 @@
+.blueLabel {
+  font-weight: 700 !important;
+  color: var(--main-client-color) !important;
+  margin-bottom: 1em !important;
+  padding-bottom: 1em;
+  border-bottom: 1px solid #242424;
+  width: 100%;
+}
+
+.blueLabel:last-child {
+  padding-bottom: 0 !important;
+  border-bottom: 0 !important;
+  margin-bottom: 0.5em !important;
+}
