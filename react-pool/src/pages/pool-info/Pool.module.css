@@ -1,0 +1,53 @@
+.firstSection {
+  margin-top: 3rem;
+  max-width: 1000px;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1rem;
+}
+
+.InfoCard {
+  background: #121212;
+  border: 1px solid #242424;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  padding: 1em;
+  margin-bottom: 1.2rem;
+}
+
+/* Section section */
+.secondSection {
+  max-width: 1000px;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 3rem;
+}
+
+.tabsContainer {
+  overflow: hidden !important;
+  width: 100% !important;
+  border-radius: 8px !important;
+  margin-bottom: 1.5rem;
+}
+
+/* Media queries */
+@media (max-width: 960px) {
+  .InfoCard {
+    width: 48.5% !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .tabUnit {
+    font-size: 1.1rem !important;
+    padding: 0.5em 1.2em !important;
+  }
+
+  .InfoCard {
+    width: 100% !important;
+  }
+}

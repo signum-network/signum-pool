@@ -1,0 +1,55 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background-color: #121212 !important;
+}
+
+html,
+body {
+  margin: 0;
+  font-family: "Montserrat", "Roboto", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden !important;
+}
+
+/* Change font */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Montserrat", "Roboto", sans-serif !important;
+}
+
+:root {
+  /* Main */
+  --main-client-color: #0099ff;
+  --main-client-light-color: #5fb8ff;
+  --main-client-dark-color: #0066ff;
+
+  --secondary-client-color: #e8f3ff;
+  --secondary-client-light-color: #eaf0f6;
+  --secondary-client-dark-color: #021851;
+
+  --main-client-width: 1500px;
+}
+
+a {
+  display: inline-block;
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.defaultTransition {
+  -webkit-transition: all 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
+  -moz-transition: all 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
+  transition: all 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
+}
