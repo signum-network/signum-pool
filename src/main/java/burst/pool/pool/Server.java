@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.StringWriter;
 import java.math.BigInteger;
 import java.net.SocketException;
 import java.net.URLConnection;
@@ -39,7 +38,6 @@ import burst.kit.util.BurstKitUtils;
 import burst.pool.Constants;
 import burst.pool.miners.Deadline;
 import burst.pool.miners.Miner;
-import burst.pool.miners.MinerTracker;
 import burst.pool.storage.config.PropertyService;
 import burst.pool.storage.config.Props;
 import burst.pool.storage.persistent.StorageService;
@@ -48,7 +46,17 @@ import fi.iki.elonen.NanoHTTPD;
 public class Server extends NanoHTTPD {
     private static final Logger logger = LoggerFactory.getLogger(Server.class);
 
-    private static final String[] allowedFileExtensions = new String[]{".html", ".css", ".js", ".png", ".ico", ".json", ".svg", ".map"};
+    private static final HashMap<String, String> mimeTypesAllowed = new HashMap<>();
+    static {
+        mimeTypesAllowed.put("ico", "image/x-icon");
+        mimeTypesAllowed.put("png", "image/png");
+        mimeTypesAllowed.put("html", MIME_HTML);
+        mimeTypesAllowed.put("css", "text/css");
+        mimeTypesAllowed.put("svg", "image/svg+xml");
+        mimeTypesAllowed.put("js", "text/javascript");
+        mimeTypesAllowed.put("json", "application/json");
+        mimeTypesAllowed.put("map", "application/json");
+    }
 
     private final StorageService storageService;
     private final PropertyService propertyService;
@@ -250,11 +258,23 @@ public class Server extends NanoHTTPD {
         if (Objects.equals(uri, "") || Objects.equals(uri, "/")) {
             uri = "/index.html";
         }
-        boolean allowedFile = false;
-        for (String extension : allowedFileExtensions) {
-            if (uri.endsWith(extension)) allowedFile = true;
+        String mimeType = null;
+        boolean isPath = false;
+        
+        if(!uri.contains(".")) {
+            isPath = true;
+            mimeType = MIME_HTML;
         }
-        if (!allowedFile || uri.contains("../")) {
+        else {        
+            for (String extension : mimeTypesAllowed.keySet()) {
+                if (uri.endsWith(extension)) {
+                    mimeType = mimeTypesAllowed.get(extension);
+                    break;
+                }
+            }
+        }
+        
+        if (mimeType == null || uri.contains("../")) {
             return NanoHTTPD.newFixedLengthResponse(Response.Status.FORBIDDEN, "text/html", "<h1>Access Forbidden</h1>");
         }
 
@@ -269,8 +289,9 @@ public class Server extends NanoHTTPD {
             inputStream = new FileInputStream(propertyService.getString(Props.siteIconPng));
         } else {
             File file = new File(htmlRoot, uri);
-            if(!file.exists() || !file.isFile() || !file.canRead()) {
+            if(isPath || !file.isFile() || !file.exists() || !file.canRead()) {
                 file = new File(htmlRoot, "index.html");
+                mimeType = MIME_HTML;
             }
             inputStream = new FileInputStream(file);
         }
@@ -286,26 +307,12 @@ public class Server extends NanoHTTPD {
         for (int numRead; (numRead = in.read(buffer, 0, buffer.length)) > 0; ) {
             out.append(buffer, 0, numRead);
         }
+        in.close();
         String response = out.toString();
         
-        boolean minimize = true;
-
-        if (uri.contains(".png") || uri.contains(".ico")) minimize = false;
-
-        if (minimize) {
+        if (mimeType!=null && mimeType.equals(MIME_HTML)) {
             response = response
-                    // Minimizing
-                    .replace("    ", "")
-                    .replace(" + ", "+")
-                    .replace(" = ", "=")
-                    .replace(" == ", "==")
-                    .replace(" === ", "===")
-                    .replace("\r", "")
-                    .replace("\n", "")
-                    /*.replace(" (", "(")
-                    .replace(") ", ")")
-                    .replace(", ", ",") TODO this minimization is messing up strings */
-                    // Replace links TODO strip tags in links
+                    // Replace the TAGS
                     .replace("{TITLE}", propertyService.getString(Props.siteTitle))
                     .replace("{TITLE}", propertyService.getString(Props.siteTitle))
                     .replace("{PRICEENDPOINT}", propertyService.getString(Props.sitePrice))
@@ -314,6 +321,7 @@ public class Server extends NanoHTTPD {
                     .replace("{INFO}", propertyService.getString(Props.siteInfo))
                     .replace("{POOL_ACCOUNT}", burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase)).getFullAddress())
                     .replace("{MININGADDRESS}", propertyService.getString(Props.miningURL))
+                    .replace("{MININGGUIDE}", propertyService.getString(Props.miningGuide))
                     .replace("{LAG}", Integer.toString(propertyService.getInt(Props.processLag)))
                     .replace("{MIN_PAYOUT}", BurstValue.fromBurst(propertyService.getFloat(Props.minimumMinimumPayout)).toUnformattedString())
                     .replace("{FAUCET}", propertyService.getString(Props.siteFaucetURL))
@@ -322,13 +330,7 @@ public class Server extends NanoHTTPD {
         if(fileCache != null) {
             fileCache.put(uri, response);
         }
-        return NanoHTTPD.newFixedLengthResponse(Response.Status.OK, URLConnection.guessContentTypeFromName(session.getUri()), response);
-    }
-
-    private Response redirect(String redirectTo) {
-        Response r = newFixedLengthResponse(Response.Status.REDIRECT, MIME_HTML, "");
-        r.addHeader("Location", redirectTo);
-        return r;
+        return NanoHTTPD.newFixedLengthResponse(Response.Status.OK, mimeType, response);
     }
 
     private JsonElement minerToJson(Miner miner, boolean returnDeadlines) {

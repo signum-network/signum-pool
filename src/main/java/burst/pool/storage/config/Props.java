@@ -43,6 +43,7 @@ public class Props {
     public static final Prop<Integer> submitNonceRetryCount = new Prop<>("submitNonceRetryCount", 3);
 
     public static final Prop<String> miningURL = new Prop<>("miningURL", "http://nivbox.co.uk:9000");
+    public static final Prop<String> miningGuide = new Prop<>("site.miningGuide", "https://jjos2372.medium.com/mining-with-your-hard-drive-in-2021-19d9f4a1368");
 
     public static final Prop<String> siteTitle = new Prop<>("site.title", "Burst Pool");
     public static final Prop<String> siteRoot = new Prop<>("site.root", "./html/");
