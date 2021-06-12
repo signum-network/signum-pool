@@ -152,7 +152,7 @@ const Header = (props) => {
                   color="primary"
                   className={styles.mainBtn}
                 >
-                  Start Now!
+                  Start Mining
                 </Button>
               </Link>
             </Hidden>

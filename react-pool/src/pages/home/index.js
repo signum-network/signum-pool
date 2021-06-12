@@ -282,7 +282,7 @@ const Home = (props) => {
         <input
           autoComplete="off"
           type="text"
-          placeholder="Signum miner address or username"
+          placeholder="Your Signum address or account name"
           ref={fInput}
           disabled={minerData.loadingData}
         />

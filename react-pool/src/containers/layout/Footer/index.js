@@ -18,7 +18,7 @@ const Footer = () => {
       <Grid container direction="row" justify="center" alignItems="center">
         <Typography variant="body2" align="center">
           <a
-            href="https://github.com/signum-network"
+            href="https://github.com/signum-network/signum-pool"
             target="_blank"
             rel="noreferrer"
           >
