@@ -315,7 +315,6 @@ public class Server extends NanoHTTPD {
             response = response
                     // Replace the TAGS
                     .replace("{TITLE}", propertyService.getString(Props.siteTitle))
-                    .replace("{TITLE}", propertyService.getString(Props.siteTitle))
                     .replace("{PRICEENDPOINT}", propertyService.getString(Props.sitePrice))
                     .replace("{PUBLICNODE}", propertyService.getString(Props.siteNodeAddress))
                     .replace("{DISCORD}", propertyService.getString(Props.siteDiscordLink))
@@ -326,7 +325,23 @@ public class Server extends NanoHTTPD {
                     .replace("{LAG}", Integer.toString(propertyService.getInt(Props.processLag)))
                     .replace("{MIN_PAYOUT}", BurstValue.fromBurst(propertyService.getFloat(Props.minimumMinimumPayout)).toUnformattedString())
                     .replace("{FAUCET}", propertyService.getString(Props.siteFaucetURL))
-                    .replace("{EXPLORER}", propertyService.getString(Props.siteExplorerURL));
+                    .replace("{EXPLORER}", propertyService.getString(Props.siteExplorerURL))
+                    
+                    .replace("\"*{PRIMARYCOLOR}*\"", propertyService.getString(Props.sitePrimaryColor))
+                    .replace("\"*{PRIMARYLIGHTCOLOR}*\"", propertyService.getString(Props.sitePrimaryLightColor))
+                    .replace("\"*{PRIMARYDARKCOLOR}*\"", propertyService.getString(Props.sitePrimaryDarkColor))
+                    .replace("\"*{SECONDARYCOLOR}*\"", propertyService.getString(Props.siteSecondaryColor))
+                    .replace("\"*{SECONDARYLIGHTCOLOR}*\"", propertyService.getString(Props.siteSecondaryLightColor))
+                    .replace("\"*{SECONDARYDARKCOLOR}*\"", propertyService.getString(Props.siteSecondaryDarkColor))
+                    .replace("\"*{GRAPHCOLOR}*\"", propertyService.getString(Props.siteGraphColor))
+                    .replace("{PRIMARYCOLOR}", propertyService.getString(Props.sitePrimaryColor))
+                    .replace("{PRIMARYLIGHTCOLOR}", propertyService.getString(Props.sitePrimaryLightColor))
+                    .replace("{PRIMARYDARKCOLOR}", propertyService.getString(Props.sitePrimaryDarkColor))
+                    .replace("{SECONDARYCOLOR}", propertyService.getString(Props.siteSecondaryColor))
+                    .replace("{SECONDARYLIGHTCOLOR}", propertyService.getString(Props.siteSecondaryLightColor))
+                    .replace("{SECONDARYDARKCOLOR}", propertyService.getString(Props.siteSecondaryDarkColor))
+                    .replace("{GRAPHCOLOR}", propertyService.getString(Props.siteGraphColor))
+                    ;
         }
         if(fileCache != null) {
             fileCache.put(uri, response);
@@ -343,7 +358,7 @@ public class Server extends NanoHTTPD {
         minerJson.addProperty("pendingBalance", miner.getPending().toFormattedString());
         minerJson.addProperty("totalCapacity", miner.getTotalCapacity());
         minerJson.addProperty("totalEffectiveCapacity", miner.getTotalEffectiveCapacity());
-        minerJson.addProperty("commitment", miner.getCommitment().toFormattedString());
+        minerJson.addProperty("commitment", miner.getCommittedBalance().divide(miner.getTotalEffectiveCapacity()).toFormattedString());
         minerJson.addProperty("committedBalance", miner.getCommittedBalance().toFormattedString());
         minerJson.addProperty("boost", miner.getBoost());
         minerJson.addProperty("boostPool", miner.getBoostPool());

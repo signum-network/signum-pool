@@ -54,8 +54,17 @@ public class Props {
     public static final Prop<String> siteDiscordLink = new Prop<>("site.discord", "https://discord.gg/ms6eagX");
     public static final Prop<String> siteInfo = new Prop<>("site.info", "<p>Coming soon...</p>");
     public static final Prop<String> siteExplorerURL = new Prop<>("site.explorer", "https://explorer.burstcoin.network/");
-    public static final Prop<String> siteFaucetURL = new Prop<>("site.faucet", "http://faucet.burst-alliance.org/");
+    public static final Prop<String> siteFaucetURL = new Prop<>("site.faucet", "");
     public static final Prop<String> siteExplorerAccount = new Prop<>("site.explorerAccount", "?action=account&account=");
+    
+    public static final Prop<String> sitePrimaryColor = new Prop<>("site.primaryColor", "#0099ff");
+    public static final Prop<String> sitePrimaryLightColor = new Prop<>("site.primaryLightColor", "#5fb8ff");
+    public static final Prop<String> sitePrimaryDarkColor = new Prop<>("site.primaryDarkColor", "#0066ff");
+    public static final Prop<String> siteSecondaryColor = new Prop<>("site.secondaryColor", "#183173");
+    public static final Prop<String> siteSecondaryLightColor = new Prop<>("site.secondaryLightColor", "#274187");
+    public static final Prop<String> siteSecondaryDarkColor = new Prop<>("site.secondaryDarkColor", "#021851");
+    public static final Prop<String> siteGraphColor = new Prop<>("site.graphColor", "#2451B7");
+    
     public static final Prop<Boolean> siteDisableCache = new Prop<>("site.disableCache", false);
     public static final Prop<String> apiAllowOrign = new Prop<>("api.allowOrign", "");
 
