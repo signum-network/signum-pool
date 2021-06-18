@@ -3,6 +3,7 @@ package burst.pool.storage.config;
 import burst.kit.entity.BurstAddress;
 
 public interface PropertyService {
+    void reloadIfModified();
     boolean getBoolean(Prop<Boolean> prop);
     int getInt(Prop<Integer> prop);
     long getLong(Prop<Long> prop);

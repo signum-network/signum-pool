@@ -4,6 +4,7 @@ import burst.kit.entity.BurstAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -13,15 +14,34 @@ public class PropertyServiceImpl implements PropertyService {
     private static final Logger logger = LoggerFactory.getLogger(PropertyServiceImpl.class);
 
     private final Properties properties;
+    
+    private final File file;
+    private long lastModified;
 
     public PropertyServiceImpl(String fileName) {
         properties = new Properties();
+        file = new File(fileName);
         try {
-            properties.load(new FileInputStream(fileName));
+            lastModified = file.lastModified();
+            properties.load(new FileInputStream(file));
         } catch (IOException e) {
             logger.error("Could not load properties from " +  fileName, e);
         }
         Props.validateProperties(this);
+    }
+    
+    @Override
+    public void reloadIfModified() {
+        if(lastModified == file.lastModified())
+            return;
+        
+        try {
+            logger.info("Reloading properties from {}", file.getAbsolutePath());
+            lastModified = file.lastModified();
+            properties.load(new FileInputStream(file));
+        } catch (IOException e) {
+            logger.error("Could not load properties from " +  file.getAbsolutePath(), e);
+        }
     }
 
     private <T> String valueOrDefault(Prop<T> prop) {

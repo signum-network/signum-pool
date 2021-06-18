@@ -134,6 +134,8 @@ public class Pool {
                     return;
                 }
                 
+                propertyService.reloadIfModified();
+                
                 logger.info("Started processing block {}", storageService.getLastProcessedBlock() + 1);
 
                 try {
