@@ -65,9 +65,15 @@ public class Props {
     public static final Prop<String> siteSecondaryDarkColor = new Prop<>("site.secondaryDarkColor", "#021851");
     public static final Prop<String> siteGraphColor = new Prop<>("site.graphColor", "#2451B7");
     
+    public static final Prop<String> siteSeoDescription = new Prop<>("site.seoDescription", "");
+    public static final Prop<String> siteSeoImageUrl = new Prop<>("site.seoImageUrl", "");
+
+    public static final Prop<String> siteShowTradingLink = new Prop<>("site.showTradingLink", "YES");
+    public static final Prop<String> siteMiniTradingLink = new Prop<>("site.miniTradingLink", "https://bit.ly/2SzLZyx");
+    public static final Prop<String> siteLargeTradingLink = new Prop<>("site.largeTradingLink", "https://bit.ly/2UhNuSo");
+
     public static final Prop<Boolean> siteDisableCache = new Prop<>("site.disableCache", false);
     public static final Prop<String> apiAllowOrign = new Prop<>("api.allowOrign", "");
-
     public static void validateProperties(PropertyService propertyService) {
         int serverPort = propertyService.getInt(Props.serverPort);
         if (serverPort <= 0 || serverPort >= Math.pow(2, 16)) {

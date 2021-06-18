@@ -341,6 +341,14 @@ public class Server extends NanoHTTPD {
                     .replace("{SECONDARYLIGHTCOLOR}", propertyService.getString(Props.siteSecondaryLightColor))
                     .replace("{SECONDARYDARKCOLOR}", propertyService.getString(Props.siteSecondaryDarkColor))
                     .replace("{GRAPHCOLOR}", propertyService.getString(Props.siteGraphColor))
+                    
+                    .replace("{SEODESCRIPTION}", propertyService.getString(Props.siteSeoDescription))
+                    .replace("{SEOIMGURL}", propertyService.getString(Props.siteSeoImageUrl))
+                    
+                    .replace("{SHOWTRADINGLINK}", propertyService.getString(Props.siteShowTradingLink))
+                    .replace("{MINITRADINGLINK}", propertyService.getString(Props.siteMiniTradingLink))
+                    .replace("{LARGETRADINGLINK}", propertyService.getString(Props.siteLargeTradingLink))
+                    
                     ;
         }
         if(fileCache != null) {
