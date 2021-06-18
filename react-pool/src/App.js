@@ -16,6 +16,9 @@ import store from "./utils/redux/store";
 // Route renderer
 import Routes from "./Routes";
 
+// Color manipulation
+import { COLORSTOUSE } from "./utils/globalColor";
+
 const App = () => {
   // Material template setup
   const prefersDarkMode = "dark";
@@ -24,20 +27,11 @@ const App = () => {
     () =>
       createMuiTheme({
         palette: {
-          primary: {
-            main: "#0099ff",
-            light: "#5fb8ff",
-            dark: "#0066ff",
-            contrastText: "#ffffff",
-          },
-          secondary: {
-            main: "#E8F3FF",
-            light: "#EAF0F6",
-            dark: "#021851",
-          },
+          ...COLORSTOUSE,
           type: prefersDarkMode,
         },
       }),
+
     [prefersDarkMode]
   );
 

@@ -40,6 +40,7 @@ const Error = (props) => {
           <img
             src="/assets/404img.svg"
             style={{ maxWidth: "100%", maxHeight: "100%" }}
+            alt="404 Img"
           />
         </Box>
 

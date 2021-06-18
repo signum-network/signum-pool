@@ -35,6 +35,15 @@ const Layout = (props) => {
       {/* Sidebar */}
       <Sidebar showSideDrawer={showSidebar} closeSideDrawer={sidebarCloser} />
 
+      {/* Divider */}
+      <div
+        style={{
+          width: "100vw",
+          marginBottom: "79px",
+          boxSizing: "border-box",
+        }}
+      ></div>
+
       {/* Body */}
       {props.children}
 

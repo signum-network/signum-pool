@@ -1,9 +1,13 @@
 .headerContainer {
+  position: fixed !important;
+  left: 0;
+  top: 0;
   background: #1f1f1f;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
   padding: 0.9rem 2rem;
   width: 100vw !important;
   z-index: 99 !important;
+  box-sizing: border-box;
 }
 
 .brandingContainer {
