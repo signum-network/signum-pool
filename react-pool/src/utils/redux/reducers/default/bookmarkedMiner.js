@@ -4,18 +4,20 @@ import * as actionsType from "../../actions/actionTypes";
 const initialState = {
   data: null,
   found: false,
+  deadlineData: null,
   loadingData: true,
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionsType.FOUND_BOOKMARKED_MINER:
-      const { payload } = action;
+      const { payload, deadlineData } = action;
 
       return {
         ...state,
         data: payload,
         found: true,
+        deadlineData: deadlineData || null,
         loadingData: false,
       };
 
@@ -24,6 +26,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         data: null,
         found: false,
+        deadlineData: null,
         loadingData: false,
       };
 

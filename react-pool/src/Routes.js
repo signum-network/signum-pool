@@ -35,6 +35,10 @@ const PoolInfo = React.lazy(() => {
   return import("./pages/pool-info/index");
 });
 
+const TradingViewer = React.lazy(() => {
+  return import("./pages/trading-view/index");
+});
+
 const Routes = (props) => {
   // Get initial props
   let {
@@ -88,6 +92,17 @@ const Routes = (props) => {
 
       <Layout>
         <Switch>
+          {/* Pool info */}
+          <Route
+            path="/trading-view"
+            exact
+            render={() => (
+              <Suspense fallback={<Loading />}>
+                <TradingViewer />
+              </Suspense>
+            )}
+          />
+
           {/* Pool info */}
           <Route
             path="/pool-info"

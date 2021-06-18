@@ -72,6 +72,30 @@ const MINING_GUIDE_LINK = window.reactInit.miningGuideLink;
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+// Test-net - trading guide url
+const TEST_TRADING_LINK = "YES";
+
+// Production - trading guide url
+const TRADING_LINK = window.reactInit.tradingGuideLink;
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Test-net - mini widget trading guide url
+const TEST_MINI_WIDGET_TRADING_LINK = "https://bit.ly/2SzLZyx";
+
+// Production - mini widget trading guide url
+const MINI_WIDGET_TRADING_LINK = window.reactInit.miniWidgetLink;
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Test-net - large widget trading guide url
+const TEST_LARGE_WIDGET_TRADING_LINK = "https://bit.ly/2UhNuSo";
+
+// Production - large widget trading guide url
+const LARGE_WIDGET_TRADING_LINK = window.reactInit.largeWidgetLink;
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 // Global variables that are going to be used by the website
 
 // Set true or false if you wanna use the test-net (demo enviroment) or main-net enviroment of the pool node
@@ -117,6 +141,22 @@ export const MINING_GUIDEToUse =
   useTestNet && useTestNet === true
     ? TEST_MINING_GUIDE_LINK
     : MINING_GUIDE_LINK;
+
+// Check if pool operator wants to show the trading link in header and mobile sidebar
+export const SHOW_TRADING_LINK =
+  useTestNet && useTestNet === true ? TEST_TRADING_LINK : TRADING_LINK;
+
+// Link for mini widget in trading viewer which website will use
+export const MINI_WIDGET_TRADING_LINKToUse =
+  useTestNet && useTestNet === true
+    ? TEST_MINI_WIDGET_TRADING_LINK
+    : MINI_WIDGET_TRADING_LINK;
+
+// Link for large widget in trading viewer which website will use
+export const LARGE_WIDGET_TRADING_LINKToUse =
+  useTestNet && useTestNet === true
+    ? TEST_LARGE_WIDGET_TRADING_LINK
+    : LARGE_WIDGET_TRADING_LINK;
 
 // Genesis Base Target
 export const genesisBaseTarget = 4398046511104 / 240;

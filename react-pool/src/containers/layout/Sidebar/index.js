@@ -19,6 +19,7 @@ import BlurOnIcon from "@material-ui/icons/BlurOn";
 import AccountBalanceWalletRoundedIcon from "@material-ui/icons/AccountBalanceWalletRounded";
 import CardGiftcardRoundedIcon from "@material-ui/icons/CardGiftcardRounded";
 import QuestionAnswerRoundedIcon from "@material-ui/icons/QuestionAnswerRounded";
+import TransformIcon from "@material-ui/icons/Transform";
 
 import FacebookIcon from "@material-ui/icons/Facebook";
 import TwitterIcon from "@material-ui/icons/Twitter";
@@ -41,6 +42,7 @@ import {
   WALLETToUse,
   FAUCETToUse,
   DISCORDToUse,
+  SHOW_TRADING_LINK,
 } from "../../../utils/globalParameters";
 
 const Sidebar = (props) => {
@@ -151,6 +153,30 @@ const Sidebar = (props) => {
             textList="Pool info"
           />
 
+          {
+            // Trading viewer
+            // Check if user wants to have a trading link
+            SHOW_TRADING_LINK &&
+            SHOW_TRADING_LINK !== null &&
+            SHOW_TRADING_LINK !== undefined &&
+            SHOW_TRADING_LINK.toUpperCase() === "YES" ? (
+              <ListRender
+                onClick={() => {
+                  goToSite("/trading-view");
+                }}
+                icon={
+                  <TransformIcon
+                    style={{
+                      fontSize: 27,
+                      color: "var(--secondary-dark-color)",
+                    }}
+                  />
+                }
+                textList="Trading"
+              />
+            ) : null
+          }
+
           {/* Explorer */}
           <ListRender
             onClick={() => {
@@ -177,18 +203,26 @@ const Sidebar = (props) => {
             textList="Wallet"
           />
 
-          {/* Faucet */}
-          <ListRender
-            onClick={() => {
-              goToSite(FAUCETToUse, true);
-            }}
-            icon={
-              <CardGiftcardRoundedIcon
-                style={{ fontSize: 27, color: "var(--secondary-dark-color)" }}
+          {
+            // Faucet
+            // Check if user wants to have a faucet link
+            FAUCETToUse && FAUCETToUse !== null && FAUCETToUse !== "" ? (
+              <ListRender
+                onClick={() => {
+                  goToSite(FAUCETToUse, true);
+                }}
+                icon={
+                  <CardGiftcardRoundedIcon
+                    style={{
+                      fontSize: 27,
+                      color: "var(--secondary-dark-color)",
+                    }}
+                  />
+                }
+                textList="Faucet"
               />
-            }
-            textList="Faucet"
-          />
+            ) : null
+          }
 
           {/* Discord */}
           <ListRender
