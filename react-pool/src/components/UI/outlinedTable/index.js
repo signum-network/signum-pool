@@ -9,6 +9,9 @@ import styles from "./outlinedTable.module.css";
 // Components
 import Spinner from "../Spinner/index";
 
+// Miner past deadlines graph
+import MinerDeadLinesGraph from "../../miner/minerDeadlines/index";
+
 const outLinedTable = (props) => {
   const { isLoading, data, notFoundLabel, onClickLastItem } = props;
 
@@ -35,6 +38,7 @@ const outLinedTable = (props) => {
 
       // Render type of data
       switch (item.type) {
+        // Only info row
         case "info":
           return (
             <Grid container item className={styles.tableItem} key={key}>
@@ -58,12 +62,39 @@ const outLinedTable = (props) => {
             </Grid>
           );
 
+        // Last row action
         case "action":
           return (
             <Grid item className={styles.tableItem} key={key}>
               <Button className={styles.optionBtn} onClick={onClickLastItem}>
                 {item.label}
               </Button>
+            </Grid>
+          );
+
+        // Custom row
+        case "BookmarkedMinerDeadlines":
+          return (
+            <Grid
+              container
+              item
+              className={styles.tableItem}
+              key={key}
+              wrap="wrap"
+              direction="column"
+            >
+              <Grid
+                item
+                className={styles.tableItemLeftSide}
+                style={{ width: "100%" }}
+              >
+                <Typography>{item.title}</Typography>
+              </Grid>
+
+              {/* Miners past deadlines graph */}
+              <Grid item style={{ width: "100%" }}>
+                <MinerDeadLinesGraph chartHeight={250} />
+              </Grid>
             </Grid>
           );
 

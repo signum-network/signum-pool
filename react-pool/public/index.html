@@ -2,8 +2,10 @@
 <html lang="en">
   <head>
     <!-- Pool operator global variables -->
+    <!-- This variables are used this way, because the React will be able to read it! -->
     <script type="text/javascript">
       window.reactInit = {
+        // Pool variables
         globalPoolName: "{TITLE}",
         globalExplorerLink: "{EXPLORER}",
         globalDiscordLink: "{DISCORD}",
@@ -12,6 +14,25 @@
         globalMiningAddress: "{MININGADDRESS}",
         signaPriceEndpoint: "{PRICEENDPOINT}",
         miningGuideLink: "{MININGGUIDE}",
+
+        // Trading viewer variables
+        tradingGuideLink: "{SHOWTRADINGLINK}",
+        miniWidgetLink: "{MINITRADINGLINK}",
+        largeWidgetLink: "{LARGETRADINGLINK}",
+
+        // Color styling variables
+        // Primary
+        primaryColor: "{PRIMARYCOLOR}",
+        primaryLightColor: "{PRIMARYLIGHTCOLOR}",
+        primaryDarkColor: "{PRIMARYDARKCOLOR}",
+
+        // Secondary
+        secondaryColor: "{SECONDARYCOLOR}",
+        secondaryLightColor: "{SECONDARYLIGHTCOLOR}",
+        secondaryDarkColor: "{SECONDARYDARKCOLOR}",
+
+        // Graph
+        graphColor: "{GRAPHCOLOR}",
       };
     </script>
 
@@ -24,29 +45,59 @@
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <!-- Roboto -->
+
+    <!-- Roboto font -->
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
     />
 
-    <!-- Montserrat -->
+    <!-- Montserrat font -->
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Title -->
-    <title>Mining pool</title>
-
     <!-- Basic SEO -->
+    <title>Mining pool</title>
     <meta
-      name="description"
-      content="We are part of the community driven technology - Signum Blockchain Let’s keep growing and start to mine now!"
+      name="keywords"
+      content="Signa, Signum, Mine, Miner, Mining, Pool, Burst, PoC, PoC+, Crypto, Signum Pool, Signa Pool, Burst Pool"
     />
 
-    <!-- Temp style -->
+    <meta name="description" content="{SEODESCRIPTION}" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="%PUBLIC_URL%" />
+    <meta property="og:title" content="{TITLE}" />
+    <meta property="og:description" content="{SEODESCRIPTION}" />
+    <meta property="og:image" content="{SEOIMGURL}" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="%PUBLIC_URL%" />
+    <meta property="twitter:title" content="{TITLE}" />
+
+    <meta property="twitter:description" content="{SEODESCRIPTION}" />
+    <meta property="twitter:image" content="{SEOIMGURL}" />
+
+    <!-- Global styles -->
     <style>
+      /* Default color, you can change them! */
+      :root {
+        /* Main */
+        --main-client-color: "*{PRIMARYCOLOR}*";
+        --main-client-light-color: "*{PRIMARYLIGHTCOLOR}*";
+        --main-client-dark-color: "*{PRIMARYDARKCOLOR}*";
+
+        --secondary-client-color: "*{SECONDARYCOLOR}*";
+        --secondary-client-light-color: "*{SECONDARYLIGHTCOLOR}*";
+        --secondary-client-dark-color: "*{SECONDARYDARKCOLOR}*";
+
+        --main-client-width: 1500px;
+      }
+
       .myBody {
         background: url("assets/faded.svg") !important;
         background-color: #121212 !important;
@@ -55,7 +106,7 @@
         background-size: 100% !important;
       }
 
-      /* Media queries */
+      /* Media queries, only used for myBody class */
       @media (max-width: 1000px) {
         .myBody {
           background-size: 200% !important;

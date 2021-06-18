@@ -4,10 +4,6 @@
   box-sizing: border-box;
 }
 
-html {
-  background-color: #121212 !important;
-}
-
 html,
 body {
   margin: 0;
@@ -19,6 +15,10 @@ body {
   overflow-x: hidden !important;
 }
 
+html {
+  background: #121212 !important;
+}
+
 /* Change font */
 h1,
 h2,
@@ -27,19 +27,6 @@ h4,
 h5,
 h6 {
   font-family: "Montserrat", "Roboto", sans-serif !important;
-}
-
-:root {
-  /* Main */
-  --main-client-color: #0099ff;
-  --main-client-light-color: #5fb8ff;
-  --main-client-dark-color: #0066ff;
-
-  --secondary-client-color: #e8f3ff;
-  --secondary-client-light-color: #eaf0f6;
-  --secondary-client-dark-color: #021851;
-
-  --main-client-width: 1500px;
 }
 
 a {

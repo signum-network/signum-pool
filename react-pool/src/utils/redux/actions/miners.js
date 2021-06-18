@@ -117,8 +117,8 @@ export const fetchMinersData =
 
                 // Current deadline
                 currentDeadline:
-                  miner.currentRoundBestDeadline == null ||
-                  miner.currentRoundBestDeadline == undefined ||
+                  miner.currentRoundBestDeadline === null ||
+                  miner.currentRoundBestDeadline === undefined ||
                   isNaN(miner.currentRoundBestDeadline)
                     ? "Waiting..."
                     : formatTime(miner.currentRoundBestDeadline),
@@ -265,6 +265,13 @@ export const selectBookmarkedMiner =
                 type: "info",
               },
 
+              // Past deadlines
+              {
+                title: "Past deadlines",
+                value: "BookmarkedMinerDeadlines",
+                type: "BookmarkedMinerDeadlines",
+              },
+
               // Current deadline
               {
                 title: "Current Deadline",
@@ -321,11 +328,63 @@ export const selectBookmarkedMiner =
               { label: "Delete bookmark", type: "action" },
             ];
 
-            // Send the data to the redux reducer
-            dispatch({
-              type: actionsType.FOUND_BOOKMARKED_MINER,
-              payload: responseData,
-            });
+            // Save bookmarked miner data
+            const minerData = responseData;
+
+            // Get bookmarked miner deadlines and heights
+            await axios
+              .get("/api/getMiner/" + response.address)
+              .then(async (response) => {
+                // Get the response
+                const { data } = response;
+
+                // Save deadlines and heights
+                let deadlines = data.deadlines;
+                let heights = data.heights;
+                let boost = data.boost;
+
+                // Check if user has deadlines
+                if (
+                  // Deadline
+                  !deadlines ||
+                  deadlines === null ||
+                  deadlines === undefined ||
+                  deadlines === "" ||
+                  deadlines === [] ||
+                  deadlines.length === 0 ||
+                  // Height
+                  !heights ||
+                  heights === null ||
+                  heights === undefined ||
+                  heights === "" ||
+                  heights === [] ||
+                  heights.length === 0 ||
+                  // Boost
+                  !boost ||
+                  boost === null ||
+                  boost === undefined ||
+                  boost === "" ||
+                  boost === [] ||
+                  boost.length === 0
+                ) {
+                  throw "error";
+                }
+
+                // Send the data to the redux reducer
+                dispatch({
+                  type: actionsType.FOUND_BOOKMARKED_MINER,
+                  payload: minerData,
+                  deadlineData: { deadlines, heights, boost },
+                });
+              })
+              .catch((error) => {
+                // Send the data to the redux reducer
+                dispatch({
+                  type: actionsType.FOUND_BOOKMARKED_MINER,
+                  payload: minerData,
+                  deadlineData: null,
+                });
+              });
           })
           .catch((error) => {
             return dispatch({

@@ -24,6 +24,7 @@ import {
   WALLETToUse,
   FAUCETToUse,
   DISCORDToUse,
+  SHOW_TRADING_LINK,
 } from "../../../utils/globalParameters";
 
 // Third-party
@@ -100,15 +101,39 @@ const Header = (props) => {
                   <Typography>Pool info</Typography>
                 </Link>
 
+                {
+                  // Trading viewer
+                  // Check if user wants to have a trading link
+                  SHOW_TRADING_LINK &&
+                  SHOW_TRADING_LINK !== null &&
+                  SHOW_TRADING_LINK !== undefined &&
+                  SHOW_TRADING_LINK.toUpperCase() === "YES" ? (
+                    <Link
+                      to="/trading-view"
+                      className={clsx(
+                        styles.navLink,
+                        "defaultTransition",
+                        props.location.pathname === "/trading-view"
+                          ? styles.activeNavLink
+                          : null
+                      )}
+                    >
+                      <Typography>Trading</Typography>
+                    </Link>
+                  ) : null
+                }
+
                 {/* Explorer */}
-                <a
-                  href={EXPLORERToUse}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={clsx(styles.navLink, "defaultTransition")}
-                >
-                  <Typography>Explorer</Typography>
-                </a>
+                <Hidden mdDown>
+                  <a
+                    href={EXPLORERToUse}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={clsx(styles.navLink, "defaultTransition")}
+                  >
+                    <Typography>Explorer</Typography>
+                  </a>
+                </Hidden>
 
                 {/* Wallet */}
                 <a
@@ -120,15 +145,20 @@ const Header = (props) => {
                   <Typography>Wallet</Typography>
                 </a>
 
-                {/* Faucet */}
-                <a
-                  href={FAUCETToUse}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={clsx(styles.navLink, "defaultTransition")}
-                >
-                  <Typography>Faucet</Typography>
-                </a>
+                {
+                  // Faucet
+                  // Check if user wants to have a faucet link
+                  FAUCETToUse && FAUCETToUse !== null && FAUCETToUse !== "" ? (
+                    <a
+                      href={FAUCETToUse}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={clsx(styles.navLink, "defaultTransition")}
+                    >
+                      <Typography>Faucet</Typography>
+                    </a>
+                  ) : null
+                }
 
                 {/* Discord */}
                 <a
