@@ -49,14 +49,15 @@ const MinerDeadLinesGraph = (props) => {
     // Iterate through every height
     await heights.map((block, index) => {
       // Format deadline text
-      let deadlineFormatted = parseInt(
-        Math.log(deadlines[index] / boost[index]) * 43.79
-      );
+      let deadlineFormatted =
+        deadlines[index] > 1
+          ? parseInt(Math.log(deadlines[index] / boost[index]) * 43.79)
+          : 0;
 
       newArray.push({
         height: block,
         deadlines: deadlineFormatted,
-        deadlineText: deadlineFormatted + " Seconds",
+        deadlineText: deadlines[index] > 1 ? deadlineFormatted + " Seconds" : 0,
       });
     });
 

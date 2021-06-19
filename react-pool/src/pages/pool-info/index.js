@@ -103,6 +103,11 @@ const PoolInfo = (props) => {
     initialDataFetch();
   }, [basicData]);
 
+  // Go to second tab
+  const goToMinerOptions = () => {
+    updateTab(2);
+  };
+
   // Loading spinner
   const loadingTag = (
     <Grid item style={{ margin: "auto" }}>
@@ -206,19 +211,23 @@ const PoolInfo = (props) => {
           sTitle: "Configurable",
           value: poolData.data.donationPercent,
           type: "info",
+          onClick: goToMinerOptions,
         },
         {
           title: "Default Pool Share",
           sTitle: "Configurable",
           value: poolData.data.poolShare,
           type: "info",
+          onClick: goToMinerOptions,
         },
         {
           title: "Default Minimum Payout",
           sTitle: "Configurable",
           value: poolData.data.minimumPayout,
           type: "info",
+          onClick: goToMinerOptions,
         },
+
         {
           title: "Minimum Payouts at once",
           value: poolData.data.minPayoutsPerTransaction,

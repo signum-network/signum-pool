@@ -40,12 +40,22 @@ const outLinedTable = (props) => {
       switch (item.type) {
         // Only info row
         case "info":
+          // Check if user has dynamic Onlick
+          const onClickAction =
+            item.onClick && item.onClick !== null && item.onClick !== undefined
+              ? item.onClick
+              : null;
+
           return (
             <Grid container item className={styles.tableItem} key={key}>
               <Grid
                 item
                 className={styles.tableItemLeftSide}
-                style={{ width: props.fWidth }}
+                style={{
+                  width: props.fWidth,
+                  cursor: onClickAction ? "pointer" : null,
+                }}
+                onClick={onClickAction}
               >
                 <Typography>{item.title}</Typography>
                 {item.sTitle && item.sTitle.trim() !== "" ? (

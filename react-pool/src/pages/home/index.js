@@ -248,20 +248,40 @@ const Home = (props) => {
         <Typography component="h1" variant="h3" align="center">
           Welcome to {POOLNameToUse}
         </Typography>
-        <Typography align="center" gutterBottom variant="h6">
-          We are part of the community driven technology - Signum Blockchain{" "}
-          <br />
-          Let’s keep growing and start to mine now!
-        </Typography>
-        <Link to="/start-mining">
-          <Typography
-            color="primary"
-            align="center"
-            className={styles.redirectText}
-          >
-            Start mining
-          </Typography>
-        </Link>
+
+        {
+          // Show this paragraph, if the miners data are loading
+          bookMarkedMiner.loadingData === true ||
+          // Hide this, if there is already a bookmarked miner
+          // And the search is made
+          (bookMarkedMiner.loadingData === false &&
+            (!bookMarkedMiner.data ||
+              bookMarkedMiner.data === null ||
+              bookMarkedMiner.data === undefined)) ? (
+            <Grid
+              container
+              direction="column"
+              justify="center"
+              alignItems="center"
+              component="section"
+            >
+              <Typography align="center" gutterBottom variant="h6">
+                We are part of the community driven technology - Signum
+                Blockchain <br />
+                Let’s keep growing and start to mine now!
+              </Typography>
+              <Link to="/start-mining">
+                <Typography
+                  color="primary"
+                  align="center"
+                  className={styles.redirectText}
+                >
+                  Start mining
+                </Typography>
+              </Link>
+            </Grid>
+          ) : null
+        }
       </Grid>
 
       {/* Second section */}
@@ -425,7 +445,7 @@ const Home = (props) => {
           <OutlinedTable
             data={null}
             isLoading={props.minerData.loadingData}
-            notFoundLabel="There is no miners, start inviting them! ⚒️"
+            notFoundLabel="There are no miners, start inviting them! ⚒️"
             fWidth="25%"
             sWidth="75%"
             onClickLastItem={null}
