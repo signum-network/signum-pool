@@ -1,6 +1,6 @@
 # Welcome to Signum's Pool website
 
-_Maybe you fill find helpfull tips_
+_Maybe you will find helpfull tips_
 
 ## How to use test-net or main-net enviroments 📋
 
