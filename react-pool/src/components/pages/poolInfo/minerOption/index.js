@@ -1,6 +1,7 @@
 // Material-ui
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import Alert from "@material-ui/lab/Alert";
 
 // Styling
 import styles from "./minerOption.module.css";
@@ -66,6 +67,11 @@ const minerOptions = (props) => {
       <Typography className={styles.blueLabel}>
         share 80 donate 5 pay 100
       </Typography>
+
+      <Alert severity="info" style={{ width: "100%", fontSize: "1rem" }}>
+        If you will change miner settings, always send{" "}
+        <strong>unencrypted text messages</strong>
+      </Alert>
     </Grid>
   );
 };

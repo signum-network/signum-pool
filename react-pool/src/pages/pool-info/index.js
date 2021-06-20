@@ -269,6 +269,7 @@ const PoolInfo = (props) => {
     dynamicTab = LoadingDynamicTab;
 
     // Check if pool data is loaded
+    // For showing miner options data
     if (poolData.loadingData === false) {
       dynamicTab = <MinerOptions data={poolData.data} />;
     }
