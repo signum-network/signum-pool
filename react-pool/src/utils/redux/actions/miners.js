@@ -293,6 +293,13 @@ export const selectBookmarkedMiner =
                 type: "info",
               },
 
+              // Physical Capacity
+              {
+                title: "Physical Capacity",
+                value: response.physicalCapacity,
+                type: "info",
+              },
+
               // Commited balance
               {
                 title: "Committed Balance",
