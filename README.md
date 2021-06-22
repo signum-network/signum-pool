@@ -4,6 +4,8 @@ A Signum mining pool software where miners can choose their *Share Model* freely
 Each miner can have a different share model, ranging from 0 % (solo mining) up to 100 %.
 Further, miners can change their share model at any moment.
 
+![image](https://user-images.githubusercontent.com/31958515/122991794-d0a75f00-d37b-11eb-9d1a-71ae44b144c6.png)
+
 As an example, let's consider a miner with 10 TiB of capacity, and that this miner has chosen a share model of 80 %.
 So, this miner actually has 20 % of his capacity *solo mining* (2 TiB) and 80 % going to the pool (8 TiB).
 Let's also assume the pool has a total shared capacity (the sum of all shared capacities of all miners) of 160 TiB.
@@ -32,7 +34,7 @@ multiple *secondary* IDs.
 Whenever a *secondary* ID forges a block, its balance is transfered automatically to the primary ID so it can manage
 the payments.
 
-Check a [testnet live demo](http://nivbox.co.uk:9000).
+Check a [testnet live demo](http://nivbox.co.uk:9000) to check on the latest development version.
 
 Originally by [Harry1453](https://github.com/harry1453),
 updated by [jjos](https://github.com/jjos2372).
@@ -41,11 +43,13 @@ Donations are very welcome at [S-JJQS-MMA4-GHB4-4ZNZU](https://explorer.burstcoi
 
 ## Pools using the software
 
- - https://pool.burstcoin.ro/
- - http://burstpool.de:8080/
- - http://burst.voiplanparty.com:8124/
- - http://openburstpool.ddns.net:8126/
- - http://yabpool.com:8000/
+ - https://pool.signumcoin.ro
+ - http://burst.voiplanparty.com:8124
+ - http://openburstpool.ddns.net:8126
+ - http://signumpool.de:8080
+ - https://signumpool.com
+ - https://signapool.notallmine.net
+ - http://signum.land
 
 ## Features
 
