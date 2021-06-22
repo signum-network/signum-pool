@@ -1,11 +1,23 @@
-# Signum Pool: choose your share (language) freely
+# Signum Pool: open-source, fair, auditable
 
-A Signum mining pool software where miners can choose their *Share Model* freely.
-Each miner can have a different share model, ranging from 0 % (solo mining) up to 100 %.
-Further, miners can change their share model at any moment.
+An open-source, fair, and auditable Signum mining pool software where miners can choose their *Share Model* freely.
+
+## Features
+
+- PoC+ boost calculated by the pool using recent deadlines (no boost drops)
+- Pool can be audited by API (all information is available to the public)
+- Miners can set individually their *share model*
+- Miners can set individually their donation fraction
+- Miners can set individually their minimum payout
+- Payouts by multi-out transactions with the current *standard* fee (variable)
+- Support for multiple pool IDs (a primary and many secondaries)
 
 ![image](https://user-images.githubusercontent.com/31958515/122991794-d0a75f00-d37b-11eb-9d1a-71ae44b144c6.png)
 
+## Pool shares
+
+Using this pool software, each miner can have a different share model, ranging from 0 % (solo mining) up to 100 %.
+Further, miners can change their share model at any moment.
 As an example, let's consider a miner with 10 TiB of capacity, and that this miner has chosen a share model of 80 %.
 So, this miner actually has 20 % of his capacity *solo mining* (2 TiB) and 80 % going to the pool (8 TiB).
 Let's also assume the pool has a total shared capacity (the sum of all shared capacities of all miners) of 160 TiB.
@@ -50,14 +62,6 @@ Donations are very welcome at [S-JJQS-MMA4-GHB4-4ZNZU](https://explorer.burstcoi
  - https://signumpool.com
  - https://signapool.notallmine.net
  - http://signum.land
-
-## Features
-
-- Miners can set individually their *share model*
-- Miners can set individually their donation fraction
-- Miners can set individually their minimum payout
-- Payouts by multi-out transactions with the current *standard* fee (variable)
-- Support for multiple pool IDs (a primary and many secondaries)
 
 ## Requirements
 
