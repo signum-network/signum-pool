@@ -1,4 +1,4 @@
-# Signum Pool: choose your share (language) freely
+# Signum Pool: open-source, fair, auditable
 
 An open-source, fair, and auditable Signum mining pool software where miners can choose their *Share Model* freely.
 
