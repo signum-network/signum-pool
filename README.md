@@ -53,6 +53,8 @@ Donations are very welcome at [S-JJQS-MMA4-GHB4-4ZNZU](https://explorer.burstcoi
 
 ## Features
 
+- PoC+ boost calculated by the pool using recent deadlines (no boost drops)
+- Pool can be audited by API (all information is available to the public)
 - Miners can set individually their *share model*
 - Miners can set individually their donation fraction
 - Miners can set individually their minimum payout
