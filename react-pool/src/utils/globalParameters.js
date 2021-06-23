@@ -115,7 +115,10 @@ const LARGE_WIDGET_TRADING_LINK = window.reactInit.largeWidgetLink;
 
 // Global variables that are going to be used by the website
 
-// Set true or false if you wanna use the test-net (demo enviroment) or main-net enviroment of the pool node
+// This is the variable which sets if this projects is going to fetch data from a demo pool
+// If this variable is equal to true, it will fetch data from the pool demo assigned with the variable TEST_NODE, you can change the url pool node, in order to fetch data from your pool
+// If this variable is equal to false, it will use the data you assign from the java file configuration (pool.properties)
+// You do not need to change the following value, because it will detect if the project is in a development or production enviroment
 export const useTestNet = process.env.NODE_ENV === "development";
 
 // Pool node which website will use
