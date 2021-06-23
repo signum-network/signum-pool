@@ -1,24 +1,28 @@
 # Welcome to Signum's Pool website
 
-_Maybe you will find helpfull tips_
+_Maybe you will find helpful tips_
 
-## How to use test-net or main-net enviroments 📋
+## How to use test-net or main-net environments 📋
 
-_If you are going to test the website in test-net or main-net (mode), you just need to take the following steps:_
+Per default the test net is used when running `npm start`, but `npm run build` activates main net. 
+
+_If you need - for whatever reasons - to develop on main net you need to override the "useTestNet" parameter_ 
 
 -   Go to the folder src/utils/
 -   You will find the file "globalParameter.js"
 -   Find the variable "useTestNet"
-    -If that variable is equal to true, the website will fetching data from a demo pool node you can customize!
-    -If that variable is equal to false, the website will fetching data from your pool node!
+    -If that variable is equal to true, the website will fetch data from a demo pool node you can customize!
+    -If that variable is equal to false, the website will fetch data from your pool node!
+
+> DO NOT COMMIT THE CHANGE IN THAT FILE - YOUR PR WILL BE REJECTED! 
 
 ## Commands for deployment 🛠️
 
 _Use this commands if you are going to deploy changes or start the deployment_
 
--   If you have not install the dependencies, run "npm install", if there is already a folder called "node_modules", forget this step
+-   If you have not installed the dependencies, run "npm install", if there is already a folder called "node_modules", forget this step
 -   npm run build - Build project's production site
--   After the build command is done, you will only need the folder "Build"
+-   After the build command has finished, you will only need the folder "Build"
 -   Only use the folder "Build", you can deploy the production app in your pool node
 -   Always serve the file index.html
 
