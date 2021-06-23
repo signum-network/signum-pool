@@ -99,7 +99,7 @@ const LARGE_WIDGET_TRADING_LINK = window.reactInit.largeWidgetLink;
 // Global variables that are going to be used by the website
 
 // Set true or false if you wanna use the test-net (demo enviroment) or main-net enviroment of the pool node
-export const useTestNet = true;
+export const useTestNet = process.env.NODE_ENV === 'development'
 
 // Pool node which website will use
 export const NODEToUse = useTestNet && useTestNet === true ? TEST_NODE : NODE;
