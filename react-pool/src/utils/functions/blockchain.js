@@ -51,8 +51,13 @@ export const formatTime = (secs) => {
 };
 
 // Format miner name
-export const formatMinerName = (explorer, rs, id, name, includeLink) => {
-  name = escapeHtml(name);
+export const formatMinerName = (
+  explorer,
+  rs,
+  id,
+  name = null,
+  includeLink = false
+) => {
   rs = escapeHtml(rs);
   if (includeLink) {
     return (
@@ -63,7 +68,7 @@ export const formatMinerName = (explorer, rs, id, name, includeLink) => {
       "</a>"
     );
   }
-  return name === null || name === "" ? rs : name;
+  return !name || name === null || name === "" ? rs : name;
 };
 
 // Get account explorer link

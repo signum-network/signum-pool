@@ -3,11 +3,7 @@ import * as actionsType from "./actionTypes";
 import axios from "../../axios/axios.instance";
 
 // Blockchain functions
-import {
-  formatCapacity,
-  formatTime,
-  formatMinerName,
-} from "../../functions/blockchain";
+import { formatCapacity, formatTime } from "../../functions/blockchain";
 
 // Normal functions
 import { thousands_separators } from "../../functions/normal";
@@ -104,16 +100,19 @@ export const fetchMinersData =
                   ? miner.nConf + poolSubmission
                   : "";
 
+              // Check if miner has a username
+              const minerData =
+                miner.name &&
+                miner.name !== null &&
+                miner.name !== undefined &&
+                miner.name !== ""
+                  ? miner.name
+                  : miner.addressRS;
+
               // Merge miners data
               const minerTemplate = {
                 // Name
-                miner: formatMinerName(
-                  response.explorer,
-                  miner.addressRS,
-                  miner.address,
-                  miner.name,
-                  false
-                ),
+                miner: minerData,
 
                 // Current deadline
                 currentDeadline:
@@ -283,7 +282,6 @@ export const selectBookmarkedMiner =
                 value: "BookmarkedMinerDeadlines",
                 type: "BookmarkedMinerDeadlines",
               },
-
 
               // Confirmed deadline
               {

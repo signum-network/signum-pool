@@ -29,7 +29,12 @@ import SearchIcon from "@material-ui/icons/Search";
 import styles from "./Home.module.css";
 
 // Extra
-import { POOLNameToUse, userKeyBook } from "../../utils/globalParameters";
+import {
+  POOLNameToUse,
+  userKeyBook,
+  HOME_TITLE_FIRST_LINE_TOUSE,
+  HOME_TITLE_SECOND_LINE_TOUSE,
+} from "../../utils/globalParameters";
 import { thousands_separators } from "../../utils/functions/normal";
 
 // Components
@@ -93,7 +98,7 @@ const Home = (props) => {
 
           // Make basic research for "burst", "s", "ts" prefix addresses
         } else if (foundMinerHome === false) {
-          let burstAddress = null;
+          let signumAddress = null;
           let sAddress = null;
           let tsAddress = null;
 
@@ -106,7 +111,7 @@ const Home = (props) => {
             accountAddress.indexOf("R").toString() === "2" &&
             accountAddress.indexOf("S").toString() === "3"
           ) {
-            burstAddress = accountAddress;
+            signumAddress = accountAddress;
             sAddress = accountAddress.replace("BURST-", "S-");
             tsAddress = accountAddress.replace("BURST-", "TS-");
 
@@ -115,7 +120,7 @@ const Home = (props) => {
             accountAddress.indexOf("S") === 0 &&
             accountAddress.indexOf("-") === 1
           ) {
-            burstAddress = accountAddress.replace("S-", "BURST-");
+            signumAddress = accountAddress.replace("S-", "BURST-");
             sAddress = accountAddress;
             tsAddress = accountAddress.replace("S-", "TS-");
 
@@ -125,14 +130,14 @@ const Home = (props) => {
             accountAddress.indexOf("S").toString() === "1" &&
             accountAddress.indexOf("-").toString() === "2"
           ) {
-            burstAddress = accountAddress.replace("TS-", "BURST-");
+            signumAddress = accountAddress.replace("TS-", "BURST-");
             sAddress = accountAddress.replace("TS-", "S-");
             tsAddress = accountAddress;
           }
 
           // Check the if user typed one of the wallets with different prefix
           if (
-            value === burstAddress ||
+            value === signumAddress ||
             value === sAddress ||
             value === tsAddress
           ) {
@@ -266,10 +271,11 @@ const Home = (props) => {
               component="section"
             >
               <Typography align="center" gutterBottom variant="h6">
-                We are part of the community driven technology - Signum
-                Blockchain <br />
-                Let’s keep growing and start to mine now!
+                {HOME_TITLE_FIRST_LINE_TOUSE}
+                <br />
+                {HOME_TITLE_SECOND_LINE_TOUSE}
               </Typography>
+
               <Link to="/start-mining">
                 <Typography
                   color="primary"
