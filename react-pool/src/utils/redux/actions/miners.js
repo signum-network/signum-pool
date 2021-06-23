@@ -264,6 +264,18 @@ export const selectBookmarkedMiner =
                 value: response.addressRS,
                 type: "info",
               },
+              // Pending balance
+              {
+                title: "Pending Balance",
+                value: response.pendingBalance,
+                type: "info",
+              },
+              // Current deadline
+              {
+                title: "Current Deadline",
+                value: response.currentDeadline || "Waiting..",
+                type: "info",
+              },
 
               // Past deadlines
               {
@@ -272,24 +284,11 @@ export const selectBookmarkedMiner =
                 type: "BookmarkedMinerDeadlines",
               },
 
-              // Current deadline
-              {
-                title: "Current Deadline",
-                value: response.currentDeadline || "Waiting..",
-                type: "info",
-              },
 
               // Confirmed deadline
               {
                 title: "Confirmed Deadlines",
                 value: confirmedDeadlines || "",
-                type: "info",
-              },
-
-              // Pending balance
-              {
-                title: "Pending Balance",
-                value: response.pendingBalance,
                 type: "info",
               },
 
