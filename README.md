@@ -139,6 +139,20 @@ Check the [react-pool folder](react-pool).
 
 Be sure to build `react-pool` code with `npm run build` before building the pool distribution package.
 
+## API
+
+The software provides a public API that can be used to audit the pool. The same API is used by the website user interface.
+
+The API will be available at your pool address:port, similar to `http://nivbox.co.uk:9000/api/`, with the following endpoints:
+ - http://nivbox.co.uk:9000/api/getConfig (returns the pool configuration details, fees, etc.)
+ - http://nivbox.co.uk:9000/api/getCurrentRound (returns the details of the current round/block)
+ - http://nivbox.co.uk:9000/api/getWonBlocks (returns the list of recently blocks won by the pool)
+ - http://nivbox.co.uk:9000/api/getMiners (returns the list of miners with recent valid deadlines)
+ - http://nivbox.co.uk:9000/api/getTop10Miners (returns the list with the top 10 miners)
+ - http://nivbox.co.uk:9000/api/getMiner/S-F6NV-CCGG-ER7W-99BRL (returns the details of a specific miner address)
+
+All the capacities returned are in TiB.
+
 ## Building from source
 
 ### Pre-requisites
