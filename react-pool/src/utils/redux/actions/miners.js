@@ -165,7 +165,7 @@ export const fetchMinersData =
             responseData.miners = minersToSend || [];
 
             // Send top 10 miners
-            responseData.topTen = minersToSend.slice(0, 9) || [];
+            responseData.topTen = minersToSend.slice(0, 10) || [];
 
             // Dispatch the bookmark function
             dispatch(selectBookmarkedMiner(responseData.miners));
