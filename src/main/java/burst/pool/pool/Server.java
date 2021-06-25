@@ -367,9 +367,7 @@ public class Server extends NanoHTTPD {
         minerJson.addProperty("pendingBalance", miner.getPending().toFormattedString());
         minerJson.addProperty("totalCapacity", miner.getTotalCapacity());
         minerJson.addProperty("totalEffectiveCapacity", miner.getTotalEffectiveCapacity());
-        minerJson.addProperty("commitment",
-                miner.getTotalEffectiveCapacity() > 0d ? miner.getCommittedBalance().divide(miner.getTotalEffectiveCapacity()).toFormattedString() :
-                    miner.getCommitment().toFormattedString());
+        minerJson.addProperty("commitment", miner.getCommittedBalance().divide(Math.max(1.0, miner.getTotalEffectiveCapacity())).toFormattedString());
         minerJson.addProperty("committedBalance", miner.getCommittedBalance().toFormattedString());
         minerJson.addProperty("boost", miner.getBoost());
         minerJson.addProperty("boostPool", miner.getBoostPool());
