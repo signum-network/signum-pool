@@ -292,10 +292,20 @@ export const selectBookmarkedMiner =
 
               // Physical Capacity
               {
+                title: "Effective Capacity",
+                value: response.effectiveCapacity,
+                type: "info",
+              },
+
+              // Physical Capacity
+              {
                 title: "Physical Capacity",
                 value: response.physicalCapacity,
                 type: "info",
               },
+
+              // PoC+ Boost
+              { title: "PoC+ Boost", value: response.poCPlus, type: "info" },
 
               // Commited balance
               {
@@ -304,15 +314,13 @@ export const selectBookmarkedMiner =
                 type: "info",
               },
 
+
               // Donation %
               {
                 title: "Donation Percent",
                 value: response.donationPercent + "%",
                 type: "info",
               },
-
-              // PoC+ Boost
-              { title: "PoC+ Boost", value: response.poCPlus, type: "info" },
 
               // Pool Share
               {
