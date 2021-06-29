@@ -1,8 +1,8 @@
 // React
-import React, { Fragment, Suspense, useEffect } from "react";
+import React, { Fragment, Suspense, useEffect, useState } from "react";
 
 // React router dom
-import { Switch, Route, withRouter } from "react-router-dom";
+import { Switch, Route, withRouter, useLocation } from "react-router-dom";
 
 // Redux integration with actions
 import { connect } from "react-redux";
@@ -22,6 +22,12 @@ import MinerModal from "./components/UI/minerModal";
 // 404 page
 import ErrorPage from "./pages/404/Error";
 
+// Google analytics
+import ReactGA from "react-ga";
+
+// Extra
+import { googleTrackingID_ToUse } from "./utils/globalParameters";
+
 // Import pages
 const Home = React.lazy(() => {
   return import("./pages/home/index");
@@ -40,6 +46,12 @@ const TradingViewer = React.lazy(() => {
 });
 
 const Routes = (props) => {
+  // Route details
+  const location = useLocation();
+
+  // Enable anaylitics pageview dispatch
+  const [initialized, setInitialized] = useState(false);
+
   // Get initial props
   let {
     // Data
@@ -83,7 +95,30 @@ const Routes = (props) => {
   // ComponentDidMount
   useEffect(() => {
     initialDataFetcher();
+
+    // Google Analytics start
+    if (
+      googleTrackingID_ToUse &&
+      googleTrackingID_ToUse !== "" &&
+      googleTrackingID_ToUse.trim() !== ""
+    ) {
+      // Initiate analytics
+      ReactGA.initialize(googleTrackingID_ToUse);
+      setInitialized(true);
+    }
   }, []);
+
+  useEffect(() => {
+    if (
+      googleTrackingID_ToUse &&
+      googleTrackingID_ToUse !== "" &&
+      googleTrackingID_ToUse.trim() !== "" &&
+      initialized
+    ) {
+      // Register pageview
+      ReactGA.pageview(window.location.pathname + window.location.search);
+    }
+  }, [initialized, location]);
 
   return (
     <Fragment>

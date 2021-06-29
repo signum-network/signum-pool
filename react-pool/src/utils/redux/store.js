@@ -14,6 +14,8 @@ const middleware = [thunk];
 const store = createStore(
   rootReducer,
   initialState,
+
+  // Only use this module in production mode
   applyMiddleware(...middleware)
 
   // Only use this module in dev mode
