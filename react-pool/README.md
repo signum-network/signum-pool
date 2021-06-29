@@ -4,17 +4,19 @@ _Maybe you will find helpful tips_
 
 ## How to use testing or production mode 📋
 
--   **Testing mode refers to the "test-net enviroment"**
+-   **Testing mode refers to the "development enviroment"**
 
-    > Testing mode will fetch data from a **remote** pool server
+    > Testing mode will fetch data from a remote pool server **Example: you can fetch data from different pools by just changing the variable TEST_NODE in globalParameters.js**
 
--   **Production mode refers to the "main-net enviroment"**
+-   **Production mode refers to the "production enviroment"**
 
-    > Production mode will fetch data from the local pool server you host the web app
+    > Production mode will fetch data from the local pool server which you will host the web app
 
-Per default the testing mode is activated when running `npm start`, but `npm run build` activates main net
+Per default the testing mode is activated automatically when running `npm start`, but `npm run build` activates production mode
 
-_If you need - for whatever reasons - to develop on main net you need to override the "useTestNet" parameter_
+_If you need - for whatever reasons - to develop on production mode you need to override the "useTestNet" variable_
+
+> The variable useTestnet also refers to the "development enviroment"
 
 -   Go to the folder src/utils/
 -   You will find the file "globalParameter.js"
