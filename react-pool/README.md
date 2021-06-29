@@ -2,9 +2,17 @@
 
 _Maybe you will find helpful tips_
 
-## How to use test-net or main-net environments 📋
+## How to use testing or production mode 📋
 
-Per default the test net is used when running `npm start`, but `npm run build` activates main net.
+-   **Testing mode refers to the "test-net enviroment"**
+
+    > Testing mode will fetch data from a **remote** pool server
+
+-   **Production mode refers to the "main-net enviroment"**
+
+    > Production mode will fetch data from the local pool server you host the web app
+
+Per default the testing mode is activated when running `npm start`, but `npm run build` activates main net
 
 _If you need - for whatever reasons - to develop on main net you need to override the "useTestNet" parameter_
 
