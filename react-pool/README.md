@@ -2,17 +2,32 @@
 
 _Maybe you will find helpful tips_
 
-## How to use test-net or main-net environments 📋
+## How to use testing or production mode 📋
 
-Per default the test net is used when running `npm start`, but `npm run build` activates main net.
+-   **Testing mode refers to the "development enviroment"**
 
-_If you need - for whatever reasons - to develop on main net you need to override the "useTestNet" parameter_
+    > Testing mode will fetch data from a remote pool server
+
+    > **Example: you can fetch data from different pools by just changing the variable TEST_NODE in globalParameters.js**
+
+-   **Production mode refers to the "production enviroment"**
+
+    > Production mode will fetch data from the local pool server which you will host the web app
+
+Per default the testing mode is activated automatically when running `npm start`, but `npm run build` activates production mode
+
+> _If you need - for whatever reasons - to develop on production mode you need to override the "useTestNet" variable_
+
+> The variable useTestnet also refers to the "development enviroment"
 
 -   Go to the folder src/utils/
 -   You will find the file "globalParameter.js"
 -   Find the variable "useTestNet"
-    -If that variable is equal to true, the website will fetch data from a demo pool node you can customize!
-    -If that variable is equal to false, the website will fetch data from your pool node!
+
+    -   If that variable is equal to true, the website will fetch data from a remote pool node **you can change the url**
+    -   If that variable is equal to false, the website will fetch data from your local pool node!
+
+> The variable "useTestNet" is assigned correspondingly, so it's not necessary to override it
 
 ## Commands for deployment 🛠️
 

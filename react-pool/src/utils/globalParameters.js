@@ -1,5 +1,5 @@
 // Global variables related to pool node connection
-// Test-net - pool node connection
+// development enviroment - pool node connection
 const TEST_NODE = "https://signumpool.com";
 
 // Production - pool node connection
@@ -7,7 +7,7 @@ const NODE = "";
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Test-net - pool name
+// development enviroment - pool name
 const TEST_POOL_NAME = "Future Pool";
 
 // Production - pool name
@@ -15,7 +15,7 @@ const POOL_NAME = window.reactInit.globalPoolName;
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Test-net - home welcome title, first line
+// development enviroment - home welcome title, first line
 const TEST_HOME_TITLE_FIRST_LINE =
   "We are part of the community driven technology - Signum Blockchain";
 
@@ -24,7 +24,7 @@ const HOME_TITLE_FIRST_LINE = window.reactInit.homeFirstLineTitle;
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Test-net - home welcome title, second line
+// development enviroment - home welcome title, second line
 const TEST_HOME_TITLE_SECOND_LINE = "Let’s keep growing and start to mine now!";
 
 // Production - home welcome title, second line
@@ -32,7 +32,7 @@ const HOME_TITLE_SECOND_LINE = window.reactInit.homeSecondLineTitle;
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Test-net - explorer link
+// development enviroment - explorer link
 const TEST_EXPLORER_LINK = "https://testnet.explorer.signum.network/";
 
 // Production - explorer link
@@ -40,7 +40,7 @@ const EXPLORER_LINK = window.reactInit.globalExplorerLink;
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Test-net - discord link
+// development enviroment - discord link
 const TEST_DISCORD_LINK = "https://discord.gg/VagTTaKM2j";
 
 // Production - discord link
@@ -48,7 +48,7 @@ const DISCORD_LINK = window.reactInit.globalDiscordLink;
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Test-net - faucet link
+// development enviroment - faucet link
 const TEST_FAUCET_LINK = "http://nivbox.co.uk:7777/";
 
 // Production - faucet link
@@ -56,7 +56,7 @@ const FAUCET_LINK = window.reactInit.globalFaucetLink;
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Test-net - online wallet link
+// development enviroment - online wallet link
 const TEST_ONLINE_WALLET_LINK = "http://nivbox.co.uk:6876/index.html";
 
 // Production - online wallet link
@@ -64,7 +64,7 @@ const ONLINE_WALLET_LINK = window.reactInit.globalNodeLink;
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Test-net - signa price api
+// development enviroment - signa price api
 const TEST_PRICE_ENDPOINT_LINK =
   "https://min-api.cryptocompare.com/data/price?fsym=BURST&tsyms=USD";
 
@@ -73,7 +73,7 @@ const PRICE_ENDPOINT_LINK = window.reactInit.signaPriceEndpoint;
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Test-net - pool url
+// development enviroment - pool url
 const TEST_MINING_ADDRESS = "http://nivbox.co.uk:9000";
 
 // Production - pool url
@@ -81,7 +81,7 @@ const MINING_ADDRESS = window.reactInit.globalMiningAddress;
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Test-net - mining guide url
+// development enviroment - mining guide url
 const TEST_MINING_GUIDE_LINK = "https://signum.network/mining.html";
 
 // Production - mining guide url
@@ -89,7 +89,7 @@ const MINING_GUIDE_LINK = window.reactInit.miningGuideLink;
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Test-net - trading guide url
+// development enviroment - trading guide url
 const TEST_TRADING_LINK = "YES";
 
 // Production - trading guide url
@@ -97,7 +97,7 @@ const TRADING_LINK = window.reactInit.tradingGuideLink;
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Test-net - mini widget trading guide url
+// development enviroment - mini widget trading guide url
 const TEST_MINI_WIDGET_TRADING_LINK = "https://bit.ly/2UEd4RB";
 
 // Production - mini widget trading guide url
@@ -105,7 +105,7 @@ const MINI_WIDGET_TRADING_LINK = window.reactInit.miniWidgetLink;
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Test-net - large widget trading guide url
+// development enviroment - large widget trading guide url
 const TEST_LARGE_WIDGET_TRADING_LINK = "https://bit.ly/3A5BIep";
 
 // Production - large widget trading guide url
@@ -113,7 +113,7 @@ const LARGE_WIDGET_TRADING_LINK = window.reactInit.largeWidgetLink;
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// Test-net - Google Analytics Tracking id
+// development enviroment - Google Analytics Tracking id
 const TEST_googleTrackingID = "";
 
 // Production - Google Analytics Tracking id
