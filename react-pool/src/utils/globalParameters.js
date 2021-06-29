@@ -98,7 +98,7 @@ const TRADING_LINK = window.reactInit.tradingGuideLink;
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Test-net - mini widget trading guide url
-const TEST_MINI_WIDGET_TRADING_LINK = "https://bit.ly/2SzLZyx";
+const TEST_MINI_WIDGET_TRADING_LINK = "https://bit.ly/2UEd4RB";
 
 // Production - mini widget trading guide url
 const MINI_WIDGET_TRADING_LINK = window.reactInit.miniWidgetLink;
@@ -106,10 +106,18 @@ const MINI_WIDGET_TRADING_LINK = window.reactInit.miniWidgetLink;
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Test-net - large widget trading guide url
-const TEST_LARGE_WIDGET_TRADING_LINK = "https://bit.ly/2UhNuSo";
+const TEST_LARGE_WIDGET_TRADING_LINK = "https://bit.ly/3A5BIep";
 
 // Production - large widget trading guide url
 const LARGE_WIDGET_TRADING_LINK = window.reactInit.largeWidgetLink;
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Test-net - Google Analytics Tracking id
+const TEST_googleTrackingID = "";
+
+// Production - Google Analytics Tracking id
+const googleTrackingID = window.reactInit.googleTrackingID || "";
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -195,6 +203,10 @@ export const LARGE_WIDGET_TRADING_LINKToUse =
   useTestNet && useTestNet === true
     ? TEST_LARGE_WIDGET_TRADING_LINK
     : LARGE_WIDGET_TRADING_LINK;
+
+// Google analytics tracking id which website will use
+export const googleTrackingID_ToUse =
+  useTestNet && useTestNet === true ? TEST_googleTrackingID : googleTrackingID;
 
 // Genesis Base Target
 export const genesisBaseTarget = 4398046511104 / 240;
