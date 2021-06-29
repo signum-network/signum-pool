@@ -27,7 +27,7 @@ Per default the testing mode is activated automatically when running `npm start`
     -   If that variable is equal to true, the website will fetch data from a remote pool node **you can change the url**
     -   If that variable is equal to false, the website will fetch data from your local pool node!
 
-> The variable "useTestNet" is assigned correspondly, so it's not necesary to override it
+> The variable "useTestNet" is assigned correspondingly, so it's not necessary to override it
 
 ## Commands for deployment 🛠️
 
