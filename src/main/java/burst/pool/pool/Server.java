@@ -349,7 +349,9 @@ public class Server extends NanoHTTPD {
                     .replace("{SHOWTRADINGLINK}", propertyService.getString(Props.siteShowTradingLink))
                     .replace("{MINITRADINGLINK}", propertyService.getString(Props.siteMiniTradingLink))
                     .replace("{LARGETRADINGLINK}", propertyService.getString(Props.siteLargeTradingLink))
-                    
+
+                    .replace("{GOOGLETRACKINGID}", propertyService.getString(Props.siteGoogleTracking))
+
                     ;
         }
         if(fileCache != null) {
