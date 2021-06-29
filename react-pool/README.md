@@ -7,6 +7,7 @@ _Maybe you will find helpful tips_
 -   **Testing mode refers to the "development enviroment"**
 
     > Testing mode will fetch data from a remote pool server
+
     > **Example: you can fetch data from different pools by just changing the variable TEST_NODE in globalParameters.js**
 
 -   **Production mode refers to the "production enviroment"**

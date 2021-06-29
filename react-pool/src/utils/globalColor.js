@@ -1,4 +1,4 @@
-// Import test net
+// Import useTestNet variable
 import { useTestNet } from "./globalParameters";
 
 //Default colors
