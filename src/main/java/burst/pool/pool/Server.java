@@ -355,7 +355,13 @@ public class Server extends NanoHTTPD {
         if(fileCache != null) {
             fileCache.put(uri, response);
         }
-        return NanoHTTPD.newFixedLengthResponse(Response.Status.OK, mimeType, response);
+        Response httpResponse = NanoHTTPD.newFixedLengthResponse(Response.Status.OK, mimeType, response);
+        if(uri.contains("static")) {
+            // static content is cached for 1 year
+            httpResponse.addHeader("Cache-Control", "max-age=31536000");
+        }
+        
+        return httpResponse;
     }
 
     private JsonElement minerToJson(Miner miner, boolean returnDeadlines) {
