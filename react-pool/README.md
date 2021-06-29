@@ -14,8 +14,6 @@ _If you need - for whatever reasons - to develop on main net you need to overrid
     -If that variable is equal to true, the website will fetch data from a demo pool node you can customize!
     -If that variable is equal to false, the website will fetch data from your pool node!
 
-> DO NOT COMMIT THE CHANGE IN THAT FILE - YOUR PR WILL BE REJECTED!
-
 ## Commands for deployment 🛠️
 
 _Use this commands if you are going to deploy changes or start the deployment_
@@ -33,7 +31,8 @@ _Use this commands if you are going to deploy changes or start the deployment_
 -   Fill up the remaining information for setting up your account and properties; and then you’ll get the tracking ID (e.g. UA-123456789–1)
 -   Once you get the Tracking ID, you just need to assign that value in the variable "GOOGLETRACKINGID"
 -   If you do not want google analytics, just leave the variable empty
--   Example of a tracking ID: **UA-200778790-1**
+
+> Example of a tracking ID: **UA-200778790-1**
 
 ## URL used for embed in trading viewer page
 
