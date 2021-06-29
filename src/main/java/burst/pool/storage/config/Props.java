@@ -70,8 +70,8 @@ public class Props {
     public static final Prop<String> siteSeoImageUrl = new Prop<>("site.seoImageUrl", "");
 
     public static final Prop<String> siteShowTradingLink = new Prop<>("site.showTradingLink", "YES");
-    public static final Prop<String> siteMiniTradingLink = new Prop<>("site.miniTradingLink", "https://bit.ly/2SzLZyx");
-    public static final Prop<String> siteLargeTradingLink = new Prop<>("site.largeTradingLink", "https://bit.ly/2UhNuSo");
+    public static final Prop<String> siteMiniTradingLink = new Prop<>("site.miniTradingLink", "https://bit.ly/2UEd4RB");
+    public static final Prop<String> siteLargeTradingLink = new Prop<>("site.largeTradingLink", "https://bit.ly/3A5BIep");
 
     public static final Prop<Boolean> siteDisableCache = new Prop<>("site.disableCache", false);
     public static final Prop<String> apiAllowOrign = new Prop<>("api.allowOrign", "");
