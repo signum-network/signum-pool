@@ -65,7 +65,8 @@ public class Miner implements Payable {
         int deadlinesSharedCount = 0;
         
         int nAvg = propertyService.getInt(Props.nAvg);
-        long lastBlockHeight = processBlockHeight + propertyService.getInt(Props.processLag);
+        int processLag = propertyService.getInt(Props.processLag);
+        long lastBlockHeight = processBlockHeight + processLag;
         
         // First loop will calculate the average for the physical capacity
         int deadlinesCount = 0;
@@ -101,7 +102,7 @@ public class Miner implements Payable {
                 deadlineToSave = deadline;
             }
         }
-        nconf.set(deadlinesCount);        
+        nconf.set(Math.max(nAvg+processLag, deadlinesCount));        
         
         double estimatedCapacity = minerMaths.estimatedTotalPlotSize(deadlinesCount, hitSum);
         double estimatedCapacityWithBoost = minerMaths.estimatedTotalPlotSize(deadlinesCount, hitSumBoost);
