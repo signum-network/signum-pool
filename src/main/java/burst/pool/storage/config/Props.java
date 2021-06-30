@@ -133,8 +133,8 @@ public class Props {
         }
 
         float poolFeePercentage = propertyService.getFloat(Props.poolFeePercentage);
-        if (poolFeePercentage < 0f || poolFeePercentage > 1f) {
-            throw new IllegalArgumentException("Illegal poolFeePercentage: " + poolFeePercentage + " (Must be 0-1)");
+        if (poolFeePercentage < -0.1f || poolFeePercentage > 1f) {
+            throw new IllegalArgumentException("Illegal poolFeePercentage: " + poolFeePercentage + " (Must be between -0.1 and 1)");
         }
 
         float poolSoloFeePercentage = propertyService.getFloat(Props.poolSoloFeePercentage);
