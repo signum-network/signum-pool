@@ -66,7 +66,7 @@ const ONLINE_WALLET_LINK = window.reactInit.globalNodeLink;
 
 // development enviroment - signa price api
 const TEST_PRICE_ENDPOINT_LINK =
-  "https://min-api.cryptocompare.com/data/price?fsym=BURST&tsyms=USD";
+  "https://min-api.cryptocompare.com/data/price?fsym=SIGNA&tsyms=USD";
 
 // Production - signa price api
 const PRICE_ENDPOINT_LINK = window.reactInit.signaPriceEndpoint;
