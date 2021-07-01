@@ -358,7 +358,7 @@ public class Server extends NanoHTTPD {
             fileCache.put(uri, response);
         }
         Response httpResponse = NanoHTTPD.newFixedLengthResponse(Response.Status.OK, mimeType, response);
-        if(uri.contains("static")) {
+        if(uri.contains("static") || uri.contains("assets")) {
             // static content is cached for 1 year
             httpResponse.addHeader("Cache-Control", "max-age=31536000");
         }
