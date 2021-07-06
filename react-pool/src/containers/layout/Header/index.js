@@ -1,5 +1,8 @@
 // React
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+
+// React router
+import { useHistory } from "react-router-dom";
 
 // React router dom
 import { withRouter, Link } from "react-router-dom";
@@ -14,6 +17,10 @@ import IconButton from "@material-ui/core/IconButton";
 // Material icons
 import MenuIcon from "@material-ui/icons/Menu";
 
+// Material ui menu
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+
 // Styling
 import styles from "./Header.module.css";
 
@@ -27,10 +34,42 @@ import {
   SHOW_TRADING_LINK,
 } from "../../../utils/globalParameters";
 
+// Url parameters
+import { extraLinksArrayExport } from "../../../utils/globalUrl";
+
 // Third-party
 import clsx from "clsx";
 
 const Header = (props) => {
+  // Route details
+  let router = useHistory();
+
+  // Menu manipulation
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  // SideDrawer manipulation
+  const goToSite = async (route, newPage = false) => {
+    // Open tab in new page
+    if (newPage === true) {
+      return window.open(route, "_blank").focus();
+    }
+
+    return new Promise(async (resolve) => {
+      await router.push(route);
+      resolve(true);
+    }).then(() => {
+      window.scrollTo(0, 0);
+    });
+  };
+
   return (
     <Fragment>
       <Grid
@@ -101,6 +140,20 @@ const Header = (props) => {
                   <Typography>Pool info</Typography>
                 </Link>
 
+                {/* Miners */}
+                <Link
+                  to="/miners"
+                  className={clsx(
+                    styles.navLink,
+                    "defaultTransition",
+                    props.location.pathname === "/miners"
+                      ? styles.activeNavLink
+                      : null
+                  )}
+                >
+                  <Typography>Miners</Typography>
+                </Link>
+
                 {
                   // Trading viewer
                   // Check if user wants to have a trading link
@@ -123,43 +176,6 @@ const Header = (props) => {
                   ) : null
                 }
 
-                {/* Explorer */}
-                <Hidden mdDown>
-                  <a
-                    href={EXPLORERToUse}
-                    target="_blank"
-                    rel="noreferrer"
-                    className={clsx(styles.navLink, "defaultTransition")}
-                  >
-                    <Typography>Explorer</Typography>
-                  </a>
-                </Hidden>
-
-                {/* Wallet */}
-                <a
-                  href={WALLETToUse}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={clsx(styles.navLink, "defaultTransition")}
-                >
-                  <Typography>Wallet</Typography>
-                </a>
-
-                {
-                  // Faucet
-                  // Check if user wants to have a faucet link
-                  FAUCETToUse && FAUCETToUse !== null && FAUCETToUse !== "" ? (
-                    <a
-                      href={FAUCETToUse}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={clsx(styles.navLink, "defaultTransition")}
-                    >
-                      <Typography>Faucet</Typography>
-                    </a>
-                  ) : null
-                }
-
                 {/* Discord */}
                 <a
                   href={DISCORDToUse}
@@ -169,6 +185,77 @@ const Header = (props) => {
                 >
                   <Typography>Discord</Typography>
                 </a>
+
+                {/* Extra menu options */}
+                <div style={{ width: "auto", display: "inline-block" }}>
+                  <a
+                    onClick={handleMenuClick}
+                    className={clsx(styles.navLink, "defaultTransition")}
+                  >
+                    <Typography>Extra</Typography>
+                  </a>
+
+                  <Menu
+                    id="simple-menu"
+                    style={{ width: "300px" }}
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleMenuClose}
+                  >
+                    <MenuItem
+                      onClick={() => {
+                        goToSite(EXPLORERToUse, true);
+                        handleMenuClose();
+                      }}
+                    >
+                      Explorer
+                    </MenuItem>
+
+                    <MenuItem
+                      onClick={() => {
+                        goToSite(WALLETToUse, true);
+                        handleMenuClose();
+                      }}
+                    >
+                      Wallet
+                    </MenuItem>
+
+                    {
+                      // Faucet
+                      // Check if user wants to have a faucet link
+                      FAUCETToUse &&
+                      FAUCETToUse !== null &&
+                      FAUCETToUse !== "" ? (
+                        <MenuItem
+                          onClick={() => {
+                            goToSite(FAUCETToUse, true);
+                            handleMenuClose();
+                          }}
+                        >
+                          Faucet
+                        </MenuItem>
+                      ) : null
+                    }
+
+                    {
+                      // Render dynamic options
+                      // Extra options put by pool operator
+                      extraLinksArrayExport.map((item) => {
+                        return (
+                          <MenuItem
+                            onClick={() => {
+                              goToSite(item.url, item.newTab);
+                              handleMenuClose();
+                            }}
+                          >
+                            {item.label}
+                          </MenuItem>
+                        );
+                      })
+                    }
+                  </Menu>
+                </div>
               </Grid>
             </Hidden>
           </Grid>

@@ -1,5 +1,8 @@
 // React native dependencies
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
+
+// React routern dom
+import { useLocation } from "react-router-dom";
 
 // Default components
 import Header from "./Header/index";
@@ -11,6 +14,9 @@ import { Helmet } from "react-helmet";
 import { POOLNameToUse } from "../../utils/globalParameters";
 
 const Layout = (props) => {
+  // Route details
+  let location = useLocation();
+
   // Sidebar manipulation
   const [showSidebar, updateSidebarStatus] = useState(false);
 
@@ -22,6 +28,16 @@ const Layout = (props) => {
     updateSidebarStatus(false);
   };
 
+  // Embed mode manipulation
+  const [isEmbedMode, updateEmbedModeStatus] = useState(false);
+
+  useEffect(() => {
+    // Check if user entered from embed mode
+    if (location.search.includes(`embedMode=true`)) {
+      updateEmbedModeStatus(true);
+    }
+  }, []);
+
   return (
     <Fragment>
       {/* Basic SEO */}
@@ -29,23 +45,37 @@ const Layout = (props) => {
         <title>{"Mining Pool • " + POOLNameToUse}</title>
       </Helmet>
 
-      {/* Header */}
-      <Header openSidebar={sidebarOpener} />
+      {
+        /* Header */
+        isEmbedMode === false ? <Header openSidebar={sidebarOpener} /> : null
+      }
 
       {/* Sidebar */}
       <Sidebar showSideDrawer={showSidebar} closeSideDrawer={sidebarCloser} />
 
-      {/* Divider */}
-      <div
-        style={{
-          width: "100vw",
-          marginBottom: "79px",
-          boxSizing: "border-box",
-        }}
-      ></div>
+      {
+        /* Divider */
+        isEmbedMode === false ? (
+          <div
+            style={{
+              width: "100vw",
+              marginBottom: "79px",
+              boxSizing: "border-box",
+            }}
+          ></div>
+        ) : null
+      }
 
-      {/* Body */}
-      {props.children}
+      {
+        /* Body */
+        isEmbedMode === true ? (
+          <div style={{ marginTop: "-55px", width: "100%" }}>
+            {props.children}
+          </div>
+        ) : (
+          props.children
+        )
+      }
 
       {/* Footer */}
       <Footer />

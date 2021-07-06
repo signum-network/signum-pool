@@ -45,10 +45,13 @@
   padding: 0.5em 1.5em !important;
   color: rgba(255, 255, 255, 0.8) !important;
   border: 1px solid transparent;
+  cursor: pointer;
+  width: auto !important;
+  font-size: 0.9rem !important;
 }
 
-.navLink {
-  font-size: 0.9rem !important;
+.navLink:last-child {
+  margin-right: 0 !important;
 }
 
 .navLink:hover,

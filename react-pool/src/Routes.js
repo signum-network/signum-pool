@@ -45,6 +45,10 @@ const TradingViewer = React.lazy(() => {
   return import("./pages/trading-view/index");
 });
 
+const MinersList = React.lazy(() => {
+  return import("./pages/miners/index");
+});
+
 const Routes = (props) => {
   // Route details
   const location = useLocation();
@@ -127,7 +131,7 @@ const Routes = (props) => {
 
       <Layout>
         <Switch>
-          {/* Pool info */}
+          {/* Trading view */}
           <Route
             path="/trading-view"
             exact
@@ -145,6 +149,17 @@ const Routes = (props) => {
             render={() => (
               <Suspense fallback={<Loading />}>
                 <PoolInfo />
+              </Suspense>
+            )}
+          />
+
+          {/* Miners list */}
+          <Route
+            path="/miners"
+            exact
+            render={() => (
+              <Suspense fallback={<Loading />}>
+                <MinersList />
               </Suspense>
             )}
           />

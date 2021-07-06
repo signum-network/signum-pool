@@ -15,11 +15,13 @@ import Divider from "@material-ui/core/Divider";
 import CloseIcon from "@material-ui/icons/Close";
 import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
 import DnsRoundedIcon from "@material-ui/icons/DnsRounded";
+import GroupIcon from "@material-ui/icons/Group";
 import BlurOnIcon from "@material-ui/icons/BlurOn";
 import AccountBalanceWalletRoundedIcon from "@material-ui/icons/AccountBalanceWalletRounded";
 import CardGiftcardRoundedIcon from "@material-ui/icons/CardGiftcardRounded";
 import QuestionAnswerRoundedIcon from "@material-ui/icons/QuestionAnswerRounded";
 import TransformIcon from "@material-ui/icons/Transform";
+import ControlPointIcon from "@material-ui/icons/ControlPoint";
 
 import FacebookIcon from "@material-ui/icons/Facebook";
 import TwitterIcon from "@material-ui/icons/Twitter";
@@ -44,6 +46,9 @@ import {
   DISCORDToUse,
   SHOW_TRADING_LINK,
 } from "../../../utils/globalParameters";
+
+// Extra url
+import { extraLinksArrayExport } from "../../../utils/globalUrl";
 
 const Sidebar = (props) => {
   // Route details
@@ -153,6 +158,19 @@ const Sidebar = (props) => {
             textList="Pool info"
           />
 
+          {/* Miners lists*/}
+          <ListRender
+            onClick={() => {
+              goToSite("/miners");
+            }}
+            icon={
+              <GroupIcon
+                style={{ fontSize: 27, color: "var(--primary-error-color)" }}
+              />
+            }
+            textList="Miners"
+          />
+
           {
             // Trading viewer
             // Check if user wants to have a trading link
@@ -176,6 +194,19 @@ const Sidebar = (props) => {
               />
             ) : null
           }
+
+          {/* Discord */}
+          <ListRender
+            onClick={() => {
+              goToSite(DISCORDToUse, true);
+            }}
+            icon={
+              <QuestionAnswerRoundedIcon
+                style={{ fontSize: 27, color: "var(--secondary-dark-color)" }}
+              />
+            }
+            textList="Discord"
+          />
 
           {/* Explorer */}
           <ListRender
@@ -224,18 +255,50 @@ const Sidebar = (props) => {
             ) : null
           }
 
-          {/* Discord */}
-          <ListRender
-            onClick={() => {
-              goToSite(DISCORDToUse, true);
-            }}
-            icon={
-              <QuestionAnswerRoundedIcon
-                style={{ fontSize: 27, color: "var(--secondary-dark-color)" }}
-              />
-            }
-            textList="Discord"
-          />
+          {extraLinksArrayExport &&
+          extraLinksArrayExport.length &&
+          extraLinksArrayExport.length > 0 ? (
+            <Box
+              width="100%"
+              display="flex"
+              flexDirection="column"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              wrap="wrap"
+            >
+              {divider}
+
+              <Typography
+                align="center"
+                style={{ width: "100%", fontWeight: 500, marginTop: "1em" }}
+              >
+                Additional Links
+              </Typography>
+            </Box>
+          ) : null}
+
+          {
+            // Render dynamic options
+            // Extra options put by pool operator
+            extraLinksArrayExport.map((item) => {
+              return (
+                <ListRender
+                  onClick={() => {
+                    goToSite(item.url, item.newTab);
+                  }}
+                  icon={
+                    <ControlPointIcon
+                      style={{
+                        fontSize: 27,
+                        color: "var(--secondary-dark-color)",
+                      }}
+                    />
+                  }
+                  textList={item.label}
+                />
+              );
+            })
+          }
         </Box>
 
         {

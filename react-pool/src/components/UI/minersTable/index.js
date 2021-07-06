@@ -28,7 +28,7 @@ import { isMobile } from "react-device-detect";
 import cssStyles from "./minersTable.module.css";
 
 // Columns
-const columns = [
+const nativeColumns = [
   { id: "miner", label: "Miner", align: "center", minWidth: 150 },
   {
     id: "currentDeadline",
@@ -101,6 +101,27 @@ const columns = [
   },
 ];
 
+// Mobile columns
+const mobileColumns = [
+  // Miner column
+  nativeColumns[0],
+
+  // Pending balance
+  nativeColumns[3],
+
+  // Physical Capacity
+  nativeColumns[4],
+
+  // Confirmed deadlines
+  nativeColumns[2],
+
+  // View more
+  nativeColumns[10],
+];
+
+// Columns that website will use
+const columns = isMobile ? mobileColumns : nativeColumns;
+
 // Custom styling for columns
 const useStyles = makeStyles({
   root: {
@@ -110,7 +131,7 @@ const useStyles = makeStyles({
     background: "#1f1f1f",
   },
   container: {
-    maxHeight: isMobile ? 500 : 600,
+    maxHeight: isMobile ? "auto" : 600,
   },
 });
 
@@ -120,7 +141,7 @@ const StickyHeadTable = (props) => {
 
   // Pagination
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(isMobile ? 35 : 50);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -236,6 +257,7 @@ const StickyHeadTable = (props) => {
                               fontWeight: 500,
                               cursor: "pointer",
                               color: "white",
+                              textDecoration: "underline",
                             }}
                             onClick={() => minerShowData(row.data)}
                           >

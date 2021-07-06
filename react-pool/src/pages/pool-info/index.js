@@ -34,6 +34,7 @@ import { formatTime } from "../../utils/functions/blockchain";
 
 // Third-party
 import { isMobile } from "react-device-detect";
+import clsx from "clsx";
 
 // SEO
 import { Helmet } from "react-helmet";
@@ -247,14 +248,16 @@ const PoolInfo = (props) => {
     }
 
     dynamicTab = (
-      <OutlinedTable
-        data={tableData}
-        isLoading={poolData.loadingData}
-        notFoundLabel="Missing details, contact your support operator"
-        fWidth="33%"
-        sWidth="67%"
-        onClickLastItem={null}
-      />
+      <Grid container className={styles.containedContent}>
+        <OutlinedTable
+          data={tableData}
+          isLoading={poolData.loadingData}
+          notFoundLabel="Missing details, contact your support operator"
+          fWidth="33%"
+          sWidth="67%"
+          onClickLastItem={null}
+        />
+      </Grid>
     );
 
     // Blocks won tab
@@ -263,7 +266,11 @@ const PoolInfo = (props) => {
 
     // Check if blocks data is loaded
     if (blockData.loadingData === false) {
-      dynamicTab = <BlocksTable data={blockData.list} />;
+      dynamicTab = (
+        <Grid container className={styles.containedContent}>
+          <BlocksTable data={blockData.list} />
+        </Grid>
+      );
     }
   } else if (currentTab === 2) {
     dynamicTab = LoadingDynamicTab;
@@ -271,7 +278,11 @@ const PoolInfo = (props) => {
     // Check if pool data is loaded
     // For showing miner options data
     if (poolData.loadingData === false) {
-      dynamicTab = <MinerOptions data={poolData.data} />;
+      dynamicTab = (
+        <Grid container className={styles.containedContent}>
+          <MinerOptions data={poolData.data} />
+        </Grid>
+      );
     }
   } else if (currentTab === 3) {
     dynamicTab = LoadingDynamicTab;
@@ -279,7 +290,7 @@ const PoolInfo = (props) => {
     // Check if top ten miners data is loaded
     if (minerData.loadingData === false && minerData.topTen) {
       dynamicTab = (
-        <Grid container direction="column">
+        <Grid container style={{ paddingLeft: "0.9em", paddingRight: "0.9em" }}>
           <MinersTable data={minerData.topTen} />
         </Grid>
       );
@@ -395,21 +406,23 @@ const PoolInfo = (props) => {
         alignItems="flex-start"
       >
         {/* Tabs container */}
-        <Paper className={styles.tabsContainer}>
-          <Tabs
-            value={currentTab}
-            indicatorColor="primary"
-            textColor="primary"
-            onChange={toogleTab}
-            variant={isMobile ? "scrollable" : "fullWidth"}
-            scrollButtons="auto"
-          >
-            <Tab className={styles.tabUnit} label="Basic info" />
-            <Tab className={styles.tabUnit} label="Blocks won" />
-            <Tab className={styles.tabUnit} label="Miner options" />
-            <Tab className={styles.tabUnit} label="Top 10 miners" />
-          </Tabs>
-        </Paper>
+        <Grid container className={styles.containedContent}>
+          <Paper className={clsx(styles.tabsContainer)}>
+            <Tabs
+              value={currentTab}
+              indicatorColor="primary"
+              textColor="primary"
+              onChange={toogleTab}
+              variant={isMobile ? "scrollable" : "fullWidth"}
+              scrollButtons="auto"
+            >
+              <Tab className={styles.tabUnit} label="Basic info" />
+              <Tab className={styles.tabUnit} label="Blocks won" />
+              <Tab className={styles.tabUnit} label="Miner options" />
+              <Tab className={styles.tabUnit} label="Top 10 miners" />
+            </Tabs>
+          </Paper>
+        </Grid>
 
         {/* Dynamic data */ dynamicTab}
       </Grid>

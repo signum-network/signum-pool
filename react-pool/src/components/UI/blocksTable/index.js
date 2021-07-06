@@ -19,13 +19,31 @@ import { isMobile } from "react-device-detect";
 import cssStyles from "./blocksTable.module.css";
 
 // Columns
-const columns = [
+const nativeColumns = [
   { id: "height", label: "Height", align: "center", minWidth: 100 },
   { id: "id", label: "ID", align: "center", minWidth: 100 },
   { id: "miner", label: "Winner", align: "center", minWidth: 200 },
   { id: "reward", label: "Reward + Fees", align: "center", minWidth: 100 },
   { id: "poolShare", label: "Pool Share", align: "center", minWidth: 100 },
 ];
+
+// Mobile columns
+const mobileColumns = [
+  // Height column
+  nativeColumns[0],
+
+  // Winner
+  nativeColumns[2],
+
+  // Reward + Fees
+  nativeColumns[3],
+
+  // Pool Share
+  nativeColumns[4],
+];
+
+// Columns that website will use
+const columns = isMobile ? mobileColumns : nativeColumns;
 
 // Custom styling for columns
 const useStyles = makeStyles({
@@ -36,7 +54,7 @@ const useStyles = makeStyles({
     background: "#1f1f1f",
   },
   container: {
-    maxHeight: isMobile ? 500 : 600,
+    maxHeight: isMobile ? "auto" : 600,
   },
 });
 
