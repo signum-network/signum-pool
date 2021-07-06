@@ -320,6 +320,7 @@ public class Server extends NanoHTTPD {
                     .replace("{PRICEENDPOINT}", propertyService.getString(Props.sitePrice))
                     .replace("{PUBLICNODE}", propertyService.getString(Props.siteNodeAddress))
                     .replace("{DISCORD}", propertyService.getString(Props.siteDiscordLink))
+                    .replace("{INFO}", propertyService.getString(Props.siteInfo))
                     .replace("{POOL_ACCOUNT}", burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase)).getFullAddress())
                     .replace("{MININGADDRESS}", propertyService.getString(Props.miningURL))
                     .replace("{MININGGUIDE}", propertyService.getString(Props.miningGuide))
