@@ -54,6 +54,7 @@ public class Props {
     public static final Prop<String> siteNodeAddress = new Prop<>("site.nodeAddress", "https://europe.signum.network/");
     public static final Prop<String> sitePrice = new Prop<>("site.price", "https://min-api.cryptocompare.com/data/price?fsym=SIGNA&tsyms=USD");
     public static final Prop<String> siteDiscordLink = new Prop<>("site.discord", "https://discord.gg/ms6eagX");
+    public static final Prop<String> siteInfo = new Prop<>("site.info", "<p>Coming soon...</p>");
     public static final Prop<String> siteExplorerURL = new Prop<>("site.explorer", "https://explorer.burstcoin.network/");
     public static final Prop<String> siteFaucetURL = new Prop<>("site.faucet", "");
     public static final Prop<String> siteExplorerAccount = new Prop<>("site.explorerAccount", "?action=account&account=");
