@@ -395,8 +395,8 @@ public class Server extends NanoHTTPD {
         }
         if (!Objects.equals(miner.getName(), "")) {
             String name = miner.getName();
-            if(name.length() > 14)
-                name = name.substring(0, 14) + "...";
+            if(name.length() > 24)
+                name = name.substring(24) + "...";
             minerJson.addProperty("name", name);
         }
         if (!Objects.equals(miner.getUserAgent(), "")) {
