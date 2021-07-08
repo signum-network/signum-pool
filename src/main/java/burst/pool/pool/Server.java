@@ -393,7 +393,7 @@ public class Server extends NanoHTTPD {
 
             minerJson.addProperty("currentRoundBestDeadline", deadline.toString());
         }
-        if (!Objects.equals(miner.getName(), "")) {
+        if (miner.getName()!=null && miner.getName().length() > 0) {
             String name = miner.getName();
             if(name.length() > 24)
                 name = name.substring(24) + "...";
