@@ -4,7 +4,7 @@
   top: 0;
   background: #1f1f1f;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
-  padding: 0.9rem 2rem;
+  padding: 0.9rem;
   width: 100vw !important;
   z-index: 99 !important;
   box-sizing: border-box;
@@ -67,8 +67,15 @@
   width: 100%;
   max-width: 290px;
   font-size: 1rem !important;
-  padding: 0.5rem 4rem !important;
+  padding: 0.5rem 2rem !important;
   border-radius: 8px !important;
+}
+
+.headerRightSideContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Hamburger button */
@@ -79,14 +86,54 @@
   padding-right: 9px;
 }
 
+/* Language button */
+.languageBtn {
+  margin-right: 1em !important;
+  text-transform: none;
+  color: #fff !important;
+  text-transform: none !important;
+  font-size: 1rem !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 8px !important;
+  align-self: stretch;
+  border: 0.5px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.discordLink {
+  display: none;
+}
+
+.discordExtraLink {
+  display: block;
+}
+
 /* Media queries */
+@media (min-width: 1400px) {
+  .discordLink {
+    display: inline-block;
+  }
+
+  .discordExtraLink {
+    display: none;
+  }
+
+  .mainBtn {
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+  }
+}
+
 @media (max-width: 1040px) {
   .navLink {
     font-size: 0.7rem !important;
   }
 
   .mainBtn {
-    padding: 0.5rem 1rem !important;
+    display: none !important;
+  }
+
+  .languageBtn {
+    margin-right: 0 !important;
   }
 }
 

@@ -9,6 +9,7 @@ import miners from "./default/miners.js";
 import poolConfig from "./default/poolConfig";
 import pricing from "./default/price.js";
 import minerModal from "./default/minerModal.js";
+import languageModal from "./default/languageModal.js";
 
 export default combineReducers({
   basicInfo,
@@ -18,4 +19,5 @@ export default combineReducers({
   poolConfig,
   pricing,
   minerModal,
+  languageModal,
 });

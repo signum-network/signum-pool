@@ -205,7 +205,7 @@ const PoolInfo = (props) => {
         },
         {
           title: t("poolSoloFee"),
-          sTitle: "Miners sharing less than 20%",
+          sTitle: t("minersSharingLess"),
           value: poolData.data.poolSoloFee,
           type: "info",
         },
@@ -216,21 +216,21 @@ const PoolInfo = (props) => {
         },
         {
           title: t("defaultDonation"),
-          sTitle: "Configurable",
+          sTitle: t("configurable"),
           value: poolData.data.donationPercent,
           type: "info",
           onClick: goToMinerOptions,
         },
         {
           title: t("defaultPoolShare"),
-          sTitle: "Configurable",
+          sTitle: t("configurable"),
           value: poolData.data.poolShare,
           type: "info",
           onClick: goToMinerOptions,
         },
         {
           title: t("defaultMinimumPayout"),
-          sTitle: "Configurable",
+          sTitle: t("configurable"),
           value: poolData.data.minimumPayout,
           type: "info",
           onClick: goToMinerOptions,

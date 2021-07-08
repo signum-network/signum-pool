@@ -5,7 +5,7 @@ import thunk from "redux-thunk";
 import rootReducer from "./reducers/index";
 
 // Only use this module in dev mode
-import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
+// import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 
 const initialState = {};
 
@@ -16,10 +16,10 @@ const store = createStore(
   initialState,
 
   // Only use this module in production mode
-  // applyMiddleware(...middleware)
+  applyMiddleware(...middleware)
 
   // Only use this module in dev mode
-  composeWithDevTools(applyMiddleware(...middleware))
+  // composeWithDevTools(applyMiddleware(...middleware))
 );
 
 export default store;

@@ -39,6 +39,69 @@ _Use this commands if you are going to deploy changes or start the deployment_
 -   Only use the folder "Build", you can deploy the production app in your pool node
 -   Always serve the file index.html
 
+## Available Languages 🌐
+
+Discover the available languages you can set by default or users can freely choose!
+
+-   English
+-   French
+-   Spanish
+-   Deutsche
+-   Italiano
+-   Korean
+-   Português
+-   Türk
+-   Nederlands
+-   Polskie
+-   Chinese (Simplified)
+-   Russian
+
+## How to implement extra links on your header 🌐
+
+If you want extra links to be put in your header, you must go to the file `pool.properties` and find and customize the variable `extraPoolUrl`
+
+> The variable is a `String` which is contained as JSON data, look at the next example
+
+```python
+
+# Example #1
+extraPoolUrl='{
+  "a":{"label":"Signum", "url":"https://www.signum.network", "newTab": true  },
+  "b":{"label":"BTDEX", "url":"https://btdex.trade", "newTab": true  },
+}'
+
+# Example #2
+extraPoolUrl='{
+  "a":{"label":"Signum", "url":"https://www.signum.network", "newTab": true  },
+  "b":{"label":"BTDEX", "url":"https://btdex.trade", "newTab": true  },
+  "c":{"label":"Miners", "url":"/miners", "newTab": false  }
+}'
+
+# You can add as many routes you want, you just need to keep sorting the objects alphabetically
+# Look at the examples
+# "d":{"label":"My chat", "url":"https://telegram.org/", "newTab": true  },
+# "e":{"label":"My Pool", "url":"http://poolUrlExample.com", "newTab": true  }
+
+# Make sure to format correctly the JSON data. I mean, (preventing small grammar erros)
+```
+
+-   To add another route, you just need to add another object to that variable and then put the respective values in their properties:
+
+    -   **label:** means what is the text of the Link
+    -   **URL:** is the link or complete url which the user will be redirected to
+    -   **newTab:** It indicates if the url will be opened in a new tab or not
+        -   It's recommended to assign this to **false** when you are making your own custom page in the pool
+        -   It's recommended to assign this to **true** if you are going to use an external link
+
+## How to put your pool website in iframes
+
+If you want your pool website to be shown on iframes, you can just add the following get parameter in the URL
+
+> **embedMode=true**
+
+> Example #1: **http://poolUrlExample.com/?embedMode=true**
+> Example #2: **http://poolUrlExample.com/randomRoute/?random=true&embedMode=true**
+
 ## How to use Google Analytics (Optional)
 
 -   Go to Google Analytics website and if you’re first time user, you’ll asked to set up an account including your data sharing settings.

@@ -1,4 +1,6 @@
 {
+  "languageName": "English",
+  "chooseLanguage": "Choose a Language",
   "HOMETAG": "Mining Pool",
   "welcomeString": "Welcome to",
   "searchInputPlaceHolder": "Your Signum address or account name",
@@ -86,6 +88,8 @@
   "viewMore": "View more",
   "bookmarkedMiner": "Bookmarked Miner",
   "close": "Close",
+  "configurable": "Configurable",
+  "minersSharingLess": "Miners sharing less than 20%",
   "bookmarkMiner": "Bookmark Miner",
   "minerNotFound": "Miner not found",
   "minerAdded": "Bookmark added!",

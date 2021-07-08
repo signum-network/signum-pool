@@ -25,6 +25,7 @@ import CardGiftcardRoundedIcon from "@material-ui/icons/CardGiftcardRounded";
 import QuestionAnswerRoundedIcon from "@material-ui/icons/QuestionAnswerRounded";
 import TransformIcon from "@material-ui/icons/Transform";
 import ControlPointIcon from "@material-ui/icons/ControlPoint";
+import TranslateIcon from "@material-ui/icons/Translate";
 
 import FacebookIcon from "@material-ui/icons/Facebook";
 import TwitterIcon from "@material-ui/icons/Twitter";
@@ -260,6 +261,20 @@ const Sidebar = (props) => {
               />
             ) : null
           }
+
+          {/* Language */}
+          <ListRender
+            onClick={() => {
+              props.openLanguageModal();
+              closeSideDrawer();
+            }}
+            icon={
+              <TranslateIcon
+                style={{ fontSize: 27, color: "var(--secondary-dark-color)" }}
+              />
+            }
+            textList={t("languageName")}
+          />
 
           {extraLinksArrayExport &&
           extraLinksArrayExport.length &&

@@ -1,0 +1,66 @@
+/* Actions */
+.actionsContainer {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  padding: 0.5rem 1rem;
+}
+
+.buttonActions {
+  width: 45%;
+}
+
+.buttonActions {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-size: 16px !important;
+  padding-top: 0.7em !important;
+  padding-bottom: 0.7em !important;
+}
+
+.explorerButton {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-size: 16px !important;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0.5rem;
+  width: 100% !important;
+  max-width: 500px !important;
+  font-weight: bold !important;
+}
+
+@media (min-width: 900px) {
+  .buttonActions:last-child {
+    width: 25% !important;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Content */
+  .tableItemLeftSide,
+  .tableItemRightSide {
+    width: 100% !important;
+  }
+
+  .tableItemLeftSide {
+    margin-bottom: 0.7em !important;
+  }
+
+  .tableItemRightSide {
+    padding-left: 0 !important;
+  }
+
+  /* Actions */
+  .buttonActions:first-child {
+    margin-top: 1em !important;
+  }
+
+  .buttonActions {
+    width: 100% !important;
+    margin-bottom: 1em !important;
+  }
+}

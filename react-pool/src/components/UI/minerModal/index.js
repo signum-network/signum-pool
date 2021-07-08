@@ -34,7 +34,7 @@ import styles from "./minerModal.module.css";
 // Extra
 import { userKeyBook, EXPLORERToUse } from "../../../utils/globalParameters";
 
-const MinnerModal = (props) => {
+const MinerModal = (props) => {
   // Translations details
   const { t } = useTranslation();
 
@@ -280,5 +280,5 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, { toggleModal, selectBookmarkedMiner })(
-  MinnerModal
+  MinerModal
 );

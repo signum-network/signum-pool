@@ -428,8 +428,8 @@ const Home = (props) => {
           data={bookMarkedMiner.data}
           isLoading={bookMarkedMiner.loadingData}
           notFoundLabel={t("notBookmarkedMiner") + " 📌"}
-          fWidth="25%"
-          sWidth="75%"
+          fWidth="28%"
+          sWidth="72%"
           onClickLastItem={bookmarkDeleter}
         />
       </Grid>

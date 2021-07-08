@@ -19,6 +19,7 @@ import IconButton from "@material-ui/core/IconButton";
 
 // Material icons
 import MenuIcon from "@material-ui/icons/Menu";
+import TranslateIcon from "@material-ui/icons/Translate";
 
 // Material ui menu
 import Menu from "@material-ui/core/Menu";
@@ -95,7 +96,7 @@ const Header = (props) => {
           alignItems="center"
           wrap="nowrap"
           style={{
-            maxWidth: "var(--main-client-width)",
+            maxWidth: "1600px",
             marginLeft: "auto",
             marginRight: "auto",
           }}
@@ -184,10 +185,14 @@ const Header = (props) => {
 
                 {/* Discord */}
                 <a
-                  href={DISCORDToUse}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={clsx(styles.navLink, "defaultTransition")}
+                  className={clsx(
+                    styles.navLink,
+                    "defaultTransition",
+                    styles.discordLink
+                  )}
+                  onClick={() => {
+                    goToSite(DISCORDToUse, true);
+                  }}
                 >
                   <Typography>{t("discord")}</Typography>
                 </a>
@@ -214,6 +219,16 @@ const Header = (props) => {
                     open={Boolean(anchorEl)}
                     onClose={handleMenuClose}
                   >
+                    <MenuItem
+                      onClick={() => {
+                        goToSite(DISCORDToUse, true);
+                        handleMenuClose();
+                      }}
+                      className={styles.discordExtraLink}
+                    >
+                      {t("discord")}
+                    </MenuItem>
+
                     <MenuItem
                       onClick={() => {
                         goToSite(EXPLORERToUse, true);
@@ -271,9 +286,17 @@ const Header = (props) => {
             </Hidden>
           </Grid>
 
-          <Grid item>
+          <Grid item className={styles.headerRightSideContainer}>
             {/* Desktop button */}
             <Hidden smDown>
+              <Button
+                className={styles.languageBtn}
+                startIcon={<TranslateIcon />}
+                onClick={props.openLanguageModal}
+              >
+                {t("languageName")}
+              </Button>
+
               <Link to="/start-mining">
                 <Button
                   variant="contained"
