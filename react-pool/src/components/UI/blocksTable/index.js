@@ -1,6 +1,9 @@
 // React
 import { useState } from "react";
 
+// React translations
+import { useTranslation } from "react-i18next";
+
 // Material UI
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -11,21 +14,16 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
+import Typography from "@material-ui/core/Typography";
+
+// Extra
+import { EXPLORERToUse } from "../../../utils/globalParameters";
 
 // Third party
 import { isMobile } from "react-device-detect";
 
 // Styling
 import cssStyles from "./blocksTable.module.css";
-
-// Columns
-const columns = [
-  { id: "height", label: "Height", align: "center", minWidth: 100 },
-  { id: "id", label: "ID", align: "center", minWidth: 100 },
-  { id: "miner", label: "Winner", align: "center", minWidth: 200 },
-  { id: "reward", label: "Reward + Fees", align: "center", minWidth: 100 },
-  { id: "poolShare", label: "Pool Share", align: "center", minWidth: 100 },
-];
 
 // Custom styling for columns
 const useStyles = makeStyles({
@@ -36,11 +34,41 @@ const useStyles = makeStyles({
     background: "#1f1f1f",
   },
   container: {
-    maxHeight: isMobile ? 500 : 600,
+    maxHeight: isMobile ? "auto" : 600,
   },
 });
 
 const StickyHeadTable = (props) => {
+  // Translations details
+  const { t } = useTranslation();
+
+  // Columns
+  const nativeColumns = [
+    { id: "height", label: t("height"), align: "center", minWidth: 100 },
+    { id: "id", label: t("identification"), align: "center", minWidth: 100 },
+    { id: "miner", label: t("winner"), align: "center", minWidth: 200 },
+    { id: "reward", label: t("rewardAndFees"), align: "center", minWidth: 100 },
+    { id: "poolShare", label: t("poolShare"), align: "center", minWidth: 100 },
+  ];
+
+  // Mobile columns
+  const mobileColumns = [
+    // Height column
+    nativeColumns[0],
+
+    // Winner
+    nativeColumns[2],
+
+    // Reward + Fees
+    nativeColumns[3],
+
+    // Pool Share
+    nativeColumns[4],
+  ];
+
+  // Columns that website will use
+  const columns = isMobile ? mobileColumns : nativeColumns;
+
   // Styling
   const classes = useStyles();
 
@@ -107,6 +135,31 @@ const StickyHeadTable = (props) => {
                           row.name !== undefined
                             ? row.name
                             : row.generatorRS;
+
+                        // Cell value
+                        const cellValue = cellContent;
+
+                        // Check if column is for "Miner name or address"
+                        cellContent = (
+                          <Typography
+                            variant="body2"
+                            title={t("viewMinerDetails")}
+                            style={{
+                              fontWeight: 500,
+                              cursor: "pointer",
+                              color: "white",
+                              textDecoration: "underline",
+                            }}
+                            onClick={() => {
+                              window.open(
+                                `${EXPLORERToUse}?action=account&account=${row.generator}`,
+                                "_blank"
+                              );
+                            }}
+                          >
+                            {cellValue}
+                          </Typography>
+                        );
                       }
 
                       return (

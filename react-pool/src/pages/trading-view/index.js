@@ -1,6 +1,9 @@
 // React
 import { Fragment } from "react";
 
+// React translations
+import { useTranslation } from "react-i18next";
+
 // Material ui
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -20,11 +23,14 @@ import {
 import { Helmet } from "react-helmet";
 
 const TradingViewer = () => {
+  // Translations details
+  const { t } = useTranslation();
+
   return (
     <Fragment>
       {/* Basic SEO */}
       <Helmet>
-        <title>{"Trading viewer • " + POOLNameToUse}</title>
+        <title>{`${t("TRADINGVIEWERTAG")} • ${POOLNameToUse}`}</title>
       </Helmet>
 
       {/* First section */}
@@ -37,7 +43,7 @@ const TradingViewer = () => {
         component="section"
       >
         <Typography component="h1" variant="h4" align="center" gutterBottom>
-          Trading Viewer
+          {t("TRADINGVIEWERTAG")}
         </Typography>
 
         <Grid item container style={{ marginBottom: "1rem" }}>
