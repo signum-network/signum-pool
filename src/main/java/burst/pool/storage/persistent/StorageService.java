@@ -1,6 +1,6 @@
 package burst.pool.storage.persistent;
 
-import burst.kit.entity.BurstAddress;
+import signumj.entity.SignumAddress;
 import burst.pool.entity.Payout;
 import burst.pool.entity.WonBlock;
 import burst.pool.miners.Miner;
@@ -18,8 +18,8 @@ public interface StorageService extends AutoCloseable {
     int getMinerCount();
     List<Miner> getMiners();
     List<Miner> getMinersFiltered();
-    Miner getMiner(BurstAddress address);
-    Miner newMiner(BurstAddress address);
+    Miner getMiner(SignumAddress address);
+    Miner newMiner(SignumAddress address);
 
     PoolFeeRecipient getPoolFeeRecipient();
     PoolFeeRecipient getPoolDonationRecipient();

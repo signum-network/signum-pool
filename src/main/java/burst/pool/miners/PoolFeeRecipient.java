@@ -1,7 +1,7 @@
 package burst.pool.miners;
 
-import burst.kit.entity.BurstAddress;
-import burst.kit.entity.BurstValue;
+import signumj.entity.SignumAddress;
+import signumj.entity.SignumValue;
 import burst.pool.storage.config.PropertyService;
 import burst.pool.storage.config.Props;
 import burst.pool.storage.persistent.MinerStore;
@@ -9,42 +9,42 @@ import burst.pool.storage.persistent.MinerStore;
 public class PoolFeeRecipient implements Payable {
     private final PropertyService propertyService;
     private final MinerStore.FeeRecipientStore store;
-    private final BurstAddress address;
+    private final SignumAddress address;
 
-    public PoolFeeRecipient(PropertyService propertyService, MinerStore.FeeRecipientStore store, BurstAddress address) {
+    public PoolFeeRecipient(PropertyService propertyService, MinerStore.FeeRecipientStore store, SignumAddress address) {
         this.propertyService = propertyService;
         this.store = store;
         this.address = address;
     }
 
     @Override
-    public void increasePending(BurstValue delta, Payable donationRecipient) {
+    public void increasePending(SignumValue delta, Payable donationRecipient) {
         store.setPendingBalance(store.getPendingBalance()
                 .add(delta));
     }
 
     @Override
-    public void decreasePending(BurstValue delta) {
+    public void decreasePending(SignumValue delta) {
         store.setPendingBalance(store.getPendingBalance().subtract(delta));
     }
 
     @Override
-    public BurstValue getMinimumPayout() {
-        return BurstValue.fromBurst(propertyService.getFloat(Props.defaultMinimumPayout));
+    public SignumValue getMinimumPayout() {
+        return SignumValue.fromSigna(propertyService.getFloat(Props.defaultMinimumPayout));
     }
 
     @Override
-    public BurstValue takeShare(BurstValue availableReward, Payable donationRecipient) {
-        return BurstValue.fromBurst(0);
+    public SignumValue takeShare(SignumValue availableReward, Payable donationRecipient) {
+        return SignumValue.fromSigna(0);
     }
 
     @Override
-    public BurstValue getPending() {
+    public SignumValue getPending() {
         return store.getPendingBalance();
     }
 
     @Override
-    public BurstAddress getAddress() {
+    public SignumAddress getAddress() {
         return address;
     }
 }

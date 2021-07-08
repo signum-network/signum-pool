@@ -1,13 +1,13 @@
 package burst.pool.storage.persistent;
 
-import burst.kit.entity.BurstValue;
+import signumj.entity.SignumValue;
 import burst.pool.miners.Deadline;
 
 import java.util.List;
 
 public interface MinerStore {
-    BurstValue getPendingBalance();
-    void setPendingBalance(BurstValue pendingBalance);
+    SignumValue getPendingBalance();
+    void setPendingBalance(SignumValue pendingBalance);
     
     double getSharedCapacity();
     void setSharedCapacity(double sharedCapacity);
@@ -24,15 +24,15 @@ public interface MinerStore {
     double getShare();
     void setShare(double share);
 
-    BurstValue getMinimumPayout();
-    void setMinimumPayout(BurstValue minimumPayout);
+    SignumValue getMinimumPayout();
+    void setMinimumPayout(SignumValue minimumPayout);
     
     List<Deadline> getDeadlines();
     
     void setOrUpdateDeadline(long height, Deadline deadline);
 
     interface FeeRecipientStore {
-        BurstValue getPendingBalance();
-        void setPendingBalance(BurstValue pending);
+        SignumValue getPendingBalance();
+        void setPendingBalance(SignumValue pending);
     }
 }

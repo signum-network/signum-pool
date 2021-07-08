@@ -30,11 +30,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 
-import burst.kit.crypto.BurstCrypto;
-import burst.kit.entity.BurstAddress;
-import burst.kit.entity.BurstValue;
-import burst.kit.entity.response.MiningInfo;
-import burst.kit.util.BurstKitUtils;
+import signumj.crypto.SignumCrypto;
+import signumj.entity.SignumAddress;
+import signumj.entity.SignumValue;
+import signumj.entity.response.MiningInfo;
+import signumj.util.SignumUtils;
 import burst.pool.Constants;
 import burst.pool.miners.Deadline;
 import burst.pool.miners.Miner;
@@ -62,8 +62,8 @@ public class Server extends NanoHTTPD {
     private final StorageService storageService;
     private final PropertyService propertyService;
     private final Pool pool;
-    private final Gson gson = BurstKitUtils.buildGson().create();
-    private final BurstCrypto burstCrypto = BurstCrypto.getInstance();
+    private final Gson gson = SignumUtils.buildGson().create();
+    private final SignumCrypto burstCrypto = SignumCrypto.getInstance();
     private final Cache<String, String> fileCache;
     
     private final File htmlRoot;
@@ -129,7 +129,7 @@ public class Server extends NanoHTTPD {
             try {
                 nonce = new BigInteger(params.get("nonce"));
             } catch (Exception ignored) {}
-            Submission submission = new Submission(BurstAddress.fromEither(params.get("accountId")), nonce);
+            Submission submission = new Submission(SignumAddress.fromEither(params.get("accountId")), nonce);
             try {
                 if (submission.getMiner() == null) {
                     throw new SubmissionException("Account ID not set");
@@ -178,7 +178,7 @@ public class Server extends NanoHTTPD {
             jsonObject.addProperty("poolCapacity", poolCapacity.get());
             return jsonObject.toString();
         } else if (session.getUri().startsWith("/api/getMiner/")) {
-            BurstAddress minerAddress = BurstAddress.fromEither(session.getUri().substring(14));
+            SignumAddress minerAddress = SignumAddress.fromEither(session.getUri().substring(14));
             return minerToJson(storageService.getMiner(minerAddress), true).toString();
         } else if (session.getUri().startsWith("/api/getConfig")) {
             JsonObject response = new JsonObject();
@@ -191,12 +191,12 @@ public class Server extends NanoHTTPD {
             response.addProperty(Props.nMin.getName(), propertyService.getInt(Props.nMin));
             response.addProperty(Props.maxDeadline.getName(), propertyService.getLong(Props.maxDeadline));
             response.addProperty(Props.processLag.getName(), propertyService.getInt(Props.processLag));
-            response.addProperty(Props.feeRecipient.getName(), propertyService.getBurstAddress(Props.feeRecipient).getID());
-            response.addProperty(Props.feeRecipient.getName() + "RS", propertyService.getBurstAddress(Props.feeRecipient).getFullAddress());
+            response.addProperty(Props.feeRecipient.getName(), propertyService.getSignumAddress(Props.feeRecipient).getID());
+            response.addProperty(Props.feeRecipient.getName() + "RS", propertyService.getSignumAddress(Props.feeRecipient).getFullAddress());
             response.addProperty(Props.poolFeePercentage.getName(), propertyService.getFloat(Props.poolFeePercentage));
             response.addProperty(Props.poolSoloFeePercentage.getName(), propertyService.getFloat(Props.poolSoloFeePercentage));
-            response.addProperty(Props.donationRecipient.getName(), propertyService.getBurstAddress(Props.donationRecipient).getID());
-            response.addProperty(Props.donationRecipient.getName() + "RS", propertyService.getBurstAddress(Props.donationRecipient).getFullAddress());
+            response.addProperty(Props.donationRecipient.getName(), propertyService.getSignumAddress(Props.donationRecipient).getID());
+            response.addProperty(Props.donationRecipient.getName() + "RS", propertyService.getSignumAddress(Props.donationRecipient).getFullAddress());
             response.addProperty(Props.donationPercent.getName(), propertyService.getInt(Props.donationPercent));
             response.addProperty(Props.winnerRewardPercentage.getName(), propertyService.getFloat(Props.winnerRewardPercentage));
             response.addProperty(Props.defaultMinimumPayout.getName(), propertyService.getFloat(Props.defaultMinimumPayout));
@@ -321,11 +321,11 @@ public class Server extends NanoHTTPD {
                     .replace("{PUBLICNODE}", propertyService.getString(Props.siteNodeAddress))
                     .replace("{DISCORD}", propertyService.getString(Props.siteDiscordLink))
                     .replace("{INFO}", propertyService.getString(Props.siteInfo))
-                    .replace("{POOL_ACCOUNT}", burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase)).getFullAddress())
+                    .replace("{POOL_ACCOUNT}", burstCrypto.getAddressFromPassphrase(propertyService.getString(Props.passphrase)).getFullAddress())
                     .replace("{MININGADDRESS}", propertyService.getString(Props.miningURL))
                     .replace("{MININGGUIDE}", propertyService.getString(Props.miningGuide))
                     .replace("{LAG}", Integer.toString(propertyService.getInt(Props.processLag)))
-                    .replace("{MIN_PAYOUT}", BurstValue.fromBurst(propertyService.getFloat(Props.minimumMinimumPayout)).toUnformattedString())
+                    .replace("{MIN_PAYOUT}", SignumValue.fromSigna(propertyService.getFloat(Props.minimumMinimumPayout)).toUnformattedString())
                     .replace("{FAUCET}", propertyService.getString(Props.siteFaucetURL))
                     .replace("{EXPLORER}", propertyService.getString(Props.siteExplorerURL))
                     

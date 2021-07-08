@@ -1,17 +1,17 @@
 package burst.pool.pool;
 
-import burst.kit.crypto.BurstCrypto;
-import burst.kit.entity.BurstAddress;
-import burst.kit.entity.BurstValue;
-import burst.kit.entity.response.Account;
-import burst.kit.entity.response.Block;
-import burst.kit.entity.response.FeeSuggestion;
-import burst.kit.entity.response.MiningInfo;
-import burst.kit.entity.response.Transaction;
-import burst.kit.entity.response.TransactionAppendix;
-import burst.kit.entity.response.appendix.PlaintextMessageAppendix;
-import burst.kit.entity.response.http.MiningInfoResponse;
-import burst.kit.service.BurstNodeService;
+import signumj.crypto.SignumCrypto;
+import signumj.entity.SignumAddress;
+import signumj.entity.SignumValue;
+import signumj.entity.response.Account;
+import signumj.entity.response.Block;
+import signumj.entity.response.FeeSuggestion;
+import signumj.entity.response.MiningInfo;
+import signumj.entity.response.Transaction;
+import signumj.entity.response.TransactionAppendix;
+import signumj.entity.response.http.MiningInfoResponse;
+import signumj.response.appendix.PlaintextMessageAppendix;
+import signumj.service.NodeService;
 import burst.pool.miners.Miner;
 import burst.pool.miners.MinerTracker;
 import burst.pool.storage.config.Prop;
@@ -43,8 +43,8 @@ public class Pool {
     
     public static final double LN_FACTOR =  240.0/Math.log(240.0);
 
-    private final BurstNodeService nodeService;
-    private final BurstCrypto burstCrypto = BurstCrypto.getInstance();
+    private final NodeService nodeService;
+    private final SignumCrypto burstCrypto = SignumCrypto.getInstance();
     private final StorageService storageService;
     private final PropertyService propertyService;
     private final MinerTracker minerTracker;
@@ -59,20 +59,20 @@ public class Pool {
     private final AtomicReference<Submission> bestSubmission = new AtomicReference<>();
     private final AtomicReference<BigInteger> bestDeadline = new AtomicReference<>();
     private final AtomicReference<MiningInfo> miningInfo = new AtomicReference<>();
-    private final AtomicReference<BurstValue> transactionFee = new AtomicReference<>();
-    private final Set<BurstAddress> myRewardRecipients = new HashSet<>();
+    private final AtomicReference<SignumValue> transactionFee = new AtomicReference<>();
+    private final Set<SignumAddress> myRewardRecipients = new HashSet<>();
     private final Set<?> secondaryRewardRecipients[] = new HashSet<?>[Props.passphraseSecondary.length];
 
-    public Pool(BurstNodeService nodeService, StorageService storageService, PropertyService propertyService, MinerTracker minerTracker) {
+    public Pool(NodeService nodeService, StorageService storageService, PropertyService propertyService, MinerTracker minerTracker) {
         this.storageService = storageService;
         this.minerTracker = minerTracker;
         this.propertyService = propertyService;
         this.nodeService = nodeService;
-        this.transactionFee.set(BurstValue.fromBurst(0.1));
+        this.transactionFee.set(SignumValue.fromSigna(0.1));
         disposables.add(refreshMiningInfoThread());
         disposables.add(processBlocksThread());
         for (int i = 0; i < secondaryRewardRecipients.length; i++) {
-            secondaryRewardRecipients[i] = new HashSet<BurstAddress>();
+            secondaryRewardRecipients[i] = new HashSet<SignumAddress>();
         }
         resetRound(null);
     }
@@ -166,7 +166,7 @@ public class Pool {
                 Block block = nodeService.getBlock(transactionalStorageService.getLastProcessedBlock() + 1).blockingGet();
                 
                 // Check for commands from miners (always to the primary address)
-                BurstAddress poolAddress = burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase));
+                SignumAddress poolAddress = burstCrypto.getAddressFromPassphrase(propertyService.getString(Props.passphrase));
                 // Having 100 should be enough to not get past it
                 Transaction []txs = nodeService.getAccountTransactions(poolAddress, 0, 100, false).blockingGet();
                 for(Transaction tx : txs) {
@@ -201,8 +201,8 @@ public class Pool {
                                     }
                                     else if(cmd.equals("pay") && tokens.hasMoreTokens()) {
                                         // Allows a miner to increase the minimum payout (less frequent payments)
-                                        BurstValue newMinimumPayout = BurstValue.fromBurst(tokens.nextToken());
-                                        if (newMinimumPayout.compareTo(BurstValue.fromBurst(propertyService.getFloat(Props.minimumMinimumPayout))) > 0) {
+                                        SignumValue newMinimumPayout = SignumValue.fromSigna(tokens.nextToken());
+                                        if (newMinimumPayout.compareTo(SignumValue.fromSigna(propertyService.getFloat(Props.minimumMinimumPayout))) > 0) {
                                             miner.setMinimumPayout(newMinimumPayout);
                                             logger.info("Miner " + miner.getAddress().getID() + " new minimum payout " + newMinimumPayout.toFormattedString());
                                         }
@@ -302,8 +302,8 @@ public class Pool {
         // get the current reward recipient for the multiple pool IDs and transfer balance to primary if any
         try {
             // First for the primary account
-            BurstAddress primaryAddress = burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase));
-            BurstAddress[] rewardRecipients = nodeService.getAccountsWithRewardRecipient(primaryAddress).blockingGet();
+            SignumAddress primaryAddress = burstCrypto.getAddressFromPassphrase(propertyService.getString(Props.passphrase));
+            SignumAddress[] rewardRecipients = nodeService.getAccountsWithRewardRecipient(primaryAddress).blockingGet();
             myRewardRecipients.clear();
             myRewardRecipients.addAll(Arrays.asList(rewardRecipients));
             
@@ -315,11 +315,11 @@ public class Pool {
                 if(passphrase == null || passphrase.length() == 0)
                     break;
                 
-                BurstAddress secondaryAddress = burstCrypto.getBurstAddressFromPassphrase(passphrase);
+                SignumAddress secondaryAddress = burstCrypto.getAddressFromPassphrase(passphrase);
                 rewardRecipients = nodeService.getAccountsWithRewardRecipient(secondaryAddress).blockingGet();
                 
                 @SuppressWarnings("unchecked")
-                Set<BurstAddress> mySecondaryRewardRecipients = (Set<BurstAddress>) secondaryRewardRecipients[i];
+                Set<SignumAddress> mySecondaryRewardRecipients = (Set<SignumAddress>) secondaryRewardRecipients[i];
                 mySecondaryRewardRecipients.clear();
                 mySecondaryRewardRecipients.addAll(Arrays.asList(rewardRecipients));
                 
@@ -329,8 +329,8 @@ public class Pool {
                     long mod = miningInfo.get().getHeight() % (transferBlocks);
                     if(mod == 0L) {
                         Account balance = nodeService.getAccount(secondaryAddress, null, null, null).blockingGet();
-                        if(balance.getBalance().compareTo(BurstValue.fromBurst(propertyService.getFloat(Props.minimumMinimumPayout))) > 0) {
-                            BurstValue amountToSend = balance.getBalance().subtract(getTransactionFee());
+                        if(balance.getBalance().compareTo(SignumValue.fromSigna(propertyService.getFloat(Props.minimumMinimumPayout))) > 0) {
+                            SignumValue amountToSend = balance.getBalance().subtract(getTransactionFee());
                             byte[] unsignedBytes = nodeService.generateTransaction(primaryAddress, burstCrypto.getPublicKey(passphrase), amountToSend,
                                     getTransactionFee(), transferBlocks, null).blockingGet();
                             byte [] signedBytes = burstCrypto.signTransaction(passphrase, unsignedBytes);
@@ -362,7 +362,7 @@ public class Pool {
                 break;
             
             @SuppressWarnings("unchecked")
-            Set<BurstAddress> mySecondaryRewardRecipients = (Set<BurstAddress>) secondaryRewardRecipients[i];
+            Set<SignumAddress> mySecondaryRewardRecipients = (Set<SignumAddress>) secondaryRewardRecipients[i];
             recipientSet = mySecondaryRewardRecipients.contains(submission.getMiner());
         }
         if (!recipientSet) {
@@ -434,12 +434,12 @@ public class Pool {
             if(passphrase != null)
                 break;
             
-            Set<BurstAddress> mySecondaryRewardRecipients = (Set<BurstAddress>) secondaryRewardRecipients[i];
+            Set<SignumAddress> mySecondaryRewardRecipients = (Set<SignumAddress>) secondaryRewardRecipients[i];
             if(mySecondaryRewardRecipients.contains(submission.getMiner()))
                 passphrase = propertyService.getString((Prop<String>) Props.passphraseSecondary[i]);
         }
         
-        disposables.add(nodeService.submitNonce(passphrase, submission.getNonce().toString(), submission.getMiner().getBurstID()) // TODO burstkit4j accept nonce as bigint
+        disposables.add(nodeService.submitNonce(passphrase, submission.getNonce().toString(), submission.getMiner().getSignumID()) // TODO burstkit4j accept nonce as bigint
                 .retry(propertyService.getInt(Props.submitNonceRetryCount))
                 .subscribe(this::onNonceSubmitted, this::onSubmitNonceError));
     }
@@ -483,16 +483,18 @@ public class Pool {
         if (miningInfo != null) {
             long baseTarget = miningInfo.getBaseTarget();
             baseTarget = (long)(baseTarget * 1.83f);
-            jsonObject.add("miningInfo", gson.toJsonTree(new MiningInfoResponse(burstCrypto.toHexString(miningInfo.getGenerationSignature()), baseTarget, miningInfo.getHeight(), miningInfo.getAverageCommitmentNQT())));
+            jsonObject.add("miningInfo", gson.toJsonTree(
+                    new MiningInfoResponse(burstCrypto.toHexString(miningInfo.getGenerationSignature()), baseTarget, miningInfo.getHeight(),
+                            miningInfo.getAverageCommitmentNQT(), miningInfo.getTimestamp().getTimestamp())));
         }
         return jsonObject;
     }
 
-    public BurstAddress getAccount() {
-        return burstCrypto.getBurstAddressFromPassphrase(propertyService.getString(Props.passphrase));
+    public SignumAddress getAccount() {
+        return burstCrypto.getAddressFromPassphrase(propertyService.getString(Props.passphrase));
     }
     
-    public BurstValue getTransactionFee() {
+    public SignumValue getTransactionFee() {
         return transactionFee.get();
     }
 }
