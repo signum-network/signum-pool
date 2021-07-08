@@ -43,7 +43,7 @@ public class Launcher {
         SignumUtils.setAddressPrefix(propertyService.getBoolean(Props.testnet) ? "TS" : "S");
         
         MinerMaths minerMaths = new MinerMaths(propertyService.getInt(Props.nAvg) + propertyService.getInt(Props.processLag), propertyService.getInt(Props.nMin));
-        NodeService nodeService = NodeService.getCompositeInstanceWithUserAgent(Constants.USER_AGENT, propertyService.getStringList(Props.nodeAddresses));
+        NodeService nodeService = NodeService.getUseBestInstance(true, Constants.USER_AGENT, propertyService.getStringList(Props.nodeAddresses));
         StorageService storageService = null;
         try {
             storageService = new DbStorageService(propertyService, minerMaths, nodeService);

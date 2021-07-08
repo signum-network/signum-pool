@@ -12,6 +12,7 @@ import signumj.entity.response.TransactionAppendix;
 import signumj.entity.response.http.MiningInfoResponse;
 import signumj.response.appendix.PlaintextMessageAppendix;
 import signumj.service.NodeService;
+import signumj.util.SignumUtils;
 import burst.pool.miners.Miner;
 import burst.pool.miners.MinerTracker;
 import burst.pool.storage.config.Prop;
@@ -97,7 +98,7 @@ public class Pool {
     }
 
     private Disposable refreshMiningInfoThread() {
-        return nodeService.getMiningInfo()
+        return nodeService.getMiningInfo().subscribeOn(SignumUtils.defaultBurstNodeServiceScheduler())
                 .retry()
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::onMiningInfo, e -> onMiningInfoError(e, true));
@@ -106,7 +107,9 @@ public class Pool {
     private void onMiningInfo(MiningInfo newMiningInfo) {
         if (miningInfo.get() == null || !Arrays.equals(miningInfo.get().getGenerationSignature(), newMiningInfo.getGenerationSignature())
                 || !Objects.equals(miningInfo.get().getHeight(), newMiningInfo.getHeight())) {
-            logger.info("NEW BLOCK (block " + newMiningInfo.getHeight() + ", gensig " + burstCrypto.toHexString(newMiningInfo.getGenerationSignature()) +", diff " + newMiningInfo.getBaseTarget() + ")");
+            logger.info("NEW BLOCK from {} (block {}, gensig {}, base target {}, avg commitment {})",
+                    nodeService.getAddress(), newMiningInfo.getHeight(), burstCrypto.toHexString(newMiningInfo.getGenerationSignature()),
+                    newMiningInfo.getBaseTarget(), newMiningInfo.getAverageCommitmentNQT());
             resetRound(newMiningInfo);
         }
     }
