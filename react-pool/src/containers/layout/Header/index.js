@@ -1,6 +1,9 @@
 // React
 import { Fragment, useState } from "react";
 
+// React translations
+import { useTranslation } from "react-i18next";
+
 // React router
 import { useHistory } from "react-router-dom";
 
@@ -41,6 +44,9 @@ import { extraLinksArrayExport } from "../../../utils/globalUrl";
 import clsx from "clsx";
 
 const Header = (props) => {
+  // Translations details
+  const { t } = useTranslation();
+
   // Route details
   let router = useHistory();
 
@@ -123,7 +129,7 @@ const Header = (props) => {
                       : null
                   )}
                 >
-                  <Typography>Home</Typography>
+                  <Typography>{t("home")}</Typography>
                 </Link>
 
                 {/* Pool info */}
@@ -137,7 +143,7 @@ const Header = (props) => {
                       : null
                   )}
                 >
-                  <Typography>Pool info</Typography>
+                  <Typography>{t("_POOLINFO")}</Typography>
                 </Link>
 
                 {/* Miners */}
@@ -151,7 +157,7 @@ const Header = (props) => {
                       : null
                   )}
                 >
-                  <Typography>Miners</Typography>
+                  <Typography>{t("miners")}</Typography>
                 </Link>
 
                 {
@@ -171,7 +177,7 @@ const Header = (props) => {
                           : null
                       )}
                     >
-                      <Typography>Trading</Typography>
+                      <Typography>{t("trading")}</Typography>
                     </Link>
                   ) : null
                 }
@@ -183,21 +189,26 @@ const Header = (props) => {
                   rel="noreferrer"
                   className={clsx(styles.navLink, "defaultTransition")}
                 >
-                  <Typography>Discord</Typography>
+                  <Typography>{t("discord")}</Typography>
                 </a>
 
                 {/* Extra menu options */}
-                <div style={{ width: "auto", display: "inline-block" }}>
+                <div
+                  style={{
+                    width: "auto",
+                    display: "inline-block",
+                    position: "relative",
+                  }}
+                >
                   <a
                     onClick={handleMenuClick}
                     className={clsx(styles.navLink, "defaultTransition")}
                   >
-                    <Typography>Extra</Typography>
+                    <Typography>{t("extra")}</Typography>
                   </a>
 
                   <Menu
                     id="simple-menu"
-                    style={{ width: "300px" }}
                     anchorEl={anchorEl}
                     keepMounted
                     open={Boolean(anchorEl)}
@@ -209,7 +220,7 @@ const Header = (props) => {
                         handleMenuClose();
                       }}
                     >
-                      Explorer
+                      {t("explorer")}
                     </MenuItem>
 
                     <MenuItem
@@ -218,7 +229,7 @@ const Header = (props) => {
                         handleMenuClose();
                       }}
                     >
-                      Wallet
+                      {t("wallet")}
                     </MenuItem>
 
                     {
@@ -233,7 +244,7 @@ const Header = (props) => {
                             handleMenuClose();
                           }}
                         >
-                          Faucet
+                          {t("faucet")}
                         </MenuItem>
                       ) : null
                     }
@@ -269,7 +280,7 @@ const Header = (props) => {
                   color="primary"
                   className={styles.mainBtn}
                 >
-                  Start Mining
+                  {t("buttonCta")}
                 </Button>
               </Link>
             </Hidden>

@@ -3,6 +3,9 @@ import { Fragment, useEffect } from "react";
 // Default import
 import styles from "./error.module.css";
 
+// React translations
+import { useTranslation } from "react-i18next";
+
 // Material ui
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
@@ -12,6 +15,9 @@ import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router-dom";
 
 const Error = (props) => {
+  // Translations details
+  const { t } = useTranslation();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -39,14 +45,14 @@ const Error = (props) => {
         <Box className={styles.imgContainer}>
           <img
             src="/assets/404img.svg"
-            style={{ maxWidth: "100%", maxHeight: "100%" }}
             alt="404 Img"
+            style={{ marginTop: "2rem" }}
           />
         </Box>
 
         <Box className={styles.textContainer}>
           <Typography component="h1" variant="h2">
-            Oops! we can't find that page
+            {t("notFoundPageFirstLine")}
           </Typography>
           <Typography
             gutterBottom
@@ -54,14 +60,15 @@ const Error = (props) => {
             variant="h6"
             className={styles.subTitle}
           >
-            We could not find the page you were looking for.
+            {t("notFoundPageSecondLine")}
           </Typography>
+
           <Button
             className={styles.homeBtn}
             onClick={goHome}
             variant="contained"
           >
-            Go home
+            {t("notFoundPageGoHome")}
           </Button>
         </Box>
       </Box>

@@ -1,6 +1,9 @@
 // React router
 import { useHistory } from "react-router-dom";
 
+// React translations
+import { useTranslation } from "react-i18next";
+
 // Material ui
 import Drawer from "@material-ui/core/Drawer";
 import Box from "@material-ui/core/Box";
@@ -51,6 +54,9 @@ import {
 import { extraLinksArrayExport } from "../../../utils/globalUrl";
 
 const Sidebar = (props) => {
+  // Translations details
+  const { t } = useTranslation();
+
   // Route details
   let router = useHistory();
 
@@ -113,7 +119,7 @@ const Sidebar = (props) => {
             color="textPrimary"
             className={styles.firstTitle}
           >
-            Made with ⚡ <br /> for enthusiasts by enthusiasts
+            {t("signatureF")} <br /> {t("signatureS")}
           </Typography>
         </Box>
 
@@ -142,7 +148,7 @@ const Sidebar = (props) => {
                 style={{ fontSize: 27, color: "var(--primary-error-color)" }}
               />
             }
-            textList="Home"
+            textList={t("home")}
           />
 
           {/* Pool info */}
@@ -155,7 +161,7 @@ const Sidebar = (props) => {
                 style={{ fontSize: 27, color: "var(--primary-error-color)" }}
               />
             }
-            textList="Pool info"
+            textList={t("_POOLINFO")}
           />
 
           {/* Miners lists*/}
@@ -168,7 +174,7 @@ const Sidebar = (props) => {
                 style={{ fontSize: 27, color: "var(--primary-error-color)" }}
               />
             }
-            textList="Miners"
+            textList={t("miners")}
           />
 
           {
@@ -190,7 +196,7 @@ const Sidebar = (props) => {
                     }}
                   />
                 }
-                textList="Trading"
+                textList={t("trading")}
               />
             ) : null
           }
@@ -205,7 +211,7 @@ const Sidebar = (props) => {
                 style={{ fontSize: 27, color: "var(--secondary-dark-color)" }}
               />
             }
-            textList="Discord"
+            textList={t("discord")}
           />
 
           {/* Explorer */}
@@ -218,7 +224,7 @@ const Sidebar = (props) => {
                 style={{ fontSize: 27, color: "var(--secondary-dark-color)" }}
               />
             }
-            textList="Explorer"
+            textList={t("explorer")}
           />
 
           {/* Wallet */}
@@ -231,7 +237,7 @@ const Sidebar = (props) => {
                 style={{ fontSize: 27, color: "var(--secondary-dark-color)" }}
               />
             }
-            textList="Wallet"
+            textList={t("wallet")}
           />
 
           {
@@ -250,7 +256,7 @@ const Sidebar = (props) => {
                     }}
                   />
                 }
-                textList="Faucet"
+                textList={t("faucet")}
               />
             ) : null
           }
@@ -272,7 +278,7 @@ const Sidebar = (props) => {
                 align="center"
                 style={{ width: "100%", fontWeight: 500, marginTop: "1em" }}
               >
-                Additional Links
+                {t("additionalLinks")}
               </Typography>
             </Box>
           ) : null}
@@ -322,7 +328,7 @@ const Sidebar = (props) => {
             goToSite("/start-mining");
           }}
         >
-          Start Now!
+          {t("buttonCta")}
         </Button>
 
         {
@@ -333,7 +339,7 @@ const Sidebar = (props) => {
         {/* Share section */}
         <Box mt={2} width="100%"></Box>
         <Typography align="center" style={{ width: "100%" }}>
-          Share it with your community!
+          {t("shareIt")}
         </Typography>
 
         <Box
@@ -352,10 +358,11 @@ const Sidebar = (props) => {
                 window.open(mainLink);
               }}
               icon={<FacebookIcon style={{ fontSize: 25 }} />}
-              textList="Facebook"
+              textList={t("facebook")}
               hideArrow
             />
           </Box>
+
           <Box width={{ xs: "100%", md: "48%" }}>
             <ListRender
               onClick={() => {
@@ -363,7 +370,7 @@ const Sidebar = (props) => {
                 window.open(mainLink);
               }}
               icon={<TwitterIcon style={{ fontSize: 25 }} />}
-              textList="Twitter"
+              textList={t("Twitter")}
               hideArrow
             />
           </Box>
@@ -375,7 +382,7 @@ const Sidebar = (props) => {
                 window.open(mainLink);
               }}
               icon={<TelegramIcon style={{ fontSize: 25 }} />}
-              textList="Telegram"
+              textList={t("telegram")}
               hideArrow
             />
           </Box>
@@ -387,7 +394,7 @@ const Sidebar = (props) => {
                 window.open(mainLink);
               }}
               icon={<WhatsAppIcon style={{ fontSize: 25 }} />}
-              textList="WhatsApp"
+              textList={t("whatsApp")}
               hideArrow
             />
           </Box>
@@ -401,7 +408,7 @@ const Sidebar = (props) => {
                 return closeSideDrawer();
               }}
               icon={<PublicIcon style={{ fontSize: 25 }} />}
-              textList="Copy URL or Link"
+              textList={t("copyURL")}
               fullWidth={true}
             />
           </Box>

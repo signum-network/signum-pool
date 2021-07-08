@@ -1,6 +1,9 @@
 // React
 import { Fragment, useState } from "react";
 
+// React translations
+import { useTranslation } from "react-i18next";
+
 // Redux integration with actions
 import { connect } from "react-redux";
 
@@ -32,6 +35,9 @@ import styles from "./minerModal.module.css";
 import { userKeyBook, EXPLORERToUse } from "../../../utils/globalParameters";
 
 const MinnerModal = (props) => {
+  // Translations details
+  const { t } = useTranslation();
+
   // Get props
   const { minerModal, minerData, toggleModal, selectBookmarkedMiner } = props;
 
@@ -60,7 +66,7 @@ const MinnerModal = (props) => {
     await localStorage.setItem(userKeyBook, accountId);
 
     // Update redux
-    await selectBookmarkedMiner(data);
+    await selectBookmarkedMiner(data, t);
 
     await toggleSnackBar(true);
   };
@@ -96,7 +102,7 @@ const MinnerModal = (props) => {
 
   return (
     <Fragment>
-      {/* Snakbacr for bookmarked miner*/}
+      {/* Snackbar for bookmarked miner*/}
       <Snackbar
         open={showSnackBar}
         autoHideDuration={3000}
@@ -109,7 +115,7 @@ const MinnerModal = (props) => {
           severity="success"
           style={{ width: "100%", borderRadius: 8 }}
         >
-          <Typography>Bookmark added! ⚒️</Typography>
+          <Typography>{`${t("minerAdded")} ⚒️`}</Typography>
         </Alert>
       </Snackbar>
 
@@ -121,7 +127,7 @@ const MinnerModal = (props) => {
       >
         {/* Title */}
         <Grid className={styles.titleContainer}>
-          <Typography variant="h6">Miner details</Typography>
+          <Typography variant="h6">{t("minerDetails")}</Typography>
 
           <IconButton aria-label="close" onClick={closeModal}>
             <CloseIcon />
@@ -130,84 +136,6 @@ const MinnerModal = (props) => {
 
         {/* Content */}
         <MuiDialogContent className={styles.contentContainer} dividers>
-          {/* Address */}
-          <RowItemRender
-            title="Miner Address"
-            value={minerModal.data.addressRS}
-          />
-
-          {
-            /* Name */
-            minerModal.data.name &&
-            minerModal.data.name !== null &&
-            minerModal.data.name !== undefined ? (
-              <RowItemRender title="Miner Name" value={minerModal.data.name} />
-            ) : null
-          }
-
-          {/* Account id */}
-          <RowItemRender title="Account ID" value={minerModal.data.address} />
-
-          {/* Pending balance */}
-          <RowItemRender
-            title="Pending Balance"
-            value={minerModal.data.pendingBalance}
-          />
-
-          {/* Minimum Payout */}
-          <RowItemRender
-            title="Minimum Payout"
-            value={minerModal.data.minimumPayout}
-          />
-
-          {/* Share Model */}
-          <RowItemRender
-            title="Share Model"
-            value={minerModal.data.sharePercent + "%"}
-          />
-
-          {/* Donation Percent */}
-          <RowItemRender
-            title="Donation Percent"
-            value={minerModal.data.donationPercent + "%"}
-          />
-
-          {/* Physical Capacity	*/}
-          <RowItemRender
-            title="Physical Capacity"
-            value={minerModal.data.physicalCapacity}
-          />
-
-          {/* Commitment/TiB	*/}
-          <RowItemRender
-            title="Commitment/TiB"
-            value={minerModal.data.commitment}
-          />
-
-          {/* PoC+ Boost Pool */}
-          <RowItemRender
-            title="PoC+ Boost Pool"
-            value={minerModal.data.poCPlus}
-          />
-
-          {/* Effective Shared */}
-          <RowItemRender
-            title="Effective Shared"
-            value={minerModal.data.effectiveCapacity}
-          />
-
-          {/* Confirmed Deadlines */}
-          <RowItemRender
-            title="Confirmed Deadlines"
-            value={minerModal.data.confirmedDeadline}
-          />
-
-          {/* Pool Share */}
-          <RowItemRender title="Pool Share" value={minerModal.data.poolShare} />
-
-          {/* Software */}
-          <RowItemRender title="Software" value={minerModal.data.Software} />
-
           {/* View miner in explorer */}
           <Grid item className={styles.tableItem}>
             <Button
@@ -216,10 +144,101 @@ const MinnerModal = (props) => {
               startIcon={<BlurOnIcon />}
               className={styles.explorerButton}
               onClick={viewAccountInExplorer}
+              fullWidth
             >
-              View miner in explorer
+              {t("viewMinerInExplorer")}
             </Button>
           </Grid>
+
+          {/* Address */}
+          <RowItemRender
+            title={t("minerAddress")}
+            value={minerModal.data.addressRS}
+          />
+
+          {
+            /* Name */
+            minerModal.data.name &&
+            minerModal.data.name !== null &&
+            minerModal.data.name !== undefined ? (
+              <RowItemRender
+                title={t("minerName")}
+                value={minerModal.data.name}
+              />
+            ) : null
+          }
+
+          {/* Account id */}
+          <RowItemRender
+            title={t("accountID")}
+            value={minerModal.data.address}
+          />
+
+          {/* Pending balance */}
+          <RowItemRender
+            title={t("pendingBalance")}
+            value={minerModal.data.pendingBalance}
+          />
+
+          {/* Minimum Payout */}
+          <RowItemRender
+            title={t("minimumPayout")}
+            value={minerModal.data.minimumPayout}
+          />
+
+          {/* Share Model */}
+          <RowItemRender
+            title={t("shareModel")}
+            value={minerModal.data.sharePercent + "%"}
+          />
+
+          {/* Donation Percent */}
+          <RowItemRender
+            title={t("donationPercentage")}
+            value={minerModal.data.donationPercent + "%"}
+          />
+
+          {/* Physical Capacity	*/}
+          <RowItemRender
+            title={t("physicalCapacity")}
+            value={minerModal.data.physicalCapacity}
+          />
+
+          {/* Commitment/TiB	*/}
+          <RowItemRender
+            title={t("commitmentTiB")}
+            value={minerModal.data.commitment}
+          />
+
+          {/* PoC+ Boost Pool */}
+          <RowItemRender
+            title={t("poCPlusPool")}
+            value={minerModal.data.poCPlus}
+          />
+
+          {/* Effective Shared */}
+          <RowItemRender
+            title={t("effectiveShared")}
+            value={minerModal.data.effectiveCapacity}
+          />
+
+          {/* Confirmed Deadlines */}
+          <RowItemRender
+            title={t("confirmedDeadline")}
+            value={minerModal.data.confirmedDeadline}
+          />
+
+          {/* Pool Share */}
+          <RowItemRender
+            title={t("poolShare")}
+            value={minerModal.data.poolShare}
+          />
+
+          {/* Software */}
+          <RowItemRender
+            title={t("Software")}
+            value={minerModal.data.Software}
+          />
         </MuiDialogContent>
 
         {/* Actions */}
@@ -230,7 +249,7 @@ const MinnerModal = (props) => {
             variant="outlined"
             className={styles.buttonActions}
           >
-            Bookmark miner 📌
+            {`${t("bookmarkMiner")} 📌`}
           </Button>
 
           <Button
@@ -239,7 +258,7 @@ const MinnerModal = (props) => {
             variant="outlined"
             className={styles.buttonActions}
           >
-            Close
+            {t("close")}
           </Button>
         </Grid>
       </Dialog>

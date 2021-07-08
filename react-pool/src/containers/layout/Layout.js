@@ -1,6 +1,9 @@
 // React native dependencies
 import { Fragment, useState, useEffect } from "react";
 
+// Translations
+import { useTranslation } from "react-i18next";
+
 // React routern dom
 import { useLocation } from "react-router-dom";
 
@@ -14,6 +17,9 @@ import { Helmet } from "react-helmet";
 import { POOLNameToUse } from "../../utils/globalParameters";
 
 const Layout = (props) => {
+  // Translation details
+  const { t } = useTranslation();
+
   // Route details
   let location = useLocation();
 
@@ -42,7 +48,7 @@ const Layout = (props) => {
     <Fragment>
       {/* Basic SEO */}
       <Helmet>
-        <title>{"Mining Pool • " + POOLNameToUse}</title>
+        <title>{`${t("HOMETAG")} • ${POOLNameToUse}`}</title>
       </Helmet>
 
       {

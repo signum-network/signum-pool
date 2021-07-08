@@ -4,6 +4,9 @@ import React, { Fragment, Suspense, useEffect, useState } from "react";
 // React router dom
 import { Switch, Route, withRouter, useLocation } from "react-router-dom";
 
+// React translations
+import { useTranslation } from "react-i18next";
+
 // Redux integration with actions
 import { connect } from "react-redux";
 
@@ -50,6 +53,9 @@ const MinersList = React.lazy(() => {
 });
 
 const Routes = (props) => {
+  // Translations details
+  const { t } = useTranslation();
+
   // Route details
   const location = useLocation();
 
@@ -72,26 +78,26 @@ const Routes = (props) => {
     // Verify in which page the user is visiting
 
     // Get pool config
-    await fetchPoolInfo();
+    await fetchPoolInfo(true, t);
 
     // Get basic data
-    await fetchBasicInfo(basicData);
+    await fetchBasicInfo(basicData, false, t);
 
     // Get miners
-    await fetchMinersData(minerData);
+    await fetchMinersData(minerData, false, t);
 
     // After 10 seconds, it will start an interval
     setTimeout(() => {
       // Interval for fetching data every 60 seconds
       setInterval(async () => {
         // Get miners
-        await fetchMinersData(minerData, true);
+        await fetchMinersData(minerData, true, t);
       }, 60000);
 
       // Interval for fetching data every 10 seconds
       setInterval(async () => {
         // Get basic data
-        await fetchBasicInfo(basicData, true);
+        await fetchBasicInfo(basicData, true, t);
       }, 10000);
     }, 10000);
   };

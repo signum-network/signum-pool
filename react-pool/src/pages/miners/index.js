@@ -1,6 +1,9 @@
 // React
 import { Fragment } from "react";
 
+// React translations
+import { useTranslation } from "react-i18next";
+
 // Redux integration with actions
 import { connect } from "react-redux";
 
@@ -20,14 +23,17 @@ import { Helmet } from "react-helmet";
 import { POOLNameToUse } from "../../utils/globalParameters";
 
 const MinersList = (props) => {
+  // Translations details
+  const { t } = useTranslation();
+
   // Get props
-  const { basicData, minerData } = props;
+  const { minerData } = props;
 
   return (
     <Fragment>
       {/* Basic SEO */}
       <Helmet>
-        <title>{"Miners • " + POOLNameToUse}</title>
+        <title>{`${t("miners")} • ${POOLNameToUse}`}</title>
       </Helmet>
 
       {/* First section */}
@@ -45,7 +51,7 @@ const MinersList = (props) => {
           align="center"
           style={{ marginBottom: "1rem" }}
         >
-          Miners List
+          {t("MINERSTAG")}
         </Typography>
       </Grid>
 
@@ -81,7 +87,7 @@ const MinersList = (props) => {
           <OutlinedTable
             data={null}
             isLoading={minerData.loadingData}
-            notFoundLabel="There are no miners, start inviting them! ⚒️"
+            notFoundLabel={t("noMiners") + " ⚒️"}
             fWidth="25%"
             sWidth="75%"
             onClickLastItem={null}

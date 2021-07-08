@@ -12,7 +12,7 @@ import Spinner from "../Spinner/index";
 // Miner past deadlines graph
 import MinerDeadLinesGraph from "../../miner/minerDeadlines/index";
 
-const outLinedTable = (props) => {
+const OutLinedTable = (props) => {
   const { isLoading, data, notFoundLabel, onClickLastItem } = props;
 
   let content = null;
@@ -131,4 +131,4 @@ const outLinedTable = (props) => {
 // info:   title, sTitle, value, fWidth, sWidth
 // action: label, onClick
 
-export default outLinedTable;
+export default OutLinedTable;

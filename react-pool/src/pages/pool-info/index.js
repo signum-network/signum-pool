@@ -1,6 +1,9 @@
 // React
 import { Fragment, useEffect, useState } from "react";
 
+// React translations
+import { useTranslation } from "react-i18next";
+
 // Redux integration with actions
 import { connect } from "react-redux";
 
@@ -41,6 +44,9 @@ import { Helmet } from "react-helmet";
 import { POOLNameToUse } from "../../utils/globalParameters";
 
 const PoolInfo = (props) => {
+  // Translations details
+  const { t } = useTranslation();
+
   // Get props
   const { basicData, minerData, blockData, poolData, fetchBlocksData } = props;
 
@@ -84,7 +90,7 @@ const PoolInfo = (props) => {
           elapsedTime.trim() === "" ||
           elapsedTime === ""
         ) {
-          elapsedTime = "Waiting...";
+          elapsedTime = t("waiting");
         }
 
         updateElapsedTimeValue(elapsedTime);
@@ -157,72 +163,73 @@ const PoolInfo = (props) => {
     if (poolData.loadingData === false) {
       tableData = [
         {
-          title: "Pool Name",
+          title: t("poolName"),
           value: poolData.data.poolName,
           type: "info",
         },
         {
-          title: "Pool Account",
+          title: t("poolAccount"),
           value: poolData.data.poolAccountRS,
           type: "info",
         },
         {
-          title: "Number of blocks for averages",
+          title: t("nBlocksAverage"),
           value: poolData.data.nAvg,
           type: "info",
         },
         {
-          title: "Number of blocks to show a Miner",
+          title: t("nBlocksToShowMiner"),
           value: poolData.data.nMin,
           type: "info",
         },
         {
-          title: "Max Deadline",
+          title: t("maxDeadline"),
           value: poolData.data.maxDeadline,
           type: "info",
         },
+
         {
-          title: "Process Lag",
+          title: t("processLag"),
           value: poolData.data.processLag,
           type: "info",
         },
         {
-          title: "Fee Recipient",
+          title: t("feeRecipient"),
           value: poolData.data.feeRecipientRS,
           type: "info",
         },
         {
-          title: "Pool Fee",
+          title: t("poolFee"),
           value: poolData.data.poolFee,
           type: "info",
         },
         {
-          title: "Pool Solo Fee",
+          title: t("poolSoloFee"),
           sTitle: "Miners sharing less than 20%",
           value: poolData.data.poolSoloFee,
           type: "info",
         },
         {
-          title: "Donation Recipient",
+          title: t("donationRecipient"),
           value: poolData.data.donationRecipientRS,
           type: "info",
         },
         {
-          title: "Default Donation",
+          title: t("defaultDonation"),
           sTitle: "Configurable",
           value: poolData.data.donationPercent,
           type: "info",
           onClick: goToMinerOptions,
         },
         {
-          title: "Default Pool Share",
+          title: t("defaultPoolShare"),
           sTitle: "Configurable",
           value: poolData.data.poolShare,
           type: "info",
           onClick: goToMinerOptions,
         },
         {
-          title: "Default Minimum Payout",
+          title: t("defaultMinimumPayout"),
           sTitle: "Configurable",
           value: poolData.data.minimumPayout,
           type: "info",
@@ -230,17 +237,17 @@ const PoolInfo = (props) => {
         },
 
         {
-          title: "Minimum Payouts at once",
+          title: t("minimumPayoutsAtOnce"),
           value: poolData.data.minPayoutsPerTransaction,
           type: "info",
         },
         {
-          title: "Payout Transaction Fee",
+          title: t("payOutTransactionFee"),
           value: poolData.data.payoutTxFee,
           type: "info",
         },
         {
-          title: "Pool Software Version",
+          title: t("poolVersion"),
           value: poolData.data.version,
           type: "info",
         },
@@ -252,7 +259,7 @@ const PoolInfo = (props) => {
         <OutlinedTable
           data={tableData}
           isLoading={poolData.loadingData}
-          notFoundLabel="Missing details, contact your support operator"
+          notFoundLabel={t("missingDetails")}
           fWidth="33%"
           sWidth="67%"
           onClickLastItem={null}
@@ -313,7 +320,7 @@ const PoolInfo = (props) => {
     <Fragment>
       {/* Basic SEO */}
       <Helmet>
-        <title>{"Pool info • " + POOLNameToUse}</title>
+        <title>{`${t("_POOLINFO")} • ${POOLNameToUse}`}</title>
       </Helmet>
 
       {/* First section */}
@@ -326,7 +333,7 @@ const PoolInfo = (props) => {
         component="section"
       >
         <Typography component="h1" variant="h4" align="center">
-          Pool info
+          {t("_POOLINFO")}
         </Typography>
 
         <Grid
@@ -339,7 +346,7 @@ const PoolInfo = (props) => {
         >
           {/* Block height */}
           <InfoCard
-            title="Block Height"
+            title={t("blockHeight")}
             width="23%"
             value={
               basicData.loadingData === false
@@ -351,7 +358,7 @@ const PoolInfo = (props) => {
 
           {/* Elapsed */}
           <InfoCard
-            title="Elapsed time"
+            title={t("elapsedTime")}
             width="23%"
             value={elapsedTimeValue}
             loading={loadingElapsedTime}
@@ -359,7 +366,7 @@ const PoolInfo = (props) => {
 
           {/* Miners */}
           <InfoCard
-            title="Miners"
+            title={t("miners")}
             width="23%"
             value={minerData.loadingData === false ? minerData.quantity : ""}
             loading={minerData.loadingData}
@@ -367,7 +374,7 @@ const PoolInfo = (props) => {
 
           {/* Pool size */}
           <InfoCard
-            title="Pool Physical"
+            title={t("poolPhysical")}
             width="23%"
             value={
               minerData.loadingData === false ? minerData.poolCapacity : ""
@@ -379,7 +386,7 @@ const PoolInfo = (props) => {
 
           {/* Best miner */}
           <InfoCard
-            title="Best miner"
+            title={t("bestMiner")}
             width="48.6%"
             value={basicData.loadingData === false ? basicData.bestMiner : ""}
             loading={basicData.loadingData}
@@ -387,7 +394,7 @@ const PoolInfo = (props) => {
 
           {/* Network difficulty */}
           <InfoCard
-            title="Network"
+            title={t("network")}
             width="48.6%"
             value={
               basicData.loadingData === false ? basicData.networkDifficulty : ""
@@ -416,10 +423,10 @@ const PoolInfo = (props) => {
               variant={isMobile ? "scrollable" : "fullWidth"}
               scrollButtons="auto"
             >
-              <Tab className={styles.tabUnit} label="Basic info" />
-              <Tab className={styles.tabUnit} label="Blocks won" />
-              <Tab className={styles.tabUnit} label="Miner options" />
-              <Tab className={styles.tabUnit} label="Top 10 miners" />
+              <Tab className={styles.tabUnit} label={t("basicInfo")} />
+              <Tab className={styles.tabUnit} label={t("_BLOCKWON")} />
+              <Tab className={styles.tabUnit} label={t("_MINEROPTIONS")} />
+              <Tab className={styles.tabUnit} label={t("topTenMiners")} />
             </Tabs>
           </Paper>
         </Grid>
