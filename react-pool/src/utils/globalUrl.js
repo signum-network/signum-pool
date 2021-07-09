@@ -1,7 +1,9 @@
 // Import useTestNet variable
 import { useTestNet } from "./globalParameters";
 
-//Default extra routes examples with dummy data
+// Default extra routes examples with dummy data
+// This is for development purposes
+// If you want to add custom routes, go to the readme.md
 let defaultUrlRoutes = `{
   "a":{"label":"Example #1 (Signum)", "url":"https://www.signum.network", "newTab": true  },
   "b":{"label":"Example #2 (BTDEX)", "url":"https://btdex.trade", "newTab": true  },
