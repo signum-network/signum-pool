@@ -70,6 +70,9 @@ public class Props {
     public static final Prop<String> siteSeoDescription = new Prop<>("site.seoDescription", "");
     public static final Prop<String> siteSeoImageUrl = new Prop<>("site.seoImageUrl", "");
 
+    public static final Prop<String> siteExtraMenuItems = new Prop<>("site.extraMenuItems", "[]");
+    public static final Prop<String> siteDefaultLanguage = new Prop<>("site.defaultLanguage", "en");
+
     public static final Prop<String> siteShowTradingLink = new Prop<>("site.showTradingLink", "YES");
     public static final Prop<String> siteMiniTradingLink = new Prop<>("site.miniTradingLink", "https://bit.ly/2UEd4RB");
     public static final Prop<String> siteLargeTradingLink = new Prop<>("site.largeTradingLink", "https://bit.ly/3A5BIep");

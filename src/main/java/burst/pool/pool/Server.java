@@ -311,6 +311,8 @@ public class Server extends NanoHTTPD {
         in.close();
         String response = out.toString();
         
+        String extraMenuItems = propertyService.getString(Props.siteExtraMenuItems).replaceAll("\"","\\\\\"");
+        
         if (mimeType!=null && mimeType.equals(MIME_HTML)) {
             response = response
                     // Replace the TAGS
@@ -343,6 +345,9 @@ public class Server extends NanoHTTPD {
                     .replace("{SECONDARYLIGHTCOLOR}", propertyService.getString(Props.siteSecondaryLightColor))
                     .replace("{SECONDARYDARKCOLOR}", propertyService.getString(Props.siteSecondaryDarkColor))
                     .replace("{GRAPHCOLOR}", propertyService.getString(Props.siteGraphColor))
+                    
+                    .replace("{EXTRAPOOLURL}", extraMenuItems)
+                    .replace("{DEFAULTLANG}", propertyService.getString(Props.siteDefaultLanguage))
                     
                     .replace("{SEODESCRIPTION}", propertyService.getString(Props.siteSeoDescription))
                     .replace("{SEOIMGURL}", propertyService.getString(Props.siteSeoImageUrl))
