@@ -4,7 +4,7 @@ import { useTranslation, Trans } from "react-i18next";
 // Material-ui
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Alert from "@material-ui/lab/Alert";
+import Alert from "@material-ui/core/Alert";
 
 // Styling
 import styles from "./minerOption.module.css";
