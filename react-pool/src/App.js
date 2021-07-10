@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 
 // Material palette
 import { ThemeProvider } from "@material-ui/styles";
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 // Redux
@@ -25,7 +25,7 @@ const App = () => {
 
   const theme = React.useMemo(
     () =>
-      createMuiTheme({
+      createTheme({
         palette: {
           ...COLORSTOUSE,
           type: prefersDarkMode,

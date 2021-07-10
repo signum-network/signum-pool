@@ -253,7 +253,7 @@ const Home = (props) => {
         container
         className={styles.firstSection}
         direction="column"
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         component="section"
       >
@@ -273,7 +273,7 @@ const Home = (props) => {
             <Grid
               container
               direction="column"
-              justify="center"
+              justifyContent="center"
               alignItems="center"
               component="section"
             >
@@ -302,7 +302,7 @@ const Home = (props) => {
         container
         direction="row"
         alignItems="stretch"
-        justify="space-between"
+        justifyContent="space-between"
         wrap="nowrap"
         className={styles.inputContainer}
         component="form"
@@ -330,7 +330,7 @@ const Home = (props) => {
         container
         component="section"
         direction="row"
-        justify="space-between"
+        justifyContent="space-between"
         alignItems="center"
         wrap="wrap"
         className={styles.thirdSection}
@@ -415,7 +415,7 @@ const Home = (props) => {
       <Grid
         container
         direction="column"
-        justify="flex-start"
+        justifyContent="flex-start"
         alignItems="flex-start"
         component="section"
         className={styles.forthSection}
@@ -442,7 +442,7 @@ const Home = (props) => {
         <Grid
           container
           direction="column"
-          justify="flex-start"
+          justifyContent="flex-start"
           alignItems="center"
           component="section"
           style={{ margin: "2rem 0" }}
@@ -465,7 +465,7 @@ const Home = (props) => {
         <Grid
           container
           direction="column"
-          justify="flex-start"
+          justifyContent="flex-start"
           alignItems="flex-start"
           component="section"
           className={styles.forthSection}

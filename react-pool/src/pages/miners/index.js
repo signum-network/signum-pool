@@ -41,7 +41,7 @@ const MinersList = (props) => {
         container
         className={styles.firstSection}
         direction="column"
-        justify="flex-start"
+        justifyContent="flex-start"
         alignItems="flex-start"
         component="section"
       >
@@ -63,7 +63,7 @@ const MinersList = (props) => {
         <Grid
           container
           direction="column"
-          justify="flex-start"
+          justifyContent="flex-start"
           alignItems="center"
           component="section"
           style={{
@@ -79,7 +79,7 @@ const MinersList = (props) => {
         <Grid
           container
           direction="column"
-          justify="flex-start"
+          justifyContent="flex-start"
           alignItems="flex-start"
           component="section"
           className={styles.noMinerSection}

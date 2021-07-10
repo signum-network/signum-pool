@@ -20,7 +20,7 @@ const MinerOptions = (props) => {
     <Grid
       container
       direction="column"
-      justify="flex-start"
+      justifyContent="flex-start"
       alignItems="flex-start"
       style={{
         padding: "1rem",

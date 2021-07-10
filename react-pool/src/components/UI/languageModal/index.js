@@ -15,7 +15,6 @@ import { closeLanguageModal } from "../../../utils/redux/actions/languageModal";
 // Material-ui
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 
 // Material-ui lists
 import Avatar from "@material-ui/core/Avatar";
@@ -27,10 +26,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 // Material-ui dialog
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import MuiDialogContent from "@material-ui/core/DialogContent";
-
-// Material-ui icons
-import PersonIcon from "@material-ui/icons/Person";
 
 // Styling
 import styles from "./languageModal.module.css";

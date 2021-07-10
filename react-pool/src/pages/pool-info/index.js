@@ -151,7 +151,7 @@ const PoolInfo = (props) => {
   let dynamicTab = null;
 
   const LoadingDynamicTab = (
-    <Grid container justify="center">
+    <Grid container justifyContent="center">
       <Spinner />
     </Grid>
   );
@@ -328,7 +328,7 @@ const PoolInfo = (props) => {
         container
         className={styles.firstSection}
         direction="column"
-        justify="flex-start"
+        justifyContent="flex-start"
         alignItems="flex-start"
         component="section"
       >
@@ -339,7 +339,7 @@ const PoolInfo = (props) => {
         <Grid
           container
           direction="row"
-          justify="space-between"
+          justifyContent="space-between"
           alignItems="stretch"
           wrap="wrap"
           style={{ marginTop: "1.5rem" }}
@@ -409,7 +409,7 @@ const PoolInfo = (props) => {
         container
         className={styles.secondSection}
         direction="column"
-        justify="flex-start"
+        justifyContent="flex-start"
         alignItems="flex-start"
       >
         {/* Tabs container */}

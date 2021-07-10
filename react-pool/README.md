@@ -64,29 +64,29 @@ If you want extra links to be put in your header, you must go to the file `pool.
 
 > The variable is a `String` which is contained as JSON data, look at the next example
 
+> **The variable must be assigned completly in one line, maybe you can use bitly.com, for having shorter links and cleaner source code**
+
 ```
 
-# Example #1
-extraPoolUrl="{
-  \"a\":{\"label\":\"Signum\", \"url\":\"https://www.signum.network\", \"newTab\": true },
-  \"b\":{\"label\":\"BTDEX\", \"url\":\"https://btdex.trade\", \"newTab\": true },
-}"
+# Example (How it should be in your source code)
+extraPoolUrl="[ {\"label\":\"Signum\", \"url\":\"https://www.signum.network\", \"newTab\": true }, {\"label\":\"BTDEX\", \"url\":\"https://btdex.trade\", \"newTab\": true } ]"
 
-# Example #2
-extraPoolUrl="{
-  \"a\":{\"label\":\"Signum\", \"url\":\"https://www.signum.network\", \"newTab\": true },
-  \"b\":{\"label\":\"BTDEX\", \"url\":\"https://btdex.trade\", \"newTab\": true },
-  \"c\":{\"label\":\"Miners\", \"url\":\"/miners\", \"newTab\": false }
-}"
+# This example shows, that the website will have 2 websites, : signum.network and btdex.trade
 
+# Example (Just take this example as a reference, this have Line breaks, which it won't work, )
+extraPoolUrl="[
+  {\"label\":\"Signum\", \"url\":\"https://www.signum.network\", \"newTab\": true },
+  {\"label\":\"BTDEX\", \"url\":\"https://btdex.trade\", \"newTab\": true },
+  {\"label\":\"Miners\", \"url\":\"/miners\", \"newTab\": false }
+  ]"
 
-# You can add as many routes you want, you just need to keep sorting the objects alphabetically
+# You can add as many routes you want, you just need to add the object, and keep the variable asignation in just one line
 # Look at the examples
-# \"d\":{\"label\":\"My chat\", \"url\":\"https://telegram.org\", \"newTab\":true },
-# \"e\":{\"label\":\"My Pool\", \"url\":\"http://poolUrlExample.com\", \"newTab\":true }
+# {\"label\":\"My chat\", \"url\":\"https://telegram.org\", \"newTab\":true }
+# {\"label\":\"My Pool\", \"url\":\"http://poolUrlExample.com\", \"newTab\":true }
 
-# Make sure to format correctly the JSON data. I mean, (preventing small grammar error)
-
+# Make sure to format correctly the JSON data
+# Make sure to keep the variable asigned in just one line, NO LINE BREAKS
 ```
 
 -   To add another route, you just need to add another object to that variable and then put the respective values in their properties:

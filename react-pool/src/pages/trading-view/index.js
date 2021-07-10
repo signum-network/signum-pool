@@ -38,7 +38,7 @@ const TradingViewer = () => {
         container
         className={styles.firstSection}
         direction="column"
-        justify="flex-start"
+        justifyContent="flex-start"
         alignItems="flex-start"
         component="section"
       >
