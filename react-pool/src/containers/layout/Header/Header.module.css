@@ -110,11 +110,11 @@
 /* Media queries */
 @media (min-width: 1400px) {
   .discordLink {
-    display: inline-block;
+    display: inline-block !important;
   }
 
   .discordExtraLink {
-    display: none;
+    display: none !important;
   }
 
   .mainBtn {
