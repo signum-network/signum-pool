@@ -119,7 +119,7 @@ const MinerDeadLinesGraph = (props) => {
     return (
       <Grid
         container
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         style={{ margin: "1em auto" }}
       >

@@ -84,7 +84,7 @@ const Header = (props) => {
         className={styles.headerContainer}
         direction="row"
         alignItems="center"
-        justify="center"
+        justifyContent="center"
         alignContent="center"
         component="header"
       >
@@ -92,7 +92,7 @@ const Header = (props) => {
           item
           container
           direction="row"
-          justify="space-between"
+          justifyContent="space-between"
           alignItems="center"
           wrap="nowrap"
           style={{
@@ -104,7 +104,7 @@ const Header = (props) => {
           <Grid
             item
             alignItems="center"
-            justify="flex-start"
+            justifyContent="flex-start"
             container
             style={{ width: "auto" }}
           >
@@ -267,9 +267,10 @@ const Header = (props) => {
                     {
                       // Render dynamic options
                       // Extra options put by pool operator
-                      extraLinksArrayExport.map((item) => {
+                      extraLinksArrayExport.map((item, key) => {
                         return (
                           <MenuItem
+                            key={key}
                             onClick={() => {
                               goToSite(item.url, item.newTab);
                               handleMenuClose();

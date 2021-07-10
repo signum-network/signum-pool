@@ -29,7 +29,7 @@ const Layout = (props) => {
   const { t } = useTranslation();
 
   // Get props
-  const { languageModal, openLanguageModal } = props;
+  const { openLanguageModal } = props;
 
   // Route details
   let location = useLocation();

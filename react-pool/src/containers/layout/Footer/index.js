@@ -15,13 +15,18 @@ const Footer = () => {
   return (
     <Grid
       direction="column"
-      justify="flex-start"
+      justifyContent="flex-start"
       alignItems="flex-start"
       container
       className={styles.footerContainer}
       component="footer"
     >
-      <Grid container direction="row" justify="center" alignItems="center">
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+      >
         <Typography variant="body2" align="center">
           <a
             href="https://github.com/signum-network/signum-pool"

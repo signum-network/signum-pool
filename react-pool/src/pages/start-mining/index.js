@@ -52,7 +52,7 @@ const StartMining = (props) => {
         container
         className={homeStyles.firstSection}
         direction="column"
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         component="section"
       >
@@ -73,7 +73,7 @@ const StartMining = (props) => {
         container
         className={styles.secondSection}
         direction="column"
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         component="section"
       >
@@ -94,7 +94,7 @@ const StartMining = (props) => {
         container
         className={styles.thirdSection}
         direction="column"
-        justify="flex-start"
+        justifyContent="flex-start"
         alignItems="flex-start"
         component="section"
       >
@@ -113,7 +113,7 @@ const StartMining = (props) => {
             container
             direction="row"
             alignItems="center"
-            justify="flex-start"
+            justifyContent="flex-start"
             wrap="wrap"
             style={{ marginTop: "0.7em", marginBottom: "1em" }}
           >

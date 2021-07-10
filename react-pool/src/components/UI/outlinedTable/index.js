@@ -118,7 +118,7 @@ const OutLinedTable = (props) => {
     <Grid
       container
       direction="column"
-      justify="flex-start"
+      justifyContent="flex-start"
       alignItems="flex-start"
       className={styles.outlinedTable}
     >

@@ -4,10 +4,11 @@ import { useTestNet } from "./globalParameters";
 // Default extra routes examples with dummy data
 // This is for development purposes
 // If you want to add custom routes, go to the readme.md
+// In the java you must assign that value in just one single line
 let defaultUrlRoutes = `{
-  "a":{"label":"Example #1 (Signum)", "url":"https://www.signum.network", "newTab": true  },
-  "b":{"label":"Example #2 (BTDEX)", "url":"https://btdex.trade", "newTab": true  },
-  "c":{"label":"Example #3 (Local page)", "url":"/miners", "newTab": false  }
+"links": [{"label":"Example #1 (Signum)", "url":"https://www.signum.network", "newTab": true  },
+ {"label":"Example #2 (BTDEX)", "url":"https://btdex.trade", "newTab": true  },
+ {"label":"Example #3 (Local page)", "url":"/miners", "newTab": false  }]
 }`;
 
 // Example of a menu option links empty
@@ -34,8 +35,8 @@ export let extraLinksArrayExport = [];
 
 // Check if pool operator typed extra links
 if (EXTRAURLTOUSE && EXTRAURLTOUSE !== {}) {
-  Object.keys(EXTRAURLTOUSE).map(function (key, index) {
-    const objectData = EXTRAURLTOUSE[key];
+  EXTRAURLTOUSE.links.map((item) => {
+    const objectData = item;
 
     // Check if the keys label, url and newTab exists
     if (

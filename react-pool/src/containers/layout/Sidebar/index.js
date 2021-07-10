@@ -301,9 +301,10 @@ const Sidebar = (props) => {
           {
             // Render dynamic options
             // Extra options put by pool operator
-            extraLinksArrayExport.map((item) => {
+            extraLinksArrayExport.map((item, key) => {
               return (
                 <ListRender
+                  key={key}
                   onClick={() => {
                     goToSite(item.url, item.newTab);
                   }}
