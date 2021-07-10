@@ -69,18 +69,16 @@ If you want extra links to be put in your header, you must go to the file `pool.
 ```
 
 # Example (How it should be in your source code)
-extraPoolUrl="{ \"links\":[ {\"label\":\"Signum\", \"url\":\"https://www.signum.network\", \"newTab\": true }, {\"label\":\"BTDEX\", \"url\":\"https://btdex.trade\", \"newTab\": true } ]}"
+extraPoolUrl="[ {\"label\":\"Signum\", \"url\":\"https://www.signum.network\", \"newTab\": true }, {\"label\":\"BTDEX\", \"url\":\"https://btdex.trade\", \"newTab\": true } ]"
 
 # This example shows, that the website will have 2 websites, : signum.network and btdex.trade
 
 # Example (Just take this example as a reference, this have Line breaks, which it won't work, )
-extraPoolUrl="{
-  \"links\":[
+extraPoolUrl="[
   {\"label\":\"Signum\", \"url\":\"https://www.signum.network\", \"newTab\": true },
   {\"label\":\"BTDEX\", \"url\":\"https://btdex.trade\", \"newTab\": true },
   {\"label\":\"Miners\", \"url\":\"/miners\", \"newTab\": false }
-  ]
-}"
+  ]"
 
 # You can add as many routes you want, you just need to add the object, and keep the variable asignation in just one line
 # Look at the examples

@@ -15,12 +15,15 @@ let defaultUrlRoutes = `{
 // defaultUrlRoutes = null;
 
 // Production extra routes
+// It is going to be received as JSON data
+// Pool operator will just need to add the array with its objects
 const UrlRoutes =
   window.reactInit.extraPoolUrl &&
   window.reactInit.extraPoolUrl.trim() !== "" &&
   window.reactInit.extraPoolUrl.trim() !== "{}" &&
+  window.reactInit.extraPoolUrl.trim() !== "[]" &&
   window.reactInit.extraPoolUrl.trim() !== "{EXTRAPOOLURL}"
-    ? window.reactInit.extraPoolUrl
+    ? `{ "links" :${window.reactInit.extraPoolUrl} }`
     : null;
 
 const EXTRAURLTOUSE =
