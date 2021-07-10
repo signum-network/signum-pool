@@ -73,7 +73,7 @@ extraPoolUrl="[ {\"label\":\"Signum\", \"url\":\"https://www.signum.network\", \
 
 # This example shows, that the website will have 2 websites, : signum.network and btdex.trade
 
-# Example (Just take this example as a reference, this have Line breaks, which it won't work, )
+# Example (Just take this example as a reference. This have line breaks, which it won't work)
 extraPoolUrl="[
   {\"label\":\"Signum\", \"url\":\"https://www.signum.network\", \"newTab\": true },
   {\"label\":\"BTDEX\", \"url\":\"https://btdex.trade\", \"newTab\": true },
@@ -97,7 +97,7 @@ extraPoolUrl="[
         -   You must assign this property to **false** when you are making your own custom page in the pool
         -   You must assign this property to **true** if you are going to use an external link
 
-> **Tip:** If the external url is going to be large, i do recommend using an url shorterner bitly.com
+> **Tip:** If the external url is going to be large, i do recommend using an url shortener bitly.com
 
 ## How to put your pool website in iframes
 

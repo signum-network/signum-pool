@@ -5,8 +5,7 @@ import React, { Fragment } from "react";
 import { BrowserRouter } from "react-router-dom";
 
 // Material palette
-import { ThemeProvider } from "@material-ui/styles";
-import { createTheme } from "@material-ui/core/styles";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 // Redux
@@ -28,7 +27,7 @@ const App = () => {
       createTheme({
         palette: {
           ...COLORSTOUSE,
-          type: prefersDarkMode,
+          mode: prefersDarkMode,
         },
       }),
 

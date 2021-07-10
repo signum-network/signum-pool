@@ -23,7 +23,7 @@ import Button from "@material-ui/core/Button";
 import Collapse from "@material-ui/core/Collapse";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
+import Alert from "@material-ui/core/Alert";
 
 // Material icons
 import SearchIcon from "@material-ui/icons/Search";

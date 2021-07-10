@@ -17,7 +17,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
+import Alert from "@material-ui/core/Alert";
 
 // Material-ui dialog
 import Dialog from "@material-ui/core/Dialog";
@@ -247,6 +247,7 @@ const MinerModal = (props) => {
             autoFocus
             onClick={bookmarkMiner}
             variant="outlined"
+            color="inherit"
             className={styles.buttonActions}
           >
             {`${t("bookmarkMiner")} 📌`}
@@ -256,6 +257,7 @@ const MinerModal = (props) => {
             autoFocus
             onClick={closeModal}
             variant="outlined"
+            color="inherit"
             className={styles.buttonActions}
           >
             {t("close")}

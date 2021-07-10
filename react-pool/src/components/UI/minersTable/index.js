@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import { toggleModal } from "../../../utils/redux/actions/minerModal";
 
 // Material UI
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Table from "@material-ui/core/Table";
