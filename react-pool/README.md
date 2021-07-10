@@ -60,7 +60,7 @@ Discover the available languages you can set by default or users can freely choo
 
 ## How to implement extra links on your header 🕹️
 
-If you want extra links to be put in your header, you must go to the file `pool.properties` and find and customize the variable `extraPoolUrl`
+If you want extra links to be put in your header, you must go to the file `pool.properties` and find and customize the variable `extraMenuItems`
 
 > The variable is a `String` which is contained as JSON data, look at the next example
 
@@ -69,21 +69,21 @@ If you want extra links to be put in your header, you must go to the file `pool.
 ```
 
 # Example (How it should be in your source code)
-extraPoolUrl="[ {\"label\":\"Signum\", \"url\":\"https://www.signum.network\", \"newTab\": true }, {\"label\":\"BTDEX\", \"url\":\"https://btdex.trade\", \"newTab\": true } ]"
+extraMenuItems=[ {"label":"Signum", "url":"https://www.signum.network", "newTab": true }, {"label":"BTDEX", "url":"https://btdex.trade", "newTab": true } ]
 
 # This example shows, that the website will have 2 websites, : signum.network and btdex.trade
 
 # Example (Just take this example as a reference. This have line breaks, which it won't work)
-extraPoolUrl="[
-  {\"label\":\"Signum\", \"url\":\"https://www.signum.network\", \"newTab\": true },
-  {\"label\":\"BTDEX\", \"url\":\"https://btdex.trade\", \"newTab\": true },
-  {\"label\":\"Miners\", \"url\":\"/miners\", \"newTab\": false }
-  ]"
+extraMenuItems=[
+  {"label":"Signum", "url":"https://www.signum.network", "newTab": true },
+  {"label":"BTDEX", "url":"https://btdex.trade", "newTab": true },
+  {"label":"Miners", "url":"/miners", "newTab": false }
+  ]
 
 # You can add as many routes you want, you just need to add the object, and keep the variable asignation in just one line
 # Look at the examples
-# {\"label\":\"My chat\", \"url\":\"https://telegram.org\", \"newTab\":true }
-# {\"label\":\"My Pool\", \"url\":\"http://poolUrlExample.com\", \"newTab\":true }
+# {"label":"My chat", "url":"https://telegram.org", "newTab":true }
+# {"label":"My Pool", "url":"http://poolUrlExample.com", "newTab":true }
 
 # Make sure to format correctly the JSON data
 # Make sure to keep the variable asigned in just one line, NO LINE BREAKS
