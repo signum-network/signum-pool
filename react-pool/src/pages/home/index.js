@@ -212,9 +212,26 @@ const Home = (props) => {
     </Grid>
   );
 
+  // Book miner data manipulation
+  let bookMinerData = [];
+
+  if (
+    bookMarkedMiner.data &&
+    bookMarkedMiner.data !== null &&
+    bookMarkedMiner.data !== undefined
+  ) {
+    let dataToRender = [];
+
+    bookMarkedMiner.data.map((item) => {
+      return dataToRender.push({ ...item, title: t(item.title) });
+    });
+
+    bookMinerData = dataToRender;
+  }
+
   return (
     <Fragment>
-      {/* Snakbacr for miner not found*/}
+      {/* Snakback for miner not found*/}
       <Snackbar
         open={showSnackBar}
         autoHideDuration={3000}
@@ -231,7 +248,7 @@ const Home = (props) => {
         </Alert>
       </Snackbar>
 
-      {/* Snakbacr for deleted miner*/}
+      {/* Snakback for deleted miner*/}
       <Snackbar
         open={showBookMarkSnackBar}
         autoHideDuration={3000}
@@ -425,7 +442,7 @@ const Home = (props) => {
         </Typography>
 
         <OutlinedTable
-          data={bookMarkedMiner.data}
+          data={bookMinerData}
           isLoading={bookMarkedMiner.loadingData}
           notFoundLabel={t("notBookmarkedMiner") + " 📌"}
           fWidth="28%"

@@ -236,70 +236,70 @@ export const selectBookmarkedMiner =
             // Bookmarked Miners Data
             const responseData = [
               response.name && response.name.trim()
-                ? { title: t("username"), value: response.name, type: "info" }
+                ? { title: "username", value: response.name, type: "info" }
                 : null,
               {
-                title: t("minerAddress"),
+                title: "minerAddress",
                 value: response.addressRS,
                 type: "info",
               },
               {
-                title: t("pendingBalance"),
+                title: "pendingBalance",
                 value: response.pendingBalance,
                 type: "info",
               },
               {
-                title: t("currentDeadline"),
+                title: "currentDeadline",
                 value: response.currentDeadline || t("waiting"),
                 type: "info",
               },
               {
-                title: t("pastDeadlines"),
+                title: "pastDeadlines",
                 value: "BookmarkedMinerDeadlines",
                 type: "BookmarkedMinerDeadlines",
               },
               {
-                title: t("confirmedDeadline"),
+                title: "confirmedDeadline",
                 value: confirmedDeadlines || "",
                 type: "info",
               },
               {
-                title: t("effectiveCapacity"),
+                title: "effectiveCapacity",
                 value: response.effectiveCapacity,
                 type: "info",
               },
               {
-                title: t("physicalCapacity"),
+                title: "physicalCapacity",
                 value: response.physicalCapacity,
                 type: "info",
               },
               {
-                title: t("poCPlus"),
+                title: "poCPlus",
                 value: response.poCPlus,
                 type: "info",
               },
               {
-                title: t("committedBalance"),
+                title: "committedBalance",
                 value: response.committedBalance,
                 type: "info",
               },
               {
-                title: t("donationPercentage"),
+                title: "donationPercentage",
                 value: response.donationPercent + "%",
                 type: "info",
               },
               {
-                title: t("poolShare"),
+                title: "poolShare",
                 value: (parseFloat(response.share) * 100).toFixed(3) + "%",
                 type: "info",
               },
               {
-                title: t("Software"),
+                title: "Software",
                 value: response.Software,
                 type: "info",
               },
               {
-                label: t("deleteBookmark"),
+                label: "deleteBookmark",
                 type: "action",
               },
             ];

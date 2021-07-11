@@ -136,5 +136,6 @@
   "configurable": "Configureerbaar",
   "minersSharingLess": "Mijnwerkers delen minder dan 20%",
   "languageName": "Nederlands",
-  "chooseLanguage": "Kies een taal"
+  "chooseLanguage": "Kies een taal",
+  "noBlocksWon": "Er zijn geen blokken gewonnen, ga ze halen!"
 }

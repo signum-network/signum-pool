@@ -136,5 +136,6 @@
   "configurable": "可配置",
   "minersSharingLess": "矿工份额不到20%",
   "languageName": "普通话",
-  "chooseLanguage": "选择语言"
+  "chooseLanguage": "选择语言",
+  "noBlocksWon": "没有赢得块，去拿它们！"
 }

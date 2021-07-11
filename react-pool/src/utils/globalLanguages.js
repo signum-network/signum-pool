@@ -21,7 +21,7 @@ export const fallbackLng = "en";
 export const languagesList = [
   {
     code: "de",
-    name: "Deutsche",
+    name: "Deutsch",
     country_code: "de",
   },
   {

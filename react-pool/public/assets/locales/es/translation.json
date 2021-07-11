@@ -75,7 +75,7 @@
   "noDeadlineData": "¡No hay suficientes datos disponibles!",
   "noFoundDeadline": "¡No se ha encontrado todavía!",
   "noMiners": "No hay mineros, ¡empieza a invitarlos!",
-  "notBookmarkedMiner": "No has marcado un minero como favorito",
+  "notBookmarkedMiner": "No has marcado un minero",
   "notFoundPageFirstLine": "¡UPS! no podemos encontrar esa página",
   "notFoundPageGoHome": "Ir a inicio",
   "notFoundPageSecondLine": "No pudimos encontrar la página que buscaba.",
@@ -136,5 +136,6 @@
   "configurable": "Configurable",
   "minersSharingLess": "Mineros compartiendo menos del 20%",
   "languageName": "Español",
-  "chooseLanguage": "Elija un idioma"
+  "chooseLanguage": "Elija un idioma",
+  "noBlocksWon": "No hay bloques ganados, ¡ve por ellos!"
 }
