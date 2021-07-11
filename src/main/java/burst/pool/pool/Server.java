@@ -52,7 +52,7 @@ import fi.iki.elonen.NanoHTTPD;
 
 public class Server extends NanoHTTPD {
     private static final Logger logger = LoggerFactory.getLogger(Server.class);
-    
+
     private static final HashMap<String, String> mimeTypesAllowed = new HashMap<>();
     static {
         mimeTypesAllowed.put("ico", "image/x-icon");
@@ -72,11 +72,11 @@ public class Server extends NanoHTTPD {
     private final Gson gson = SignumUtils.buildGson().create();
     private final SignumCrypto burstCrypto = SignumCrypto.getInstance();
     private final Cache<String, String> fileCache;
-    
+
     private final File htmlRoot;
 
     private String apiAllowOrign;
-    
+
     public Server(StorageService storageService, PropertyService propertyService, Pool pool) {
         super(propertyService.getInt(Props.serverPort));
         this.storageService = storageService;
@@ -84,13 +84,13 @@ public class Server extends NanoHTTPD {
         this.pool = pool;
         this.fileCache = propertyService.getBoolean(Props.siteDisableCache) ? null :
             CacheManagerBuilder.newCacheManagerBuilder()
-                .withCache("file", CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, String.class, ResourcePoolsBuilder.heap(1024*1024)))
-                .build(true)
-                .getCache("file", String.class, String.class);
+            .withCache("file", CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, String.class, ResourcePoolsBuilder.heap(1024*1024)))
+            .build(true)
+            .getCache("file", String.class, String.class);
         this.apiAllowOrign = propertyService.getString(Props.apiAllowOrign);
-        
+
         this.htmlRoot = new File(propertyService.getString(Props.siteRoot));
-        
+
         String certbotPath = propertyService.getString(Props.letsencryptPath);
         if(certbotPath != null && certbotPath.length() > 0) {
             String keypath = propertyService.getString(Props.keyStorePath);
@@ -100,45 +100,45 @@ public class Server extends NanoHTTPD {
             try {
                 SSLServerSocketFactory sslSocketFactory = letsencryptToPkcs12(certbotPath, keyfilePath.getAbsolutePath(), keypass);
                 setServerSocketFactory(new SecureServerSocketFactory(sslSocketFactory, null));
-              }
-              catch (Exception e) {
+            }
+            catch (Exception e) {
                 logger.error(e.getMessage());
-              }
-              
-              // Reload the certificate every week, in case it was renewed
-              ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-              Runnable reloadCert = () -> {
+            }
+
+            // Reload the certificate every week, in case it was renewed
+            ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+            Runnable reloadCert = () -> {
                 try {
                     SSLServerSocketFactory sslSocketFactory = letsencryptToPkcs12(certbotPath, keyfilePath.getAbsolutePath(), keypass);
                     setServerSocketFactory(new SecureServerSocketFactory(sslSocketFactory, null));
                 }
                 catch (Exception e) {
-                  logger.error(e.getMessage());
+                    logger.error(e.getMessage());
                 }
-              };
-              scheduler.scheduleWithFixedDelay(reloadCert, 7, 7, TimeUnit.DAYS);
+            };
+            scheduler.scheduleWithFixedDelay(reloadCert, 7, 7, TimeUnit.DAYS);
         }
 
     }
-    
+
     private SSLServerSocketFactory letsencryptToPkcs12(String letsencryptPath, String p12File, String password) throws Exception {
         // TODO: check if there is a way for us to use directly the PEM files and not need to convert this way
         logger.info("Generating {} from {}", p12File, letsencryptPath);
         String cmd = "openssl pkcs12 -export -in " + letsencryptPath + "/fullchain.pem "
-            + "-inkey " + letsencryptPath + "/privkey.pem -out " + p12File + " -password pass:" + password;
+                + "-inkey " + letsencryptPath + "/privkey.pem -out " + p12File + " -password pass:" + password;
 
         Process process = Runtime.getRuntime().exec(cmd);
         process.waitFor();
-        
+
         KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
         InputStream keystoreStream = new FileInputStream(p12File);
         keystore.load(keystoreStream, password.toCharArray());
         KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         keyManagerFactory.init(keystore, password.toCharArray());
         SSLServerSocketFactory sslSocketFactory = makeSSLSocketFactory(keystore, keyManagerFactory);
-        
+
         return sslSocketFactory;
-      }
+    }
 
     private long getCurrentHeight() {
         MiningInfo miningInfo = pool.getMiningInfo();
@@ -164,7 +164,7 @@ public class Server extends NanoHTTPD {
                     resp.addHeader("Access-Control-Allow-Headers", "X-Requested-With");
                     resp.addHeader("Access-Control-Allow-Headers", "Authorization");
                 }
-                
+
                 return resp;
             } else {
                 return handleCall(session, params);
@@ -192,7 +192,7 @@ public class Server extends NanoHTTPD {
                 if (submission.getNonce() == null) {
                     throw new SubmissionException("Nonce not set or invalid");
                 }
-                
+
                 String userAgent = session.getHeaders().get("user-agent");
                 if (userAgent == null) userAgent = "";
                 return gson.toJson(new NonceSubmissionResponse("success", pool.checkNewSubmission(submission, userAgent)));
@@ -207,7 +207,7 @@ public class Server extends NanoHTTPD {
             miningInfoObj.addProperty("generationSignature", burstCrypto.toHexString(miningInfo.getGenerationSignature()));
             miningInfoObj.addProperty("baseTarget", Long.toUnsignedString(miningInfo.getBaseTarget()));
             miningInfoObj.addProperty("averageCommitmentNQT", Long.toUnsignedString(miningInfo.getAverageCommitmentNQT()));
-            
+
             return miningInfoObj.toString();
             // return gson.toJson(new MiningInfoResponse(burstCrypto.toHexString(miningInfo.getGenerationSignature()), miningInfo.getBaseTarget(), miningInfo.getHeight(), miningInfo.getAverageCommitmentNQT()));
         } else {
@@ -216,17 +216,17 @@ public class Server extends NanoHTTPD {
     }
 
     private String handleApiCall(IHTTPSession session, Map<String, String> params) {
-        
+
         if (session.getUri().startsWith("/api/getMiners")) {
             JsonArray minersJson = new JsonArray();
             AtomicReference<Double> poolCapacity = new AtomicReference<>(0d);
             storageService.getMinersFiltered()
-                    .stream()
-                    .sorted(Comparator.comparing(Miner::getSharedCapacity).reversed())
-                    .forEach(miner -> {
-                        poolCapacity.updateAndGet(v -> v + miner.getTotalCapacity());
-                        minersJson.add(minerToJson(miner, false));
-                    });
+            .stream()
+            .sorted(Comparator.comparing(Miner::getSharedCapacity).reversed())
+            .forEach(miner -> {
+                poolCapacity.updateAndGet(v -> v + miner.getTotalCapacity());
+                minersJson.add(minerToJson(miner, false));
+            });
             JsonObject jsonObject = new JsonObject();
             jsonObject.add("miners", minersJson);
             jsonObject.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
@@ -258,7 +258,7 @@ public class Server extends NanoHTTPD {
             response.addProperty(Props.minimumMinimumPayout.getName(), propertyService.getFloat(Props.minimumMinimumPayout));
             response.addProperty(Props.minPayoutsPerTransaction.getName(), propertyService.getInt(Props.minPayoutsPerTransaction));
             response.addProperty("transactionFee", pool.getTransactionFee().toUnformattedString());
-            
+
             response.addProperty("publicNode", propertyService.getString(Props.siteNodeAddress));
             response.addProperty("discordLink", propertyService.getString(Props.siteDiscordLink));
             response.addProperty("faucet", propertyService.getString(Props.siteFaucetURL));
@@ -270,12 +270,12 @@ public class Server extends NanoHTTPD {
             AtomicReference<Double> othersShare = new AtomicReference<>(1d);
             JsonArray topMiners = new JsonArray();
             storageService.getMinersFiltered().stream()
-                    .sorted((m1, m2) -> Double.compare(m2.getShare(), m1.getShare())) // Reverse order - highest to lowest
-                    .limit(10)
-                    .forEach(miner -> {
-                        topMiners.add(minerToJson(miner, false));
-                        othersShare.updateAndGet(share -> share - miner.getShare());
-                    });
+            .sorted((m1, m2) -> Double.compare(m2.getShare(), m1.getShare())) // Reverse order - highest to lowest
+            .limit(10)
+            .forEach(miner -> {
+                topMiners.add(minerToJson(miner, false));
+                othersShare.updateAndGet(share -> share - miner.getShare());
+            });
             JsonObject response = new JsonObject();
             response.add("topMiners", topMiners);
             response.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
@@ -284,21 +284,21 @@ public class Server extends NanoHTTPD {
         } else if (session.getUri().startsWith("/api/getWonBlocks")) {
             JsonArray wonBlocks = new JsonArray();
             storageService.getWonBlocks(100)
-                    .forEach(wonBlock -> {
-                        
-                        JsonObject wonBlockJson = new JsonObject();
-                        wonBlockJson.addProperty("height", wonBlock.getBlockHeight());
-                        wonBlockJson.addProperty("id", wonBlock.getBlockId().getID());
-                        wonBlockJson.addProperty("generator", wonBlock.getGeneratorId().getID());
-                        wonBlockJson.addProperty("generatorRS", wonBlock.getGeneratorId().getFullAddress());
-                        Miner miner = storageService.getMiner(wonBlock.getGeneratorId());
-                        if (miner!= null && !Objects.equals(miner.getName(), "")) {
-                            wonBlockJson.addProperty("name", miner.getName());
-                        }
-                        wonBlockJson.addProperty("reward", wonBlock.getFullReward().toFormattedString());
-                        wonBlockJson.addProperty("poolShare", wonBlock.getPoolShare().toFormattedString());
-                        wonBlocks.add(wonBlockJson);
-                    });
+            .forEach(wonBlock -> {
+
+                JsonObject wonBlockJson = new JsonObject();
+                wonBlockJson.addProperty("height", wonBlock.getBlockHeight());
+                wonBlockJson.addProperty("id", wonBlock.getBlockId().getID());
+                wonBlockJson.addProperty("generator", wonBlock.getGeneratorId().getID());
+                wonBlockJson.addProperty("generatorRS", wonBlock.getGeneratorId().getFullAddress());
+                Miner miner = storageService.getMiner(wonBlock.getGeneratorId());
+                if (miner!= null && !Objects.equals(miner.getName(), "")) {
+                    wonBlockJson.addProperty("name", miner.getName());
+                }
+                wonBlockJson.addProperty("reward", wonBlock.getFullReward().toFormattedString());
+                wonBlockJson.addProperty("poolShare", wonBlock.getPoolShare().toFormattedString());
+                wonBlocks.add(wonBlockJson);
+            });
             JsonObject response = new JsonObject();
             response.add("wonBlocks", wonBlocks);
             response.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
@@ -316,7 +316,7 @@ public class Server extends NanoHTTPD {
         }
         String mimeType = null;
         boolean isPath = false;
-        
+
         if(!uri.contains(".")) {
             isPath = true;
             mimeType = MIME_HTML;
@@ -329,107 +329,112 @@ public class Server extends NanoHTTPD {
                 }
             }
         }
-        
+
         if (mimeType == null || uri.contains("../")) {
             return NanoHTTPD.newFixedLengthResponse(Response.Status.FORBIDDEN, "text/html", "<h1>Access Forbidden</h1>");
         }
 
+        Response httpResponse = null;
         if (fileCache != null && fileCache.containsKey(uri)) {
-            return NanoHTTPD.newFixedLengthResponse(Response.Status.OK, URLConnection.guessContentTypeFromName(uri), fileCache.get(uri));
+            httpResponse = NanoHTTPD.newFixedLengthResponse(Response.Status.OK, URLConnection.guessContentTypeFromName(uri), fileCache.get(uri));
         }
 
-        InputStream inputStream = null;
-        if (uri.contains("favicon.ico")) {
-            inputStream = new FileInputStream(propertyService.getString(Props.siteIconIco));
-        } else if (uri.equals("/img/poolIcon.png")) {
-            inputStream = new FileInputStream(propertyService.getString(Props.siteIconPng));
-        } else {
-            File file = new File(htmlRoot, uri);
-            if(isPath || !file.isFile() || !file.exists() || !file.canRead()) {
-                file = new File(htmlRoot, "index.html");
-                mimeType = MIME_HTML;
+        if(httpResponse == null) {
+            InputStream inputStream = null;
+            if (uri.contains("favicon.ico")) {
+                inputStream = new FileInputStream(propertyService.getString(Props.siteIconIco));
+            } else if (uri.equals("/img/poolIcon.png")) {
+                inputStream = new FileInputStream(propertyService.getString(Props.siteIconPng));
+            } else {
+                File file = new File(htmlRoot, uri);
+                if(isPath || !file.isFile() || !file.exists() || !file.canRead()) {
+                    file = new File(htmlRoot, "index.html");
+                    mimeType = MIME_HTML;
+                }
+                inputStream = new FileInputStream(file);
             }
-            inputStream = new FileInputStream(file);
-        }
 
-        if (uri.contains(".png") || uri.contains(".ico")) {
-            return NanoHTTPD.newChunkedResponse(Response.Status.OK, uri.contains(".ico") ? "image/x-icon" : "image/png", inputStream);
-        }
-        
-        int bufferSize = 1024*1024;
-        char[] buffer = new char[bufferSize];
-        StringBuilder out = new StringBuilder();
-        Reader in = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-        for (int numRead; (numRead = in.read(buffer, 0, buffer.length)) > 0; ) {
-            out.append(buffer, 0, numRead);
-        }
-        in.close();
-        String response = out.toString();
-        
-        String extraMenuItems = propertyService.getString(Props.siteExtraMenuItems).replaceAll("\"","\\\\\"");
-        
-        if (mimeType!=null && mimeType.equals(MIME_HTML)) {
-            response = response
-                    // Replace the TAGS
-                    .replace("{TITLE}", propertyService.getString(Props.siteTitle))
-                    .replace("{HOMEFIRSTLINETITLE}", propertyService.getString(Props.siteHomeFirstLine))
-                    .replace("{HOMESECONDLINETITLE}", propertyService.getString(Props.siteHomeSecondLine))
-                    .replace("{PRICEENDPOINT}", propertyService.getString(Props.sitePrice))
-                    .replace("{PUBLICNODE}", propertyService.getString(Props.siteNodeAddress))
-                    .replace("{DISCORD}", propertyService.getString(Props.siteDiscordLink))
-                    .replace("{INFO}", propertyService.getString(Props.siteInfo))
-                    .replace("{POOL_ACCOUNT}", burstCrypto.getAddressFromPassphrase(propertyService.getString(Props.passphrase)).getFullAddress())
-                    .replace("{MININGADDRESS}", propertyService.getString(Props.miningURL))
-                    .replace("{MININGGUIDE}", propertyService.getString(Props.miningGuide))
-                    .replace("{LAG}", Integer.toString(propertyService.getInt(Props.processLag)))
-                    .replace("{MIN_PAYOUT}", SignumValue.fromSigna(propertyService.getFloat(Props.minimumMinimumPayout)).toUnformattedString())
-                    .replace("{FAUCET}", propertyService.getString(Props.siteFaucetURL))
-                    .replace("{EXPLORER}", propertyService.getString(Props.siteExplorerURL))
-                    
-                    .replace("\"*{PRIMARYCOLOR}*\"", propertyService.getString(Props.sitePrimaryColor))
-                    .replace("\"*{PRIMARYLIGHTCOLOR}*\"", propertyService.getString(Props.sitePrimaryLightColor))
-                    .replace("\"*{PRIMARYDARKCOLOR}*\"", propertyService.getString(Props.sitePrimaryDarkColor))
-                    .replace("\"*{SECONDARYCOLOR}*\"", propertyService.getString(Props.siteSecondaryColor))
-                    .replace("\"*{SECONDARYLIGHTCOLOR}*\"", propertyService.getString(Props.siteSecondaryLightColor))
-                    .replace("\"*{SECONDARYDARKCOLOR}*\"", propertyService.getString(Props.siteSecondaryDarkColor))
-                    .replace("\"*{GRAPHCOLOR}*\"", propertyService.getString(Props.siteGraphColor))
-                    .replace("{PRIMARYCOLOR}", propertyService.getString(Props.sitePrimaryColor))
-                    .replace("{PRIMARYLIGHTCOLOR}", propertyService.getString(Props.sitePrimaryLightColor))
-                    .replace("{PRIMARYDARKCOLOR}", propertyService.getString(Props.sitePrimaryDarkColor))
-                    .replace("{SECONDARYCOLOR}", propertyService.getString(Props.siteSecondaryColor))
-                    .replace("{SECONDARYLIGHTCOLOR}", propertyService.getString(Props.siteSecondaryLightColor))
-                    .replace("{SECONDARYDARKCOLOR}", propertyService.getString(Props.siteSecondaryDarkColor))
-                    .replace("{GRAPHCOLOR}", propertyService.getString(Props.siteGraphColor))
-                    
-                    .replace("{EXTRAPOOLURL}", extraMenuItems)
-                    .replace("{DEFAULTLANG}", propertyService.getString(Props.siteDefaultLanguage))
-                    
-                    .replace("{SEODESCRIPTION}", propertyService.getString(Props.siteSeoDescription))
-                    .replace("{SEOIMGURL}", propertyService.getString(Props.siteSeoImageUrl))
-                    
-                    .replace("{SHOWTRADINGLINK}", propertyService.getString(Props.siteShowTradingLink))
-                    .replace("{MINITRADINGLINK}", propertyService.getString(Props.siteMiniTradingLink))
-                    .replace("{LARGETRADINGLINK}", propertyService.getString(Props.siteLargeTradingLink))
+            if (uri.contains(".png") || uri.contains(".ico")) {
+                httpResponse = NanoHTTPD.newChunkedResponse(Response.Status.OK, mimeType, inputStream);
+            }
 
-                    .replace("{GOOGLETRACKINGID}", propertyService.getString(Props.siteGoogleTracking))
+            if(httpResponse == null) {
+                int bufferSize = 1024*1024;
+                char[] buffer = new char[bufferSize];
+                StringBuilder out = new StringBuilder();
+                Reader in = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+                for (int numRead; (numRead = in.read(buffer, 0, buffer.length)) > 0; ) {
+                    out.append(buffer, 0, numRead);
+                }
+                in.close();
+                String response = out.toString();
 
-                    ;
+                String extraMenuItems = propertyService.getString(Props.siteExtraMenuItems).replaceAll("\"","\\\\\"");
+
+                if (mimeType!=null && mimeType.equals(MIME_HTML)) {
+                    response = response
+                            // Replace the TAGS
+                            .replace("{TITLE}", propertyService.getString(Props.siteTitle))
+                            .replace("{HOMEFIRSTLINETITLE}", propertyService.getString(Props.siteHomeFirstLine))
+                            .replace("{HOMESECONDLINETITLE}", propertyService.getString(Props.siteHomeSecondLine))
+                            .replace("{PRICEENDPOINT}", propertyService.getString(Props.sitePrice))
+                            .replace("{PUBLICNODE}", propertyService.getString(Props.siteNodeAddress))
+                            .replace("{DISCORD}", propertyService.getString(Props.siteDiscordLink))
+                            .replace("{INFO}", propertyService.getString(Props.siteInfo))
+                            .replace("{POOL_ACCOUNT}", burstCrypto.getAddressFromPassphrase(propertyService.getString(Props.passphrase)).getFullAddress())
+                            .replace("{MININGADDRESS}", propertyService.getString(Props.miningURL))
+                            .replace("{MININGGUIDE}", propertyService.getString(Props.miningGuide))
+                            .replace("{LAG}", Integer.toString(propertyService.getInt(Props.processLag)))
+                            .replace("{MIN_PAYOUT}", SignumValue.fromSigna(propertyService.getFloat(Props.minimumMinimumPayout)).toUnformattedString())
+                            .replace("{FAUCET}", propertyService.getString(Props.siteFaucetURL))
+                            .replace("{EXPLORER}", propertyService.getString(Props.siteExplorerURL))
+
+                            .replace("\"*{PRIMARYCOLOR}*\"", propertyService.getString(Props.sitePrimaryColor))
+                            .replace("\"*{PRIMARYLIGHTCOLOR}*\"", propertyService.getString(Props.sitePrimaryLightColor))
+                            .replace("\"*{PRIMARYDARKCOLOR}*\"", propertyService.getString(Props.sitePrimaryDarkColor))
+                            .replace("\"*{SECONDARYCOLOR}*\"", propertyService.getString(Props.siteSecondaryColor))
+                            .replace("\"*{SECONDARYLIGHTCOLOR}*\"", propertyService.getString(Props.siteSecondaryLightColor))
+                            .replace("\"*{SECONDARYDARKCOLOR}*\"", propertyService.getString(Props.siteSecondaryDarkColor))
+                            .replace("\"*{GRAPHCOLOR}*\"", propertyService.getString(Props.siteGraphColor))
+                            .replace("{PRIMARYCOLOR}", propertyService.getString(Props.sitePrimaryColor))
+                            .replace("{PRIMARYLIGHTCOLOR}", propertyService.getString(Props.sitePrimaryLightColor))
+                            .replace("{PRIMARYDARKCOLOR}", propertyService.getString(Props.sitePrimaryDarkColor))
+                            .replace("{SECONDARYCOLOR}", propertyService.getString(Props.siteSecondaryColor))
+                            .replace("{SECONDARYLIGHTCOLOR}", propertyService.getString(Props.siteSecondaryLightColor))
+                            .replace("{SECONDARYDARKCOLOR}", propertyService.getString(Props.siteSecondaryDarkColor))
+                            .replace("{GRAPHCOLOR}", propertyService.getString(Props.siteGraphColor))
+
+                            .replace("{EXTRAPOOLURL}", extraMenuItems)
+                            .replace("{DEFAULTLANG}", propertyService.getString(Props.siteDefaultLanguage))
+
+                            .replace("{SEODESCRIPTION}", propertyService.getString(Props.siteSeoDescription))
+                            .replace("{SEOIMGURL}", propertyService.getString(Props.siteSeoImageUrl))
+
+                            .replace("{SHOWTRADINGLINK}", propertyService.getString(Props.siteShowTradingLink))
+                            .replace("{MINITRADINGLINK}", propertyService.getString(Props.siteMiniTradingLink))
+                            .replace("{LARGETRADINGLINK}", propertyService.getString(Props.siteLargeTradingLink))
+
+                            .replace("{GOOGLETRACKINGID}", propertyService.getString(Props.siteGoogleTracking))
+
+                            ;
+                }
+                if(fileCache != null) {
+                    fileCache.put(uri, response);
+                }
+                httpResponse = NanoHTTPD.newFixedLengthResponse(Response.Status.OK, mimeType, response);
+            }
         }
-        if(fileCache != null) {
-            fileCache.put(uri, response);
-        }
-        Response httpResponse = NanoHTTPD.newFixedLengthResponse(Response.Status.OK, mimeType, response);
         if(uri.contains("static") || uri.contains("assets")) {
             // static content is cached for 1 year
             httpResponse.addHeader("Cache-Control", "max-age=31536000");
         }
-        
+
         return httpResponse;
     }
 
     private JsonElement minerToJson(Miner miner, boolean returnDeadlines) {
         if (miner == null) return JsonNull.INSTANCE;
-        
+
         JsonObject minerJson = new JsonObject();
         minerJson.addProperty("address", miner.getAddress().getID());
         minerJson.addProperty("addressRS", miner.getAddress().getFullAddress());
@@ -448,8 +453,8 @@ public class Server extends NanoHTTPD {
         minerJson.addProperty("minimumPayout", miner.getMinimumPayout().toFormattedString());
         Deadline bestDeadline = miner.getBestDeadline(getCurrentHeight());
         if (bestDeadline != null) {
-        	BigInteger deadline = bestDeadline.getDeadline();
-       		deadline = BigInteger.valueOf((long)(Math.log(deadline.doubleValue()/bestDeadline.getBoost()) * Pool.LN_FACTOR));
+            BigInteger deadline = bestDeadline.getDeadline();
+            deadline = BigInteger.valueOf((long)(Math.log(deadline.doubleValue()/bestDeadline.getBoost()) * Pool.LN_FACTOR));
 
             minerJson.addProperty("currentRoundBestDeadline", deadline.toString());
         }
@@ -462,7 +467,7 @@ public class Server extends NanoHTTPD {
         if (!Objects.equals(miner.getUserAgent(), "")) {
             minerJson.addProperty("userAgent", miner.getUserAgent());
         }
-        
+
         if(returnDeadlines) {
             List<Deadline> deadlines = miner.getDeadlines();
             JsonArray deadlinesJson = new JsonArray();
@@ -485,7 +490,7 @@ public class Server extends NanoHTTPD {
             minerJson.add("boost", boostJson);
             minerJson.add("boostPool", boostPoolJson);
         }
-        
+
         return minerJson;
     }
 
