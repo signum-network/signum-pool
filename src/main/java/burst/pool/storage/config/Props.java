@@ -5,7 +5,11 @@ import signumj.entity.SignumAddress;
 import java.util.Objects;
 
 public class Props {
-    public static final Prop<Integer> serverPort = new Prop<>("serverPort", 80); // Must be > 0, < 2^16
+    public static final Prop<Integer> serverPort = new Prop<>("serverPort", 80); // Must be > 0, < 2^16    
+    public static final Prop<String> letsencryptPath = new Prop<>("letsencryptPath", ""); // Must be > 0, < 2^16
+    public static final Prop<String> keyStorePath = new Prop<>("keystorePath", "cert");
+    public static final Prop<String> keyStorePass = new Prop<>("keystorePass", "certpass");
+    
     public static final Prop<String> nodeAddresses = new Prop<>("nodeAddresses", ""); // Must be non-empty
     public static final Prop<String> poolName = new Prop<>("poolName", "");
 
