@@ -230,7 +230,7 @@ public class Pool {
                 
                 ArrayList<Block> ourNewBlocks = new ArrayList<>();
                 try {
-                    Block[] blocks = nodeService.getBlocks(1, propertyService.getInt(Props.processLag) - 1).blockingGet();
+                    Block[] blocks = nodeService.getBlocks(0, propertyService.getInt(Props.processLag) - 1).blockingGet();
                     for(Block b : blocks) {
                         Miner miner = storageService.getMiner(b.getGenerator());
                         if(miner != null)
