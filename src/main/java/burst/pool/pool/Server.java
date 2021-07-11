@@ -10,6 +10,7 @@ import java.math.BigInteger;
 import java.net.SocketException;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
+import java.security.KeyStore;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLServerSocketFactory;
 
 import org.ehcache.Cache;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
@@ -91,12 +95,11 @@ public class Server extends NanoHTTPD {
         if(certbotPath != null && certbotPath.length() > 0) {
             String keypath = propertyService.getString(Props.keyStorePath);
             String keypass = propertyService.getString(Props.keyStorePass);
+            File keyfilePath = new File(keypath);
+            System.setProperty("javax.net.ssl.trustStore", keyfilePath.getAbsolutePath());
             try {
-                letsencryptToPkcs12(certbotPath, keypath, keypass);
-                
-                File f = new File(keypath);
-                System.setProperty("javax.net.ssl.trustStore", f.getAbsolutePath());
-                setServerSocketFactory(new SecureServerSocketFactory(NanoHTTPD.makeSSLSocketFactory(keypath, keypass.toCharArray()), null));
+                SSLServerSocketFactory sslSocketFactory = letsencryptToPkcs12(certbotPath, keyfilePath.getAbsolutePath(), keypass);
+                setServerSocketFactory(new SecureServerSocketFactory(sslSocketFactory, null));
               }
               catch (Exception e) {
                 logger.error(e.getMessage());
@@ -106,8 +109,8 @@ public class Server extends NanoHTTPD {
               ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
               Runnable reloadCert = () -> {
                 try {
-                  letsencryptToPkcs12(certbotPath, keypath, keypass);
-                  setServerSocketFactory(new SecureServerSocketFactory(NanoHTTPD.makeSSLSocketFactory(keypath, keypass.toCharArray()), null));
+                    SSLServerSocketFactory sslSocketFactory = letsencryptToPkcs12(certbotPath, keyfilePath.getAbsolutePath(), keypass);
+                    setServerSocketFactory(new SecureServerSocketFactory(sslSocketFactory, null));
                 }
                 catch (Exception e) {
                   logger.error(e.getMessage());
@@ -118,7 +121,7 @@ public class Server extends NanoHTTPD {
 
     }
     
-    private void letsencryptToPkcs12(String letsencryptPath, String p12File, String password) throws Exception {
+    private SSLServerSocketFactory letsencryptToPkcs12(String letsencryptPath, String p12File, String password) throws Exception {
         // TODO: check if there is a way for us to use directly the PEM files and not need to convert this way
         logger.info("Generating {} from {}", p12File, letsencryptPath);
         String cmd = "openssl pkcs12 -export -in " + letsencryptPath + "/fullchain.pem "
@@ -126,6 +129,15 @@ public class Server extends NanoHTTPD {
 
         Process process = Runtime.getRuntime().exec(cmd);
         process.waitFor();
+        
+        KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
+        InputStream keystoreStream = new FileInputStream(p12File);
+        keystore.load(keystoreStream, password.toCharArray());
+        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        keyManagerFactory.init(keystore, password.toCharArray());
+        SSLServerSocketFactory sslSocketFactory = makeSSLSocketFactory(keystore, keyManagerFactory);
+        
+        return sslSocketFactory;
       }
 
     private long getCurrentHeight() {
