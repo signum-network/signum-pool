@@ -98,7 +98,7 @@ public class Pool {
     }
 
     private Disposable refreshMiningInfoThread() {
-        return nodeService.getMiningInfo().subscribeOn(SignumUtils.defaultBurstNodeServiceScheduler())
+        return nodeService.getMiningInfo().subscribeOn(SignumUtils.defaultNodeServiceScheduler())
                 .retry()
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::onMiningInfo, e -> onMiningInfoError(e, true));
@@ -295,6 +295,16 @@ public class Pool {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             return;
+        }
+        
+        if(newMiningInfo == null) {
+            // we are booting the pool, lets get one
+            try {
+                newMiningInfo = nodeService.getMiningInfoSingle().blockingGet();
+            }
+            catch (Exception e) {
+                logger.error("Could not get the mining info from node", e);
+            }
         }
         
         bestSubmission.set(null);
