@@ -11,6 +11,7 @@ import java.net.SocketException;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +41,7 @@ import com.google.gson.JsonObject;
 import signumj.crypto.SignumCrypto;
 import signumj.entity.SignumAddress;
 import signumj.entity.SignumValue;
+import signumj.entity.response.Block;
 import signumj.entity.response.MiningInfo;
 import signumj.util.SignumUtils;
 import burst.pool.Constants;
@@ -283,6 +285,26 @@ public class Server extends NanoHTTPD {
             return response.toString();
         } else if (session.getUri().startsWith("/api/getWonBlocks")) {
             JsonArray wonBlocks = new JsonArray();
+            
+            // Get possible pending blocks
+            ArrayList<Block> recentlyForged = pool.getRecentlyForged();
+            if(recentlyForged != null) {
+                for(Block b : recentlyForged) {
+                    JsonObject wonBlockJson = new JsonObject();
+                    wonBlockJson.addProperty("height", b.getHeight());
+                    wonBlockJson.addProperty("id", b.getId().getID());
+                    wonBlockJson.addProperty("generator", b.getGenerator().getID());
+                    wonBlockJson.addProperty("generatorRS", b.getGenerator().getFullAddress());
+                    Miner miner = storageService.getMiner(b.getGenerator());
+                    if (miner!= null && !Objects.equals(miner.getName(), "")) {
+                        wonBlockJson.addProperty("name", miner.getName());
+                    }
+                    wonBlockJson.addProperty("reward", "Processing...");
+                    wonBlockJson.addProperty("poolShare", "Processing...");
+                    wonBlocks.add(wonBlockJson);
+                }
+            }
+            
             storageService.getWonBlocks(100)
             .forEach(wonBlock -> {
 

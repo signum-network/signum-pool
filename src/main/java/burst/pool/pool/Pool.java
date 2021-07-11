@@ -62,6 +62,7 @@ public class Pool {
     private final AtomicReference<MiningInfo> miningInfo = new AtomicReference<>();
     private final AtomicReference<SignumValue> transactionFee = new AtomicReference<>();
     private final Set<SignumAddress> myRewardRecipients = new HashSet<>();
+    private final AtomicReference<ArrayList<Block>> recentlyForged = new AtomicReference<>();
     private final Set<?> secondaryRewardRecipients[] = new HashSet<?>[Props.passphraseSecondary.length];
 
     public Pool(NodeService nodeService, StorageService storageService, PropertyService propertyService, MinerTracker minerTracker) {
@@ -226,6 +227,20 @@ public class Pool {
                         }
                     }
                 }
+                
+                ArrayList<Block> ourNewBlocks = new ArrayList<>();
+                try {
+                    Block[] blocks = nodeService.getBlocks(1, propertyService.getInt(Props.processLag)).blockingGet();
+                    for(Block b : blocks) {
+                        Miner miner = storageService.getMiner(b.getGenerator());
+                        if(miner != null)
+                            ourNewBlocks.add(b);
+                    }
+                }
+                catch (Exception e) {
+                    logger.error("Could not get the list of recent blocks", e);
+                }
+                recentlyForged.set(ourNewBlocks);
 
                 List<? extends Submission> submissions = transactionalStorageService.getBestSubmissionsForBlock(block.getHeight());
                 boolean won = false;
@@ -259,6 +274,13 @@ public class Pool {
                 processBlockSemaphore.release();
             }
         });
+    }
+    
+    /**
+     * @return the recently forged blocks, not yet processed
+     */
+    public ArrayList<Block> getRecentlyForged(){
+        return recentlyForged.get();
     }
 
     private void onProcessedBlock(StorageService transactionalStorageService, boolean actuallyProcessed) {
