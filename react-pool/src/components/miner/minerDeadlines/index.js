@@ -82,6 +82,13 @@ const MinerDeadLinesGraph = (props) => {
     }
   }, [loadingData]);
 
+  // Check if data is loaded and language has changed
+  useEffect(() => {
+    if (minerMiningData && minerMiningData !== null && minerMiningData !== []) {
+      mergeDeadlinesWithHeight(deadlineData);
+    }
+  }, [t]);
+
   // Custom tooltip
   const CustomTooltip = (props) => {
     const { active, payload, label } = props;

@@ -273,11 +273,38 @@ const PoolInfo = (props) => {
 
     // Check if blocks data is loaded
     if (blockData.loadingData === false) {
-      dynamicTab = (
-        <Grid container className={styles.containedContent}>
-          <BlocksTable data={blockData.list} />
-        </Grid>
-      );
+      // Check if the pool has won blocks
+      if (
+        blockData.list &&
+        blockData.list.length &&
+        blockData.list.length > 0
+      ) {
+        dynamicTab = (
+          <Grid container className={styles.containedContent}>
+            <BlocksTable data={blockData.list} />
+          </Grid>
+        );
+      } else {
+        dynamicTab = (
+          <Grid
+            container
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            component="section"
+            className={styles.containedContent}
+          >
+            <OutlinedTable
+              data={null}
+              isLoading={false}
+              notFoundLabel={t("noBlocksWon") + " 💎"}
+              fWidth="25%"
+              sWidth="75%"
+              onClickLastItem={null}
+            />
+          </Grid>
+        );
+      }
     }
   } else if (currentTab === 2) {
     dynamicTab = LoadingDynamicTab;
@@ -296,11 +323,41 @@ const PoolInfo = (props) => {
 
     // Check if top ten miners data is loaded
     if (minerData.loadingData === false && minerData.topTen) {
-      dynamicTab = (
-        <Grid container style={{ paddingLeft: "0.9em", paddingRight: "0.9em" }}>
-          <MinersTable data={minerData.topTen} />
-        </Grid>
-      );
+      // Check if there is miners
+      if (
+        minerData.topTen &&
+        minerData.topTen.length &&
+        minerData.topTen.length > 0
+      ) {
+        dynamicTab = (
+          <Grid
+            container
+            style={{ paddingLeft: "0.9em", paddingRight: "0.9em" }}
+          >
+            <MinersTable data={minerData.topTen} />
+          </Grid>
+        );
+      } else {
+        dynamicTab = (
+          <Grid
+            container
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            component="section"
+            className={styles.containedContent}
+          >
+            <OutlinedTable
+              data={null}
+              isLoading={false}
+              notFoundLabel={t("noMiners") + " ⚒️"}
+              fWidth="25%"
+              sWidth="75%"
+              onClickLastItem={null}
+            />
+          </Grid>
+        );
+      }
     }
   }
 

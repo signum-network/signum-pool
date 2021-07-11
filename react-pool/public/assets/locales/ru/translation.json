@@ -136,5 +136,6 @@
   "configurable": "Настраиваемый",
   "minersSharingLess": "Майнеры делят менее 20%",
   "languageName": "русский",
-  "chooseLanguage": "Выберите язык"
+  "chooseLanguage": "Выберите язык",
+  "noBlocksWon": "Нет выигранных блоков, идите и возьмите их!"
 }

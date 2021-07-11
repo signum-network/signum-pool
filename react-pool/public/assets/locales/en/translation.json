@@ -13,6 +13,7 @@
   "USDTAG": "USD",
   "blocks": "Blocks",
   "noMiners": "There are no miners, start inviting them!",
+  "noBlocksWon": "There are no blocks won, go get them!",
   "noDeadlineData": "No enough data available!",
   "noFoundDeadline": "Not found yet!",
   "footerLabel": "Made with ❤️ By Signum Network",
