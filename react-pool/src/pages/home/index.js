@@ -1,6 +1,9 @@
 // React
 import { Fragment, useEffect, useState, useRef } from "react";
 
+// React translations
+import { useTranslation } from "react-i18next";
+
 // React router dom
 import { Link } from "react-router-dom";
 
@@ -20,7 +23,7 @@ import Button from "@material-ui/core/Button";
 import Collapse from "@material-ui/core/Collapse";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
+import Alert from "@material-ui/core/Alert";
 
 // Material icons
 import SearchIcon from "@material-ui/icons/Search";
@@ -35,6 +38,7 @@ import {
   HOME_TITLE_FIRST_LINE_TOUSE,
   HOME_TITLE_SECOND_LINE_TOUSE,
 } from "../../utils/globalParameters";
+
 import { thousands_separators } from "../../utils/functions/normal";
 
 // Components
@@ -42,6 +46,9 @@ import MinersTable from "../../components/UI/minersTable/index";
 import OutlinedTable from "../../components/UI/outlinedTable/index";
 
 const Home = (props) => {
+  // Translations details
+  const { t } = useTranslation();
+
   // Props
   const { basicData, minerData, pricing, bookMarkedMiner } = props;
 
@@ -189,7 +196,7 @@ const Home = (props) => {
   // Delete bookmark miner
   const bookmarkDeleter = async () => {
     await localStorage.removeItem(userKeyBook);
-    await props.selectBookmarkedMiner(null);
+    await props.selectBookmarkedMiner(null, t);
     toggleBookMarkSnackBar(true);
   };
 
@@ -205,9 +212,26 @@ const Home = (props) => {
     </Grid>
   );
 
+  // Book miner data manipulation
+  let bookMinerData = [];
+
+  if (
+    bookMarkedMiner.data &&
+    bookMarkedMiner.data !== null &&
+    bookMarkedMiner.data !== undefined
+  ) {
+    let dataToRender = [];
+
+    bookMarkedMiner.data.map((item) => {
+      return dataToRender.push({ ...item, title: t(item.title) });
+    });
+
+    bookMinerData = dataToRender;
+  }
+
   return (
     <Fragment>
-      {/* Snakbacr for miner not found*/}
+      {/* Snakback for miner not found*/}
       <Snackbar
         open={showSnackBar}
         autoHideDuration={3000}
@@ -220,11 +244,11 @@ const Home = (props) => {
           severity="error"
           style={{ width: "100%", borderRadius: 8 }}
         >
-          <Typography>Miner not found ⚒️</Typography>
+          <Typography>{t("minerNotFound") + " ⚒️"}</Typography>
         </Alert>
       </Snackbar>
 
-      {/* Snakbacr for deleted miner*/}
+      {/* Snakback for deleted miner*/}
       <Snackbar
         open={showBookMarkSnackBar}
         autoHideDuration={3000}
@@ -237,7 +261,7 @@ const Home = (props) => {
           severity="success"
           style={{ width: "100%", borderRadius: 8 }}
         >
-          <Typography>Bookmark deleted! ⚒️</Typography>
+          <Typography>{t("minerDeleted") + " ⚒️"}</Typography>
         </Alert>
       </Snackbar>
 
@@ -246,12 +270,12 @@ const Home = (props) => {
         container
         className={styles.firstSection}
         direction="column"
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         component="section"
       >
         <Typography component="h1" variant="h3" align="center">
-          Welcome to {POOLNameToUse}
+          {`${t("welcomeString")} ${POOLNameToUse}`}
         </Typography>
 
         {
@@ -266,7 +290,7 @@ const Home = (props) => {
             <Grid
               container
               direction="column"
-              justify="center"
+              justifyContent="center"
               alignItems="center"
               component="section"
             >
@@ -282,7 +306,7 @@ const Home = (props) => {
                   align="center"
                   className={styles.redirectText}
                 >
-                  Start mining
+                  {t("buttonCta")}
                 </Typography>
               </Link>
             </Grid>
@@ -295,7 +319,7 @@ const Home = (props) => {
         container
         direction="row"
         alignItems="stretch"
-        justify="space-between"
+        justifyContent="space-between"
         wrap="nowrap"
         className={styles.inputContainer}
         component="form"
@@ -308,7 +332,7 @@ const Home = (props) => {
         <input
           autoComplete="off"
           type="text"
-          placeholder="Your Signum address or account name"
+          placeholder={t("searchInputPlaceHolder")}
           ref={fInput}
           disabled={minerData.loadingData}
         />
@@ -323,7 +347,7 @@ const Home = (props) => {
         container
         component="section"
         direction="row"
-        justify="space-between"
+        justifyContent="space-between"
         alignItems="center"
         wrap="wrap"
         className={styles.thirdSection}
@@ -331,7 +355,7 @@ const Home = (props) => {
         {/* Physical size */}
         <Grid item>
           <Typography variant="h6" color="textSecondary" gutterBottom>
-            Pool Physical
+            {t("poolPhysical")}
           </Typography>
 
           {minerData.loadingData === true ? (
@@ -346,7 +370,7 @@ const Home = (props) => {
         {/* Miners */}
         <Grid item>
           <Typography variant="h6" color="textSecondary" gutterBottom>
-            Miners
+            {t("miners")}
           </Typography>
 
           {minerData.loadingData === true ? (
@@ -361,7 +385,7 @@ const Home = (props) => {
         {/* Block height */}
         <Grid item>
           <Typography variant="h6" color="textSecondary" gutterBottom>
-            Block Height
+            {t("blockHeight")}
           </Typography>
 
           {basicData.loadingData === true ? (
@@ -376,7 +400,7 @@ const Home = (props) => {
         {/* Price */}
         <Grid item>
           <Typography variant="h6" color="textSecondary" gutterBottom>
-            Price <span>(USD)</span>
+            {t("price")} <span>({t("USDTAG")})</span>
           </Typography>
 
           {pricing.loadingData === true ? (
@@ -387,27 +411,42 @@ const Home = (props) => {
             </Typography>
           )}
         </Grid>
+
+        {/* Network difficulty*/}
+        <Grid item style={{ width: "100%" }}>
+          <Typography variant="h6" color="textSecondary" gutterBottom>
+            {t("network")}
+          </Typography>
+
+          {basicData.loadingData === true ? (
+            loadingTag
+          ) : (
+            <Typography variant="h5" gutterBottom>
+              {basicData.networkDifficulty}
+            </Typography>
+          )}
+        </Grid>
       </Grid>
 
       {/* Forth section */}
       <Grid
         container
         direction="column"
-        justify="flex-start"
+        justifyContent="flex-start"
         alignItems="flex-start"
         component="section"
         className={styles.forthSection}
       >
         <Typography className={styles.forthSectionTitle}>
-          Bookmarked Miner
+          {t("bookmarkedMiner")}
         </Typography>
 
         <OutlinedTable
-          data={bookMarkedMiner.data}
+          data={bookMinerData}
           isLoading={bookMarkedMiner.loadingData}
-          notFoundLabel="You have not bookmarked a miner 📌"
-          fWidth="25%"
-          sWidth="75%"
+          notFoundLabel={t("notBookmarkedMiner") + " 📌"}
+          fWidth="28%"
+          sWidth="72%"
           onClickLastItem={bookmarkDeleter}
         />
       </Grid>
@@ -420,7 +459,7 @@ const Home = (props) => {
         <Grid
           container
           direction="column"
-          justify="flex-start"
+          justifyContent="flex-start"
           alignItems="center"
           component="section"
           style={{ margin: "2rem 0" }}
@@ -430,7 +469,7 @@ const Home = (props) => {
             className={styles.toggleBtn}
             onClick={toogleMinersList}
           >
-            {checked === true ? "Hide miners list" : "Show miners list"}
+            {checked === true ? t("hideMinersList") : t("showMinersList")}
           </Button>
 
           <Collapse in={checked} style={{ width: "100%" }}>
@@ -443,7 +482,7 @@ const Home = (props) => {
         <Grid
           container
           direction="column"
-          justify="flex-start"
+          justifyContent="flex-start"
           alignItems="flex-start"
           component="section"
           className={styles.forthSection}
@@ -451,7 +490,7 @@ const Home = (props) => {
           <OutlinedTable
             data={null}
             isLoading={props.minerData.loadingData}
-            notFoundLabel="There are no miners, start inviting them! ⚒️"
+            notFoundLabel={t("noMiners") + " ⚒️"}
             fWidth="25%"
             sWidth="75%"
             onClickLastItem={null}

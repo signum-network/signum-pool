@@ -1,12 +1,18 @@
+// React translations
+import { useTranslation, Trans } from "react-i18next";
+
 // Material-ui
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Alert from "@material-ui/lab/Alert";
+import Alert from "@material-ui/core/Alert";
 
 // Styling
 import styles from "./minerOption.module.css";
 
-const minerOptions = (props) => {
+const MinerOptions = (props) => {
+  // Translations details
+  const { t } = useTranslation();
+
   // Get props
   const { data } = props;
 
@@ -14,7 +20,7 @@ const minerOptions = (props) => {
     <Grid
       container
       direction="column"
-      justify="flex-start"
+      justifyContent="flex-start"
       alignItems="flex-start"
       style={{
         padding: "1rem",
@@ -24,56 +30,75 @@ const minerOptions = (props) => {
       }}
     >
       {/* First paragraph */}
-      <Typography variant="h6">Configuration with messages</Typography>
+      <Typography variant="h6">{t("configurationWithMessages")}</Typography>
+
       <Typography gutterBottom>
-        If you have already joined the pool, you can further configure it by{" "}
-        <b>sending unencrypted text messages</b> from your miner account to the
-        pool account (effective after {data.processLag}):
+        <Trans i18nKey="configurationWithMessagesParagraph">
+          If you have already joined the pool, you can further configure it by
+          <strong>sending unencrypted text messages</strong> from your miner
+          account to the pool account (effective after
+          {{ processLag: data.processLag }})
+        </Trans>
       </Typography>
 
       <Typography className={styles.blueLabel}>{data.poolAccountRS}</Typography>
 
       {/* Second paragraph */}
-      <Typography variant="h6">Share Model</Typography>
+      <Typography variant="h6">{t("shareModel")}</Typography>
       <Typography gutterBottom>
-        Change your share model to 80 % by sending the following text message
-        (any number <b>from 0 up to 100 is accepted</b>)
+        <Trans i18nKey="shareModelParagraph">
+          Change your share model to 80 % by sending the following text message
+          (any number <strong>from 0 up to 100 is accepted</strong>)
+        </Trans>
       </Typography>
+
       <Typography className={styles.blueLabel}>share 80</Typography>
 
       {/* Third paragraph */}
-      <Typography variant="h6">Donation Percent</Typography>
+      <Typography variant="h6">{t("donationPercentage")}</Typography>
       <Typography gutterBottom>
-        Change your donation percent to 5 % by sending the following text
-        message (any number <b>from 0 up to 100 is accepted</b>)
+        <Trans i18nKey="donationPercentageParagraph">
+          Change your donation percent to 5 % by sending the following text
+          message (any number <strong>from 0 up to 100 is accepted</strong>)
+        </Trans>
       </Typography>
+
       <Typography className={styles.blueLabel}>donate 5</Typography>
 
       {/* Fourth paragraph */}
-      <Typography variant="h6">Minimum Payout</Typography>
+      <Typography variant="h6">{t("minimumPayout")}</Typography>
       <Typography gutterBottom>
-        Change your minimum payout to 100 SIGNA by sending the following text
-        message (any number{" "}
-        <b>higher than {data.minimumMinimumPayout} is accepted</b>):
+        <Trans i18nKey="minimumPayoutParagraph">
+          Change your minimum payout to 100 SIGNA by sending the following text
+          message (any number
+          <strong>
+            higher than {{ minimumPayoutCount: data.minimumMinimumPayout }} is
+            accepted
+          </strong>
+          ):
+        </Trans>
       </Typography>
+
       <Typography className={styles.blueLabel}>pay 100</Typography>
 
       {/* Fifth paragraph */}
-      <Typography variant="h6">Change multiple options</Typography>
+      <Typography variant="h6">{t("changeMultipleOptions")}</Typography>
       <Typography gutterBottom>
-        You can also configure multiple parameters with a single message, for
-        instance:
+        {t("changeMultipleOptionsParagraph")}
       </Typography>
+
       <Typography className={styles.blueLabel}>
         share 80 donate 5 pay 100
       </Typography>
 
       <Alert severity="info" style={{ width: "100%", fontSize: "1rem" }}>
-        If you will change miner settings, always send{" "}
-        <strong>unencrypted text messages</strong>
+        <Trans i18nKey="minerOptionsAlert">
+          If you will change miner settings, always send
+          <strong>unencrypted text messages</strong>
+        </Trans>
       </Alert>
     </Grid>
   );
 };
 
-export default minerOptions;
+export default MinerOptions;

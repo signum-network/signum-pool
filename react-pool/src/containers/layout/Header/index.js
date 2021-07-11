@@ -1,5 +1,11 @@
 // React
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+
+// React translations
+import { useTranslation } from "react-i18next";
+
+// React router
+import { useHistory } from "react-router-dom";
 
 // React router dom
 import { withRouter, Link } from "react-router-dom";
@@ -13,6 +19,11 @@ import IconButton from "@material-ui/core/IconButton";
 
 // Material icons
 import MenuIcon from "@material-ui/icons/Menu";
+import TranslateIcon from "@material-ui/icons/Translate";
+
+// Material ui menu
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 // Styling
 import styles from "./Header.module.css";
@@ -27,10 +38,45 @@ import {
   SHOW_TRADING_LINK,
 } from "../../../utils/globalParameters";
 
+// Url parameters
+import { extraLinksArrayExport } from "../../../utils/globalUrl";
+
 // Third-party
 import clsx from "clsx";
 
 const Header = (props) => {
+  // Translations details
+  const { t } = useTranslation();
+
+  // Route details
+  let router = useHistory();
+
+  // Menu manipulation
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  // SideDrawer manipulation
+  const goToSite = async (route, newPage = false) => {
+    // Open tab in new page
+    if (newPage === true) {
+      return window.open(route, "_blank").focus();
+    }
+
+    return new Promise(async (resolve) => {
+      await router.push(route);
+      resolve(true);
+    }).then(() => {
+      window.scrollTo(0, 0);
+    });
+  };
+
   return (
     <Fragment>
       <Grid
@@ -38,7 +84,7 @@ const Header = (props) => {
         className={styles.headerContainer}
         direction="row"
         alignItems="center"
-        justify="center"
+        justifyContent="center"
         alignContent="center"
         component="header"
       >
@@ -46,11 +92,11 @@ const Header = (props) => {
           item
           container
           direction="row"
-          justify="space-between"
+          justifyContent="space-between"
           alignItems="center"
           wrap="nowrap"
           style={{
-            maxWidth: "var(--main-client-width)",
+            maxWidth: "1600px",
             marginLeft: "auto",
             marginRight: "auto",
           }}
@@ -58,7 +104,7 @@ const Header = (props) => {
           <Grid
             item
             alignItems="center"
-            justify="flex-start"
+            justifyContent="flex-start"
             container
             style={{ width: "auto" }}
           >
@@ -84,7 +130,7 @@ const Header = (props) => {
                       : null
                   )}
                 >
-                  <Typography>Home</Typography>
+                  <Typography>{t("home")}</Typography>
                 </Link>
 
                 {/* Pool info */}
@@ -98,7 +144,21 @@ const Header = (props) => {
                       : null
                   )}
                 >
-                  <Typography>Pool info</Typography>
+                  <Typography>{t("_POOLINFO")}</Typography>
+                </Link>
+
+                {/* Miners */}
+                <Link
+                  to="/miners"
+                  className={clsx(
+                    styles.navLink,
+                    "defaultTransition",
+                    props.location.pathname === "/miners"
+                      ? styles.activeNavLink
+                      : null
+                  )}
+                >
+                  <Typography>{t("miners")}</Typography>
                 </Link>
 
                 {
@@ -118,71 +178,133 @@ const Header = (props) => {
                           : null
                       )}
                     >
-                      <Typography>Trading</Typography>
+                      <Typography>{t("trading")}</Typography>
                     </Link>
-                  ) : null
-                }
-
-                {/* Explorer */}
-                <Hidden mdDown>
-                  <a
-                    href={EXPLORERToUse}
-                    target="_blank"
-                    rel="noreferrer"
-                    className={clsx(styles.navLink, "defaultTransition")}
-                  >
-                    <Typography>Explorer</Typography>
-                  </a>
-                </Hidden>
-
-                {/* Wallet */}
-                <a
-                  href={WALLETToUse}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={clsx(styles.navLink, "defaultTransition")}
-                >
-                  <Typography>Wallet</Typography>
-                </a>
-
-                {
-                  // Faucet
-                  // Check if user wants to have a faucet link
-                  FAUCETToUse && FAUCETToUse !== null && FAUCETToUse !== "" ? (
-                    <a
-                      href={FAUCETToUse}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={clsx(styles.navLink, "defaultTransition")}
-                    >
-                      <Typography>Faucet</Typography>
-                    </a>
                   ) : null
                 }
 
                 {/* Discord */}
                 <a
-                  href={DISCORDToUse}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={clsx(styles.navLink, "defaultTransition")}
+                  className={clsx(
+                    styles.navLink,
+                    "defaultTransition",
+                    styles.discordLink
+                  )}
+                  onClick={() => {
+                    goToSite(DISCORDToUse, true);
+                  }}
                 >
-                  <Typography>Discord</Typography>
+                  <Typography>{t("discord")}</Typography>
                 </a>
+
+                {/* Extra menu options */}
+                <div
+                  style={{
+                    width: "auto",
+                    display: "inline-block",
+                    position: "relative",
+                  }}
+                >
+                  <a
+                    onClick={handleMenuClick}
+                    className={clsx(styles.navLink, "defaultTransition")}
+                  >
+                    <Typography>{t("extra")}</Typography>
+                  </a>
+
+                  <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleMenuClose}
+                  >
+                    <MenuItem
+                      onClick={() => {
+                        goToSite(DISCORDToUse, true);
+                        handleMenuClose();
+                      }}
+                      className={styles.discordExtraLink}
+                    >
+                      {t("discord")}
+                    </MenuItem>
+
+                    <MenuItem
+                      onClick={() => {
+                        goToSite(EXPLORERToUse, true);
+                        handleMenuClose();
+                      }}
+                    >
+                      {t("explorer")}
+                    </MenuItem>
+
+                    <MenuItem
+                      onClick={() => {
+                        goToSite(WALLETToUse, true);
+                        handleMenuClose();
+                      }}
+                    >
+                      {t("wallet")}
+                    </MenuItem>
+
+                    {
+                      // Faucet
+                      // Check if user wants to have a faucet link
+                      FAUCETToUse &&
+                      FAUCETToUse !== null &&
+                      FAUCETToUse !== "" ? (
+                        <MenuItem
+                          onClick={() => {
+                            goToSite(FAUCETToUse, true);
+                            handleMenuClose();
+                          }}
+                        >
+                          {t("faucet")}
+                        </MenuItem>
+                      ) : null
+                    }
+
+                    {
+                      // Render dynamic options
+                      // Extra options put by pool operator
+                      extraLinksArrayExport.map((item, key) => {
+                        return (
+                          <MenuItem
+                            key={key}
+                            onClick={() => {
+                              goToSite(item.url, item.newTab);
+                              handleMenuClose();
+                            }}
+                          >
+                            {item.label}
+                          </MenuItem>
+                        );
+                      })
+                    }
+                  </Menu>
+                </div>
               </Grid>
             </Hidden>
           </Grid>
 
-          <Grid item>
+          <Grid item className={styles.headerRightSideContainer}>
             {/* Desktop button */}
             <Hidden smDown>
+              <Button
+                className={styles.languageBtn}
+                startIcon={<TranslateIcon />}
+                onClick={props.openLanguageModal}
+              >
+                {t("languageName")}
+              </Button>
+
               <Link to="/start-mining">
                 <Button
                   variant="contained"
                   color="primary"
                   className={styles.mainBtn}
                 >
-                  Start Mining
+                  {t("buttonCta")}
                 </Button>
               </Link>
             </Hidden>

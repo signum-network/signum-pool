@@ -1,6 +1,9 @@
 // React
 import { Fragment, useState, useEffect } from "react";
 
+// React translations
+import { useTranslation } from "react-i18next";
+
 // Redux integration with actions
 import { connect } from "react-redux";
 
@@ -29,6 +32,9 @@ import { DEFAULTGRAPHCOLORTOUSE } from "../../../utils/globalColor";
 import { thousands_separators } from "../../../utils/functions/normal";
 
 const MinerDeadLinesGraph = (props) => {
+  // Translations details
+  const { t } = useTranslation();
+
   // Get props
   const { bookMarkedMinerData } = props;
   const { deadlineData, loadingData } = bookMarkedMinerData;
@@ -57,7 +63,8 @@ const MinerDeadLinesGraph = (props) => {
       newArray.push({
         height: block,
         deadlines: deadlineFormatted,
-        deadlineText: deadlines[index] > 1 ? deadlineFormatted + " Seconds" : 0,
+        deadlineText:
+          deadlines[index] > 1 ? deadlineFormatted + ` ${t("seconds")}` : 0,
       });
     });
 
@@ -75,6 +82,13 @@ const MinerDeadLinesGraph = (props) => {
     }
   }, [loadingData]);
 
+  // Check if data is loaded and language has changed
+  useEffect(() => {
+    if (minerMiningData && minerMiningData !== null && minerMiningData !== []) {
+      mergeDeadlinesWithHeight(deadlineData);
+    }
+  }, [t]);
+
   // Custom tooltip
   const CustomTooltip = (props) => {
     const { active, payload, label } = props;
@@ -86,7 +100,8 @@ const MinerDeadLinesGraph = (props) => {
             {payload[0].payload.deadlineText}
           </Typography>
           <Typography variant="body2" color="textSecondary" align="center">
-            {"Block Height " + thousands_separators(payload[0].payload.height)}
+            {`${t("blockHeight")} ` +
+              thousands_separators(payload[0].payload.height)}
           </Typography>
         </Grid>
       );
@@ -101,7 +116,7 @@ const MinerDeadLinesGraph = (props) => {
   if (!deadlineData || deadlineData === null) {
     return (
       <Typography variant="h6" className={styles.noDataText}>
-        No enough data available! ⚒️
+        {`${t("noDeadlineData")} ⚒️`}
       </Typography>
     );
   }
@@ -111,7 +126,7 @@ const MinerDeadLinesGraph = (props) => {
     return (
       <Grid
         container
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         style={{ margin: "1em auto" }}
       >

@@ -1,20 +1,20 @@
 package burst.pool.entity;
 
-import burst.kit.entity.BurstAddress;
-import burst.kit.entity.BurstID;
-import burst.kit.entity.BurstValue;
+import signumj.entity.SignumAddress;
+import signumj.entity.SignumID;
+import signumj.entity.SignumValue;
 
 import java.math.BigInteger;
 
 public class WonBlock {
     private final int blockHeight;
-    private final BurstID blockId;
-    private final BurstAddress generatorId;
+    private final SignumID blockId;
+    private final SignumAddress generatorId;
     private final BigInteger nonce;
-    private final BurstValue fullReward;
-    private final BurstValue poolShare;
+    private final SignumValue fullReward;
+    private final SignumValue poolShare;
 
-    public WonBlock(int blockHeight, BurstID blockId, BurstAddress generatorId, BigInteger nonce, BurstValue fullReward, BurstValue poolShare) {
+    public WonBlock(int blockHeight, SignumID blockId, SignumAddress generatorId, BigInteger nonce, SignumValue fullReward, SignumValue poolShare) {
         this.blockHeight = blockHeight;
         this.blockId = blockId;
         this.generatorId = generatorId;
@@ -27,11 +27,11 @@ public class WonBlock {
         return blockHeight;
     }
 
-    public BurstID getBlockId() {
+    public SignumID getBlockId() {
         return blockId;
     }
 
-    public BurstAddress getGeneratorId() {
+    public SignumAddress getGeneratorId() {
         return generatorId;
     }
 
@@ -39,11 +39,11 @@ public class WonBlock {
         return nonce;
     }
 
-    public BurstValue getFullReward() {
+    public SignumValue getFullReward() {
         return fullReward;
     }
     
-    public BurstValue getPoolShare() {
+    public SignumValue getPoolShare() {
         return poolShare;
     }
 }

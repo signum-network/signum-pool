@@ -1,9 +1,9 @@
 package burst.pool.storage.persistent;
 
-import burst.kit.entity.BurstAddress;
-import burst.kit.entity.BurstID;
-import burst.kit.entity.BurstValue;
-import burst.kit.service.BurstNodeService;
+import signumj.entity.SignumAddress;
+import signumj.entity.SignumID;
+import signumj.entity.SignumValue;
+import signumj.service.NodeService;
 import burst.pool.db.tables.records.MinersRecord;
 import burst.pool.entity.Payout;
 import burst.pool.entity.WonBlock;
@@ -60,7 +60,7 @@ public class DbStorageService implements StorageService {
 
     private final PropertyService propertyService;
     private final MinerMaths minerMaths;
-    private final BurstNodeService burstNodeService;
+    private final NodeService burstNodeService;
 
     private final ThreadLocal<Connection> localConnection = new ThreadLocal<>();
 
@@ -73,7 +73,7 @@ public class DbStorageService implements StorageService {
     private final CacheManager cacheManager;
     private final Map<Table<?>, Semaphore> cacheLocks;
 
-    public DbStorageService(PropertyService propertyService, MinerMaths minerMaths, BurstNodeService burstNodeService) throws SQLException, FlywayException {
+    public DbStorageService(PropertyService propertyService, MinerMaths minerMaths, NodeService burstNodeService) throws SQLException, FlywayException {
         String url = propertyService.getString(Props.dbUrl);
         String username = propertyService.getString(Props.dbUsername);
         String password = propertyService.getString(Props.dbPassword);
@@ -215,7 +215,7 @@ public class DbStorageService implements StorageService {
     }
 
     private Miner minerFromRecord(MinersRecord record) {
-        return new Miner(minerMaths, propertyService, BurstAddress.fromId(BurstID.fromLong(record.getAccountId())), new DbMinerStore(record.getAccountId()));
+        return new Miner(minerMaths, propertyService, SignumAddress.fromId(SignumID.fromLong(record.getAccountId())), new DbMinerStore(record.getAccountId()));
     }
 
     private void resetCache() {
@@ -288,8 +288,8 @@ public class DbStorageService implements StorageService {
     }
 
     @Override
-    public Miner getMiner(BurstAddress address) {
-        return getMiner(address.getBurstID().getSignedLongId());
+    public Miner getMiner(SignumAddress address) {
+        return getMiner(address.getSignumID().getSignedLongId());
     }
 
     private Miner getMiner(long id) {
@@ -306,20 +306,20 @@ public class DbStorageService implements StorageService {
      * Synchronized because...??? TODO!!
      */
     @Override
-    public synchronized Miner newMiner(BurstAddress address) {
+    public synchronized Miner newMiner(SignumAddress address) {
         // We do not need to add to cache as once inserted getMiner will add to cache
         return useDslContext(context -> {
             if (context.selectCount()
                     .from(MINERS)
-                    .where(MINERS.ACCOUNT_ID.eq(address.getBurstID().getSignedLongId()))
+                    .where(MINERS.ACCOUNT_ID.eq(address.getSignumID().getSignedLongId()))
                     .fetchOne(0, int.class) > 0) {
                 return getMiner(address);
             } else {
                 context.insertInto(MINERS, MINERS.ACCOUNT_ID, MINERS.SHARE_PERCENT, MINERS.DONATION_PERCENT, MINERS.PENDING_BALANCE, MINERS.ESTIMATED_CAPACITY, MINERS.SHARE, MINERS.MINIMUM_PAYOUT, MINERS.NAME, MINERS.USER_AGENT)
-                .values(address.getBurstID().getSignedLongId(),
+                .values(address.getSignumID().getSignedLongId(),
                         100 - (int)(100*propertyService.getFloat(Props.winnerRewardPercentage)),
                         propertyService.getInt(Props.donationPercent),
-                        0L, 0d, 0d, BurstValue.fromBurst(propertyService.getFloat(Props.defaultMinimumPayout)).toPlanck().longValueExact(), "", "")
+                        0L, 0d, 0d, SignumValue.fromSigna(propertyService.getFloat(Props.defaultMinimumPayout)).toNQT().longValueExact(), "", "")
                 .execute();
                 recalculateMinerCount();
                 return getMiner(address);
@@ -329,12 +329,12 @@ public class DbStorageService implements StorageService {
 
     @Override
     public PoolFeeRecipient getPoolFeeRecipient() {
-        return new PoolFeeRecipient(propertyService, new DbRecipientStore(POOL_STATE_FEE_RECIPIENT_BALANCE), propertyService.getBurstAddress(Props.feeRecipient));
+        return new PoolFeeRecipient(propertyService, new DbRecipientStore(POOL_STATE_FEE_RECIPIENT_BALANCE), propertyService.getSignumAddress(Props.feeRecipient));
     }
 
     @Override
     public PoolFeeRecipient getPoolDonationRecipient() {
-        return new PoolFeeRecipient(propertyService, new DbRecipientStore(POOL_STATE_DONATION_RECIPIENT_BALANCE), propertyService.getBurstAddress(Props.donationRecipient));
+        return new PoolFeeRecipient(propertyService, new DbRecipientStore(POOL_STATE_DONATION_RECIPIENT_BALANCE), propertyService.getSignumAddress(Props.donationRecipient));
     }
 
     private void setLastProcessedBlock(int block) {
@@ -384,7 +384,7 @@ public class DbStorageService implements StorageService {
         try {
             return getFromCacheOr(BEST_SUBMISSIONS, Long.toString(blockHeight), () -> useDslContext(context -> context.selectFrom(BEST_SUBMISSIONS)
                     .where(BEST_SUBMISSIONS.HEIGHT.eq(blockHeight))
-                    .fetch(response -> new StoredSubmission(BurstAddress.fromId(BurstID.fromLong(response.getAccountId())), new BigInteger(response.getNonce()), response.getDeadline()))));
+                    .fetch(response -> new StoredSubmission(SignumAddress.fromId(SignumID.fromLong(response.getAccountId())), new BigInteger(response.getNonce()), response.getDeadline()))));
         } catch (NullPointerException e) {
             return null;
         }
@@ -395,7 +395,7 @@ public class DbStorageService implements StorageService {
         List<StoredSubmission> submissions = getBestSubmissionsForBlock(blockHeight);
         if (submissions == null) submissions = new ArrayList<>();
         useDslContextVoid(context -> context.insertInto(BEST_SUBMISSIONS, BEST_SUBMISSIONS.HEIGHT, BEST_SUBMISSIONS.ACCOUNT_ID, BEST_SUBMISSIONS.NONCE, BEST_SUBMISSIONS.DEADLINE)
-                .values(blockHeight, submission.getMiner().getBurstID().getSignedLongId(), submission.getNonce().toString(), submission.getDeadline())
+                .values(blockHeight, submission.getMiner().getSignumID().getSignedLongId(), submission.getNonce().toString(), submission.getDeadline())
                 .execute());
         submissions.add(submission);
         storeInCache(BEST_SUBMISSIONS, Long.toUnsignedString(blockHeight), submissions);
@@ -405,7 +405,7 @@ public class DbStorageService implements StorageService {
     public void addWonBlock(WonBlock wonBlock) {
         // Won blocks are not cached. TODO cache!
         useDslContextVoid(context -> context.insertInto(WON_BLOCKS, WON_BLOCKS.BLOCK_HEIGHT, WON_BLOCKS.BLOCK_ID, WON_BLOCKS.GENERATOR_ID, WON_BLOCKS.NONCE, WON_BLOCKS.FULL_REWARD, WON_BLOCKS.POOL_SHARE)
-            .values((long) wonBlock.getBlockHeight(), wonBlock.getBlockId().getSignedLongId(), wonBlock.getGeneratorId().getBurstID().getSignedLongId(), wonBlock.getNonce().toString(), wonBlock.getFullReward().toPlanck().longValue(), wonBlock.getPoolShare().toPlanck().longValue())
+            .values((long) wonBlock.getBlockHeight(), wonBlock.getBlockId().getSignedLongId(), wonBlock.getGeneratorId().getSignumID().getSignedLongId(), wonBlock.getNonce().toString(), wonBlock.getFullReward().toNQT().longValue(), wonBlock.getPoolShare().toNQT().longValue())
             .execute()); 
     }
 
@@ -414,14 +414,14 @@ public class DbStorageService implements StorageService {
         return useDslContext(context -> context.selectFrom(WON_BLOCKS)
                 .orderBy(WON_BLOCKS.BLOCK_HEIGHT.desc())
                 .limit(limit)
-                .fetch(record -> new WonBlock(record.getBlockHeight().intValue(), BurstID.fromLong(record.getBlockId()), BurstAddress.fromId(BurstID.fromLong(record.getGeneratorId())), new BigInteger(record.getNonce()), BurstValue.fromPlanck(record.getFullReward()), BurstValue.fromPlanck(record.getPoolShare() >=0 ? record.getPoolShare() : record.getFullReward()))));
+                .fetch(record -> new WonBlock(record.getBlockHeight().intValue(), SignumID.fromLong(record.getBlockId()), SignumAddress.fromId(SignumID.fromLong(record.getGeneratorId())), new BigInteger(record.getNonce()), SignumValue.fromNQT(record.getFullReward()), SignumValue.fromNQT(record.getPoolShare() >=0 ? record.getPoolShare() : record.getFullReward()))));
     }
 
     @Override
     public void addPayout(Payout payout) {
         // Payouts are not cached. TODO cache them!
         useDslContextVoid(context -> context.insertInto(PAYOUTS, PAYOUTS.TRANSACTION_ID, PAYOUTS.SENDER_PUBLIC_KEY, PAYOUTS.FEE, PAYOUTS.DEADLINE, PAYOUTS.ATTACHMENT)
-                .values(payout.getTransactionId().getSignedLongId(), payout.getSenderPublicKey(), payout.getFee().toPlanck().longValue(), (long) payout.getDeadline(), payout.getAttachment())
+                .values(payout.getTransactionId().getSignedLongId(), payout.getSenderPublicKey(), payout.getFee().toNQT().longValue(), (long) payout.getDeadline(), payout.getAttachment())
                 .execute());
     }
     
@@ -454,17 +454,17 @@ public class DbStorageService implements StorageService {
         }
 
         @Override
-        public BurstValue getPendingBalance() {
+        public SignumValue getPendingBalance() {
             return getFromCacheOr(MINERS, accountIdStr + "pending", () -> useDslContext(context -> context.select(MINERS.PENDING_BALANCE)
                     .from(MINERS)
                     .where(MINERS.ACCOUNT_ID.eq(accountId))
-                    .fetchAny(record -> BurstValue.fromPlanck(record.get(MINERS.PENDING_BALANCE)))));
+                    .fetchAny(record -> SignumValue.fromNQT(record.get(MINERS.PENDING_BALANCE)))));
         }
 
         @Override
-        public void setPendingBalance(BurstValue pendingBalance) {
+        public void setPendingBalance(SignumValue pendingBalance) {
             useDslContextVoid(context -> context.update(MINERS)
-                    .set(MINERS.PENDING_BALANCE, pendingBalance.toPlanck().longValueExact())
+                    .set(MINERS.PENDING_BALANCE, pendingBalance.toNQT().longValueExact())
                     .where(MINERS.ACCOUNT_ID.eq(accountId))
                     .execute());
             storeInCache(MINERS, accountIdStr + "pending", pendingBalance);
@@ -563,17 +563,17 @@ public class DbStorageService implements StorageService {
         }
 
         @Override
-        public BurstValue getMinimumPayout() {
+        public SignumValue getMinimumPayout() {
             return getFromCacheOr(MINERS, accountIdStr + "minpayout", () -> useDslContext(context -> context.select(MINERS.MINIMUM_PAYOUT)
                     .from(MINERS)
                     .where(MINERS.ACCOUNT_ID.eq(accountId))
-                    .fetchAny(record -> BurstValue.fromPlanck(record.get(MINERS.MINIMUM_PAYOUT)))));
+                    .fetchAny(record -> SignumValue.fromNQT(record.get(MINERS.MINIMUM_PAYOUT)))));
         }
 
         @Override
-        public void setMinimumPayout(BurstValue minimumPayout) {
+        public void setMinimumPayout(SignumValue minimumPayout) {
             useDslContextVoid(context -> context.update(MINERS)
-                    .set(MINERS.MINIMUM_PAYOUT, minimumPayout.toPlanck().longValueExact())
+                    .set(MINERS.MINIMUM_PAYOUT, minimumPayout.toNQT().longValueExact())
                     .where(MINERS.ACCOUNT_ID.eq(accountId))
                     .execute());
             storeInCache(MINERS, accountIdStr + "minpayout", minimumPayout);
@@ -614,23 +614,23 @@ public class DbStorageService implements StorageService {
         }
 
         @Override
-        public BurstValue getPendingBalance() {
+        public SignumValue getPendingBalance() {
             try {
-                BurstValue pending = getFromCacheOr(POOL_STATE, key, () -> useDslContext(context -> context.select(POOL_STATE.VALUE)
+                SignumValue pending = getFromCacheOr(POOL_STATE, key, () -> useDslContext(context -> context.select(POOL_STATE.VALUE)
                         .from(POOL_STATE)
                         .where(POOL_STATE.KEY.eq(key))
-                        .fetchAny(record -> BurstValue.fromPlanck(record.get(POOL_STATE.VALUE)))));
-                return pending == null ? BurstValue.ZERO : pending;
+                        .fetchAny(record -> SignumValue.fromNQT(record.get(POOL_STATE.VALUE)))));
+                return pending == null ? SignumValue.ZERO : pending;
             } catch (NullPointerException e) {
-                return BurstValue.fromPlanck(0);
+                return SignumValue.fromNQT(0);
             }
         }
 
         @Override
-        public void setPendingBalance(BurstValue pending) {
+        public void setPendingBalance(SignumValue pending) {
             useDslContextVoid(context -> context.mergeInto(POOL_STATE, POOL_STATE.KEY, POOL_STATE.VALUE)
                     .key(POOL_STATE.KEY)
-                    .values(key, pending.toPlanck().toString())
+                    .values(key, pending.toNQT().toString())
                     .execute());
             storeInCache(POOL_STATE, key, pending);
         }

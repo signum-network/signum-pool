@@ -8,9 +8,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import burst.kit.entity.BurstAddress;
-import burst.kit.entity.BurstValue;
-import burst.kit.entity.response.Block;
+import signumj.entity.SignumAddress;
+import signumj.entity.SignumValue;
+import signumj.entity.response.Block;
 import burst.pool.storage.config.PropertyService;
 import burst.pool.storage.config.Props;
 import burst.pool.storage.persistent.MinerStore;
@@ -19,11 +19,11 @@ public class Miner implements Payable {
     private final MinerMaths minerMaths;
     private final PropertyService propertyService;
 
-    private final BurstAddress address;
+    private final SignumAddress address;
     private final MinerStore store;
     private int commitmentHeight;
-    private AtomicReference<BurstValue> commitment = new AtomicReference<>();
-    private AtomicReference<BurstValue> committedBalance = new AtomicReference<>();
+    private AtomicReference<SignumValue> commitment = new AtomicReference<>();
+    private AtomicReference<SignumValue> committedBalance = new AtomicReference<>();
     private String userAgent, name;
     private AtomicInteger nconf = new AtomicInteger(0);
     private ConcurrentLinkedQueue<Deadline> deadlines = new ConcurrentLinkedQueue<>();
@@ -31,7 +31,7 @@ public class Miner implements Payable {
     private AtomicReference<Double> boostPool = new AtomicReference<>();
     private AtomicReference<Double> totalCapacityEffective = new AtomicReference<>();
 
-    public Miner(MinerMaths minerMaths, PropertyService propertyService, BurstAddress address, MinerStore store) {
+    public Miner(MinerMaths minerMaths, PropertyService propertyService, SignumAddress address, MinerStore store) {
         this.minerMaths = minerMaths;
         this.propertyService = propertyService;
         this.address = address;
@@ -112,7 +112,7 @@ public class Miner implements Payable {
             // we have a new deadline to save to the DB
             if(deadlinesCount > nAvg/4) {
                 // enough deadlines to make a reasonable estimate using pool data besides the chain data
-                BurstValue commitmentPool = getCommittedBalance().divide(Math.max(1.0, estimatedCapacityWithBoost));
+                SignumValue commitmentPool = getCommittedBalance().divide(Math.max(1.0, estimatedCapacityWithBoost));
 
                 double boostPool = MinerTracker.getCommitmentFactor(commitmentPool, block.getAverageCommitmentNQT());
                 deadlineToSave.setBoostPool(boostPool);
@@ -140,9 +140,9 @@ public class Miner implements Payable {
     }
 
     @Override
-    public void increasePending(BurstValue delta, Payable donationRecipient) {
+    public void increasePending(SignumValue delta, Payable donationRecipient) {
         if(donationRecipient != null) {
-            BurstValue donation = delta.multiply(store.getDonationPercent()/100d);
+            SignumValue donation = delta.multiply(store.getDonationPercent()/100d);
             delta = delta.subtract(donation);
             donationRecipient.increasePending(donation, null);
         }
@@ -150,18 +150,18 @@ public class Miner implements Payable {
     }
 
     @Override
-    public void decreasePending(BurstValue delta) {
+    public void decreasePending(SignumValue delta) {
         store.setPendingBalance(store.getPendingBalance().subtract(delta));
     }
 
     @Override
-    public BurstValue getMinimumPayout() {
+    public SignumValue getMinimumPayout() {
         return store.getMinimumPayout();
     }
 
     @Override
-    public BurstValue takeShare(BurstValue availableReward, Payable donationRecipient) {
-        BurstValue share = availableReward.multiply(store.getShare());
+    public SignumValue takeShare(SignumValue availableReward, Payable donationRecipient) {
+        SignumValue share = availableReward.multiply(store.getShare());
         increasePending(share, donationRecipient);
         return share;
     }
@@ -220,12 +220,12 @@ public class Miner implements Payable {
     }
 
     @Override
-    public BurstValue getPending() {
+    public SignumValue getPending() {
         return store.getPendingBalance();
     }
 
     @Override
-    public BurstAddress getAddress() {
+    public SignumAddress getAddress() {
         return address;
     }
 
@@ -253,23 +253,23 @@ public class Miner implements Payable {
         this.name = name;
     }
     
-    public void setCommitment(BurstValue commitment, BurstValue comittedBalance, int height) {
+    public void setCommitment(SignumValue commitment, SignumValue comittedBalance, int height) {
         this.commitment.set(commitment);
         this.committedBalance.set(comittedBalance);
         this.commitmentHeight = height;
     }
     
-    public BurstValue getCommitment() {
-        BurstValue value = commitment.get();
+    public SignumValue getCommitment() {
+        SignumValue value = commitment.get();
         if(value == null)
-            value = BurstValue.fromBurst(0);
+            value = SignumValue.fromSigna(0);
         return value;
     }
     
-    public BurstValue getCommittedBalance() {
-        BurstValue value = committedBalance.get();
+    public SignumValue getCommittedBalance() {
+        SignumValue value = committedBalance.get();
         if(value == null)
-            value = BurstValue.fromBurst(0);
+            value = SignumValue.fromSigna(0);
         return value;
     }
     
@@ -285,7 +285,7 @@ public class Miner implements Payable {
         this.userAgent = userAgent;
     }
 
-    public void setMinimumPayout(BurstValue minimumPayout) {
+    public void setMinimumPayout(SignumValue minimumPayout) {
         store.setMinimumPayout(minimumPayout);
     }
 

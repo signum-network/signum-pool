@@ -1,6 +1,6 @@
 package burst.pool.storage.config;
 
-import burst.kit.entity.BurstAddress;
+import signumj.entity.SignumAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,7 +106,7 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public BurstAddress getBurstAddress(Prop<BurstAddress> prop) {
-        return BurstAddress.fromEither(valueOrDefault(prop));
+    public SignumAddress getSignumAddress(Prop<SignumAddress> prop) {
+        return SignumAddress.fromEither(valueOrDefault(prop));
     }
 }

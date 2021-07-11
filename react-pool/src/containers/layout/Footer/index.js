@@ -1,3 +1,6 @@
+// React translations
+import { useTranslation } from "react-i18next";
+
 // Material ui
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -6,16 +9,24 @@ import Typography from "@material-ui/core/Typography";
 import styles from "./Footer.module.css";
 
 const Footer = () => {
+  // Translations details
+  const { t } = useTranslation();
+
   return (
     <Grid
       direction="column"
-      justify="flex-start"
+      justifyContent="flex-start"
       alignItems="flex-start"
       container
       className={styles.footerContainer}
       component="footer"
     >
-      <Grid container direction="row" justify="center" alignItems="center">
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+      >
         <Typography variant="body2" align="center">
           <a
             href="https://github.com/signum-network/signum-pool"
@@ -24,7 +35,7 @@ const Footer = () => {
           >
             <u>Github repo</u>
           </a>{" "}
-          - Made with ❤️ By Signum Network @ (2019-
+          - {t("footerLabel")} @ (2019-
           {new Date().getFullYear()})
         </Typography>
       </Grid>

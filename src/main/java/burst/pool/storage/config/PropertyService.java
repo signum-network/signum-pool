@@ -1,6 +1,6 @@
 package burst.pool.storage.config;
 
-import burst.kit.entity.BurstAddress;
+import signumj.entity.SignumAddress;
 
 public interface PropertyService {
     void reloadIfModified();
@@ -10,5 +10,5 @@ public interface PropertyService {
     float getFloat(Prop<Float> prop);
     String getString(Prop<String> prop);
     String[] getStringList(Prop<String> prop);
-    BurstAddress getBurstAddress(Prop<BurstAddress> prop);
+    SignumAddress getSignumAddress(Prop<SignumAddress> prop);
 }

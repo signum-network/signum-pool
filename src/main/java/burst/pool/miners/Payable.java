@@ -1,13 +1,13 @@
 package burst.pool.miners;
 
-import burst.kit.entity.BurstAddress;
-import burst.kit.entity.BurstValue;
+import signumj.entity.SignumAddress;
+import signumj.entity.SignumValue;
 
 public interface Payable {
-    void increasePending(BurstValue delta, Payable donationRecipient);
-    void decreasePending(BurstValue delta);
-    BurstValue getMinimumPayout();
-    BurstValue takeShare(BurstValue availableReward, Payable donationRecipient);
-    BurstValue getPending();
-    BurstAddress getAddress();
+    void increasePending(SignumValue delta, Payable donationRecipient);
+    void decreasePending(SignumValue delta);
+    SignumValue getMinimumPayout();
+    SignumValue takeShare(SignumValue availableReward, Payable donationRecipient);
+    SignumValue getPending();
+    SignumAddress getAddress();
 }

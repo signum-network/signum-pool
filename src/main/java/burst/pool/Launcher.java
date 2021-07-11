@@ -1,7 +1,7 @@
 package burst.pool;
 
-import burst.kit.service.BurstNodeService;
-import burst.kit.util.BurstKitUtils;
+import signumj.service.NodeService;
+import signumj.util.SignumUtils;
 import burst.pool.miners.MinerMaths;
 import burst.pool.miners.MinerTracker;
 import burst.pool.pool.Pool;
@@ -23,10 +23,10 @@ public class Launcher {
     public static void main(String[] args) { // todo catch exception
         
         // New address prefixes
-        BurstKitUtils.addAddressPrefix("S");
-        BurstKitUtils.addAddressPrefix("TS");
-        BurstKitUtils.addAddressPrefix("BURST");
-        BurstKitUtils.setValueSuffix("SIGNA");
+        SignumUtils.addAddressPrefix("S");
+        SignumUtils.addAddressPrefix("TS");
+        SignumUtils.addAddressPrefix("BURST");
+        SignumUtils.setValueSuffix("SIGNA");
         
         if (System.getProperty("log4j.configurationFile") == null) {
             System.setProperty("log4j.configurationFile", "logging.xml");
@@ -40,10 +40,10 @@ public class Launcher {
         PropertyService propertyService = new PropertyServiceImpl(propertiesFileName);
         
         // Set the default prefix
-        BurstKitUtils.setAddressPrefix(propertyService.getBoolean(Props.testnet) ? "TS" : "S");
+        SignumUtils.setAddressPrefix(propertyService.getBoolean(Props.testnet) ? "TS" : "S");
         
         MinerMaths minerMaths = new MinerMaths(propertyService.getInt(Props.nAvg) + propertyService.getInt(Props.processLag), propertyService.getInt(Props.nMin));
-        BurstNodeService nodeService = BurstNodeService.getCompositeInstanceWithUserAgent(Constants.USER_AGENT, propertyService.getStringList(Props.nodeAddresses));
+        NodeService nodeService = NodeService.getUseBestInstance(true, Constants.USER_AGENT, propertyService.getStringList(Props.nodeAddresses));
         StorageService storageService = null;
         try {
             storageService = new DbStorageService(propertyService, minerMaths, nodeService);

@@ -1,16 +1,16 @@
 package burst.pool.entity;
 
-import burst.kit.entity.BurstID;
-import burst.kit.entity.BurstValue;
+import signumj.entity.SignumID;
+import signumj.entity.SignumValue;
 
 public class Payout {
-    private final BurstID transactionId;
+    private final SignumID transactionId;
     private final byte[] senderPublicKey;
-    private final BurstValue fee;
+    private final SignumValue fee;
     private final int deadline;
     private final byte[] attachment;
 
-    public Payout(BurstID transactionId, byte[] senderPublicKey, BurstValue fee, int deadline, byte[] attachment) {
+    public Payout(SignumID transactionId, byte[] senderPublicKey, SignumValue fee, int deadline, byte[] attachment) {
         this.transactionId = transactionId;
         this.senderPublicKey = senderPublicKey;
         this.fee = fee;
@@ -18,7 +18,7 @@ public class Payout {
         this.attachment = attachment;
     }
 
-    public BurstID getTransactionId() {
+    public SignumID getTransactionId() {
         return transactionId;
     }
 
@@ -26,7 +26,7 @@ public class Payout {
         return senderPublicKey;
     }
 
-    public BurstValue getFee() {
+    public SignumValue getFee() {
         return fee;
     }
 

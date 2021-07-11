@@ -1,6 +1,9 @@
 // React
 import { Fragment } from "react";
 
+// React translations
+import { useTranslation, Trans } from "react-i18next";
+
 // Redux integration with actions
 import { connect } from "react-redux";
 
@@ -26,6 +29,9 @@ import {
 import { Helmet } from "react-helmet";
 
 const StartMining = (props) => {
+  // Translations details
+  const { t } = useTranslation();
+
   // Get props
   const { poolData } = props;
 
@@ -38,7 +44,7 @@ const StartMining = (props) => {
     <Fragment>
       {/* Basic SEO */}
       <Helmet>
-        <title>{"Start mining • " + POOLNameToUse}</title>
+        <title>{`${t("_STARTMININGTAG")} • ${POOLNameToUse}`}</title>
       </Helmet>
 
       {/* First section */}
@@ -46,16 +52,19 @@ const StartMining = (props) => {
         container
         className={homeStyles.firstSection}
         direction="column"
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         component="section"
       >
         <Typography component="h1" variant="h3" align="center">
-          Quick Join guide
+          {t("startMiningTagTitle")}
         </Typography>
+
         <Typography align="center" gutterBottom variant="h6">
-          Join the sustainable <br />
-          mining pool in a few steps.
+          <Trans i18nKey="startMiningTagDescription">
+            Join the sustainable <br />
+            mining pool in a few steps.
+          </Trans>
         </Typography>
       </Grid>
 
@@ -64,17 +73,19 @@ const StartMining = (props) => {
         container
         className={styles.secondSection}
         direction="column"
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         component="section"
       >
         <Typography align="center">
-          Are you new to Signum mining? <br /> Welcome to the community ❤️{" "}
-          <br /> Read this{" "}
+          <Trans i18nKey="startingMemberParagraphFLine">
+            Are you new to Signum mining? <br /> Welcome to the community ❤️
+            <br /> Read this
+          </Trans>{" "}
           <a href={MINING_GUIDEToUse} target="_blank" rel="noreferrer">
-            simple mining guide
+            {t("simpleMiningGuideLabel")}
           </a>{" "}
-          instead
+          {t("insteadLabel")}
         </Typography>
       </Grid>
 
@@ -83,28 +94,26 @@ const StartMining = (props) => {
         container
         className={styles.thirdSection}
         direction="column"
-        justify="flex-start"
+        justifyContent="flex-start"
         alignItems="flex-start"
         component="section"
       >
         {/* First step */}
         <Grid item className={styles.thirSectionItem}>
-          <Typography variant="h6">Step 1: Account Creation</Typography>
+          <Typography variant="h6">{t("_STARTMININGFIRSTSTEP")}</Typography>
           <Typography gutterBottom>
-            Before assigning the reward recipient, you must first set up a
-            Signum wallet.{" "}
+            {t("startMiningFirstStepText") + " "}
             <Hidden smDown>
               <br></br>
             </Hidden>
-            Meet the following wallets with which you can manage your Signa and
-            also join the pool.
+            {t("startMiningFirstStepSecondText")}
           </Typography>
 
           <Grid
             container
             direction="row"
             alignItems="center"
-            justify="flex-start"
+            justifyContent="flex-start"
             wrap="wrap"
             style={{ marginTop: "0.7em", marginBottom: "1em" }}
           >
@@ -135,22 +144,19 @@ const StartMining = (props) => {
               }}
               className={styles.walletsBtn}
             >
-              🌐 Online wallet
+              🌐 {t("onlineWallet")}
             </Button>
           </Grid>
 
           <Typography color="textSecondary" variant="subtitle2">
-            Reminder: Never, ever give your passphare to anyone!
+            {t("startMiningFirstStepThirdText")}
           </Typography>
         </Grid>
 
         {/* Second step */}
         <Grid item className={styles.thirSectionItem}>
-          <Typography variant="h6">Step 2: Reward Recipient</Typography>
-          <Typography gutterBottom>
-            Now with your wallet, you must set the reward recipient to the
-            following address:
-          </Typography>
+          <Typography variant="h6">{t("_STARTMININGSECONDSTEP")}</Typography>
+          <Typography gutterBottom>{t("startMiningSecondStepText")}</Typography>
           <Typography
             gutterBottom
             style={{
@@ -161,31 +167,31 @@ const StartMining = (props) => {
           >
             {poolData.loadingData === false
               ? poolData.data.poolAccountRS
-              : "Loading..."}
+              : t("loading")}
           </Typography>
 
           <Typography color="textSecondary" variant="subtitle2">
-            Tip: It's recommended to use a local wallet
+            {t("startMiningSecondStepSecondText")}
           </Typography>
         </Grid>
 
         {/* Thrid step */}
         <Grid item className={styles.thirSectionItem}>
-          <Typography variant="h6">Step 3: Block Confirmation</Typography>
+          <Typography variant="h6">{t("_STARTMININGTHIRDSTEP")}</Typography>
           <Typography gutterBottom>
-            After you assign the reward recipient successfully, you will need to
-            wait for at least 4 block confirmations{" "}
-            <b>(approximately 20 minutes)</b>.
+            <Trans i18nKey="startMiningThirdStepText">
+              After you assign the reward recipient successfully, you will need
+              to wait for at least 4 block confirmations
+              <strong>(approximately 20 minutes)</strong>.
+            </Trans>
           </Typography>
         </Grid>
 
         {/* Forth step */}
         <Grid item className={styles.thirSectionItem}>
-          <Typography variant="h6">Step 4: Mining Address</Typography>
-          <Typography gutterBottom>
-            After the wait, you must configure your miner to use the following
-            mining address:
-          </Typography>
+          <Typography variant="h6">{t("_STARTMININGFOURTHSTEP")}</Typography>
+          <Typography gutterBottom>{t("startMiningFourthStepText")}</Typography>
+
           <Typography
             gutterBottom
             style={{
@@ -198,7 +204,7 @@ const StartMining = (props) => {
           </Typography>
 
           <Typography color="textSecondary" variant="subtitle2">
-            And then run your miner!
+            {t("startMiningFourthStepSecondText")}
           </Typography>
         </Grid>
       </Grid>

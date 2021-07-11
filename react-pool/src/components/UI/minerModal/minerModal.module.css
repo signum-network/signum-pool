@@ -50,10 +50,11 @@
 }
 
 .tableItemLeftSide {
-  width: 30%;
+  width: 33%;
 }
+
 .tableItemRightSide {
-  width: 70%;
+  width: 67%;
 }
 
 .tableItemLeftSide p {
@@ -87,14 +88,13 @@
 
 .buttonActions {
   width: 45%;
-}
-
-.buttonActions {
+  color: white !important;
   border-radius: 8px !important;
   text-transform: none !important;
   font-size: 16px !important;
   padding-top: 0.7em !important;
   padding-bottom: 0.7em !important;
+  border-color: rgba(255, 255, 255, 0.23) !important;
 }
 
 .explorerButton {

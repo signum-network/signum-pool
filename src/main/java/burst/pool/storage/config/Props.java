@@ -1,11 +1,15 @@
 package burst.pool.storage.config;
 
-import burst.kit.entity.BurstAddress;
+import signumj.entity.SignumAddress;
 
 import java.util.Objects;
 
 public class Props {
-    public static final Prop<Integer> serverPort = new Prop<>("serverPort", 80); // Must be > 0, < 2^16
+    public static final Prop<Integer> serverPort = new Prop<>("serverPort", 80); // Must be > 0, < 2^16    
+    public static final Prop<String> letsencryptPath = new Prop<>("letsencryptPath", "");
+    public static final Prop<String> keyStorePath = new Prop<>("keystorePath", "cert");
+    public static final Prop<String> keyStorePass = new Prop<>("keystorePass", "certpass");
+    
     public static final Prop<String> nodeAddresses = new Prop<>("nodeAddresses", ""); // Must be non-empty
     public static final Prop<String> poolName = new Prop<>("poolName", "");
 
@@ -29,8 +33,8 @@ public class Props {
     public static final Prop<Integer> processLag = new Prop<>("processLag", 10); // Must be > 0
     public static final Prop<Integer> pocPlusBlock = new Prop<>("pocPlusBlock", 878_000);
 
-    public static final Prop<BurstAddress> feeRecipient = new Prop<>("feeRecipient", null); // Must be non null
-    public static final Prop<BurstAddress> donationRecipient = new Prop<>("donationRecipient", null); // Must be non null
+    public static final Prop<SignumAddress> feeRecipient = new Prop<>("feeRecipient", null); // Must be non null
+    public static final Prop<SignumAddress> donationRecipient = new Prop<>("donationRecipient", null); // Must be non null
     public static final Prop<Integer> donationPercent = new Prop<>("donationPercent", 1); // Default is 1
     public static final Prop<Float> poolFeePercentage = new Prop<>("poolFeePercentage", 0f); // Must be 0-1
     public static final Prop<Float> poolSoloFeePercentage = new Prop<>("poolSoloFeePercentage", 0.01f); // Must be 0-1
@@ -69,6 +73,9 @@ public class Props {
     
     public static final Prop<String> siteSeoDescription = new Prop<>("site.seoDescription", "");
     public static final Prop<String> siteSeoImageUrl = new Prop<>("site.seoImageUrl", "");
+
+    public static final Prop<String> siteExtraMenuItems = new Prop<>("site.extraMenuItems", "[]");
+    public static final Prop<String> siteDefaultLanguage = new Prop<>("site.defaultLanguage", "en");
 
     public static final Prop<String> siteShowTradingLink = new Prop<>("site.showTradingLink", "YES");
     public static final Prop<String> siteMiniTradingLink = new Prop<>("site.miniTradingLink", "https://bit.ly/2UEd4RB");
@@ -118,12 +125,12 @@ public class Props {
             throw new IllegalArgumentException("Illegal processLag: " + processLag + " (Must be > 0)");
         }
 
-        BurstAddress feeRecipient = propertyService.getBurstAddress(Props.feeRecipient);
+        SignumAddress feeRecipient = propertyService.getSignumAddress(Props.feeRecipient);
         if (feeRecipient == null) {
             throw new IllegalArgumentException("Illegal feeRecipient (not set)");
         }
 
-        BurstAddress donationRecipient = propertyService.getBurstAddress(Props.donationRecipient);
+        SignumAddress donationRecipient = propertyService.getSignumAddress(Props.donationRecipient);
         if (donationRecipient == null) {
             throw new IllegalArgumentException("Illegal donationRecipient (not set)");
         }

@@ -1,6 +1,9 @@
 // React router
 import { useHistory } from "react-router-dom";
 
+// React translations
+import { useTranslation } from "react-i18next";
+
 // Material ui
 import Drawer from "@material-ui/core/Drawer";
 import Box from "@material-ui/core/Box";
@@ -15,11 +18,14 @@ import Divider from "@material-ui/core/Divider";
 import CloseIcon from "@material-ui/icons/Close";
 import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
 import DnsRoundedIcon from "@material-ui/icons/DnsRounded";
+import GroupIcon from "@material-ui/icons/Group";
 import BlurOnIcon from "@material-ui/icons/BlurOn";
 import AccountBalanceWalletRoundedIcon from "@material-ui/icons/AccountBalanceWalletRounded";
 import CardGiftcardRoundedIcon from "@material-ui/icons/CardGiftcardRounded";
 import QuestionAnswerRoundedIcon from "@material-ui/icons/QuestionAnswerRounded";
 import TransformIcon from "@material-ui/icons/Transform";
+import ControlPointIcon from "@material-ui/icons/ControlPoint";
+import TranslateIcon from "@material-ui/icons/Translate";
 
 import FacebookIcon from "@material-ui/icons/Facebook";
 import TwitterIcon from "@material-ui/icons/Twitter";
@@ -45,7 +51,13 @@ import {
   SHOW_TRADING_LINK,
 } from "../../../utils/globalParameters";
 
+// Extra url
+import { extraLinksArrayExport } from "../../../utils/globalUrl";
+
 const Sidebar = (props) => {
+  // Translations details
+  const { t } = useTranslation();
+
   // Route details
   let router = useHistory();
 
@@ -108,7 +120,7 @@ const Sidebar = (props) => {
             color="textPrimary"
             className={styles.firstTitle}
           >
-            Made with ⚡ <br /> for enthusiasts by enthusiasts
+            {t("signatureF")} <br /> {t("signatureS")}
           </Typography>
         </Box>
 
@@ -137,7 +149,7 @@ const Sidebar = (props) => {
                 style={{ fontSize: 27, color: "var(--primary-error-color)" }}
               />
             }
-            textList="Home"
+            textList={t("home")}
           />
 
           {/* Pool info */}
@@ -150,7 +162,20 @@ const Sidebar = (props) => {
                 style={{ fontSize: 27, color: "var(--primary-error-color)" }}
               />
             }
-            textList="Pool info"
+            textList={t("_POOLINFO")}
+          />
+
+          {/* Miners lists*/}
+          <ListRender
+            onClick={() => {
+              goToSite("/miners");
+            }}
+            icon={
+              <GroupIcon
+                style={{ fontSize: 27, color: "var(--primary-error-color)" }}
+              />
+            }
+            textList={t("miners")}
           />
 
           {
@@ -172,10 +197,23 @@ const Sidebar = (props) => {
                     }}
                   />
                 }
-                textList="Trading"
+                textList={t("trading")}
               />
             ) : null
           }
+
+          {/* Discord */}
+          <ListRender
+            onClick={() => {
+              goToSite(DISCORDToUse, true);
+            }}
+            icon={
+              <QuestionAnswerRoundedIcon
+                style={{ fontSize: 27, color: "var(--secondary-dark-color)" }}
+              />
+            }
+            textList={t("discord")}
+          />
 
           {/* Explorer */}
           <ListRender
@@ -187,7 +225,7 @@ const Sidebar = (props) => {
                 style={{ fontSize: 27, color: "var(--secondary-dark-color)" }}
               />
             }
-            textList="Explorer"
+            textList={t("explorer")}
           />
 
           {/* Wallet */}
@@ -200,7 +238,7 @@ const Sidebar = (props) => {
                 style={{ fontSize: 27, color: "var(--secondary-dark-color)" }}
               />
             }
-            textList="Wallet"
+            textList={t("wallet")}
           />
 
           {
@@ -219,23 +257,70 @@ const Sidebar = (props) => {
                     }}
                   />
                 }
-                textList="Faucet"
+                textList={t("faucet")}
               />
             ) : null
           }
 
-          {/* Discord */}
+          {/* Language */}
           <ListRender
             onClick={() => {
-              goToSite(DISCORDToUse, true);
+              props.openLanguageModal();
+              closeSideDrawer();
             }}
             icon={
-              <QuestionAnswerRoundedIcon
+              <TranslateIcon
                 style={{ fontSize: 27, color: "var(--secondary-dark-color)" }}
               />
             }
-            textList="Discord"
+            textList={t("languageName")}
           />
+
+          {extraLinksArrayExport &&
+          extraLinksArrayExport.length &&
+          extraLinksArrayExport.length > 0 ? (
+            <Box
+              width="100%"
+              display="flex"
+              flexDirection="column"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              wrap="wrap"
+            >
+              {divider}
+
+              <Typography
+                align="center"
+                style={{ width: "100%", fontWeight: 500, marginTop: "1em" }}
+              >
+                {t("additionalLinks")}
+              </Typography>
+            </Box>
+          ) : null}
+
+          {
+            // Render dynamic options
+            // Extra options put by pool operator
+            extraLinksArrayExport.map((item, key) => {
+              return (
+                <ListRender
+                  key={key}
+                  onClick={() => {
+                    goToSite(item.url, item.newTab);
+                  }}
+                  icon={
+                    <ControlPointIcon
+                      style={{
+                        fontSize: 27,
+                        color: "var(--secondary-dark-color)",
+                      }}
+                    />
+                  }
+                  textList={item.label}
+                />
+              );
+            })
+          }
         </Box>
 
         {
@@ -259,7 +344,7 @@ const Sidebar = (props) => {
             goToSite("/start-mining");
           }}
         >
-          Start Now!
+          {t("buttonCta")}
         </Button>
 
         {
@@ -270,7 +355,7 @@ const Sidebar = (props) => {
         {/* Share section */}
         <Box mt={2} width="100%"></Box>
         <Typography align="center" style={{ width: "100%" }}>
-          Share it with your community!
+          {t("shareIt")}
         </Typography>
 
         <Box
@@ -289,10 +374,11 @@ const Sidebar = (props) => {
                 window.open(mainLink);
               }}
               icon={<FacebookIcon style={{ fontSize: 25 }} />}
-              textList="Facebook"
+              textList={t("facebook")}
               hideArrow
             />
           </Box>
+
           <Box width={{ xs: "100%", md: "48%" }}>
             <ListRender
               onClick={() => {
@@ -300,7 +386,7 @@ const Sidebar = (props) => {
                 window.open(mainLink);
               }}
               icon={<TwitterIcon style={{ fontSize: 25 }} />}
-              textList="Twitter"
+              textList={t("Twitter")}
               hideArrow
             />
           </Box>
@@ -312,7 +398,7 @@ const Sidebar = (props) => {
                 window.open(mainLink);
               }}
               icon={<TelegramIcon style={{ fontSize: 25 }} />}
-              textList="Telegram"
+              textList={t("telegram")}
               hideArrow
             />
           </Box>
@@ -324,7 +410,7 @@ const Sidebar = (props) => {
                 window.open(mainLink);
               }}
               icon={<WhatsAppIcon style={{ fontSize: 25 }} />}
-              textList="WhatsApp"
+              textList={t("whatsApp")}
               hideArrow
             />
           </Box>
@@ -338,7 +424,7 @@ const Sidebar = (props) => {
                 return closeSideDrawer();
               }}
               icon={<PublicIcon style={{ fontSize: 25 }} />}
-              textList="Copy URL or Link"
+              textList={t("copyURL")}
               fullWidth={true}
             />
           </Box>

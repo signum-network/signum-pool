@@ -19,7 +19,7 @@ import { ENDPOINTToUse, maxSubMissionsKey } from "../../globalParameters";
 // If there is no data populated
 // If skipvef is equal to true, it will ignore the conditions and still fetch the data and update it!
 export const fetchBasicInfo =
-  (data = null, skipvef = false) =>
+  (data = null, skipvef = false.valueOf, t) =>
   async (dispatch) => {
     try {
       // Check if user really wants to fetch the data
@@ -73,7 +73,7 @@ export const fetchBasicInfo =
                   false
                 );
             } else {
-              responseData.bestMiner = "Not found yet! ⚒️";
+              responseData.bestMiner = t("noFoundDeadline") + " ⚒️";
             }
 
             // Send the data to the redux reducer
@@ -121,7 +121,7 @@ export const fetchSignaPrice =
 
 // Fetch pool info
 export const fetchPoolInfo =
-  (fetchNow = true) =>
+  (fetchNow = true, t) =>
   async (dispatch) => {
     try {
       // See if user wants to fetch the price
@@ -170,7 +170,7 @@ export const fetchPoolInfo =
 
           // Process Lag
           responseData.processLag =
-            thousands_separators(data.processLag) + " Blocks";
+            thousands_separators(data.processLag) + ` ${t("blocks")}`;
 
           // Fee Recipient
           responseData.feeRecipient = formatMinerName(

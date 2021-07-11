@@ -1,6 +1,9 @@
 // React
 import { useState } from "react";
 
+// React translations
+import { useTranslation } from "react-i18next";
+
 // Redux integration with actions
 import { connect } from "react-redux";
 
@@ -9,7 +12,7 @@ import PropTypes from "prop-types";
 import { toggleModal } from "../../../utils/redux/actions/minerModal";
 
 // Material UI
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Table from "@material-ui/core/Table";
@@ -27,80 +30,6 @@ import { isMobile } from "react-device-detect";
 // Styling
 import cssStyles from "./minersTable.module.css";
 
-// Columns
-const columns = [
-  { id: "miner", label: "Miner", align: "center", minWidth: 150 },
-  {
-    id: "currentDeadline",
-    label: "Current Deadline",
-    align: "center",
-    minWidth: 50,
-  },
-  {
-    id: "confirmedDeadline",
-    label: "Confirmed Deadlines",
-    minWidth: 50,
-    align: "center",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "pendingBalance",
-    label: "Pending Balance",
-    minWidth: 50,
-    align: "center",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "physicalCapacity",
-    label: "Physical Capacity",
-    minWidth: 50,
-    align: "center",
-    format: (value) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "effectiveCapacity",
-    label: "Effective Capacity",
-    minWidth: 50,
-    align: "center",
-    format: (value) => value.toFixed(2),
-  },
-  {
-    id: "committedBalance",
-    label: "Committed Balance",
-    minWidth: 50,
-    align: "center",
-    format: (value) => value.toFixed(2),
-  },
-  {
-    id: "poCPlus",
-    label: `PoC+ Boost`,
-    minWidth: 50,
-    align: "center",
-    format: (value) => value.toFixed(2),
-  },
-  {
-    id: "sharedCapacity",
-    label: `Shared Capacity`,
-    minWidth: 50,
-    align: "center",
-    format: (value) => value.toFixed(2),
-  },
-  {
-    id: "Software",
-    label: `Software`,
-    minWidth: 150,
-    align: "center",
-    format: (value) => value.toFixed(2),
-  },
-  {
-    id: "Actions",
-    label: `Actions`,
-    minWidth: 150,
-    align: "center",
-    format: (value) => value.toFixed(2),
-  },
-];
-
 // Custom styling for columns
 const useStyles = makeStyles({
   root: {
@@ -110,17 +39,108 @@ const useStyles = makeStyles({
     background: "#1f1f1f",
   },
   container: {
-    maxHeight: isMobile ? 500 : 600,
+    maxHeight: isMobile ? "auto" : 600,
   },
 });
 
 const StickyHeadTable = (props) => {
+  // Translations details
+  const { t } = useTranslation();
+
+  // Columns
+  const nativeColumns = [
+    { id: "miner", align: "center", minWidth: 150 },
+
+    {
+      id: "currentDeadline",
+      align: "center",
+      minWidth: 50,
+    },
+
+    {
+      id: "confirmedDeadline",
+      minWidth: 50,
+      align: "center",
+      format: (value) => value.toLocaleString("en-US"),
+    },
+
+    {
+      id: "pendingBalance",
+      minWidth: 50,
+      align: "center",
+      format: (value) => value.toLocaleString("en-US"),
+    },
+    {
+      id: "physicalCapacity",
+      minWidth: 50,
+      align: "center",
+      format: (value) => value.toLocaleString("en-US"),
+    },
+    {
+      id: "effectiveCapacity",
+      minWidth: 50,
+      align: "center",
+      format: (value) => value.toFixed(2),
+    },
+    {
+      id: "committedBalance",
+      minWidth: 50,
+      align: "center",
+      format: (value) => value.toFixed(2),
+    },
+    {
+      id: "poCPlus",
+      minWidth: 50,
+      align: "center",
+      format: (value) => value.toFixed(2),
+    },
+    {
+      id: "sharedCapacity",
+      minWidth: 50,
+      align: "center",
+      format: (value) => value.toFixed(2),
+    },
+    {
+      id: "Software",
+      minWidth: 150,
+      align: "center",
+      format: (value) => value.toFixed(2),
+    },
+    {
+      id: "Actions",
+      minWidth: 150,
+      align: "center",
+      format: (value) => value.toFixed(2),
+    },
+  ];
+
+  // Mobile columns
+  const mobileColumns = [
+    // Miner column
+    nativeColumns[0],
+
+    // Pending balance
+    nativeColumns[3],
+
+    // Physical Capacity
+    nativeColumns[4],
+
+    // Confirmed deadlines
+    nativeColumns[2],
+
+    // View more
+    nativeColumns[10],
+  ];
+
+  // Columns that website will use
+  const columns = isMobile ? mobileColumns : nativeColumns;
+
   // Styling
   const classes = useStyles();
 
   // Pagination
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(isMobile ? 35 : 50);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -155,7 +175,7 @@ const StickyHeadTable = (props) => {
                   style={{ minWidth: column.minWidth }}
                   className={cssStyles.topColumns}
                 >
-                  {column.label}
+                  {t(column.id)}
                 </TableCell>
               ))}
             </TableRow>
@@ -197,7 +217,7 @@ const StickyHeadTable = (props) => {
                               rel="noreferrer"
                               className={cssStyles.updateAlert}
                             >
-                              Update your miner!
+                              {t("updateSoftware")}
                             </a>
                           );
                         } else if (
@@ -208,7 +228,7 @@ const StickyHeadTable = (props) => {
                           // Check if miner is waiting a deadline
                           cellContent = (
                             <span className={cssStyles.deadLineAlert}>
-                              Waiting deadline
+                              {t("waitingDeadline")}
                             </span>
                           );
                         }
@@ -220,7 +240,7 @@ const StickyHeadTable = (props) => {
                             className={cssStyles.viewMoreBtn}
                             onClick={() => minerShowData(row.data)}
                           >
-                            View more
+                            {t("viewMore")}
                           </Button>
                         );
                       } else if (column.id === "miner") {
@@ -231,11 +251,12 @@ const StickyHeadTable = (props) => {
                         cellContent = (
                           <Typography
                             variant="body2"
-                            title="View miner details"
+                            title={t("viewMinerDetails")}
                             style={{
                               fontWeight: 500,
                               cursor: "pointer",
                               color: "white",
+                              textDecoration: "underline",
                             }}
                             onClick={() => minerShowData(row.data)}
                           >
@@ -268,8 +289,8 @@ const StickyHeadTable = (props) => {
         count={rows.length}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
         className={cssStyles.bottomPagination}
       />
     </Paper>

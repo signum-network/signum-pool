@@ -1,6 +1,9 @@
 // React
 import { Fragment, useEffect, useState } from "react";
 
+// React translations
+import { useTranslation } from "react-i18next";
+
 // Redux integration with actions
 import { connect } from "react-redux";
 
@@ -34,12 +37,16 @@ import { formatTime } from "../../utils/functions/blockchain";
 
 // Third-party
 import { isMobile } from "react-device-detect";
+import clsx from "clsx";
 
 // SEO
 import { Helmet } from "react-helmet";
 import { POOLNameToUse } from "../../utils/globalParameters";
 
 const PoolInfo = (props) => {
+  // Translations details
+  const { t } = useTranslation();
+
   // Get props
   const { basicData, minerData, blockData, poolData, fetchBlocksData } = props;
 
@@ -83,7 +90,7 @@ const PoolInfo = (props) => {
           elapsedTime.trim() === "" ||
           elapsedTime === ""
         ) {
-          elapsedTime = "Waiting...";
+          elapsedTime = t("waiting");
         }
 
         updateElapsedTimeValue(elapsedTime);
@@ -144,7 +151,7 @@ const PoolInfo = (props) => {
   let dynamicTab = null;
 
   const LoadingDynamicTab = (
-    <Grid container justify="center">
+    <Grid container justifyContent="center">
       <Spinner />
     </Grid>
   );
@@ -156,90 +163,91 @@ const PoolInfo = (props) => {
     if (poolData.loadingData === false) {
       tableData = [
         {
-          title: "Pool Name",
+          title: t("poolName"),
           value: poolData.data.poolName,
           type: "info",
         },
         {
-          title: "Pool Account",
+          title: t("poolAccount"),
           value: poolData.data.poolAccountRS,
           type: "info",
         },
         {
-          title: "Number of blocks for averages",
+          title: t("nBlocksAverage"),
           value: poolData.data.nAvg,
           type: "info",
         },
         {
-          title: "Number of blocks to show a Miner",
+          title: t("nBlocksToShowMiner"),
           value: poolData.data.nMin,
           type: "info",
         },
         {
-          title: "Max Deadline",
+          title: t("maxDeadline"),
           value: poolData.data.maxDeadline,
           type: "info",
         },
+
         {
-          title: "Process Lag",
+          title: t("processLag"),
           value: poolData.data.processLag,
           type: "info",
         },
         {
-          title: "Fee Recipient",
+          title: t("feeRecipient"),
           value: poolData.data.feeRecipientRS,
           type: "info",
         },
         {
-          title: "Pool Fee",
+          title: t("poolFee"),
           value: poolData.data.poolFee,
           type: "info",
         },
         {
-          title: "Pool Solo Fee",
-          sTitle: "Miners sharing less than 20%",
+          title: t("poolSoloFee"),
+          sTitle: t("minersSharingLess"),
           value: poolData.data.poolSoloFee,
           type: "info",
         },
         {
-          title: "Donation Recipient",
+          title: t("donationRecipient"),
           value: poolData.data.donationRecipientRS,
           type: "info",
         },
         {
-          title: "Default Donation",
-          sTitle: "Configurable",
+          title: t("defaultDonation"),
+          sTitle: t("configurable"),
           value: poolData.data.donationPercent,
           type: "info",
           onClick: goToMinerOptions,
         },
         {
-          title: "Default Pool Share",
-          sTitle: "Configurable",
+          title: t("defaultPoolShare"),
+          sTitle: t("configurable"),
           value: poolData.data.poolShare,
           type: "info",
           onClick: goToMinerOptions,
         },
         {
-          title: "Default Minimum Payout",
-          sTitle: "Configurable",
+          title: t("defaultMinimumPayout"),
+          sTitle: t("configurable"),
           value: poolData.data.minimumPayout,
           type: "info",
           onClick: goToMinerOptions,
         },
 
         {
-          title: "Minimum Payouts at once",
+          title: t("minimumPayoutsAtOnce"),
           value: poolData.data.minPayoutsPerTransaction,
           type: "info",
         },
         {
-          title: "Payout Transaction Fee",
+          title: t("payOutTransactionFee"),
           value: poolData.data.payoutTxFee,
           type: "info",
         },
         {
-          title: "Pool Software Version",
+          title: t("poolVersion"),
           value: poolData.data.version,
           type: "info",
         },
@@ -247,14 +255,16 @@ const PoolInfo = (props) => {
     }
 
     dynamicTab = (
-      <OutlinedTable
-        data={tableData}
-        isLoading={poolData.loadingData}
-        notFoundLabel="Missing details, contact your support operator"
-        fWidth="33%"
-        sWidth="67%"
-        onClickLastItem={null}
-      />
+      <Grid container className={styles.containedContent}>
+        <OutlinedTable
+          data={tableData}
+          isLoading={poolData.loadingData}
+          notFoundLabel={t("missingDetails")}
+          fWidth="33%"
+          sWidth="67%"
+          onClickLastItem={null}
+        />
+      </Grid>
     );
 
     // Blocks won tab
@@ -263,7 +273,38 @@ const PoolInfo = (props) => {
 
     // Check if blocks data is loaded
     if (blockData.loadingData === false) {
-      dynamicTab = <BlocksTable data={blockData.list} />;
+      // Check if the pool has won blocks
+      if (
+        blockData.list &&
+        blockData.list.length &&
+        blockData.list.length > 0
+      ) {
+        dynamicTab = (
+          <Grid container className={styles.containedContent}>
+            <BlocksTable data={blockData.list} />
+          </Grid>
+        );
+      } else {
+        dynamicTab = (
+          <Grid
+            container
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            component="section"
+            className={styles.containedContent}
+          >
+            <OutlinedTable
+              data={null}
+              isLoading={false}
+              notFoundLabel={t("noBlocksWon") + " 💎"}
+              fWidth="25%"
+              sWidth="75%"
+              onClickLastItem={null}
+            />
+          </Grid>
+        );
+      }
     }
   } else if (currentTab === 2) {
     dynamicTab = LoadingDynamicTab;
@@ -271,18 +312,52 @@ const PoolInfo = (props) => {
     // Check if pool data is loaded
     // For showing miner options data
     if (poolData.loadingData === false) {
-      dynamicTab = <MinerOptions data={poolData.data} />;
+      dynamicTab = (
+        <Grid container className={styles.containedContent}>
+          <MinerOptions data={poolData.data} />
+        </Grid>
+      );
     }
   } else if (currentTab === 3) {
     dynamicTab = LoadingDynamicTab;
 
     // Check if top ten miners data is loaded
     if (minerData.loadingData === false && minerData.topTen) {
-      dynamicTab = (
-        <Grid container direction="column">
-          <MinersTable data={minerData.topTen} />
-        </Grid>
-      );
+      // Check if there is miners
+      if (
+        minerData.topTen &&
+        minerData.topTen.length &&
+        minerData.topTen.length > 0
+      ) {
+        dynamicTab = (
+          <Grid
+            container
+            style={{ paddingLeft: "0.9em", paddingRight: "0.9em" }}
+          >
+            <MinersTable data={minerData.topTen} />
+          </Grid>
+        );
+      } else {
+        dynamicTab = (
+          <Grid
+            container
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            component="section"
+            className={styles.containedContent}
+          >
+            <OutlinedTable
+              data={null}
+              isLoading={false}
+              notFoundLabel={t("noMiners") + " ⚒️"}
+              fWidth="25%"
+              sWidth="75%"
+              onClickLastItem={null}
+            />
+          </Grid>
+        );
+      }
     }
   }
 
@@ -302,7 +377,7 @@ const PoolInfo = (props) => {
     <Fragment>
       {/* Basic SEO */}
       <Helmet>
-        <title>{"Pool info • " + POOLNameToUse}</title>
+        <title>{`${t("_POOLINFO")} • ${POOLNameToUse}`}</title>
       </Helmet>
 
       {/* First section */}
@@ -310,25 +385,25 @@ const PoolInfo = (props) => {
         container
         className={styles.firstSection}
         direction="column"
-        justify="flex-start"
+        justifyContent="flex-start"
         alignItems="flex-start"
         component="section"
       >
         <Typography component="h1" variant="h4" align="center">
-          Pool info
+          {t("_POOLINFO")}
         </Typography>
 
         <Grid
           container
           direction="row"
-          justify="space-between"
+          justifyContent="space-between"
           alignItems="stretch"
           wrap="wrap"
           style={{ marginTop: "1.5rem" }}
         >
           {/* Block height */}
           <InfoCard
-            title="Block Height"
+            title={t("blockHeight")}
             width="23%"
             value={
               basicData.loadingData === false
@@ -340,7 +415,7 @@ const PoolInfo = (props) => {
 
           {/* Elapsed */}
           <InfoCard
-            title="Elapsed time"
+            title={t("elapsedTime")}
             width="23%"
             value={elapsedTimeValue}
             loading={loadingElapsedTime}
@@ -348,7 +423,7 @@ const PoolInfo = (props) => {
 
           {/* Miners */}
           <InfoCard
-            title="Miners"
+            title={t("miners")}
             width="23%"
             value={minerData.loadingData === false ? minerData.quantity : ""}
             loading={minerData.loadingData}
@@ -356,7 +431,7 @@ const PoolInfo = (props) => {
 
           {/* Pool size */}
           <InfoCard
-            title="Pool Physical"
+            title={t("poolPhysical")}
             width="23%"
             value={
               minerData.loadingData === false ? minerData.poolCapacity : ""
@@ -368,7 +443,7 @@ const PoolInfo = (props) => {
 
           {/* Best miner */}
           <InfoCard
-            title="Best miner"
+            title={t("bestMiner")}
             width="48.6%"
             value={basicData.loadingData === false ? basicData.bestMiner : ""}
             loading={basicData.loadingData}
@@ -376,7 +451,7 @@ const PoolInfo = (props) => {
 
           {/* Network difficulty */}
           <InfoCard
-            title="Network"
+            title={t("network")}
             width="48.6%"
             value={
               basicData.loadingData === false ? basicData.networkDifficulty : ""
@@ -391,25 +466,27 @@ const PoolInfo = (props) => {
         container
         className={styles.secondSection}
         direction="column"
-        justify="flex-start"
+        justifyContent="flex-start"
         alignItems="flex-start"
       >
         {/* Tabs container */}
-        <Paper className={styles.tabsContainer}>
-          <Tabs
-            value={currentTab}
-            indicatorColor="primary"
-            textColor="primary"
-            onChange={toogleTab}
-            variant={isMobile ? "scrollable" : "fullWidth"}
-            scrollButtons="auto"
-          >
-            <Tab className={styles.tabUnit} label="Basic info" />
-            <Tab className={styles.tabUnit} label="Blocks won" />
-            <Tab className={styles.tabUnit} label="Miner options" />
-            <Tab className={styles.tabUnit} label="Top 10 miners" />
-          </Tabs>
-        </Paper>
+        <Grid container className={styles.containedContent}>
+          <Paper className={clsx(styles.tabsContainer)}>
+            <Tabs
+              value={currentTab}
+              indicatorColor="primary"
+              textColor="primary"
+              onChange={toogleTab}
+              variant={isMobile ? "scrollable" : "fullWidth"}
+              scrollButtons="auto"
+            >
+              <Tab className={styles.tabUnit} label={t("basicInfo")} />
+              <Tab className={styles.tabUnit} label={t("_BLOCKWON")} />
+              <Tab className={styles.tabUnit} label={t("_MINEROPTIONS")} />
+              <Tab className={styles.tabUnit} label={t("topTenMiners")} />
+            </Tabs>
+          </Paper>
+        </Grid>
 
         {/* Dynamic data */ dynamicTab}
       </Grid>

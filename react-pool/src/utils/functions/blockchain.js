@@ -8,6 +8,7 @@ export const formatCapacity = (capacity) => {
 
   if (capacityFloat > 1024)
     return thousands_separators((capacityFloat / 1024).toFixed(3)) + " PiB";
+
   return thousands_separators(parseFloat(capacity).toFixed(3)) + " TiB";
 };
 
