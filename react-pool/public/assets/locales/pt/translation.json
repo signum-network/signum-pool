@@ -137,5 +137,6 @@
   "minersSharingLess": "Mineradores compartilhando menos de 20%",
   "languageName": "Português",
   "chooseLanguage": "Escolha um idioma",
-  "noBlocksWon": "Não há blocos ganhos, vá pegá-los!"
+  "noBlocksWon": "Não há blocos ganhos, vá pegá-los!",
+  "processing": "Em processamento..."
 }

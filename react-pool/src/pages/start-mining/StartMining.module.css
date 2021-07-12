@@ -63,6 +63,7 @@
   border-radius: 8px;
   text-transform: none;
   font-size: 0.9rem;
+  color: white !important;
 }
 
 /* Media queries */
