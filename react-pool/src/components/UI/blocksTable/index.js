@@ -74,7 +74,7 @@ const StickyHeadTable = (props) => {
 
   // Pagination
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(isMobile ? 35 : 50);
+  const [rowsPerPage, setRowsPerPage] = useState(isMobile ? 50 : 100);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -160,6 +160,15 @@ const StickyHeadTable = (props) => {
                             {cellValue}
                           </Typography>
                         );
+                        // Check if user is in Reward+fees or Pool Share Column
+                      } else if (
+                        column.id === "reward" ||
+                        column.id === "poolShare"
+                      ) {
+                        // Check if block is processing
+                        if (cellContent === "Processing...") {
+                          cellContent = t("processing");
+                        }
                       }
 
                       return (

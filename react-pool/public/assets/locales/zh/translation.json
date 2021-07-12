@@ -28,7 +28,7 @@
   "commitmentTiB": "抵押/TiB",
   "committedBalance": "抵押金额",
   "configurationWithMessages": "消息配置",
-  "configurationWithMessagesParagraph": "如果您已经加入了池，您可以通过<1>从miner帐户向矿池帐户发送未加密的文本消息来进一步配置它（在{processLag}}之后生效）：",
+  "configurationWithMessagesParagraph": "如果您已经加入了池，您可以通过<1>从miner帐户向矿池帐户发送未加密的文本消息来进一步配置它</1>（在{processLag}}之后生效）：",
   "confirmedDeadline": "已确认DL",
   "copyURL": "复制链接",
   "currentDeadline": "当前 DL",
@@ -137,5 +137,6 @@
   "minersSharingLess": "矿工份额不到20%",
   "languageName": "普通话",
   "chooseLanguage": "选择语言",
-  "noBlocksWon": "没有赢得块，去拿它们！"
+  "noBlocksWon": "没有赢得块，去拿它们！",
+  "processing": "加工..."
 }

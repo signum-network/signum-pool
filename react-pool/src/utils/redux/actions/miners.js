@@ -235,7 +235,10 @@ export const selectBookmarkedMiner =
 
             // Bookmarked Miners Data
             const responseData = [
-              response.name && response.name.trim()
+              response.name &&
+              response.name !== null &&
+              response.name !== undefined &&
+              response.name.trim() !== ""
                 ? { title: "username", value: response.name, type: "info" }
                 : null,
               {

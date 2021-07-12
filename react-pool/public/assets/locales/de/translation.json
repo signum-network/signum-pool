@@ -137,5 +137,6 @@
   "minersSharingLess": "Miner teilen sich weniger als 20%",
   "languageName": "Deutsch",
   "chooseLanguage": "Wählen Sie eine Sprache",
-  "noBlocksWon": "Es sind keine Blöcke gewonnen, holen Sie sie!"
+  "noBlocksWon": "Es sind keine Blöcke gewonnen, holen Sie sie!",
+  "processing": "Wird bearbeitet..."
 }

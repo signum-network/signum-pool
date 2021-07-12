@@ -137,5 +137,6 @@
   "minersSharingLess": "Minatori che condividono meno del 20%",
   "languageName": "Italiano",
   "chooseLanguage": "Scegli una lingua",
-  "noBlocksWon": "Non ci sono blocchi vinti, andate a prenderli!"
+  "noBlocksWon": "Non ci sono blocchi vinti, andate a prenderli!",
+  "processing": "In lavorazione..."
 }

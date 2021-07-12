@@ -223,7 +223,10 @@ const Home = (props) => {
     let dataToRender = [];
 
     bookMarkedMiner.data.map((item) => {
-      return dataToRender.push({ ...item, title: t(item.title) });
+      // Check if item exist
+      if (item && item !== null && item !== undefined) {
+        return dataToRender.push({ ...item, title: t(item.title) });
+      }
     });
 
     bookMinerData = dataToRender;
