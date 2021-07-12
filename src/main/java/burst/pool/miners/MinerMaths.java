@@ -11,7 +11,7 @@ public class MinerMaths {
     public static final long GENESIS_BASE_TARGET = 18325193796L;
     private final double[] alphas;
 
-    public MinerMaths(int nAvg, int nMin) {
+    public MinerMaths(int nAvg, int nMin, int nGrace) {
         alphas = new double[nAvg];
         for (int i = 0; i < nAvg; i++) {
             if (i < nMin-1) {
@@ -22,6 +22,9 @@ public class MinerMaths {
             }
         }
         alphas[nAvg-1] = 1d;
+        for (int i = 1; i <= nGrace; i++) {
+            alphas[nAvg - 1 - i] = 1d;
+        }
     }
     
     /**

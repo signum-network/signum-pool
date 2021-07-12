@@ -137,5 +137,6 @@
   "minersSharingLess": "Mineurs partageant moins de 20%",
   "languageName": "Français",
   "chooseLanguage": "Choisissez une langue",
-  "noBlocksWon": "Il n'y a pas de blocs gagnés, allez les chercher !"
+  "noBlocksWon": "Il n'y a pas de blocs gagnés, allez les chercher !",
+  "processing": "Traitement..."
 }

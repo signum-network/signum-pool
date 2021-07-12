@@ -3,6 +3,9 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
+// React translations
+import { useTranslation } from "react-i18next";
+
 // Styling
 import styles from "./outlinedTable.module.css";
 
@@ -13,6 +16,9 @@ import Spinner from "../Spinner/index";
 import MinerDeadLinesGraph from "../../miner/minerDeadlines/index";
 
 const OutLinedTable = (props) => {
+  // Translations details
+  const { t } = useTranslation();
+
   const { isLoading, data, notFoundLabel, onClickLastItem } = props;
 
   let content = null;
@@ -77,7 +83,7 @@ const OutLinedTable = (props) => {
           return (
             <Grid item className={styles.tableItem} key={key}>
               <Button className={styles.optionBtn} onClick={onClickLastItem}>
-                {item.label}
+                {t(item.label)}
               </Button>
             </Grid>
           );
