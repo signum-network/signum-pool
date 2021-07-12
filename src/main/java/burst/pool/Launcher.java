@@ -42,7 +42,8 @@ public class Launcher {
         // Set the default prefix
         SignumUtils.setAddressPrefix(propertyService.getBoolean(Props.testnet) ? "TS" : "S");
         
-        MinerMaths minerMaths = new MinerMaths(propertyService.getInt(Props.nAvg) + propertyService.getInt(Props.processLag), propertyService.getInt(Props.nMin));
+        MinerMaths minerMaths = new MinerMaths(propertyService.getInt(Props.nAvg) + propertyService.getInt(Props.processLag),
+                propertyService.getInt(Props.nMin), propertyService.getInt(Props.graceDeadlines));
         NodeService nodeService = NodeService.getUseBestInstance(true, Constants.USER_AGENT, propertyService.getStringList(Props.nodeAddresses));
         StorageService storageService = null;
         try {

@@ -31,6 +31,7 @@ public class Props {
     public static final Prop<Integer> nMin = new Prop<>("nMin", 1); // Must be ?
     public static final Prop<Long> maxDeadline = new Prop<>("maxDeadline", Long.MAX_VALUE); // Must be > 0
     public static final Prop<Integer> processLag = new Prop<>("processLag", 10); // Must be > 0
+    public static final Prop<Integer> graceDeadlines = new Prop<>("graceDeadlines", 2); // Must be > 0
     public static final Prop<Integer> pocPlusBlock = new Prop<>("pocPlusBlock", 878_000);
 
     public static final Prop<SignumAddress> feeRecipient = new Prop<>("feeRecipient", null); // Must be non null
@@ -121,8 +122,13 @@ public class Props {
         }
 
         int processLag = propertyService.getInt(Props.processLag);
-        if (processLag < 0) {
-            throw new IllegalArgumentException("Illegal processLag: " + processLag + " (Must be > 0)");
+        if (processLag < 1) {
+            throw new IllegalArgumentException("Illegal processLag: " + processLag + " (Must be > 1)");
+        }
+
+        int graceDeadlines = propertyService.getInt(Props.graceDeadlines);
+        if (graceDeadlines < 0) {
+            throw new IllegalArgumentException("Illegal graceDeadlines: " + graceDeadlines + " (Must be >= 0)");
         }
 
         SignumAddress feeRecipient = propertyService.getSignumAddress(Props.feeRecipient);
