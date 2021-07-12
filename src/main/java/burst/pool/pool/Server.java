@@ -248,6 +248,7 @@ public class Server extends NanoHTTPD {
             response.addProperty(Props.nMin.getName(), propertyService.getInt(Props.nMin));
             response.addProperty(Props.maxDeadline.getName(), propertyService.getLong(Props.maxDeadline));
             response.addProperty(Props.processLag.getName(), propertyService.getInt(Props.processLag));
+            response.addProperty(Props.graceDeadlines.getName(), propertyService.getInt(Props.graceDeadlines));
             response.addProperty(Props.feeRecipient.getName(), propertyService.getSignumAddress(Props.feeRecipient).getID());
             response.addProperty(Props.feeRecipient.getName() + "RS", propertyService.getSignumAddress(Props.feeRecipient).getFullAddress());
             response.addProperty(Props.poolFeePercentage.getName(), propertyService.getFloat(Props.poolFeePercentage));
