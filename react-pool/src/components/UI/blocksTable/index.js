@@ -74,7 +74,7 @@ const StickyHeadTable = (props) => {
 
   // Pagination
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(isMobile ? 35 : 50);
+  const [rowsPerPage, setRowsPerPage] = useState(isMobile ? 50 : 100);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
