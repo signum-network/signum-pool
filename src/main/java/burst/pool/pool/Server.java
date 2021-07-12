@@ -404,6 +404,7 @@ public class Server extends NanoHTTPD {
                             .replace("{PUBLICNODE}", propertyService.getString(Props.siteNodeAddress))
                             .replace("{DISCORD}", propertyService.getString(Props.siteDiscordLink))
                             .replace("{INFO}", propertyService.getString(Props.siteInfo))
+                            .replace("{PAGEURL}", propertyService.getString(Props.miningURL))
                             .replace("{POOL_ACCOUNT}", burstCrypto.getAddressFromPassphrase(propertyService.getString(Props.passphrase)).getFullAddress())
                             .replace("{MININGADDRESS}", propertyService.getString(Props.miningURL))
                             .replace("{MININGGUIDE}", propertyService.getString(Props.miningGuide))
