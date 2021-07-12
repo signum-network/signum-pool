@@ -137,5 +137,6 @@
   "minersSharingLess": "Madenciler %20'den daha azını paylaşıyor",
   "languageName": "Türk",
   "chooseLanguage": "Bir Dil Seçin",
-  "noBlocksWon": "Kazanılan blok yok, git onları al!"
+  "noBlocksWon": "Kazanılan blok yok, git onları al!",
+  "processing": "İşleme..."
 }

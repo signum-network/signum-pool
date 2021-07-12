@@ -160,6 +160,15 @@ const StickyHeadTable = (props) => {
                             {cellValue}
                           </Typography>
                         );
+                        // Check if user is in Reward+fees or Pool Share Column
+                      } else if (
+                        column.id === "reward" ||
+                        column.id === "poolShare"
+                      ) {
+                        // Check if block is processing
+                        if (cellContent === "Processing...") {
+                          cellContent = t("processing");
+                        }
                       }
 
                       return (
