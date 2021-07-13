@@ -138,5 +138,6 @@
   "languageName": "Polskie",
   "chooseLanguage": "Wybierz język",
   "noBlocksWon": "Nie ma wygranych bloków, zdobądź je!",
-  "processing": "Przetwarzanie..."
+  "processing": "Przetwarzanie...",
+  "graceDeadline": "Terminy łaski"
 }

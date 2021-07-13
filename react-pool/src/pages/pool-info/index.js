@@ -187,6 +187,11 @@ const PoolInfo = (props) => {
           value: poolData.data.maxDeadline,
           type: "info",
         },
+        {
+          title: t("graceDeadline"),
+          value: poolData.data.graceDeadlines || "",
+          type: "info",
+        },
 
         {
           title: t("processLag"),

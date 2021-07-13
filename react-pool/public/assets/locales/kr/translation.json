@@ -53,6 +53,7 @@
   "nBlocksAverage": "평균 블록 수",
   "nBlocksToShowMiner": "광부를 보여줄 블록 수",
   "maxDeadline": "최대 기한",
+  "graceDeadline": "유예 마감",
   "processLag": "프로세스 지연",
   "feeRecipient": "수수료 수령인",
   "poolFee": "풀 요금",
