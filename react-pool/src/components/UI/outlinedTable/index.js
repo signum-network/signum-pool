@@ -52,6 +52,14 @@ const OutLinedTable = (props) => {
               ? item.onClick
               : null;
 
+          // Check if user has dynamic onClick, but in the value column
+          const onClickValueAction =
+            item.onClickValue &&
+            item.onClickValue !== null &&
+            item.onClickValue !== undefined
+              ? item.onClickValue
+              : null;
+
           return (
             <Grid container item className={styles.tableItem} key={key}>
               <Grid
@@ -68,10 +76,15 @@ const OutLinedTable = (props) => {
                   <Typography component="span">{item.sTitle}</Typography>
                 ) : null}
               </Grid>
+
               <Grid
                 item
                 className={styles.tableItemRightSide}
-                style={{ width: props.sWidth }}
+                style={{
+                  width: props.sWidth,
+                  cursor: onClickValueAction ? "pointer" : null,
+                }}
+                onClick={onClickValueAction}
               >
                 <Typography>{item.value}</Typography>
               </Grid>

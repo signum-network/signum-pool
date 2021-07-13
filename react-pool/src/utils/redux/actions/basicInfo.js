@@ -159,6 +159,9 @@ export const fetchPoolInfo =
             false
           );
 
+          // Pool account ID
+          responseData.poolAccountId = data.poolAccount;
+
           // Number of blocks per average
           responseData.nAvg = thousands_separators(data.nAvg);
 
@@ -184,6 +187,9 @@ export const fetchPoolInfo =
             false
           );
 
+          // Fee Recipient ID
+          responseData.feeRecipientId = data.feeRecipient;
+
           // Pool Fee
           responseData.poolFee =
             (parseFloat(data.poolFeePercentage) * 100).toFixed(2) + " %";
@@ -200,6 +206,9 @@ export const fetchPoolInfo =
             null,
             false
           );
+
+          // Donation Recipient ID
+          responseData.donationRecipientId = data.donationRecipient;
 
           // Donation percentage (configurable)
           responseData.donationPercent =
