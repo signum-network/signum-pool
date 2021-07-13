@@ -297,8 +297,9 @@ public class Server extends NanoHTTPD {
                     wonBlockJson.addProperty("generator", b.getGenerator().getID());
                     wonBlockJson.addProperty("generatorRS", b.getGenerator().getFullAddress());
                     Miner miner = storageService.getMiner(b.getGenerator());
-                    if (miner!= null && !Objects.equals(miner.getName(), "")) {
-                        wonBlockJson.addProperty("name", miner.getName());
+                    String name = getMinerName(miner);
+                    if (name != null) {
+                        wonBlockJson.addProperty("name", name);
                     }
                     wonBlockJson.addProperty("reward", "Processing...");
                     wonBlockJson.addProperty("poolShare", "Processing...");
@@ -315,8 +316,9 @@ public class Server extends NanoHTTPD {
                 wonBlockJson.addProperty("generator", wonBlock.getGeneratorId().getID());
                 wonBlockJson.addProperty("generatorRS", wonBlock.getGeneratorId().getFullAddress());
                 Miner miner = storageService.getMiner(wonBlock.getGeneratorId());
-                if (miner!= null && !Objects.equals(miner.getName(), "")) {
-                    wonBlockJson.addProperty("name", miner.getName());
+                String name = getMinerName(miner);
+                if (name != null) {
+                    wonBlockJson.addProperty("name", name);
                 }
                 wonBlockJson.addProperty("reward", wonBlock.getFullReward().toFormattedString());
                 wonBlockJson.addProperty("poolShare", wonBlock.getPoolShare().toFormattedString());
@@ -455,6 +457,16 @@ public class Server extends NanoHTTPD {
 
         return httpResponse;
     }
+    
+    private String getMinerName(Miner miner) {
+        if (miner != null && miner.getName() != null && miner.getName().length() > 0) {
+            String name = miner.getName();
+            if(name.length() > 24)
+                name = name.substring(0, 24) + "...";
+            return name;
+        }
+        return null;
+    }
 
     private JsonElement minerToJson(Miner miner, boolean returnDeadlines) {
         if (miner == null) return JsonNull.INSTANCE;
@@ -482,10 +494,8 @@ public class Server extends NanoHTTPD {
 
             minerJson.addProperty("currentRoundBestDeadline", deadline.toString());
         }
-        if (miner.getName()!=null && miner.getName().length() > 0) {
-            String name = miner.getName();
-            if(name.length() > 24)
-                name = name.substring(24) + "...";
+        String name = getMinerName(miner);
+        if (name != null) {
             minerJson.addProperty("name", name);
         }
         if (!Objects.equals(miner.getUserAgent(), "")) {
