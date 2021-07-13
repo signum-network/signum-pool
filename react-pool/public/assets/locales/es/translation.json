@@ -139,5 +139,5 @@
   "chooseLanguage": "Elija un idioma",
   "noBlocksWon": "No hay bloques ganados, ¡ve por ellos!",
   "processing": "Procesando...",
-  "graceDeadline": "Deadlines de gracia"
+  "graceDeadline": "Deadlines fallidos sin penalización"
 }
