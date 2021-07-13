@@ -138,5 +138,6 @@
   "languageName": "Nederlands",
   "chooseLanguage": "Kies een taal",
   "noBlocksWon": "Er zijn geen blokken gewonnen, ga ze halen!",
-  "processing": "Verwerken..."
+  "processing": "Verwerken...",
+  "graceDeadline": "Grace deadlines"
 }

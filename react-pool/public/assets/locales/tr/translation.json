@@ -138,5 +138,6 @@
   "languageName": "Türk",
   "chooseLanguage": "Bir Dil Seçin",
   "noBlocksWon": "Kazanılan blok yok, git onları al!",
-  "processing": "İşleme..."
+  "processing": "İşleme...",
+  "graceDeadline": "Ek süreler"
 }

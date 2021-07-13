@@ -138,5 +138,6 @@
   "languageName": "русский",
   "chooseLanguage": "Выберите язык",
   "noBlocksWon": "Нет выигранных блоков, идите и возьмите их!",
-  "processing": "Обработка..."
+  "processing": "Обработка...",
+  "graceDeadline": "Сроки отсрочки"
 }

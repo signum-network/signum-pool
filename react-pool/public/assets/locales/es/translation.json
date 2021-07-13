@@ -138,5 +138,6 @@
   "languageName": "Español",
   "chooseLanguage": "Elija un idioma",
   "noBlocksWon": "No hay bloques ganados, ¡ve por ellos!",
-  "processing": "Procesando..."
+  "processing": "Procesando...",
+  "graceDeadline": "Deadlines de gracia"
 }

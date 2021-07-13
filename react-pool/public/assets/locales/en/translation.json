@@ -53,6 +53,7 @@
   "nBlocksAverage": "Number of blocks for averages",
   "nBlocksToShowMiner": "Number of blocks to show a Miner",
   "maxDeadline": "Max Deadline",
+  "graceDeadline": "Grace deadlines",
   "processLag": "Process Lag",
   "feeRecipient": "Fee Recipient",
   "poolFee": "Pool Fee",
