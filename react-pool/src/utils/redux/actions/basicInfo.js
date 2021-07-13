@@ -168,6 +168,9 @@ export const fetchPoolInfo =
           // Max Deadline
           responseData.maxDeadline = thousands_separators(data.maxDeadline);
 
+          // Grace Deadline
+          responseData.graceDeadlines = data.graceDeadlines;
+
           // Process Lag
           responseData.processLag =
             thousands_separators(data.processLag) + ` ${t("blocks")}`;

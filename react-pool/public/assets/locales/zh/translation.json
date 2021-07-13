@@ -138,5 +138,6 @@
   "languageName": "普通话",
   "chooseLanguage": "选择语言",
   "noBlocksWon": "没有赢得块，去拿它们！",
-  "processing": "加工..."
+  "processing": "加工...",
+  "graceDeadline": "宽限期"
 }

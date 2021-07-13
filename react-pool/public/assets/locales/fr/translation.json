@@ -138,5 +138,6 @@
   "languageName": "Français",
   "chooseLanguage": "Choisissez une langue",
   "noBlocksWon": "Il n'y a pas de blocs gagnés, allez les chercher !",
-  "processing": "Traitement..."
+  "processing": "Traitement...",
+  "graceDeadline": "Délais de grâce"
 }
