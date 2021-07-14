@@ -40,6 +40,7 @@ import {
 } from "../../utils/globalParameters";
 
 import { thousands_separators } from "../../utils/functions/normal";
+import { openAccountInExplorer } from "../../utils/functions/blockchain";
 
 // Components
 import MinersTable from "../../components/UI/minersTable/index";
@@ -225,7 +226,20 @@ const Home = (props) => {
     bookMarkedMiner.data.map((item) => {
       // Check if item exist
       if (item && item !== null && item !== undefined) {
-        return dataToRender.push({ ...item, title: t(item.title) });
+        // Key item
+        const key = item.title;
+
+        // Properties to add
+        let objectProperties = { ...item, title: t(key) };
+
+        // Check if items are username or address
+        if (key === "username" || key === "minerAddress") {
+          objectProperties.onClickValue = () => {
+            openAccountInExplorer(item.id);
+          };
+        }
+
+        return dataToRender.push(objectProperties);
       }
     });
 
