@@ -101,17 +101,19 @@ const StickyHeadTable = (props) => {
       format: (value) => value.toFixed(2),
     },
     {
-      id: "Software",
-      minWidth: 150,
+      id: "shareModel",
+      minWidth: 75,
       align: "center",
-      format: (value) => value.toFixed(2),
+      format: (value) => value.toLocaleString("en-US"),
     },
-    {
-      id: "Actions",
-      minWidth: 150,
-      align: "center",
-      format: (value) => value.toFixed(2),
-    },
+
+    // Optional actions button
+    // {
+    //   id: "Actions",
+    //   minWidth: 150,
+    //   align: "center",
+    //   format: (value) => value.toFixed(2),
+    // },
   ];
 
   // Mobile columns
@@ -129,7 +131,7 @@ const StickyHeadTable = (props) => {
     nativeColumns[2],
 
     // View more
-    nativeColumns[10],
+    // nativeColumns[10],
   ];
 
   // Columns that website will use
@@ -263,6 +265,10 @@ const StickyHeadTable = (props) => {
                             {cellValue}
                           </Typography>
                         );
+
+                        // Check if column is share model
+                      } else if (column.id === "shareModel") {
+                        cellContent = row.data.sharePercent + "%";
                       }
 
                       return (
