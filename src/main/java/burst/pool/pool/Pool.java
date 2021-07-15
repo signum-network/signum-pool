@@ -232,8 +232,7 @@ public class Pool {
                 try {
                     Block[] blocks = nodeService.getBlocks(1, propertyService.getInt(Props.processLag) - 1).blockingGet();
                     for(Block b : blocks) {
-                        Miner miner = storageService.getMiner(b.getGenerator());
-                        if(miner != null)
+                        if(myRewardRecipients.contains(b.getGenerator()))
                             ourNewBlocks.add(b);
                     }
                 }
