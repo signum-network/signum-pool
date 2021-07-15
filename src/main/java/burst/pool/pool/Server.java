@@ -239,7 +239,7 @@ public class Server extends NanoHTTPD {
             return minerToJson(storageService.getMiner(minerAddress), true).toString();
         } else if (session.getUri().startsWith("/api/getConfig")) {
             JsonObject response = new JsonObject();
-            response.addProperty("version", Constants.VERSION);
+            response.addProperty("version", pool.getVersion());
             response.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
             response.addProperty(Props.poolName.getName(), propertyService.getString(Props.poolName));
             response.addProperty("poolAccount", pool.getAccount().getID());
