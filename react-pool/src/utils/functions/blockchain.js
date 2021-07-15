@@ -1,5 +1,5 @@
 // Here will be functions related to the blockchain
-import { genesisBaseTarget } from "../globalParameters";
+import { genesisBaseTarget, EXPLORERToUse } from "../globalParameters";
 import { thousands_separators, escapeHtml } from "./normal";
 
 // Format capacity
@@ -75,4 +75,9 @@ export const formatMinerName = (
 // Get account explorer link
 export const getAccountExplorerLink = (explorer, id) => {
   return explorer + id;
+};
+
+// Open explorer in a new tab
+export const openAccountInExplorer = (accountId) => {
+  window.open(`${EXPLORERToUse}?action=account&account=${accountId}`, "_blank");
 };

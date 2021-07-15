@@ -159,6 +159,9 @@ export const fetchPoolInfo =
             false
           );
 
+          // Pool account ID
+          responseData.poolAccountId = data.poolAccount;
+
           // Number of blocks per average
           responseData.nAvg = thousands_separators(data.nAvg);
 
@@ -167,6 +170,9 @@ export const fetchPoolInfo =
 
           // Max Deadline
           responseData.maxDeadline = thousands_separators(data.maxDeadline);
+
+          // Grace Deadline
+          responseData.graceDeadlines = data.graceDeadlines;
 
           // Process Lag
           responseData.processLag =
@@ -180,6 +186,9 @@ export const fetchPoolInfo =
             null,
             false
           );
+
+          // Fee Recipient ID
+          responseData.feeRecipientId = data.feeRecipient;
 
           // Pool Fee
           responseData.poolFee =
@@ -197,6 +206,9 @@ export const fetchPoolInfo =
             null,
             false
           );
+
+          // Donation Recipient ID
+          responseData.donationRecipientId = data.donationRecipient;
 
           // Donation percentage (configurable)
           responseData.donationPercent =

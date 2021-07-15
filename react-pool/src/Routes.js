@@ -130,6 +130,11 @@ const Routes = (props) => {
     }
   }, [initialized, location]);
 
+  // Listen to route changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
   return (
     <Fragment>
       {/* Miner modal */}

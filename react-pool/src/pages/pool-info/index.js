@@ -33,7 +33,10 @@ import MinerOptions from "../../components/pages/poolInfo/minerOption/index";
 
 // Extra
 import { thousands_separators } from "../../utils/functions/normal";
-import { formatTime } from "../../utils/functions/blockchain";
+import {
+  formatTime,
+  openAccountInExplorer,
+} from "../../utils/functions/blockchain";
 
 // Third-party
 import { isMobile } from "react-device-detect";
@@ -171,6 +174,9 @@ const PoolInfo = (props) => {
           title: t("poolAccount"),
           value: poolData.data.poolAccountRS,
           type: "info",
+          onClickValue: () => {
+            openAccountInExplorer(poolData.data.poolAccountId);
+          },
         },
         {
           title: t("nBlocksAverage"),
@@ -187,6 +193,11 @@ const PoolInfo = (props) => {
           value: poolData.data.maxDeadline,
           type: "info",
         },
+        {
+          title: t("graceDeadline"),
+          value: poolData.data.graceDeadlines || "",
+          type: "info",
+        },
 
         {
           title: t("processLag"),
@@ -197,6 +208,9 @@ const PoolInfo = (props) => {
           title: t("feeRecipient"),
           value: poolData.data.feeRecipientRS,
           type: "info",
+          onClickValue: () => {
+            openAccountInExplorer(poolData.data.feeRecipientId);
+          },
         },
         {
           title: t("poolFee"),
@@ -213,6 +227,9 @@ const PoolInfo = (props) => {
           title: t("donationRecipient"),
           value: poolData.data.donationRecipientRS,
           type: "info",
+          onClickValue: () => {
+            openAccountInExplorer(poolData.data.donationRecipientId);
+          },
         },
         {
           title: t("defaultDonation"),

@@ -138,5 +138,6 @@
   "languageName": "Deutsch",
   "chooseLanguage": "Wählen Sie eine Sprache",
   "noBlocksWon": "Es sind keine Blöcke gewonnen, holen Sie sie!",
-  "processing": "Wird bearbeitet..."
+  "processing": "Wird bearbeitet...",
+  "graceDeadline": "Gnadenfristen"
 }

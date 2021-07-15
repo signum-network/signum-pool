@@ -66,7 +66,7 @@
   "minerOptionsAlert": "如果你想要更改矿工设置，请发送<1>未加密信息</1>",
   "miners": "矿工",
   "minimumPayout": "最小起付额",
-  "minimumPayoutParagraph": "通过发送以下文本消息将您的最低起付金额更改为100 SIGNA（接受任何高于{minimumPayoutCount}}的数值）</1>：",
+  "minimumPayoutParagraph": "通过发送以下文本消息将您的最低起付金额更改为100 SIGNA（接受任何高于{{minimumPayoutCount}}的数值）</1>：",
   "minimumPayoutsAtOnce": "一次性最小支付笔数",
   "missingDetails": "缺少信息，请联系操作人员",
   "nBlocksAverage": "平均区块数量",
@@ -138,5 +138,6 @@
   "languageName": "普通话",
   "chooseLanguage": "选择语言",
   "noBlocksWon": "没有赢得块，去拿它们！",
-  "processing": "加工..."
+  "processing": "加工...",
+  "graceDeadline": "宽限期"
 }

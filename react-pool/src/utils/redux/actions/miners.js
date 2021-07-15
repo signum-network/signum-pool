@@ -239,11 +239,17 @@ export const selectBookmarkedMiner =
               response.name !== null &&
               response.name !== undefined &&
               response.name.trim() !== ""
-                ? { title: "username", value: response.name, type: "info" }
+                ? {
+                    title: "username",
+                    value: response.name,
+                    id: response.address,
+                    type: "info",
+                  }
                 : null,
               {
                 title: "minerAddress",
                 value: response.addressRS,
+                id: response.address,
                 type: "info",
               },
               {
