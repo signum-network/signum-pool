@@ -61,6 +61,7 @@ Donations are very welcome at [S-JJQS-MMA4-GHB4-4ZNZU](https://explorer.burstcoi
 -   http://signumpool.de:8080
 -   https://signumpool.com
 -   https://signapool.notallmine.net
+-   https://fomplopool.com
 -   http://signum.land
 
 ## Requirements
