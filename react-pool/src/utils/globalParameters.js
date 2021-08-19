@@ -1,8 +1,10 @@
 // Global variables related to pool node connection
 // development enviroment - pool node connection
-const TEST_NODE = "https://signumpool.com";
+const TEST_NODE = "http://nivbox.co.uk:9000";
 
 // Production - pool node connection
+// It is empty because the axios instance already has the BASE URL
+// If you wanna use a different url, you can just type the complete url there (Just like the example above)
 const NODE = "";
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
