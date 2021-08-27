@@ -183,8 +183,8 @@ const Home = (props) => {
   // Bookmarked snackbar
   const [showBookMarkSnackBar, toggleBookMarkSnackBar] = useState(false);
 
-  const bookMarkupdateSnackBar = () => {
-    toggleBookMarkSnackBar((prev) => !prev);
+  const bookMarkCloseSnackBar = () => {
+    toggleBookMarkSnackBar(false);
   };
 
   // Table collapse manipulation
@@ -269,12 +269,12 @@ const Home = (props) => {
       <Snackbar
         open={showBookMarkSnackBar}
         autoHideDuration={3000}
-        onClose={bookMarkupdateSnackBar}
+        onClose={bookMarkCloseSnackBar}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         style={{ width: "100%", maxWidth: "600px" }}
       >
         <Alert
-          onClose={bookMarkupdateSnackBar}
+          onClose={bookMarkCloseSnackBar}
           severity="success"
           style={{ width: "100%", borderRadius: 8 }}
         >

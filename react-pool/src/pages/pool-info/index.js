@@ -175,7 +175,7 @@ const PoolInfo = (props) => {
           value: poolData.data.poolAccountRS,
           type: "info",
           onClickValue: () => {
-            openAccountInExplorer(poolData.data.poolAccountId);
+            openAccountInExplorer(poolData.data.poolAccount);
           },
         },
         {
@@ -209,7 +209,7 @@ const PoolInfo = (props) => {
           value: poolData.data.feeRecipientRS,
           type: "info",
           onClickValue: () => {
-            openAccountInExplorer(poolData.data.feeRecipientId);
+            openAccountInExplorer(poolData.data.feeRecipient);
           },
         },
         {
@@ -234,7 +234,7 @@ const PoolInfo = (props) => {
           value: poolData.data.donationRecipientRS,
           type: "info",
           onClickValue: () => {
-            openAccountInExplorer(poolData.data.donationRecipientId);
+            openAccountInExplorer(poolData.data.donationRecipient);
           },
         },
         {
