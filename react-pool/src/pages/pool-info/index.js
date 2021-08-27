@@ -214,6 +214,12 @@ const PoolInfo = (props) => {
         },
         {
           title: t("poolFee"),
+          sTitle:
+            poolData.data.poolFeePercentage &&
+            poolData.data.poolFeePercentage < 0 &&
+            poolData.data.poolFeePercentage < 1
+              ? t("EnjoyBonus")
+              : null,
           value: poolData.data.poolFee,
           type: "info",
         },

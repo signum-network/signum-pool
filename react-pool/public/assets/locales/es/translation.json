@@ -139,5 +139,7 @@
   "chooseLanguage": "Elija un idioma",
   "noBlocksWon": "No hay bloques ganados, ¡ve por ellos!",
   "processing": "Procesando...",
-  "graceDeadline": "Deadlines fallidos sin penalización"
+  "graceDeadline": "Deadlines fallidos sin penalización",
+  "Bonus": "Bono",
+  "EnjoyBonus": "¡Disfruta del bono!"
 }

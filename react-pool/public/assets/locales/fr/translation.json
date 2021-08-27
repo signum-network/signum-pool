@@ -139,5 +139,7 @@
   "chooseLanguage": "Choisissez une langue",
   "noBlocksWon": "Il n'y a pas de blocs gagnés, allez les chercher !",
   "processing": "Traitement...",
-  "graceDeadline": "Délais de grâce"
+  "graceDeadline": "Délais de grâce",
+  "Bonus": "Prime",
+  "EnjoyBonus": "Profitez du bonus !"
 }

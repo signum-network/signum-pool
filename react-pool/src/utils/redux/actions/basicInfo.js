@@ -190,9 +190,19 @@ export const fetchPoolInfo =
           // Fee Recipient ID
           responseData.feeRecipientId = data.feeRecipient;
 
-          // Pool Fee
-          responseData.poolFee =
+          // Save pool fee value
+          const poolFeeTemp =
             (parseFloat(data.poolFeePercentage) * 100).toFixed(2) + " %";
+
+          // Pool Fee
+          // If pool is giving a bonus, show it to miners!
+          // If not, just show the normal fee percentage
+          responseData.poolFee =
+            data.poolFeePercentage &&
+            data.poolFeePercentage < 0 &&
+            data.poolFeePercentage < 1
+              ? t("Bonus") + ", " + poolFeeTemp.replace("-", "")
+              : poolFeeTemp;
 
           // Pool Solo Fee (miners sharing less than 20%)
           responseData.poolSoloFee =

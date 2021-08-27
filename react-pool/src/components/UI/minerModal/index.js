@@ -180,18 +180,6 @@ const MinerModal = (props) => {
             value={minerModal.data.pendingBalance}
           />
 
-          {/* Minimum Payout */}
-          <RowItemRender
-            title={t("minimumPayout")}
-            value={minerModal.data.minimumPayout}
-          />
-
-          {/* Share Model */}
-          <RowItemRender
-            title={t("shareModel")}
-            value={minerModal.data.sharePercent + "%"}
-          />
-
           {/* Donation Percent */}
           <RowItemRender
             title={t("donationPercentage")}
@@ -216,9 +204,9 @@ const MinerModal = (props) => {
             value={minerModal.data.poCPlus}
           />
 
-          {/* Effective Shared */}
+          {/* Effective capacity */}
           <RowItemRender
-            title={t("effectiveShared")}
+            title={t("effectiveCapacity")}
             value={minerModal.data.effectiveCapacity}
           />
 
@@ -226,6 +214,24 @@ const MinerModal = (props) => {
           <RowItemRender
             title={t("confirmedDeadline")}
             value={minerModal.data.confirmedDeadline}
+          />
+
+          {/* Minimum Payout */}
+          <RowItemRender
+            title={t("minimumPayout")}
+            value={minerModal.data.minimumPayout}
+          />
+
+          {/* Share Model */}
+          <RowItemRender
+            title={t("shareModel")}
+            value={minerModal.data.sharePercent + "%"}
+          />
+
+          {/* Shared capacity */}
+          <RowItemRender
+            title={t("sharedCapacity")}
+            value={minerModal.data.sharedCapacity}
           />
 
           {/* Pool Share */}
