@@ -141,5 +141,7 @@
   "processing": "Traitement...",
   "graceDeadline": "Délais de grâce",
   "Bonus": "Prime",
-  "EnjoyBonus": "Profitez du bonus !"
+  "EnjoyBonus": "Profitez du bonus !",
+  "HomeDescriptionFirstLine": "Nous faisons partie de la technologie axée sur la communauté - Signum Blockchain",
+  "HomeDescriptionSecondLine": "Continuons à grandir et commençons à miner maintenant!"
 }

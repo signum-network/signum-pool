@@ -109,6 +109,8 @@
   "_MINEROPTIONS": "광부 옵션",
   "basicInfo": "기본 정보",
   "topTenMiners": "톱 10 광부",
+  "HomeDescriptionFirstLine": "우리는 커뮤니티 주도 기술의 일부입니다 - Signum Blockchain",
+  "HomeDescriptionSecondLine": "계속 성장하고 지금 광산을 시작합시다!",
   "configurationWithMessages": "메시지로 구성",
   "configurationWithMessagesParagraph": "이미 풀에 가입 한 경우 채굴 자 계정에서 풀 계정으로 <1> 암호화되지 않은 문자 메시지를 전송 </ 1>하여 추가로 구성 할 수 있습니다 ({{processLag}} 이후에 적용됨):",
   "shareModel": "모델 공유",

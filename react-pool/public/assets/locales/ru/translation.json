@@ -141,5 +141,7 @@
   "processing": "Обработка...",
   "graceDeadline": "Сроки отсрочки",
   "Bonus": "Бонус",
-  "EnjoyBonus": "Наслаждайтесь бонусом!"
+  "EnjoyBonus": "Наслаждайтесь бонусом!",
+  "HomeDescriptionFirstLine": "Мы являемся частью технологии, управляемой сообществом - Signum Blockchain",
+  "HomeDescriptionSecondLine": "Давайте продолжим расти и начнем майнить прямо сейчас!"
 }

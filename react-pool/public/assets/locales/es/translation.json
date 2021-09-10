@@ -141,5 +141,7 @@
   "processing": "Procesando...",
   "graceDeadline": "Deadlines fallidos sin penalización",
   "Bonus": "Bono",
-  "EnjoyBonus": "¡Disfruta del bono!"
+  "EnjoyBonus": "¡Disfruta del bono!",
+  "HomeDescriptionFirstLine": "Somos parte de la tecnología impulsada por la comunidad - Signum Blockchain",
+  "HomeDescriptionSecondLine": "¡Sigamos creciendo y empecemos con a minar ahora!"
 }
