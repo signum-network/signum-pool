@@ -1,8 +1,10 @@
 // Global variables related to pool node connection
 // development enviroment - pool node connection
-const TEST_NODE = "https://signumpool.com";
+const TEST_NODE = "http://nivbox.co.uk:9000";
 
 // Production - pool node connection
+// It is empty because the axios instance already has the BASE URL
+// If you wanna use a different url, you can just type the complete url there (Just like the example above)
 const NODE = "";
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -12,23 +14,6 @@ const TEST_POOL_NAME = "Future Pool";
 
 // Production - pool name
 const POOL_NAME = window.reactInit.globalPoolName;
-
-// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-// development enviroment - home welcome title, first line
-const TEST_HOME_TITLE_FIRST_LINE =
-  "We are part of the community driven technology - Signum Blockchain";
-
-// Production - home welcome title, first line
-const HOME_TITLE_FIRST_LINE = window.reactInit.homeFirstLineTitle;
-
-// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-// development enviroment - home welcome title, second line
-const TEST_HOME_TITLE_SECOND_LINE = "Let’s keep growing and start to mine now!";
-
-// Production - home welcome title, second line
-const HOME_TITLE_SECOND_LINE = window.reactInit.homeSecondLineTitle;
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -135,24 +120,6 @@ export const NODEToUse = useTestNet && useTestNet === true ? TEST_NODE : NODE;
 // Pool name which website will use
 export const POOLNameToUse =
   useTestNet && useTestNet === true ? TEST_POOL_NAME : POOL_NAME;
-
-// Pool home title, first line which website will use
-export const HOMETITLEFIRSTLINETOUSE =
-  useTestNet && useTestNet === true
-    ? TEST_HOME_TITLE_FIRST_LINE
-    : HOME_TITLE_FIRST_LINE;
-
-// Pool home title, first line which website will use
-export const HOME_TITLE_FIRST_LINE_TOUSE =
-  useTestNet && useTestNet === true
-    ? TEST_HOME_TITLE_FIRST_LINE
-    : HOME_TITLE_FIRST_LINE;
-
-// Pool home title, second line which website will use
-export const HOME_TITLE_SECOND_LINE_TOUSE =
-  useTestNet && useTestNet === true
-    ? TEST_HOME_TITLE_SECOND_LINE
-    : HOME_TITLE_SECOND_LINE;
 
 // Explorer which website will use
 export const EXPLORERToUse =

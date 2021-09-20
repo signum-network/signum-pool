@@ -84,8 +84,8 @@ const MinerModal = (props) => {
   // Snackbar manipulation
   const [showSnackBar, toggleSnackBar] = useState(false);
 
-  const updateSnackBar = () => {
-    toggleSnackBar((prev) => !prev);
+  const closeSnackBar = () => {
+    toggleSnackBar(false);
   };
 
   // Item
@@ -106,12 +106,12 @@ const MinerModal = (props) => {
       <Snackbar
         open={showSnackBar}
         autoHideDuration={3000}
-        onClose={updateSnackBar}
+        onClose={closeSnackBar}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         style={{ width: "100%", maxWidth: "600px" }}
       >
         <Alert
-          onClose={updateSnackBar}
+          onClose={closeSnackBar}
           severity="success"
           style={{ width: "100%", borderRadius: 8 }}
         >
@@ -180,18 +180,6 @@ const MinerModal = (props) => {
             value={minerModal.data.pendingBalance}
           />
 
-          {/* Minimum Payout */}
-          <RowItemRender
-            title={t("minimumPayout")}
-            value={minerModal.data.minimumPayout}
-          />
-
-          {/* Share Model */}
-          <RowItemRender
-            title={t("shareModel")}
-            value={minerModal.data.sharePercent + "%"}
-          />
-
           {/* Donation Percent */}
           <RowItemRender
             title={t("donationPercentage")}
@@ -216,9 +204,9 @@ const MinerModal = (props) => {
             value={minerModal.data.poCPlus}
           />
 
-          {/* Effective Shared */}
+          {/* Effective capacity */}
           <RowItemRender
-            title={t("effectiveShared")}
+            title={t("effectiveCapacity")}
             value={minerModal.data.effectiveCapacity}
           />
 
@@ -226,6 +214,24 @@ const MinerModal = (props) => {
           <RowItemRender
             title={t("confirmedDeadline")}
             value={minerModal.data.confirmedDeadline}
+          />
+
+          {/* Minimum Payout */}
+          <RowItemRender
+            title={t("minimumPayout")}
+            value={minerModal.data.minimumPayout}
+          />
+
+          {/* Share Model */}
+          <RowItemRender
+            title={t("shareModel")}
+            value={minerModal.data.sharePercent + "%"}
+          />
+
+          {/* Shared capacity */}
+          <RowItemRender
+            title={t("sharedCapacity")}
+            value={minerModal.data.sharedCapacity}
           />
 
           {/* Pool Share */}

@@ -139,5 +139,9 @@
   "chooseLanguage": "Wybierz język",
   "noBlocksWon": "Nie ma wygranych bloków, zdobądź je!",
   "processing": "Przetwarzanie...",
-  "graceDeadline": "Terminy łaski"
+  "graceDeadline": "Terminy łaski",
+  "Bonus": "Premia",
+  "EnjoyBonus": "Ciesz się bonusem!",
+  "HomeDescriptionFirstLine": "Jesteśmy częścią technologii opartej na społeczności - Signum Blockchain",
+  "HomeDescriptionSecondLine": "Rozwijajmy się i zacznijmy kopać już teraz!"
 }

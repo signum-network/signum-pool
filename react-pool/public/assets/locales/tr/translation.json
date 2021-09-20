@@ -139,5 +139,9 @@
   "chooseLanguage": "Bir Dil Seçin",
   "noBlocksWon": "Kazanılan blok yok, git onları al!",
   "processing": "İşleme...",
-  "graceDeadline": "Ek süreler"
+  "graceDeadline": "Ek süreler",
+  "Bonus": "Bonus",
+  "EnjoyBonus": "Bonusun tadını çıkarın!",
+  "HomeDescriptionFirstLine": "Topluluk odaklı teknolojinin bir parçasıyız - Signum Blockchain",
+  "HomeDescriptionSecondLine": "Haydi büyümeye devam edelim ve şimdi madenciliğe başlayalım!"
 }
