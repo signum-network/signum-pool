@@ -222,17 +222,23 @@ public class Server extends NanoHTTPD {
         if (session.getUri().startsWith("/api/getMiners")) {
             JsonArray minersJson = new JsonArray();
             AtomicReference<Double> poolCapacity = new AtomicReference<>(0d);
+            AtomicReference<Double> poolSharedCapacity = new AtomicReference<>(0d);
+            AtomicReference<Double> poolTotalEffecitveCapacity = new AtomicReference<>(0d);
             storageService.getMinersFiltered()
             .stream()
             .sorted(Comparator.comparing(Miner::getSharedCapacity).reversed())
             .forEach(miner -> {
                 poolCapacity.updateAndGet(v -> v + miner.getTotalCapacity());
+                poolSharedCapacity.updateAndGet(v -> v + miner.getSharedCapacity());
+                poolTotalEffecitveCapacity.updateAndGet(v -> v + miner.getTotalEffectiveCapacity());
                 minersJson.add(minerToJson(miner, false));
             });
             JsonObject jsonObject = new JsonObject();
             jsonObject.add("miners", minersJson);
             jsonObject.addProperty("explorer", propertyService.getString(Props.siteExplorerURL) + propertyService.getString(Props.siteExplorerAccount));
             jsonObject.addProperty("poolCapacity", poolCapacity.get());
+            jsonObject.addProperty("poolSharedCapacity", poolSharedCapacity.get());
+            jsonObject.addProperty("poolTotalEffectiveCapacity", poolTotalEffecitveCapacity.get());
             return jsonObject.toString();
         } else if (session.getUri().startsWith("/api/getMiner/")) {
             SignumAddress minerAddress = SignumAddress.fromEither(session.getUri().substring(14));
