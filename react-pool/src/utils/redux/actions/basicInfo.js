@@ -150,18 +150,6 @@ export const fetchPoolInfo =
           // Pool name
           responseData.poolName = data.poolName;
 
-          // Pool account
-          responseData.poolAccount = formatMinerName(
-            data.explorer,
-            data.poolAccountRS,
-            data.poolAccount,
-            null,
-            false
-          );
-
-          // Pool account ID
-          responseData.poolAccountId = data.poolAccount;
-
           // Number of blocks per average
           responseData.nAvg = thousands_separators(data.nAvg);
 
@@ -178,37 +166,23 @@ export const fetchPoolInfo =
           responseData.processLag =
             thousands_separators(data.processLag) + ` ${t("blocks")}`;
 
-          // Fee Recipient
-          responseData.feeRecipient = formatMinerName(
-            data.explorer,
-            data.feeRecipientRS,
-            data.feeRecipient,
-            null,
-            false
-          );
-
-          // Fee Recipient ID
-          responseData.feeRecipientId = data.feeRecipient;
+          // Save pool fee value
+          const poolFeeTemp =
+            (parseFloat(data.poolFeePercentage) * 100).toFixed(2) + " %";
 
           // Pool Fee
+          // If pool is giving a bonus, show it to miners!
+          // If not, just show the normal fee percentage
           responseData.poolFee =
-            (parseFloat(data.poolFeePercentage) * 100).toFixed(2) + " %";
+            data.poolFeePercentage &&
+            data.poolFeePercentage < 0 &&
+            data.poolFeePercentage < 1
+              ? t("Bonus") + ", " + poolFeeTemp.replace("-", "")
+              : poolFeeTemp;
 
           // Pool Solo Fee (miners sharing less than 20%)
           responseData.poolSoloFee =
             (parseFloat(data.poolSoloFeePercentage) * 100).toFixed(2) + " %";
-
-          // Donation Recipient
-          responseData.donationRecipient = formatMinerName(
-            data.explorer,
-            data.donationRecipientRS,
-            data.donationRecipient,
-            null,
-            false
-          );
-
-          // Donation Recipient ID
-          responseData.donationRecipientId = data.donationRecipient;
 
           // Donation percentage (configurable)
           responseData.donationPercent =

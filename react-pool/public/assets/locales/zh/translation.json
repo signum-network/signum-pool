@@ -139,5 +139,9 @@
   "chooseLanguage": "选择语言",
   "noBlocksWon": "没有赢得块，去拿它们！",
   "processing": "加工...",
-  "graceDeadline": "宽限期"
+  "graceDeadline": "宽限期",
+  "Bonus": "奖金",
+  "EnjoyBonus": "享受奖金！",
+  "HomeDescriptionFirstLine": "我们是社区驱动技术的一部分 - Signum Blockchain",
+  "HomeDescriptionSecondLine": "让我们继续成长，现在就开始挖矿吧！"
 }

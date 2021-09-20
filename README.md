@@ -61,12 +61,15 @@ Donations are very welcome at [S-JJQS-MMA4-GHB4-4ZNZU](https://explorer.burstcoi
 -   http://signumpool.de:8080
 -   https://signumpool.com
 -   https://signapool.notallmine.net
+-   https://fomplopool.com
 -   http://signum.land
+-   https://signum.space
 
 ## Requirements
 
+-   [Synced Signum node](https://github.com/signum-network/signum-node)
 -   Java 64 Bits version 8 or 11
--   MariaDB (optional, for advanced users)
+-   MariaDB (Optional, but recommended for advanced users)
 
 ## Installation
 

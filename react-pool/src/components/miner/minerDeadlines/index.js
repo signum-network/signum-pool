@@ -76,11 +76,12 @@ const MinerDeadLinesGraph = (props) => {
   };
 
   // Check if data is loaded
+  // Also check if bookmarked miner has been changed
   useEffect(() => {
     if (loadingData === false && deadlineData && deadlineData !== null) {
       mergeDeadlinesWithHeight(deadlineData);
     }
-  }, [loadingData]);
+  }, [deadlineData]);
 
   // Check if data is loaded and language has changed
   useEffect(() => {

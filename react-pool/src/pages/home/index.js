@@ -2,7 +2,7 @@
 import { Fragment, useEffect, useState, useRef } from "react";
 
 // React translations
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 
 // React router dom
 import { Link } from "react-router-dom";
@@ -32,12 +32,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import styles from "./Home.module.css";
 
 // Extra
-import {
-  POOLNameToUse,
-  userKeyBook,
-  HOME_TITLE_FIRST_LINE_TOUSE,
-  HOME_TITLE_SECOND_LINE_TOUSE,
-} from "../../utils/globalParameters";
+import { POOLNameToUse, userKeyBook } from "../../utils/globalParameters";
 
 import { thousands_separators } from "../../utils/functions/normal";
 import { openAccountInExplorer } from "../../utils/functions/blockchain";
@@ -183,8 +178,8 @@ const Home = (props) => {
   // Bookmarked snackbar
   const [showBookMarkSnackBar, toggleBookMarkSnackBar] = useState(false);
 
-  const bookMarkupdateSnackBar = () => {
-    toggleBookMarkSnackBar((prev) => !prev);
+  const bookMarkCloseSnackBar = () => {
+    toggleBookMarkSnackBar(false);
   };
 
   // Table collapse manipulation
@@ -269,12 +264,12 @@ const Home = (props) => {
       <Snackbar
         open={showBookMarkSnackBar}
         autoHideDuration={3000}
-        onClose={bookMarkupdateSnackBar}
+        onClose={bookMarkCloseSnackBar}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         style={{ width: "100%", maxWidth: "600px" }}
       >
         <Alert
-          onClose={bookMarkupdateSnackBar}
+          onClose={bookMarkCloseSnackBar}
           severity="success"
           style={{ width: "100%", borderRadius: 8 }}
         >
@@ -312,9 +307,14 @@ const Home = (props) => {
               component="section"
             >
               <Typography align="center" gutterBottom variant="h6">
-                {HOME_TITLE_FIRST_LINE_TOUSE}
+                <Trans i18nKey="HomeDescriptionFirstLine">
+                  We are part of the community driven technology - Signum
+                  Blockchain
+                </Trans>
                 <br />
-                {HOME_TITLE_SECOND_LINE_TOUSE}
+                <Trans i18nKey="HomeDescriptionSecondLine">
+                  Let’s keep growing and start to mine now!
+                </Trans>
               </Typography>
 
               <Link to="/start-mining">

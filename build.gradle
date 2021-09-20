@@ -126,6 +126,8 @@ jar {
     }
 }
 
+shadowJar.dependsOn versionProp
+
 distributions {
     main {
         distributionBaseName = "signum-pool-${details.lastTag}"

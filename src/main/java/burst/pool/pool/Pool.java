@@ -50,6 +50,7 @@ public class Pool {
     private final PropertyService propertyService;
     private final MinerTracker minerTracker;
     private final CompositeDisposable disposables = new CompositeDisposable();
+    private final String version;
 
     private final Semaphore processBlockSemaphore = new Semaphore(1);
     private final Semaphore resetRoundSemaphore = new Semaphore(1);
@@ -65,11 +66,12 @@ public class Pool {
     private final AtomicReference<ArrayList<Block>> recentlyForged = new AtomicReference<>();
     private final Set<?> secondaryRewardRecipients[] = new HashSet<?>[Props.passphraseSecondary.length];
 
-    public Pool(NodeService nodeService, StorageService storageService, PropertyService propertyService, MinerTracker minerTracker) {
+    public Pool(NodeService nodeService, StorageService storageService, PropertyService propertyService, MinerTracker minerTracker, String version) {
         this.storageService = storageService;
         this.minerTracker = minerTracker;
         this.propertyService = propertyService;
         this.nodeService = nodeService;
+        this.version = version;
         this.transactionFee.set(SignumValue.fromSigna(0.1));
         disposables.add(refreshMiningInfoThread());
         disposables.add(processBlocksThread());
@@ -530,5 +532,9 @@ public class Pool {
     
     public SignumValue getTransactionFee() {
         return transactionFee.get();
+    }
+    
+    public String getVersion() {
+        return version;
     }
 }

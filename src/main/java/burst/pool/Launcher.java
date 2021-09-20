@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class Launcher {
     public static void main(String[] args) { // todo catch exception
@@ -39,12 +40,20 @@ public class Launcher {
         }
         PropertyService propertyService = new PropertyServiceImpl(propertiesFileName);
         
+        Properties versionProp = new Properties();
+        try {
+            versionProp.load(Launcher.class.getResourceAsStream("/version.properties"));
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        String version = versionProp.getProperty("version", "develop");
+        
         // Set the default prefix
         SignumUtils.setAddressPrefix(propertyService.getBoolean(Props.testnet) ? "TS" : "S");
         
         MinerMaths minerMaths = new MinerMaths(propertyService.getInt(Props.nAvg) + propertyService.getInt(Props.processLag),
                 propertyService.getInt(Props.nMin), propertyService.getInt(Props.graceDeadlines));
-        NodeService nodeService = NodeService.getUseBestInstance(true, Constants.USER_AGENT, propertyService.getStringList(Props.nodeAddresses));
+        NodeService nodeService = NodeService.getUseBestInstance(true, Constants.USER_AGENT + version, propertyService.getStringList(Props.nodeAddresses));
         StorageService storageService = null;
         try {
             storageService = new DbStorageService(propertyService, minerMaths, nodeService);
@@ -53,7 +62,7 @@ public class Launcher {
             System.exit(-1);
         }
         MinerTracker minerTracker = new MinerTracker(nodeService, propertyService);
-        Pool pool = new Pool(nodeService, storageService, propertyService, minerTracker);
+        Pool pool = new Pool(nodeService, storageService, propertyService, minerTracker, version);
         Server server = new Server(storageService, propertyService, pool);
         try {
             server.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);

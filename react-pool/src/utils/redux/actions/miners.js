@@ -273,11 +273,6 @@ export const selectBookmarkedMiner =
                 type: "info",
               },
               {
-                title: "effectiveCapacity",
-                value: response.effectiveCapacity,
-                type: "info",
-              },
-              {
                 title: "physicalCapacity",
                 value: response.physicalCapacity,
                 type: "info",
@@ -285,6 +280,11 @@ export const selectBookmarkedMiner =
               {
                 title: "poCPlus",
                 value: response.poCPlus,
+                type: "info",
+              },
+              {
+                title: "effectiveCapacity",
+                value: response.effectiveCapacity,
                 type: "info",
               },
               {

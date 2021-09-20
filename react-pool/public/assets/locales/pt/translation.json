@@ -139,5 +139,9 @@
   "chooseLanguage": "Escolha um idioma",
   "noBlocksWon": "Não há blocos ganhos, vá pegá-los!",
   "processing": "Em processamento...",
-  "graceDeadline": "Deadlines perdidas sem penalização"
+  "graceDeadline": "Deadlines perdidas sem penalização",
+  "Bonus": "Bônus",
+  "EnjoyBonus": "Aproveite o bônus!",
+  "HomeDescriptionFirstLine": "Fazemos parte da tecnologia voltada para a comunidade - Signum Blockchain",
+  "HomeDescriptionSecondLine": "Vamos continuar crescendo e começar a minerar agora!"
 }
