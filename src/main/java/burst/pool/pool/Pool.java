@@ -5,6 +5,8 @@ import signumj.entity.SignumAddress;
 import signumj.entity.SignumValue;
 import signumj.entity.response.Account;
 import signumj.entity.response.Block;
+import signumj.entity.response.Constants.TransactionType;
+import signumj.entity.response.Constants.TransactionType.Subtype;
 import signumj.entity.response.FeeSuggestion;
 import signumj.entity.response.MiningInfo;
 import signumj.entity.response.Transaction;
@@ -62,6 +64,7 @@ public class Pool {
     private final AtomicReference<BigInteger> bestDeadline = new AtomicReference<>();
     private final AtomicReference<MiningInfo> miningInfo = new AtomicReference<>();
     private final AtomicReference<SignumValue> transactionFee = new AtomicReference<>();
+    private final AtomicReference<SignumValue> appendageFee = new AtomicReference<>();
     private final Set<SignumAddress> myRewardRecipients = new HashSet<>();
     private final AtomicReference<ArrayList<Block>> recentlyForged = new AtomicReference<>();
     private final Set<?> secondaryRewardRecipients[] = new HashSet<?>[Props.passphraseSecondary.length];
@@ -73,6 +76,7 @@ public class Pool {
         this.nodeService = nodeService;
         this.version = version;
         this.transactionFee.set(SignumValue.fromSigna(0.1));
+        this.appendageFee.set(SignumValue.fromNQT(0));
         disposables.add(refreshMiningInfoThread());
         disposables.add(processBlocksThread());
         for (int i = 0; i < secondaryRewardRecipients.length; i++) {
@@ -162,6 +166,18 @@ public class Pool {
                 
                 FeeSuggestion feeSuggestion = nodeService.suggestFee().blockingGet();
                 this.transactionFee.set(feeSuggestion.getStandardFee());
+                
+                TransactionType[] txTypes = nodeService.getConstants().blockingGet().getTransactionTypes();
+                for(TransactionType type : txTypes) {
+                    if(type.getType() == 0) {
+                        for(Subtype subtype : type.getSubtypes()) {
+                            if(subtype.getSubtype() == 1) {
+                                this.appendageFee.set(subtype.getMinimumFeeAppendages());
+                                break;
+                            }
+                        }
+                    }
+                }
 
                 List<StoredSubmission> storedSubmissions = transactionalStorageService.getBestSubmissionsForBlock(transactionalStorageService.getLastProcessedBlock() + 1);
                 if (storedSubmissions == null || storedSubmissions.isEmpty()) {
@@ -297,7 +313,7 @@ public class Pool {
         minerTracker.setCurrentlyProcessingBlock(false);
         processBlockSemaphore.release();
         if (actuallyProcessed) {
-            minerTracker.payoutIfNeeded(storageService, transactionFee.get());
+            minerTracker.payoutIfNeeded(storageService, transactionFee.get(), appendageFee.get());
         }
         
         logger.info("Finished processing block {}", storageService.getLastProcessedBlock());
