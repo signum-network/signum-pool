@@ -192,7 +192,8 @@ public class Miner implements Payable {
 
         // check if this is not an outlier, if so we should not all it to our list
         int nAvg = propertyService.getInt(Props.nAvg);
-        if(deadlines.size() > nAvg/2 && deadline.getDeadline().longValue() > deadlineAverage.longValue()*1000) {
+        if(deadlineAverage != null && deadlineAverage.longValue() > 0 &&
+                deadlines.size() > nAvg/2 && deadline.getDeadline().longValue() > deadlineAverage.longValue()*1000) {
             deadline = null;
         }
         
