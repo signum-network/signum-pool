@@ -105,7 +105,9 @@ public class Miner implements Payable {
                 deadlineToSave = deadline;
             }
         }
-        deadlineAverage = deadlineAverage.divide(BigInteger.valueOf(deadlines.size()));
+        if(deadlines.size() > 0) {
+            deadlineAverage = deadlineAverage.divide(BigInteger.valueOf(deadlines.size()));
+        }
         nconf.set(Math.min(nAvg+processLag, deadlinesCount));
         
         double estimatedCapacity = minerMaths.estimatedTotalPlotSize(deadlinesCount, hitSum);
