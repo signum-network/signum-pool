@@ -30,6 +30,7 @@ public class Miner implements Payable {
     private AtomicReference<Double> boost = new AtomicReference<>();
     private AtomicReference<Double> boostPool = new AtomicReference<>();
     private AtomicReference<Double> totalCapacityEffective = new AtomicReference<>();
+    private BigInteger deadlineAverage;
 
     public Miner(MinerMaths minerMaths, PropertyService propertyService, SignumAddress address, MinerStore store) {
         this.minerMaths = minerMaths;
@@ -70,6 +71,7 @@ public class Miner implements Payable {
         
         // First loop will calculate the average for the physical capacity
         int deadlinesCount = 0;
+        deadlineAverage = BigInteger.ZERO;
         Iterator<Deadline> it = deadlines.iterator();
         while(it.hasNext()) {
             Deadline deadline = it.next();
@@ -87,6 +89,7 @@ public class Miner implements Payable {
             BigInteger hit = deadline.calculateHit();
             
             hitSum = hitSum.add(hit);
+            deadlineAverage = deadlineAverage.add(deadline.getDeadline());
             
             double hitBoost = hit.doubleValue()/deadline.getBoostPool();
             hitSumBoost = hitSumBoost.add(BigInteger.valueOf((long)hitBoost));
@@ -102,6 +105,7 @@ public class Miner implements Payable {
                 deadlineToSave = deadline;
             }
         }
+        deadlineAverage = deadlineAverage.divide(BigInteger.valueOf(deadlines.size()));
         nconf.set(Math.min(nAvg+processLag, deadlinesCount));
         
         double estimatedCapacity = minerMaths.estimatedTotalPlotSize(deadlinesCount, hitSum);
@@ -185,10 +189,18 @@ public class Miner implements Payable {
                 }
             }
         }
-        if(previousDeadline != null)
-            deadlines.remove(previousDeadline);
 
-        deadlines.add(deadline);
+        // check if this is not an outlier, if so we should not all it to our list
+        int nAvg = propertyService.getInt(Props.nAvg);
+        if(deadlines.size() > nAvg/2 && deadline.getDeadline().longValue() > deadlineAverage.longValue()*1000) {
+            deadline = null;
+        }
+        
+        if(deadline!=null) {
+            deadlines.add(deadline);
+            if(previousDeadline != null)
+                deadlines.remove(previousDeadline);
+        }
     }
 
     public double getSharedCapacity() {
