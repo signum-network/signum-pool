@@ -44,7 +44,6 @@ import signumj.entity.SignumValue;
 import signumj.entity.response.Block;
 import signumj.entity.response.MiningInfo;
 import signumj.util.SignumUtils;
-import burst.pool.Constants;
 import burst.pool.miners.Deadline;
 import burst.pool.miners.Miner;
 import burst.pool.storage.config.PropertyService;
