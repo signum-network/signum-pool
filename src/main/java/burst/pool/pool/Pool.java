@@ -113,7 +113,8 @@ public class Pool {
 
     private void onMiningInfo(MiningInfo newMiningInfo) {
         if (miningInfo.get() == null || !Arrays.equals(miningInfo.get().getGenerationSignature(), newMiningInfo.getGenerationSignature())
-                || !Objects.equals(miningInfo.get().getHeight(), newMiningInfo.getHeight())) {
+                //  || !Objects.equals(miningInfo.get().getHeight(), newMiningInfo.getHeight())
+                ) {
             logger.info("NEW BLOCK from {} (block {}, gensig {}, base target {}, avg commitment {})",
                     nodeService.getAddress(), newMiningInfo.getHeight(), burstCrypto.toHexString(newMiningInfo.getGenerationSignature()),
                     newMiningInfo.getBaseTarget(), newMiningInfo.getAverageCommitmentNQT());
