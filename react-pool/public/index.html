@@ -1,133 +1,32 @@
 <!DOCTYPE html>
-<html lang="{DEFAULTLANG}">
+<html lang="en">
   <head>
-    <!-- Pool operator global variables -->
-    <!-- This variables are used this way, because the React will be able to read it! -->
-    <script type="text/javascript">
-      window.reactInit = {
-        // Pool variables
-        globalPoolName: "{TITLE}",
-        globalExplorerLink: "{EXPLORER}",
-        globalDiscordLink: "{DISCORD}",
-        globalFaucetLink: "{FAUCET}",
-        globalNodeLink: "{PUBLICNODE}",
-        globalMiningAddress: "{MININGADDRESS}",
-        signaPriceEndpoint: "{PRICEENDPOINT}",
-        miningGuideLink: "{MININGGUIDE}",
-
-        // Trading viewer variables
-        tradingGuideLink: "{SHOWTRADINGLINK}",
-        miniWidgetLink: "{MINITRADINGLINK}",
-        largeWidgetLink: "{LARGETRADINGLINK}",
-
-        // Color styling variables
-        // Primary
-        primaryColor: "{PRIMARYCOLOR}",
-        primaryLightColor: "{PRIMARYLIGHTCOLOR}",
-        primaryDarkColor: "{PRIMARYDARKCOLOR}",
-
-        // Secondary
-        secondaryColor: "{SECONDARYCOLOR}",
-        secondaryLightColor: "{SECONDARYLIGHTCOLOR}",
-        secondaryDarkColor: "{SECONDARYDARKCOLOR}",
-
-        // Graph
-        graphColor: "{GRAPHCOLOR}",
-
-        // Google Tracking ID, optional
-        // Example: UA-123456789–1
-        // If you do not want to implement, google analytics leavy the variable empty like this ""
-        googleTrackingID: "{GOOGLETRACKINGID}",
-
-        // Pool extra url in the menu header
-        // It's recommended to read the readme.md in order to make custom routes successfully
-        extraPoolUrl: "{EXTRAPOOLURL}",
-      };
-    </script>
-
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
+
+    <title>Mining pool</title>
+
+    <meta
+      name="keywords"
+      content="Signa, Signum, Mine, Miner, Mining, Pool, Burst, Burstcoin, PoC, PoC+, Crypto, Signum Pool, Signa Pool, Burst Pool"
+    />
+
+    <meta
+      name="description"
+      content="We are part of the community driven technology - Signum Blockchain. Let's keep growing and start to mine now!"
+    />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-
-    <!-- Roboto font -->
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
     />
-
-    <!-- Montserrat font -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Basic SEO -->
-    <title>Mining pool</title>
-    <meta
-      name="keywords"
-      content="Signa, Signum, Mine, Miner, Mining, Pool, Burst, PoC, PoC+, Crypto, Signum Pool, Signa Pool, Burst Pool"
-    />
-
-    <meta name="description" content="{SEODESCRIPTION}" />
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="{TITLE}" />
-    <meta property="og:description" content="{SEODESCRIPTION}" />
-    <meta property="og:image" content="{SEOIMGURL}" />
-    <meta property="og:url" content="{PAGEURL}" />
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:title" content="{TITLE}" />
-    <meta property="twitter:url" content="{PAGEURL}" />
-
-    <meta property="twitter:description" content="{SEODESCRIPTION}" />
-    <meta property="twitter:image" content="{SEOIMGURL}" />
-
-    <!-- Global styles -->
-    <style>
-      /* Default color, you can change them! */
-      :root {
-        /* Main */
-        --main-client-color: "*{PRIMARYCOLOR}*";
-        --main-client-light-color: "*{PRIMARYLIGHTCOLOR}*";
-        --main-client-dark-color: "*{PRIMARYDARKCOLOR}*";
-
-        --secondary-client-color: "*{SECONDARYCOLOR}*";
-        --secondary-client-light-color: "*{SECONDARYLIGHTCOLOR}*";
-        --secondary-client-dark-color: "*{SECONDARYDARKCOLOR}*";
-
-        --main-client-width: 1500px;
-      }
-
-      .myBody {
-        background: url("assets/faded.svg") !important;
-        background-color: #121212 !important;
-        background-position: top center !important;
-        background-repeat: no-repeat !important;
-        background-size: 100% !important;
-        transition: all 0.1s ease-in !important;
-      }
-
-      /* Media queries, only used for myBody class */
-      @media (max-width: 1000px) {
-        .myBody {
-          background-size: 200% !important;
-        }
-      }
-    </style>
   </head>
-
-  <body class="myBody">
+  <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-
     <div id="root"></div>
   </body>
 </html>
