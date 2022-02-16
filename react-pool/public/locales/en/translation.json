@@ -1,1 +1,12 @@
-{ "main": "English" }
+{
+  "main": "English",
+  "home": "Home",
+  "poolInfo": "Pool info",
+  "miner": "Miner",
+  "miner_other": "Miners",
+  "discord": "Discord",
+  "more": "More",
+  "wallet": "Wallet",
+  "explorer": "Explorer",
+  "trading": "Trading"
+}

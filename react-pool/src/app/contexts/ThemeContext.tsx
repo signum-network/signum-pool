@@ -18,23 +18,23 @@ export const ThemeContextProvider: FC = ({ children }) => {
     const themeMode = useAppSelector(selectThemeMode);
     if (themeMode) saveSystemTheme(themeMode);
 
-    const theme = useMemo(() => {
-        const contrastText =
-            themeMode === "light" ? "rgba(0, 0, 0, 0.87)" : "#ffffff";
+    const contrastText =
+        themeMode === "light" ? "rgba(0, 0, 0, 0.87)" : "#ffffff";
 
+    const theme = useMemo(() => {
         return createTheme({
             palette: {
                 mode: themeMode,
                 primary: {
-                    light: "#80e27e",
-                    main: "#4caf50",
-                    dark: "#087f23",
+                    main: "#0099ff",
+                    light: "#5fb8ff",
+                    dark: "#0066ff",
                     contrastText,
                 },
                 secondary: {
-                    light: "#69c9ff",
-                    main: "#0099ff",
-                    dark: "#006ccb",
+                    main: "#183173",
+                    light: "#274187",
+                    dark: "#021851",
                     contrastText,
                 },
             },
