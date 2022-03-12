@@ -2,24 +2,75 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="theme-color" content="#000000" />
 
-    <title>Mining pool</title>
+    <!-- Pool operator global variables -->
+    <!-- This variables are used this way, because the React will be able to read it! -->
+    <!-- It's recommended to read the readme.md in order to make custom routes successfully -->
+    <script type="text/javascript">
+      window.reactInit = {
+        // Pool variables
+        poolName: "{TITLE}",
+        miningUrl: "{MININGADDRESS}",
+        discordUrl: "{DISCORD}",
+        explorerUrl: "{EXPLORER}",
+        faucetUrl: "{FAUCET}",
+        signumPriceUrl: "{PRICEENDPOINT}",
+        walletUrl: "{PUBLICNODE}",
 
+        // Color styling variables
+        // Primary
+        primary: "{PRIMARYCOLOR}",
+        primaryLight: "{PRIMARYLIGHTCOLOR}",
+        primaryDark: "{PRIMARYDARKCOLOR}",
+
+        // Secondary
+        secondary: "{SECONDARYCOLOR}",
+        secondaryLight: "{SECONDARYLIGHTCOLOR}",
+        secondaryDark: "{SECONDARYDARKCOLOR}",
+
+        // Graph
+        graphColor: "{GRAPHCOLOR}",
+
+        // Google Tracking ID, optional
+        // Example: G-ZRC00VYVCB
+        googleTrackingID: "{GOOGLETRACKINGID}",
+
+        // Extra pool variables
+        extraPoolUrl: "{EXTRAPOOLURL}",
+      };
+    </script>
+
+    <!-- Basic SEO -->
+    <title>{TITLE}</title>
+    <meta name="description" content="{SEODESCRIPTION}" />
     <meta
       name="keywords"
       content="Signa, Signum, Mine, Miner, Mining, Pool, Burst, Burstcoin, PoC, PoC+, Crypto, Signum Pool, Signa Pool, Burst Pool"
     />
 
-    <meta
-      name="description"
-      content="We are part of the community driven technology - Signum Blockchain. Let's keep growing and start to mine now!"
-    />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{TITLE}" />
+    <meta property="og:description" content="{SEODESCRIPTION}" />
+    <meta property="og:image" content="{SEOIMGURL}" />
+    <meta property="og:url" content="{PAGEURL}" />
 
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="{TITLE}" />
+    <meta property="twitter:url" content="{PAGEURL}" />
+    <meta property="twitter:description" content="{SEODESCRIPTION}" />
+    <meta property="twitter:image" content="{SEOIMGURL}" />
+
+    <!-- Extra SEO -->
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="theme-color" content="#000000" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
