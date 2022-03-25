@@ -8,5 +8,15 @@
   "more": "More",
   "wallet": "Wallet",
   "explorer": "Explorer",
-  "trading": "Trading"
+  "trading": "Trading",
+  "chooseLanguage": "Choose a Language",
+  "close": "Close",
+  "startMining": "Start Mining",
+  "switchTheme": "Switch Theme",
+  "sideBarTitle": "Made with ⚡\nfor enthusiasts by enthusiasts",
+  "shareWithCommunity": "Share it with your community!",
+  "checkOutThisSite": "Check out this amazing site!",
+  "copyURL": "Copy URL or Link",
+  "linkCopied": "Link copied successfully!",
+  "footerLabel": "Made with ❤️ By Signum Network"
 }

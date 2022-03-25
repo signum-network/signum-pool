@@ -3,16 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { NativeMenuLinks } from "../../links";
 import { MenuOptions, MenuOptionLink } from "../../../MenuOptions";
 import { openExternalUrl } from "../../../../utils/functions/stringMethods";
+import { extraLinks } from "../../../../utils/extraLinks";
 
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
+import ControlPointIcon from "@mui/icons-material/ControlPoint";
 
 export const NavigationMenu = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const visitPage = (linkData: any) => {
-        if (linkData.newWindow) {
+    const visitPage = (linkData: any, newWindow: boolean = false) => {
+        if (linkData.newWindow || newWindow) {
             return openExternalUrl(linkData.url);
         }
 
@@ -27,9 +29,19 @@ export const NavigationMenu = () => {
         },
     }));
 
+    const formatedExtraLinks = extraLinks.map((link: any) => ({
+        icon: <ControlPointIcon />,
+        label: link.label,
+        onClick: () => {
+            visitPage(link, link.newTab);
+        },
+    }));
+
+    const linksMergedWithAdditionals = [...links, ...formatedExtraLinks];
+
     return (
         <Grid item>
-            <MenuOptions links={links}>
+            <MenuOptions links={linksMergedWithAdditionals}>
                 <Button
                     color={"inherit"}
                     sx={{

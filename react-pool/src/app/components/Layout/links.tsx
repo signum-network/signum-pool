@@ -1,6 +1,12 @@
+import { discordUrl, walletUrl } from "../../../enviroments";
+
 import LinkIcon from "@mui/icons-material/Link";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import DnsRoundedIcon from "@mui/icons-material/DnsRounded";
+import GroupIcon from "@mui/icons-material/Group";
+import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 
 interface LinkProps {
     label: string;
@@ -10,21 +16,21 @@ interface LinkProps {
 }
 
 export const Links: LinkProps[] = [
-    { label: "home", url: "/", icon: <LinkIcon /> },
+    { label: "home", url: "/", icon: <HomeRoundedIcon /> },
     {
         label: "poolInfo",
         url: "/pool-info",
-        icon: <LinkIcon />,
+        icon: <DnsRoundedIcon />,
     },
     {
         label: "miner_other",
         url: "/miners",
-        icon: <LinkIcon />,
+        icon: <GroupIcon />,
     },
     {
         label: "discord",
-        url: "https://discord.com/invite/aKbdwJ9",
-        icon: <LinkIcon />,
+        url: discordUrl,
+        icon: <QuestionAnswerIcon />,
         newWindow: true,
     },
 ];
@@ -37,7 +43,7 @@ export const NativeMenuLinks: LinkProps[] = [
     },
     {
         label: "wallet",
-        url: "https://europe3.testnet.signum.network",
+        url: walletUrl,
         icon: <AccountBalanceWalletIcon />,
         newWindow: true,
     },

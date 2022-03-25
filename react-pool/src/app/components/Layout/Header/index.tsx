@@ -1,28 +1,48 @@
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useAppSelector } from "../../../../states/hooks";
-import { selectIsDarkMode } from "../../../../states/appState";
-import { Links, NativeMenuLinks } from "../links";
+import { poolName } from "../../../../enviroments";
+import { useAppSelector, useAppDispatch } from "../../../../states/hooks";
+import { actions, selectIsDarkMode } from "../../../../states/appState";
+import { Links } from "../links";
 import { NavigationMenu } from "./components/NavigationMenu";
+import { ToggleLanguageBtn } from "../components/ToggleLanguageBtn";
+import { ToggleThemeBtn } from "../components/ToggleThemeBtn";
 import {
     truncateText,
     openExternalUrl,
 } from "../../../utils/functions/stringMethods";
 
+import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import AppBar from "@mui/material/AppBar";
+import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
 import styles from "./header.module.css";
 
 export const Header = () => {
     const { t } = useTranslation();
+    const { setIsOpenSidebar } = actions;
     const navigate = useNavigate();
     const location = useLocation();
+    const dispatch = useAppDispatch();
 
     const isDarkMode = useAppSelector(selectIsDarkMode);
     const imgLogo = `/assets/${isDarkMode ? "light" : "dark"}Logo.png`;
+
+    const shownContentDesktop = {
+        width: "auto",
+        display: { xs: "none", lg: "flex" },
+    };
+
+    const shownContentMobile = {
+        width: "auto",
+        display: { xs: "flex", lg: "none" },
+    };
+
+    const openSideDrawer = () => dispatch(setIsOpenSidebar(true));
 
     return (
         <AppBar
@@ -62,8 +82,8 @@ export const Header = () => {
                             width: "auto",
                             pr: 2,
                             mr: 2,
-                            borderRight: 1,
-                            borderColor: "divider",
+                            borderRight: { xs: 0, lg: 1 },
+                            borderColor: { xs: "transparent", lg: "divider" },
                         }}
                     >
                         <Link
@@ -73,7 +93,7 @@ export const Header = () => {
                         >
                             <img src={imgLogo} alt="Pool Logo" />
                             <Typography variant="h6">
-                                {truncateText("Pool.SignumCoin.ro", 20)}
+                                {truncateText(poolName, 20)}
                             </Typography>
                         </Link>
                     </Grid>
@@ -84,7 +104,7 @@ export const Header = () => {
                         direction="row"
                         alignItems="center"
                         spacing={2}
-                        sx={{ width: "auto" }}
+                        sx={shownContentDesktop}
                     >
                         {Links.map((link) => {
                             const visitPage = () => {
@@ -123,7 +143,60 @@ export const Header = () => {
                     </Grid>
                 </Grid>
 
-                <Grid item>RIGHT SIDE</Grid>
+                <Grid item>
+                    <Grid
+                        container
+                        item
+                        direction="row"
+                        alignItems="center"
+                        columnSpacing={2}
+                        sx={shownContentDesktop}
+                    >
+                        <Grid item>
+                            <Stack direction="row" spacing={1}>
+                                <ToggleLanguageBtn />
+                                <ToggleThemeBtn />
+                            </Stack>
+                        </Grid>
+
+                        <Grid item>
+                            <Link to="/start-mining">
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    sx={{
+                                        textTransform: "none",
+                                        px: 5,
+                                        py: 1.2,
+                                        borderColor: "divider",
+                                        fontSize: 16,
+                                        borderRadius: 1,
+                                        color: "white",
+                                    }}
+                                >
+                                    {t("startMining")}
+                                </Button>
+                            </Link>
+                        </Grid>
+                    </Grid>
+
+                    <Grid
+                        item
+                        sx={{
+                            ...shownContentMobile,
+                            flexDirection: "row",
+                            alignItems: "center",
+                        }}
+                    >
+                        <IconButton
+                            onClick={openSideDrawer}
+                            edge="start"
+                            sx={{ border: 1, borderColor: "divider", my: 1 }}
+                        >
+                            <MenuIcon fontSize="large" />
+                        </IconButton>
+                    </Grid>
+                </Grid>
             </Toolbar>
         </AppBar>
     );

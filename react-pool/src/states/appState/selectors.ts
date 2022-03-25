@@ -8,3 +8,9 @@ export const selectIsDarkMode = createSelector(
     selectThemeMode,
     (mode) => mode === "dark"
 );
+
+export const selectIsOpenLanguageDialog = (state: RootState): boolean =>
+    state.appState.isOpenLanguageDialog;
+
+export const selectIsOpenSidebar = (state: RootState): boolean =>
+    state.appState.isOpenSidebar;

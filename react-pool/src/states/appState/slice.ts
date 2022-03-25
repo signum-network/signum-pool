@@ -6,10 +6,14 @@ import {
 
 export interface AppState {
     themeMode: themeModeAction;
+    isOpenLanguageDialog: boolean;
+    isOpenSidebar: boolean;
 }
 
 const initialState: AppState = {
     themeMode: getSystemTheme(),
+    isOpenLanguageDialog: false,
+    isOpenSidebar: false,
 };
 
 export const appSlice = createSlice({
@@ -18,6 +22,12 @@ export const appSlice = createSlice({
     reducers: {
         setTheme: (state, action: PayloadAction<themeModeAction>) => {
             state.themeMode = action.payload;
+        },
+        setIsOpenLanguageDialog: (state, action: PayloadAction<boolean>) => {
+            state.isOpenLanguageDialog = action.payload;
+        },
+        setIsOpenSidebar: (state, action: PayloadAction<boolean>) => {
+            state.isOpenSidebar = action.payload;
         },
     },
 });
