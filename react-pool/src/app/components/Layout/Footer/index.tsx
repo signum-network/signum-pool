@@ -17,13 +17,14 @@ export const Footer = () => {
             alignItems="center"
         >
             <Typography variant="body2" align="center">
-                <a
+                <Typography
+                    component="a"
                     href="https://github.com/signum-network/signum-pool"
                     target="_blank"
                     rel="noreferrer"
                 >
                     <u>Github repo</u>
-                </a>{" "}
+                </Typography>{" "}
                 - {t("footerLabel")} @ (2019-
                 {currentYear})
             </Typography>
