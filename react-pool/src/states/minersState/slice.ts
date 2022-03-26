@@ -33,7 +33,11 @@ const initialState: minersState = {
 export const minersSlice = createSlice({
     name: "miners",
     initialState,
-    reducers: {},
+    reducers: {
+        setMinersData: (state, action: PayloadAction<minersState>) => {
+            state = action.payload;
+        },
+    },
 });
 
 export const { actions } = minersSlice;

@@ -12,7 +12,7 @@ export const poolName = prodVariable.poolName;
 
 // The URL of the pool in order to consume its API endpoints
 // Axios will have an instance based on this URL, so by default this is empty
-export const poolNodeUrl = "";
+export const poolNodeUrl = "/";
 
 // The URL miners should use in order to send deadlines
 export const miningUrl = prodVariable.miningUrl;

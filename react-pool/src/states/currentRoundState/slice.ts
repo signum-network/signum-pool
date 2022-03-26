@@ -34,7 +34,14 @@ const initialState: currentRoundState = {
 export const currentRoundSlice = createSlice({
     name: "currentRound",
     initialState,
-    reducers: {},
+    reducers: {
+        setCurrentRoundData: (
+            state,
+            action: PayloadAction<currentRoundState>
+        ) => {
+            state = action.payload;
+        },
+    },
 });
 
 export const { actions } = currentRoundSlice;

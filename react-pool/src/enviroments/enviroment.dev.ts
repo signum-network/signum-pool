@@ -7,7 +7,7 @@
 export const poolName = "Pool.Signumcoin.Ro";
 
 // The URL of the pool in order to consume its API endpoints
-export const poolNodeUrl = "https://signumpool.com";
+export const poolNodeUrl = "https://signumpool.com/";
 
 // The URL miners should use in order to send deadlines
 export const miningUrl = "http://testnet.btfg.space:9000";
