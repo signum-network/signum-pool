@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface poolConfigState {
-    loading: boolean;
+interface poolConfigState {
+    isLoading: boolean;
     poolAccount: string;
     blocksForAverage: number;
     blocksToShowAMiner: number;
@@ -22,7 +22,7 @@ export interface poolConfigState {
 }
 
 const initialState: poolConfigState = {
-    loading: true,
+    isLoading: true,
     poolAccount: "",
     blocksForAverage: 0,
     blocksToShowAMiner: 0,
@@ -47,7 +47,7 @@ export const poolConfigSlice = createSlice({
     initialState,
     reducers: {
         setPoolConfigData: (state, action: PayloadAction<poolConfigState>) => {
-            state = action.payload;
+            return action.payload;
         },
     },
 });

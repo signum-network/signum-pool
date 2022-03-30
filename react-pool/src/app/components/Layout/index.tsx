@@ -9,10 +9,10 @@ import { PoolDataFetcher } from "./components/PoolDataFetcher";
 export const Layout: FC = ({ children }) => {
     return (
         <Fragment>
+            <PoolDataFetcher />
             <Sidebar />
             <AppSnackBar />
             <LanguageDialog />
-            <PoolDataFetcher />
             <Header />
             {children}
             <Footer />

@@ -10,17 +10,18 @@ type networkInfo = {
     blockHeight: number;
     averageCommitmentNQT: number;
     timestamp: number;
+    difficulty: string;
 };
 
 export interface currentRoundState {
-    loading: boolean;
+    isLoading: boolean;
     roundStart: number;
     bestDeadline: bestDeadline;
     networkInfo: networkInfo;
 }
 
 const initialState: currentRoundState = {
-    loading: true,
+    isLoading: true,
     roundStart: 0,
     bestDeadline: { miner: "", deadline: 0 },
     networkInfo: {
@@ -28,6 +29,7 @@ const initialState: currentRoundState = {
         blockHeight: 0,
         averageCommitmentNQT: 0,
         timestamp: 0,
+        difficulty: "",
     },
 };
 
@@ -39,7 +41,7 @@ export const currentRoundSlice = createSlice({
             state,
             action: PayloadAction<currentRoundState>
         ) => {
-            state = action.payload;
+            return action.payload;
         },
     },
 });

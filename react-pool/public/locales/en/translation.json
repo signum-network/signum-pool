@@ -21,5 +21,9 @@
   "footerLabel": "Made with ❤️ By Signum Network",
   "welcomePoolMessage": "Welcome to {{poolName}}",
   "welcomePoolMessageDescription": "We are part of the community driven technology - Signum Blockchain\nLet's keep growing, join us to start to mine now!",
-  "yourSignumAddressOrAccountName": "Enter your Signum address or account ID"
+  "yourSignumAddressOrAccountName": "Enter your Signum address or account ID",
+  "poolPhysical": "Pool Physical",
+  "blockHeight": "Block Height",
+  "priceUSD": "Price USD",
+  "networkSize": "Network size"
 }

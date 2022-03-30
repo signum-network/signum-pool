@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface signumState {
-    loading: boolean;
+interface signumState {
+    isLoading: boolean;
     price: number;
 }
 
 const initialState: signumState = {
-    loading: true,
+    isLoading: true,
     price: 0,
 };
 

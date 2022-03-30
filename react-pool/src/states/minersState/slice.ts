@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type miner = {
+export type miner = {
     accountId: string;
     name?: string;
     pendingBalance: string;
@@ -20,14 +20,20 @@ type miner = {
     minerAgent?: string;
 };
 
-interface minersState {
-    loading: boolean;
+export interface minersState {
+    isLoading: boolean;
     miners: miner[];
+    totalPhysicalCapacity: number;
+    totalSharedCapacity: number;
+    totalEffectiveCapacity: number;
 }
 
 const initialState: minersState = {
-    loading: true,
+    isLoading: true,
     miners: [],
+    totalPhysicalCapacity: 0,
+    totalSharedCapacity: 0,
+    totalEffectiveCapacity: 0,
 };
 
 export const minersSlice = createSlice({
@@ -35,7 +41,7 @@ export const minersSlice = createSlice({
     initialState,
     reducers: {
         setMinersData: (state, action: PayloadAction<minersState>) => {
-            state = action.payload;
+            return action.payload;
         },
     },
 });
