@@ -13,7 +13,11 @@ const initialState: signumState = {
 export const signumSlice = createSlice({
     name: "signum",
     initialState,
-    reducers: {},
+    reducers: {
+        setSignumData: (state, action: PayloadAction<signumState>) => {
+            return action.payload;
+        },
+    },
 });
 
 export const { actions } = signumSlice;

@@ -4,6 +4,7 @@ import { formatAmount } from "../../../../app/utils/functions/formatAmount";
 import { useAppSelector } from "../../../../states/hooks";
 import { selectMiners } from "../../../../states/minersState";
 import { selectCurrentRound } from "../../../../states/currentRoundState";
+import { selectSignumState } from "../../../../states/signumState";
 
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -22,12 +23,15 @@ export const PoolInfo = () => {
     const currentRound = useAppSelector(selectCurrentRound);
     const { isLoading: isLoadingCurrentRound, networkInfo } = currentRound;
 
+    const signumState = useAppSelector(selectSignumState);
+    const { isLoading: isLoadingSignumState, price } = signumState;
+
     return (
         <Grid
             container
             mx="auto"
             maxWidth={760}
-            mt={2}
+            mt={1}
             p={2}
             pb={0}
             sx={{ borderBottom: 1, borderColor: "divider" }}
@@ -53,7 +57,11 @@ export const PoolInfo = () => {
                 loading={isLoadingCurrentRound}
             />
 
-            <PoolStat title={t("priceUSD")} value="7.853 PiB" />
+            <PoolStat
+                title={t("priceUSD")}
+                value={"$" + formatAmount(price)}
+                loading={isLoadingSignumState}
+            />
 
             <PoolStat
                 title={t("networkSize")}
@@ -93,7 +101,6 @@ export const PoolStat = ({
                 <Typography
                     variant="h6"
                     color="textSecondary"
-                    gutterBottom
                     align="center"
                     width="100%"
                 >

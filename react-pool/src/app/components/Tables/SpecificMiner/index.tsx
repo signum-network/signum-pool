@@ -1,0 +1,276 @@
+/* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
+/** @jsxImportSource @emotion/react */
+import { css } from "@emotion/react";
+import { useTranslation } from "react-i18next";
+import { useAppSelector } from "../../../../states/hooks";
+import { miner } from "../../../../states/minersState";
+import { selectPoolConfig } from "../../../../states/poolConfigState";
+import { viewAccountInExplorer } from "../../../utils/explorer";
+import { formatCapacity } from "../../../utils/functions/formatCapacity";
+import { formatTime } from "../../../utils/functions/formatTime";
+import { MinerDeadlinesGraph } from "./components/MinerDeadlinesGraph";
+
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import BlurOnIcon from "@mui/icons-material/BlurOn";
+
+export interface deadlines {
+    deadlines: number[];
+    heights: number[];
+    boost: number[];
+}
+
+interface SpecificMinerProps extends miner {
+    bookmarkedMiner?: boolean;
+    showExplorerButton?: boolean;
+    deadlineData?: deadlines;
+}
+
+export const SpecificMiner = ({
+    accountId,
+    name,
+    pendingBalance,
+    physicalCapacity,
+    effectiveCapacity,
+    sharedCapacity,
+    shareModel,
+    donationPercent,
+    totalCommitment,
+    commitmentPerTiB,
+    pocBoost,
+    confirmedDeadlines,
+    poolShare,
+    minimumPayout,
+    minerAgent,
+    currentRoundBestDeadline,
+    bookmarkedMiner = false,
+    showExplorerButton = false,
+    deadlineData,
+}: SpecificMinerProps) => {
+    const { t } = useTranslation();
+    const { blocksForAverage, processLag } = useAppSelector(selectPoolConfig);
+    const maxSubmissions = blocksForAverage + processLag;
+
+    const openAccountInExplorer = () => {
+        viewAccountInExplorer(accountId);
+    };
+
+    return (
+        <Grid container direction="column">
+            {showExplorerButton && (
+                <Grid
+                    item
+                    container
+                    py={2}
+                    sx={{ borderBottom: 1, borderColor: "divider" }}
+                >
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        startIcon={<BlurOnIcon />}
+                        onClick={openAccountInExplorer}
+                        sx={{
+                            width: "90%",
+                            mx: "auto",
+                            textTransform: "none",
+                            color: "white",
+                        }}
+                    >
+                        {t("viewMinerInExplorer")}
+                    </Button>
+                </Grid>
+            )}
+
+            {name && (
+                <SpecificRow
+                    title={t("name")}
+                    value={name}
+                    onClick={openAccountInExplorer}
+                />
+            )}
+
+            {accountId && (
+                <SpecificRow
+                    title={t("minerAddress")}
+                    value={accountId}
+                    onClick={openAccountInExplorer}
+                />
+            )}
+
+            {!bookmarkedMiner && (
+                <SpecificRow
+                    title={t("accountId")}
+                    value={accountId}
+                    onClick={openAccountInExplorer}
+                />
+            )}
+
+            {pendingBalance && (
+                <SpecificRow
+                    title={t("pendingBalance")}
+                    value={pendingBalance}
+                />
+            )}
+
+            {bookmarkedMiner && currentRoundBestDeadline && (
+                <SpecificRow
+                    title={t("currentDeadline")}
+                    // @ts-ignore
+                    value={formatTime(currentRoundBestDeadline)}
+                />
+            )}
+
+            {bookmarkedMiner && !currentRoundBestDeadline && (
+                <SpecificRow
+                    title={t("currentDeadline")}
+                    value={t("waiting") + "..."}
+                />
+            )}
+
+            {bookmarkedMiner &&
+                deadlineData &&
+                deadlineData.boost.length &&
+                deadlineData.deadlines.length &&
+                deadlineData.heights.length && (
+                    <SpecificRow title={t("pastDeadline_other")}>
+                        <MinerDeadlinesGraph
+                            boost={deadlineData.boost}
+                            deadlines={deadlineData.deadlines}
+                            heights={deadlineData.heights}
+                        />
+                    </SpecificRow>
+                )}
+
+            <SpecificRow
+                title={t("confirmedDeadline_other")}
+                value={confirmedDeadlines + "/" + maxSubmissions}
+            />
+
+            {!!physicalCapacity && (
+                <SpecificRow
+                    title={t("physicalCapacity")}
+                    // @ts-ignore
+                    value={formatCapacity(physicalCapacity)}
+                />
+            )}
+
+            {!!pocBoost && (
+                <SpecificRow title={t("pocBoost")} value={pocBoost} />
+            )}
+
+            {!!effectiveCapacity && (
+                <SpecificRow
+                    title={t("effectiveCapacity")}
+                    // @ts-ignore
+                    value={formatCapacity(effectiveCapacity)}
+                />
+            )}
+
+            {totalCommitment && (
+                <SpecificRow
+                    title={t("committedBalance")}
+                    value={totalCommitment}
+                />
+            )}
+
+            {commitmentPerTiB && (
+                <SpecificRow
+                    title={t("commitmentSlashTiB")}
+                    value={commitmentPerTiB}
+                />
+            )}
+
+            {minimumPayout && (
+                <SpecificRow title={t("minimumPayout")} value={minimumPayout} />
+            )}
+
+            {!!shareModel && (
+                <SpecificRow title={t("shareModel")} value={shareModel + "%"} />
+            )}
+
+            {!!sharedCapacity && (
+                <SpecificRow
+                    title={t("sharedCapacity")}
+                    // @ts-ignore
+                    value={formatCapacity(sharedCapacity)}
+                />
+            )}
+
+            {!!donationPercent && (
+                <SpecificRow
+                    title={t("donationPercent")}
+                    value={donationPercent + "%"}
+                />
+            )}
+
+            {!!poolShare && (
+                <SpecificRow
+                    title={t("poolShare")}
+                    value={(poolShare * 100).toFixed(3) + "%"}
+                />
+            )}
+
+            {minerAgent && (
+                <SpecificRow title={t("software")} value={minerAgent} />
+            )}
+        </Grid>
+    );
+};
+
+interface SpecificRowProps {
+    title: string;
+    value?: string | number;
+    onClick?: any;
+    children?: Element | React.ReactNode;
+}
+
+const SpecificRow = ({
+    title,
+    value,
+    onClick = undefined,
+    children,
+}: SpecificRowProps) => {
+    return (
+        <Grid
+            item
+            container
+            xs={12}
+            direction="row"
+            alignItems="flex-start"
+            sx={{
+                pt: 2,
+                pb: 1,
+                borderBottom: 1,
+                borderColor: "divider",
+            }}
+            css={css`
+                :last-child {
+                    border: 0 !important;
+                }
+            `}
+        >
+            <Grid item xs={12} md={4} mb={1}>
+                <Typography>{title}</Typography>
+            </Grid>
+
+            {children ? (
+                <Grid item xs={12} mb={1}>
+                    {children}
+                </Grid>
+            ) : (
+                <Grid item xs={12} md={8} mb={1}>
+                    <Typography
+                        fontWeight={700}
+                        onClick={onClick}
+                        sx={{
+                            cursor: onClick ? "pointer" : undefined,
+                        }}
+                    >
+                        {value}
+                    </Typography>
+                </Grid>
+            )}
+        </Grid>
+    );
+};

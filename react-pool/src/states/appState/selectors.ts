@@ -18,3 +18,6 @@ export const selectIsOpenLanguageDialog = (state: RootState): boolean =>
 
 export const selectIsOpenSidebar = (state: RootState): boolean =>
     state.appState.isOpenSidebar;
+
+export const selectBookmarkedMiner = (state: RootState): string =>
+    state.appState.bookmarkedMiner;

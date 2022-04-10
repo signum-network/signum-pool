@@ -31,7 +31,7 @@ export const walletUrl = prodVariable.walletUrl;
 
 // Signum price API
 export const signumPriceUrl =
-    "https://min-api.cryptocompare.com/data/price?fsym=SIGNA&tsyms=USD";
+    "https://api.coingecko.com/api/v3/simple/price?ids=signum&vs_currencies=usd";
 
 // Trading embed links
 export const tradingEmbedsUrl = {

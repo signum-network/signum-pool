@@ -11,8 +11,8 @@ export type miner = {
     donationPercent: number;
     totalCommitment: string;
     commitmentPerTiB: string;
-    pocBoost: number;
-    pocBostPool: number;
+    pocBoost?: number;
+    pocBostPool?: number;
     confirmedDeadlines: number;
     currentRoundBestDeadline: string;
     poolShare: number;

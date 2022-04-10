@@ -169,7 +169,6 @@ export const Header = () => {
                                         px: 5,
                                         py: 1.2,
                                         borderColor: "divider",
-                                        fontSize: 16,
                                         borderRadius: 1,
                                         color: "white",
                                     }}

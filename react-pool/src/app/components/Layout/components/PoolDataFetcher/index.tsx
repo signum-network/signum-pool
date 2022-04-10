@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { useAppContext } from "../../../../hooks/useAppContext";
-import { poolNodeUrl } from "../../../../../enviroments";
+import { poolNodeUrl, signumPriceUrl } from "../../../../../enviroments";
 import { formatCapacity } from "../../../../utils/functions/formatCapacity";
 import { formatAmount } from "../../../../utils/functions/formatAmount";
 import { useAppDispatch } from "../../../../../states/hooks";
 import { actions as poolConfigActions } from "../../../../../states/poolConfigState";
 import { actions as currentRoundActions } from "../../../../../states/currentRoundState";
+import { actions as signumStateActions } from "../../../../../states/signumState";
+
 import {
     actions as minerActions,
     miner as minerInterface,
@@ -18,6 +20,7 @@ export const PoolDataFetcher = () => {
     const { setPoolConfigData } = poolConfigActions;
     const { setCurrentRoundData } = currentRoundActions;
     const { setMinersData } = minerActions;
+    const { setSignumData } = signumStateActions;
     const dispatch = useAppDispatch();
 
     const defaultSWRSettings = {
@@ -46,6 +49,9 @@ export const PoolDataFetcher = () => {
         defaultSWRSettings
     );
 
+    const { data: signumPriceData, isValidating: isValidatingSignumPriceData } =
+        useSWR(signumPriceUrl, Fetcher, defaultSWRSettings);
+
     useEffect(() => {
         if (poolConfigData && !isValidatingPoolConfigData) {
             POPULATE_POOLCONFIG_DATA();
@@ -61,6 +67,12 @@ export const PoolDataFetcher = () => {
     useEffect(() => {
         if (minersData && !isValidatingMinersData) {
             POPULATE_MINERS_DATA();
+        }
+    }, [minersData]);
+
+    useEffect(() => {
+        if (signumPriceData && !isValidatingSignumPriceData) {
+            POPULATE_SIGNUM_PRICE_DATA();
         }
     }, [minersData]);
 
@@ -169,6 +181,17 @@ export const PoolDataFetcher = () => {
         };
 
         dispatch(setMinersData(payload));
+    };
+
+    const POPULATE_SIGNUM_PRICE_DATA = () => {
+        const info = signumPriceData;
+
+        const payload = {
+            isLoading: false,
+            price: info.signum.usd,
+        };
+
+        dispatch(setSignumData(payload));
     };
 
     return null;

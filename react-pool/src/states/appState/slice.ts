@@ -3,6 +3,7 @@ import {
     getSystemTheme,
     themeModeAction,
 } from "../../app/utils/functions/systemTheme";
+import { getBookmarkedMiner } from "../../app/utils/functions/bookmarkMiner";
 
 export type SnackBarState = {
     label: string;
@@ -14,6 +15,7 @@ export interface AppState {
     snackBar: SnackBarState;
     isOpenLanguageDialog: boolean;
     isOpenSidebar: boolean;
+    bookmarkedMiner: string;
 }
 
 const initialState: AppState = {
@@ -21,6 +23,7 @@ const initialState: AppState = {
     snackBar: { label: "", severity: "" },
     isOpenLanguageDialog: false,
     isOpenSidebar: false,
+    bookmarkedMiner: getBookmarkedMiner(),
 };
 
 export const appSlice = createSlice({
@@ -38,6 +41,9 @@ export const appSlice = createSlice({
         },
         setIsOpenSidebar: (state, action: PayloadAction<boolean>) => {
             state.isOpenSidebar = action.payload;
+        },
+        setBookmarkedMiner: (state, action: PayloadAction<string>) => {
+            state.bookmarkedMiner = action.payload;
         },
     },
 });
