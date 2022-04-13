@@ -2,18 +2,23 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import { useTranslation } from "react-i18next";
-import { useAppSelector } from "../../../../states/hooks";
+import { useAppSelector, useAppDispatch } from "../../../../states/hooks";
+import { actions } from "../../../../states/appState";
 import { miner } from "../../../../states/minersState";
 import { selectPoolConfig } from "../../../../states/poolConfigState";
 import { viewAccountInExplorer } from "../../../utils/explorer";
+import { useSnackbar } from "../../../hooks/useSnackbar";
 import { formatCapacity } from "../../../utils/functions/formatCapacity";
 import { formatTime } from "../../../utils/functions/formatTime";
+import { asRSAddress } from "../../../utils/functions/accountAddress";
+import { removeBookmarkedMiner } from "../../../utils/functions/bookmarkMiner";
 import { MinerDeadlinesGraph } from "./components/MinerDeadlinesGraph";
 
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import BlurOnIcon from "@mui/icons-material/BlurOn";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 export interface deadlines {
     deadlines: number[];
@@ -24,6 +29,7 @@ export interface deadlines {
 interface SpecificMinerProps extends miner {
     bookmarkedMiner?: boolean;
     showExplorerButton?: boolean;
+    showDeleteBookmarkButton?: boolean;
     deadlineData?: deadlines;
 }
 
@@ -45,15 +51,26 @@ export const SpecificMiner = ({
     minerAgent,
     currentRoundBestDeadline,
     bookmarkedMiner = false,
+    showDeleteBookmarkButton = false,
     showExplorerButton = false,
     deadlineData,
 }: SpecificMinerProps) => {
     const { t } = useTranslation();
+    const { showSuccess } = useSnackbar();
     const { blocksForAverage, processLag } = useAppSelector(selectPoolConfig);
+    const { setBookmarkedMiner } = actions;
+    const dispatch = useAppDispatch();
+
     const maxSubmissions = blocksForAverage + processLag;
 
     const openAccountInExplorer = () => {
         viewAccountInExplorer(accountId);
+    };
+
+    const deleteBookmarkedMiner = () => {
+        removeBookmarkedMiner();
+        dispatch(setBookmarkedMiner(""));
+        showSuccess(t("bookmarkDeleted") + " ⚒️");
     };
 
     return (
@@ -93,7 +110,7 @@ export const SpecificMiner = ({
             {accountId && (
                 <SpecificRow
                     title={t("minerAddress")}
-                    value={accountId}
+                    value={asRSAddress(accountId)}
                     onClick={openAccountInExplorer}
                 />
             )}
@@ -213,6 +230,25 @@ export const SpecificMiner = ({
 
             {minerAgent && (
                 <SpecificRow title={t("software")} value={minerAgent} />
+            )}
+
+            {showDeleteBookmarkButton && (
+                <Grid item container mt={2}>
+                    <Button
+                        color="error"
+                        variant="contained"
+                        startIcon={<DeleteForeverIcon />}
+                        onClick={deleteBookmarkedMiner}
+                        sx={{
+                            width: "90%",
+                            mx: "auto",
+                            textTransform: "none",
+                            color: "white",
+                        }}
+                    >
+                        {t("deleteBookmark")}
+                    </Button>
+                </Grid>
             )}
         </Grid>
     );

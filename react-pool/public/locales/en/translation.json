@@ -55,5 +55,9 @@
   "waiting": "Waiting",
   "second": "second",
   "second_other": "seconds",
-  "noDeadlineData": "No enough data available!"
+  "noDeadlineData": "No enough data available!",
+  "deleteBookmark": "Delete bookmark",
+  "bookmarkDeleted": "Bookmark deleted!",
+  "showMinerList": "Show miners list",
+  "hideMinerList": "Hide miners list"
 }

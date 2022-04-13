@@ -1,6 +1,5 @@
 import { discordUrl, walletUrl } from "../../../enviroments";
 
-import LinkIcon from "@mui/icons-material/Link";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";

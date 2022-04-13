@@ -19,6 +19,7 @@ const {
 } = isTestNet ? devProperties : prodProperties;
 
 export {
+    isTestNet,
     poolName,
     colors,
     poolNodeUrl,

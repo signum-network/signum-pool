@@ -28,13 +28,13 @@ export const BookMarkedMiner = () => {
         ? poolNodeUrl + "api/getMiner/" + bookmarkedMinerID
         : undefined;
 
-    const { data, isValidating } = useSWR(
-        poolNodeUrl + "api/getMiner/15286677034437976801",
+    const { data, isValidating, error } = useSWR(
+        fetchLink,
         Fetcher,
         defaultSWRSettings
     );
 
-    if (!data && !isValidating)
+    if ((!data && !isValidating) || error)
         return (
             <TableContainer>
                 <Typography align="center" variant="h6" color="textSecondary">

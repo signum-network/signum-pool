@@ -14,3 +14,7 @@ export const getBookmarkedMiner = (): string => {
 export const saveBookmarkedMiner = (miner: string) => {
     localStorage.setItem(localStorageBookmarkKey, miner);
 };
+
+export const removeBookmarkedMiner = () => {
+    localStorage.removeItem(localStorageBookmarkKey);
+};

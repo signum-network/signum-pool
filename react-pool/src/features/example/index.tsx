@@ -5,13 +5,15 @@ import { selectIsDarkMode, actions } from "../../states/appState";
 
 import i18next from "i18next";
 
+// THIS PAGE WAS MADE ONLY FOR EXAMPLE PURPOSES
+
 export const ExamplePage = () => {
     const { t, i18n } = useTranslation();
     const { t: ct } = useTranslation("custom");
+    const { setTheme } = actions;
 
     const dispatch = useAppDispatch();
     const isDarkMode = useAppSelector(selectIsDarkMode);
-    const { setTheme } = actions;
 
     const toggleThemeMode = () => {
         dispatch(setTheme(isDarkMode ? "light" : "dark"));
