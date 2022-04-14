@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { MinersList } from "../../../../app/components/Tables/MinersList";
 
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -56,8 +57,8 @@ export const Miners = () => {
                 {!isOpen ? t("showMinerList") : t("hideMinerList")}
             </Button>
 
-            <Collapse in={isOpen}>
-                <h1>SHOWING CONTENT</h1>
+            <Collapse in={isOpen} sx={{ width: "100%", px: 2 }}>
+                <MinersList />
             </Collapse>
         </Grid>
     );

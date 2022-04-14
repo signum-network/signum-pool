@@ -59,5 +59,8 @@
   "deleteBookmark": "Delete bookmark",
   "bookmarkDeleted": "Bookmark deleted!",
   "showMinerList": "Show miners list",
-  "hideMinerList": "Hide miners list"
+  "hideMinerList": "Hide miners list",
+  "viewMinerDetails": "View miner details",
+  "showAllMiners": "Show all miners",
+  "stopShowAllMiners": "Stop showing all miners"
 }
