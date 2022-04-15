@@ -10,6 +10,7 @@ export const useSnackbar = () => {
     const showSnackbar = (msg: string, type: SnackbarType) => {
         dispatch(
             actions.setSnackbar({
+                show: true,
                 label: msg,
                 severity: type,
             })
@@ -19,8 +20,9 @@ export const useSnackbar = () => {
     const hideSnackbar = () => {
         dispatch(
             actions.setSnackbar({
+                show: false,
                 label: appSnackbar.label,
-                severity: "",
+                severity: appSnackbar.severity,
             })
         );
     };

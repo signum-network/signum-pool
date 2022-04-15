@@ -5,6 +5,7 @@ import { Sidebar } from "./Sidebar";
 import { LanguageDialog } from "./components/LanguageDialog";
 import { AppSnackBar } from "./components/AppSnackBar";
 import { PoolDataFetcher } from "./components/PoolDataFetcher";
+import { SearchMinerDialog } from "./components/SearchMinerDialog";
 
 export const Layout: FC = ({ children }) => {
     return (
@@ -13,6 +14,8 @@ export const Layout: FC = ({ children }) => {
             <Sidebar />
             <AppSnackBar />
             <LanguageDialog />
+            <SearchMinerDialog />
+
             <Header />
             {children}
             <Footer />

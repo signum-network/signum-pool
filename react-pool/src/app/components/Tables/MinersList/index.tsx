@@ -4,7 +4,9 @@ import { css } from "@emotion/react";
 import { useState, ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
-import { useAppSelector } from "../../../../states/hooks";
+import { TableContainer as CustomTableContainer } from "../components/TableContainer";
+import { useAppSelector, useAppDispatch } from "../../../../states/hooks";
+import { actions, selectIsDarkMode } from "../../../../states/appState";
 import { selectMiners } from "../../../../states/minersState";
 import { selectPoolConfig } from "../../../../states/poolConfigState";
 import { formatTime } from "../../../utils/functions/formatTime";
@@ -36,15 +38,21 @@ interface MinersListProps {
 
 export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
     const { t } = useTranslation();
-    const miningData = useAppSelector(selectMiners);
     const { blocksForAverage, processLag } = useAppSelector(selectPoolConfig);
+    const dispatch = useAppDispatch();
+    const isDarkMode = useAppSelector(selectIsDarkMode);
+    const miningData = useAppSelector(selectMiners);
     const {
         isLoading,
         miners,
         totalPhysicalCapacity,
-        totalSharedCapacity,
         totalEffectiveCapacity,
+        totalSharedCapacity,
     } = miningData;
+    const { setSearchMiner } = actions;
+
+    const minersPerPageMobile = 50;
+    const minersPerPageDesktop = 100;
 
     const maxSubmissions = blocksForAverage + processLag;
 
@@ -55,7 +63,9 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
         useState<showAllMiners>(defaultValue);
 
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(isMobile ? 50 : 100);
+    const [rowsPerPage, setRowsPerPage] = useState(
+        isMobile ? minersPerPageMobile : minersPerPageDesktop
+    );
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
@@ -76,8 +86,36 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
 
     const rows = showTopMiners ? miners.slice(0, 10) : miners;
 
+    const tableMaxHeight =
+        canShowAllMiners || isMobile || rows.length < minersPerPageDesktop
+            ? "auto"
+            : 600;
+
     if (isLoading)
         return <Skeleton width="100%" height={100} animation="wave" />;
+
+    if (!rows.length)
+        return (
+            <Grid
+                container
+                mx="auto"
+                maxWidth={760}
+                mt={1}
+                p={2}
+                direction="row"
+                alignItems="center"
+            >
+                <CustomTableContainer>
+                    <Typography
+                        align="center"
+                        variant="h6"
+                        color="textSecondary"
+                    >
+                        {t("noMiners")}
+                    </Typography>
+                </CustomTableContainer>
+            </Grid>
+        );
 
     return (
         <Paper
@@ -87,7 +125,7 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
                 overflow: "hidden",
             }}
         >
-            <TableContainer>
+            <TableContainer sx={{ maxHeight: tableMaxHeight }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
@@ -110,29 +148,69 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
                                 </TableCell>
                             ))}
                         </TableRow>
-
-                        <TableRow>
-                            {columns.map((column) => (
-                                <TableCell
-                                    key={column.id}
-                                    align={column.align}
-                                    sx={{
-                                        minWidth: column.minWidth,
-                                        borderRight: 1,
-                                        borderColor: "divider",
-                                    }}
-                                    css={css`
-                                        :last-child {
-                                            border-right: 0 !important;
-                                        }
-                                    `}
-                                >
-                                    TBD
-                                </TableCell>
-                            ))}
-                        </TableRow>
                     </TableHead>
+
                     <TableBody>
+                        {/* THIS ROW IS SPECIFIC JUST FOR TOTAL POOL DATA */}
+                        <TableRow>
+                            {columns.map((column) => {
+                                let cellContent = "-";
+
+                                switch (column.id) {
+                                    case "miner":
+                                        cellContent = t("poolTotal");
+                                        break;
+
+                                    case "physicalCapacity":
+                                        cellContent = formatCapacity(
+                                            // @ts-ignore
+                                            totalPhysicalCapacity
+                                        );
+                                        break;
+
+                                    case "effectiveCapacity":
+                                        cellContent = formatCapacity(
+                                            // @ts-ignore
+                                            totalEffectiveCapacity
+                                        );
+                                        break;
+
+                                    case "sharedCapacity":
+                                        cellContent = formatCapacity(
+                                            // @ts-ignore
+                                            totalSharedCapacity
+                                        );
+
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+
+                                return (
+                                    <TableCell
+                                        key={column.id}
+                                        align={column.align}
+                                        sx={{
+                                            minWidth: column.minWidth,
+                                            borderRight: 1,
+                                            borderColor: "divider",
+                                            backgroundColor: isDarkMode
+                                                ? "rgba(255,255,255,0.15)"
+                                                : "rgba(0,0,0,0.05)",
+                                        }}
+                                        css={css`
+                                            :last-child {
+                                                border-right: 0 !important;
+                                            }
+                                        `}
+                                    >
+                                        {cellContent}
+                                    </TableCell>
+                                );
+                            })}
+                        </TableRow>
+
                         {rows
                             // Dynamic pagination
                             .slice(
@@ -173,6 +251,13 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
                                                                     cursor: "pointer",
                                                                     textDecoration:
                                                                         "underline",
+                                                                }}
+                                                                onClick={() => {
+                                                                    dispatch(
+                                                                        setSearchMiner(
+                                                                            miner.accountId
+                                                                        )
+                                                                    );
                                                                 }}
                                                             >
                                                                 {miner.name ||
@@ -257,11 +342,12 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
                                                     break;
 
                                                 case "pocBoost":
-                                                    cellContent = miner.pocBoost
-                                                        ? miner.pocBoost.toFixed(
-                                                              3
-                                                          )
-                                                        : 0;
+                                                    cellContent =
+                                                        miner.pocBostPool
+                                                            ? miner.pocBostPool.toFixed(
+                                                                  3
+                                                              )
+                                                            : 0;
 
                                                     break;
 
@@ -303,7 +389,7 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
                 justifyContent="flex-end"
                 alignItems="center"
             >
-                {!isMobile && rows.length > 100 && (
+                {!isMobile && rows.length > minersPerPageDesktop && (
                     <Grid item>
                         <Button
                             variant="outlined"

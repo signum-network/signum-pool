@@ -6,6 +6,7 @@ import {
 import { getBookmarkedMiner } from "../../app/utils/functions/bookmarkMiner";
 
 export type SnackBarState = {
+    show?: boolean;
     label: string;
     severity: "" | "error" | "warning" | "info" | "success";
 };
@@ -16,14 +17,16 @@ export interface AppState {
     isOpenLanguageDialog: boolean;
     isOpenSidebar: boolean;
     bookmarkedMiner: string;
+    searchMiner: string;
 }
 
 const initialState: AppState = {
     themeMode: getSystemTheme(),
-    snackBar: { label: "", severity: "" },
+    snackBar: { show: false, label: "", severity: "" },
     isOpenLanguageDialog: false,
     isOpenSidebar: false,
     bookmarkedMiner: getBookmarkedMiner(),
+    searchMiner: "",
 };
 
 export const appSlice = createSlice({
@@ -44,6 +47,9 @@ export const appSlice = createSlice({
         },
         setBookmarkedMiner: (state, action: PayloadAction<string>) => {
             state.bookmarkedMiner = action.payload;
+        },
+        setSearchMiner: (state, action: PayloadAction<string>) => {
+            state.searchMiner = action.payload;
         },
     },
 });

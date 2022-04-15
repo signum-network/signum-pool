@@ -66,6 +66,7 @@ export const BookMarkedMiner = () => {
             {data && (
                 <SpecificMiner
                     bookmarkedMiner
+                    showDeleteBookmarkButton
                     accountId={data.address}
                     name={data.name}
                     pendingBalance={data.pendingBalance}

@@ -21,3 +21,6 @@ export const selectIsOpenSidebar = (state: RootState): boolean =>
 
 export const selectBookmarkedMiner = (state: RootState): string =>
     state.appState.bookmarkedMiner;
+
+export const selectSearchedMiner = (state: RootState): string =>
+    state.appState.searchMiner;

@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import useTheme from "@mui/material/styles/useTheme";
 import { locales, availableLanguages } from "../../../../i18n";
 import { useAppSelector, useAppDispatch } from "../../../../../states/hooks";
 import {
@@ -8,6 +7,7 @@ import {
 } from "../../../../../states/appState";
 
 import i18next from "i18next";
+import useTheme from "@mui/material/styles/useTheme";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import List from "@mui/material/List";

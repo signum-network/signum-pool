@@ -26,7 +26,7 @@ export interface deadlines {
     boost: number[];
 }
 
-interface SpecificMinerProps extends miner {
+export interface SpecificMinerProps extends miner {
     bookmarkedMiner?: boolean;
     showExplorerButton?: boolean;
     showDeleteBookmarkButton?: boolean;
@@ -173,7 +173,10 @@ export const SpecificMiner = ({
             )}
 
             {!!pocBoost && (
-                <SpecificRow title={t("pocBoost")} value={pocBoost} />
+                <SpecificRow
+                    title={t("pocBoost")}
+                    value={pocBoost.toFixed(3)}
+                />
             )}
 
             {!!effectiveCapacity && (

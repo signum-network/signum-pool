@@ -1,11 +1,12 @@
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { poolName } from "../../../../enviroments";
 import { truncateText } from "../../../../app/utils/functions/stringMethods";
 
-import { useAppDispatch } from "../../../../states/hooks";
-import { actions } from "../../../../states/appState";
+import { useAppSelector, useAppDispatch } from "../../../../states/hooks";
+import { actions, selectBookmarkedMiner } from "../../../../states/appState";
 
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -16,11 +17,18 @@ import SearchIcon from "@mui/icons-material/Search";
 
 export const WelcomeSection = () => {
     const { t } = useTranslation();
+    const { setSearchMiner } = actions;
+    const bookmarkedMinerID = useAppSelector(selectBookmarkedMiner);
     const dispatch = useAppDispatch();
-    const { setSnackbar } = actions;
+    const searchBoxRef = useRef(null);
 
     const onSubmit = (e: any) => {
         e.preventDefault();
+        // @ts-ignore
+        const value = searchBoxRef.current.value.trim();
+        if (!value) return;
+
+        dispatch(setSearchMiner(value));
     };
 
     return (
@@ -52,31 +60,33 @@ export const WelcomeSection = () => {
                         : poolName}
                 </Typography>
 
-                <Grid container direction="column" alignItems="center">
-                    <Grid item>
-                        <Typography
-                            align="center"
-                            variant="h6"
-                            fontWeight={400}
-                            sx={{ whiteSpace: "pre-line" }}
-                            gutterBottom
-                        >
-                            {t("welcomePoolMessageDescription")}
-                        </Typography>
-                    </Grid>
-
-                    <Grid item>
-                        <Link to="/start-mining">
+                {!bookmarkedMinerID && (
+                    <Grid container direction="column" alignItems="center">
+                        <Grid item>
                             <Typography
-                                color="primary"
-                                fontWeight={800}
-                                fontSize={18}
+                                align="center"
+                                variant="h6"
+                                fontWeight={400}
+                                sx={{ whiteSpace: "pre-line" }}
+                                gutterBottom
                             >
-                                {t("startMining")}
+                                {t("welcomePoolMessageDescription")}
                             </Typography>
-                        </Link>
+                        </Grid>
+
+                        <Grid item>
+                            <Link to="/start-mining">
+                                <Typography
+                                    color="primary"
+                                    fontWeight={800}
+                                    fontSize={18}
+                                >
+                                    {t("startMining")}
+                                </Typography>
+                            </Link>
+                        </Grid>
                     </Grid>
-                </Grid>
+                )}
             </Paper>
 
             <Grid
@@ -101,6 +111,7 @@ export const WelcomeSection = () => {
                     }}
                 >
                     <InputBase
+                        inputRef={searchBoxRef}
                         sx={{
                             fontSize: { xs: 14, lg: 18 },
                             ml: 1,

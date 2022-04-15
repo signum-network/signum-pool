@@ -26,6 +26,7 @@
   "blockHeight": "Block Height",
   "priceUSD": "Price USD",
   "networkSize": "Network size",
+  "bookmarkMiner": "Bookmark miner  📌",
   "bookmarkedMiner": "Bookmarked miner",
   "bookmarkedMiner_other": "Bookmarked miners",
   "noMinerBookmarked": "You have not bookmarked a miner 📌",
@@ -60,7 +61,12 @@
   "bookmarkDeleted": "Bookmark deleted!",
   "showMinerList": "Show miners list",
   "hideMinerList": "Hide miners list",
+  "minerDetails": "Miner details",
   "viewMinerDetails": "View miner details",
   "showAllMiners": "Show all miners",
-  "stopShowAllMiners": "Stop showing all miners"
+  "stopShowAllMiners": "Stop showing all miners",
+  "poolTotal": "Pool Total",
+  "minerNotFound": "Miner not found ⚒️",
+  "noMiners": "There are no miners, start inviting them!",
+  "minerAdded": "Bookmark added! ⚒️"
 }

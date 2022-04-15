@@ -15,12 +15,10 @@ export const AppSnackBar = () => {
 
     const { hideSnackbar } = useSnackbar();
 
-    const canShowSnackBar = snackBarState.severity ? true : false;
+    const canShowSnackBar = snackBarState.show;
 
     const handleClose = (event: SyntheticEvent | Event, reason?: string) => {
-        if (reason === "clickaway") {
-            return;
-        }
+        if (reason === "clickaway") return;
 
         hideSnackbar();
     };

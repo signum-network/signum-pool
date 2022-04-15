@@ -1,5 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import { useAppSelector } from "../../../../states/hooks";
+import { selectMiners } from "../../../../states/minersState";
 import { MinersList } from "../../../../app/components/Tables/MinersList";
 
 import Grid from "@mui/material/Grid";
@@ -12,6 +14,7 @@ const minersListKey = "showMinersList";
 
 export const Miners = () => {
     const { t } = useTranslation();
+    const { miners } = useAppSelector(selectMiners);
 
     const defaultValue = localStorage.getItem(minersListKey) || "no";
 
@@ -34,28 +37,32 @@ export const Miners = () => {
             alignItems="center"
             justifyContent="flex-start"
         >
-            <Button
-                color="primary"
-                fullWidth
-                variant="contained"
-                sx={{
-                    color: "white",
-                    maxWidth: 450,
-                    mx: "auto",
-                    textTransform: "none",
-                }}
-                onClick={switchStatus}
-                startIcon={
-                    <ArrowCircleDownIcon
-                        sx={{
-                            transition: "0.3s all ease-in",
-                            transform: isOpen ? "rotate(-180deg)" : undefined,
-                        }}
-                    />
-                }
-            >
-                {!isOpen ? t("showMinerList") : t("hideMinerList")}
-            </Button>
+            {!!miners.length && (
+                <Button
+                    color="primary"
+                    fullWidth
+                    variant="contained"
+                    sx={{
+                        color: "white",
+                        maxWidth: 450,
+                        mx: "auto",
+                        textTransform: "none",
+                    }}
+                    onClick={switchStatus}
+                    startIcon={
+                        <ArrowCircleDownIcon
+                            sx={{
+                                transition: "0.3s all ease-in",
+                                transform: isOpen
+                                    ? "rotate(-180deg)"
+                                    : undefined,
+                            }}
+                        />
+                    }
+                >
+                    {!isOpen ? t("showMinerList") : t("hideMinerList")}
+                </Button>
+            )}
 
             <Collapse in={isOpen} sx={{ width: "100%", px: 2 }}>
                 <MinersList />
