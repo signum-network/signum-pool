@@ -5,13 +5,11 @@ import { Miners } from "./sections/Miners";
 
 import Grid from "@mui/material/Grid";
 
-export const HomePage = () => {
-    return (
-        <Grid container direction="column">
-            <WelcomeSection />
-            <PoolInfo />
-            <BookmarkedMiner />
-            <Miners />
-        </Grid>
-    );
-};
+export const HomePage = () => (
+    <Grid container direction="column">
+        <WelcomeSection />
+        <PoolInfo />
+        <BookmarkedMiner />
+        <Miners />
+    </Grid>
+);

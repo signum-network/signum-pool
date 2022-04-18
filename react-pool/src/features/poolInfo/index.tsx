@@ -1,24 +1,10 @@
-import { Link } from "react-router-dom";
-import { useAppSelector, useAppDispatch } from "../../states/hooks";
-import { selectIsDarkMode, actions } from "../../states/appState";
+import { MiningInfo } from "./sections/MiningInfo";
+import { PoolExtraTabsInfo } from "./sections/PoolExtraTabsInfo";
+import Grid from "@mui/material/Grid";
 
-export const PoolInfoPage = () => {
-    const dispatch = useAppDispatch();
-    const isDarkMode = useAppSelector(selectIsDarkMode);
-    const { setTheme } = actions;
-
-    const toggleThemeMode = () => {
-        dispatch(setTheme(isDarkMode ? "light" : "dark"));
-    };
-
-    return (
-        <>
-            <h1>Welcome to the pool info!</h1>
-            <button onClick={toggleThemeMode}>Switch color</button>
-
-            <Link to="/">
-                <button>Visit home</button>
-            </Link>
-        </>
-    );
-};
+export const PoolInfoPage = () => (
+    <Grid container direction="column">
+        <MiningInfo />
+        <PoolExtraTabsInfo />
+    </Grid>
+);

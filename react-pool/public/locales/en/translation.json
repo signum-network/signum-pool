@@ -68,5 +68,7 @@
   "poolTotal": "Pool Total",
   "minerNotFound": "Miner not found ⚒️",
   "noMiners": "There are no miners, start inviting them!",
-  "minerAdded": "Bookmark added! ⚒️"
+  "minerAdded": "Bookmark added! ⚒️",
+  "elapsedTime": "Elapsed time",
+  "bestMiner": "Best miner"
 }
