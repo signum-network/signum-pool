@@ -6,6 +6,7 @@
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.5.1",
+    "@mui/lab": "^5.0.0-alpha.78",
     "@mui/material": "^5.5.2",
     "@reduxjs/toolkit": "^1.8.0",
     "@signumjs/contracts": "^1.0.0-rc.17",

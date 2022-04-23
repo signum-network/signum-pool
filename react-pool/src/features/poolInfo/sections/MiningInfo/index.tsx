@@ -34,7 +34,13 @@ export const MiningInfo = () => {
     return (
         <Grid
             container
-            sx={{ maxWidth: 1000, mx: "auto", px: 2, mt: { xs: 5, lg: 8 } }}
+            sx={{
+                maxWidth: 1000,
+                mx: "auto",
+                px: 2,
+                mt: { xs: 5, lg: 8 },
+                mb: 3,
+            }}
         >
             <Typography component="h1" variant="h4" gutterBottom>
                 {t("poolInfo")}
