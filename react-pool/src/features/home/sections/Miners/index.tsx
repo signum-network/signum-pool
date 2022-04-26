@@ -64,7 +64,7 @@ export const Miners = () => {
                 </Button>
             )}
 
-            <Collapse in={isOpen} unmountOnExit sx={{ width: "100%", px: 2 }}>
+            <Collapse in={isOpen} sx={{ width: "100%", px: 2 }}>
                 <MinersList />
             </Collapse>
         </Grid>

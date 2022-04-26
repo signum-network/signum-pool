@@ -1,6 +1,3 @@
-/* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
-/** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
 import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../states/hooks";
 import { actions } from "../../../../states/appState";
@@ -13,10 +10,10 @@ import { formatTime } from "../../../utils/functions/formatTime";
 import { asRSAddress } from "../../../utils/functions/accountAddress";
 import { removeBookmarkedMiner } from "../../../utils/functions/bookmarkMiner";
 import { MinerDeadlinesGraph } from "./components/MinerDeadlinesGraph";
+import { SpecificRow } from "../components/SpecificRow";
 
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import BlurOnIcon from "@mui/icons-material/BlurOn";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
@@ -251,63 +248,6 @@ export const SpecificMiner = ({
                     >
                         {t("deleteBookmark")}
                     </Button>
-                </Grid>
-            )}
-        </Grid>
-    );
-};
-
-interface SpecificRowProps {
-    title: string;
-    value?: string | number;
-    onClick?: any;
-    children?: Element | React.ReactNode;
-}
-
-const SpecificRow = ({
-    title,
-    value,
-    onClick = undefined,
-    children,
-}: SpecificRowProps) => {
-    return (
-        <Grid
-            item
-            container
-            xs={12}
-            direction="row"
-            alignItems="flex-start"
-            sx={{
-                pt: 2,
-                pb: 1,
-                borderBottom: 1,
-                borderColor: "divider",
-            }}
-            css={css`
-                :last-child {
-                    border: 0 !important;
-                }
-            `}
-        >
-            <Grid item xs={12} md={4} mb={1}>
-                <Typography>{title}</Typography>
-            </Grid>
-
-            {children ? (
-                <Grid item xs={12} mb={1}>
-                    {children}
-                </Grid>
-            ) : (
-                <Grid item xs={12} md={8} mb={1}>
-                    <Typography
-                        fontWeight={700}
-                        onClick={onClick}
-                        sx={{
-                            cursor: onClick ? "pointer" : undefined,
-                        }}
-                    >
-                        {value}
-                    </Typography>
                 </Grid>
             )}
         </Grid>

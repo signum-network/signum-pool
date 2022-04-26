@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { TableContainer } from "../components/TableContainer";
+import { LoadingData } from "../components/LoadingData";
 import { SpecificMiner } from "../SpecificMiner";
 import { useAppContext } from "../../../hooks/useAppContext";
 import { poolNodeUrl } from "../../../../enviroments";
@@ -8,8 +9,6 @@ import { selectBookmarkedMiner } from "../../../../states/appState";
 
 import useSWR from "swr";
 import Typography from "@mui/material/Typography";
-import Skeleton from "@mui/material/Skeleton";
-import Stack from "@mui/material/Stack";
 
 export const BookMarkedMiner = () => {
     const { t } = useTranslation();
@@ -17,8 +16,8 @@ export const BookMarkedMiner = () => {
     const bookmarkedMinerID = useAppSelector(selectBookmarkedMiner);
 
     const defaultSWRSettings = {
-        refreshInterval: 3000,
-        dedupingInterval: 2000,
+        refreshInterval: 60000,
+        dedupingInterval: 50000,
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
@@ -43,25 +42,9 @@ export const BookMarkedMiner = () => {
             </TableContainer>
         );
 
-    const PlaceHolder = () => (
-        <Skeleton variant="rectangular" width="100%" height={50} />
-    );
-
     return (
         <TableContainer>
-            {!data && isValidating && (
-                <Stack spacing={1}>
-                    <PlaceHolder />
-                    <PlaceHolder />
-                    <PlaceHolder />
-                    <PlaceHolder />
-                    <PlaceHolder />
-                    <PlaceHolder />
-                    <PlaceHolder />
-                    <PlaceHolder />
-                    <PlaceHolder />
-                </Stack>
-            )}
+            {!data && isValidating && <LoadingData />}
 
             {data && (
                 <SpecificMiner

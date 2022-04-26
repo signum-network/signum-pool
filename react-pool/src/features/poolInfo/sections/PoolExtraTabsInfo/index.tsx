@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
+import { PoolBasicInfo } from "../../../../app/components/Tables/PoolBasicInfo";
+import { PoolWonBlocks } from "../../../../app/components/Tables/PoolWonBlocks";
 
 import Grid from "@mui/material/Grid";
 import AppBar from "@mui/material/AppBar";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
 import InfoIcon from "@mui/icons-material/Info";
 import WidgetsIcon from "@mui/icons-material/Widgets";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -33,10 +34,10 @@ export const PoolExtraTabsInfo = () => {
     ) => setCurrentTab(newValue);
 
     const defaultContainerStyle = {
+        mb: 2,
         maxWidth: 1000,
         mx: "auto",
         px: 2,
-        mb: 2,
     };
 
     return (
@@ -59,38 +60,55 @@ export const PoolExtraTabsInfo = () => {
                         <Tab
                             icon={<InfoIcon />}
                             iconPosition="start"
-                            label="Item One"
+                            label={t("basicInfo")}
                             value={poolInfoTabs.basicInfo}
                         />
 
                         <Tab
                             icon={<WidgetsIcon />}
                             iconPosition="start"
-                            label="Item Two"
+                            label={t("blockWon_other")}
                             value={poolInfoTabs.blocksWon}
                         />
 
                         <Tab
                             icon={<SettingsIcon />}
                             iconPosition="start"
-                            label="Item Three"
+                            label={t("minerOption_other")}
                             value={poolInfoTabs.minerOptions}
                         />
 
                         <Tab
                             icon={<LeaderboardIcon />}
                             iconPosition="start"
-                            label="Item Four"
+                            label={t("topTenMiners")}
                             value={poolInfoTabs.topMiners}
                         />
                     </TabList>
                 </AppBar>
             </Grid>
 
-            <TabPanel value={poolInfoTabs.basicInfo}>Item One</TabPanel>
-            <TabPanel value={poolInfoTabs.blocksWon}>Item Two</TabPanel>
-            <TabPanel value={poolInfoTabs.minerOptions}>Item Three</TabPanel>
-            <TabPanel value={poolInfoTabs.topMiners}>Item Four</TabPanel>
+            {currentTab === poolInfoTabs.basicInfo && (
+                <Grid container sx={defaultContainerStyle}>
+                    <PoolBasicInfo />
+                </Grid>
+            )}
+
+            {currentTab === poolInfoTabs.blocksWon && (
+                <Grid container sx={defaultContainerStyle}>
+                    <PoolWonBlocks />
+                </Grid>
+            )}
+
+            {currentTab === poolInfoTabs.minerOptions && (
+                <Grid container sx={defaultContainerStyle}>
+                    Item Three
+                </Grid>
+            )}
+
+            {currentTab === poolInfoTabs.topMiners && (
+                <Grid container>Item topMiners</Grid>
+            )}
         </TabContext>
     );
 };

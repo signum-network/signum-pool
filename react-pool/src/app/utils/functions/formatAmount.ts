@@ -6,7 +6,7 @@ export const formatAmount = (
     input: string | number | undefined,
     shortHand: boolean = false
 ) => {
-    if (input === 0 || input === "0" || input === undefined) return "0";
+    if (!input || input === 0 || input === "0") return "0";
     if (typeof input === "string") input = parseFloat(input);
     let selectedLocale: locales = "en";
 
