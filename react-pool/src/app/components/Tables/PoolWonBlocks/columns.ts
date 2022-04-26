@@ -1,5 +1,5 @@
 interface Column {
-    id: "blockHeight" | "id" | "miner" | "rewardAndFees" | "poolShare";
+    id: "blockHeight" | "id" | "miner" | "rewardAndFees" | "poolReward";
     label?: string;
     minWidth: number;
     align: "center";
@@ -9,7 +9,6 @@ interface Column {
 export const columns: readonly Column[] = [
     { id: "blockHeight", align: "center", minWidth: 100 },
     { id: "rewardAndFees", align: "center", minWidth: 100 },
-    { id: "miner", align: "center", minWidth: 200 },
-    { id: "id", align: "center", minWidth: 100 },
-    { id: "poolShare", align: "center", minWidth: 100 },
+    { id: "miner", align: "center", minWidth: 100 },
+    { id: "poolReward", align: "center", minWidth: 100 },
 ];

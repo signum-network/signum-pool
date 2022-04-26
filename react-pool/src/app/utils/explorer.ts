@@ -14,3 +14,7 @@ export const getExplorerUrl = (url: string): string => {
 export const viewAccountInExplorer = (accountId: string): void => {
     openExternalUrl(getExplorerUrl("/address/" + accountId));
 };
+
+export const viewBlockInExplorer = (blockHeight: string): void => {
+    openExternalUrl(getExplorerUrl("/block/" + blockHeight));
+};

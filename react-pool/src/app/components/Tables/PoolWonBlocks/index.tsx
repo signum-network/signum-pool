@@ -2,14 +2,24 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import { useTranslation } from "react-i18next";
+import { formatDistance, subMinutes } from "date-fns";
 import { useAppContext } from "../../../hooks/useAppContext";
+import { useAppSelector } from "../../../../states/hooks";
+import { selectCurrentRound } from "../../../../states/currentRoundState";
+import { useDateFnsLocale } from "../../../hooks/useDateFnsLocale";
 import { TableContainer as CustomTableContainer } from "../components/TableContainer";
 import { LoadingData } from "../components/LoadingData";
 import { poolNodeUrl } from "../../../../enviroments";
 import { formatAmount } from "../../../utils/functions/formatAmount";
+import { asRSAddress } from "../../../utils/functions/accountAddress";
+import {
+    viewAccountInExplorer,
+    viewBlockInExplorer,
+} from "../../../utils/explorer";
 import { columns } from "./columns";
 
 import useSWR from "swr";
+import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Table from "@mui/material/Table";
@@ -24,6 +34,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 export const PoolWonBlocks = () => {
     const { t } = useTranslation();
     const { Fetcher } = useAppContext();
+    const { networkInfo } = useAppSelector(selectCurrentRound);
+    const locale = useDateFnsLocale();
 
     const defaultSWRSettings = {
         refreshInterval: 60000,
@@ -112,9 +124,77 @@ export const PoolWonBlocks = () => {
 
                                         switch (column.id) {
                                             case "blockHeight":
-                                                cellContent = formatAmount(
-                                                    block.height
+                                                const blockHeight =
+                                                    block.height;
+
+                                                let formatedTimeStamp = "";
+
+                                                if (networkInfo.blockHeight) {
+                                                    const currentBlockHeight =
+                                                        networkInfo.blockHeight;
+
+                                                    const differenceInBlocks =
+                                                        currentBlockHeight -
+                                                        blockHeight;
+
+                                                    const differenceInMinutes =
+                                                        differenceInBlocks * 4;
+
+                                                    const currentDate =
+                                                        new Date();
+
+                                                    const blockSpecificDate =
+                                                        subMinutes(
+                                                            currentDate,
+                                                            differenceInMinutes
+                                                        );
+
+                                                    formatedTimeStamp =
+                                                        formatDistance(
+                                                            blockSpecificDate,
+                                                            currentDate,
+                                                            {
+                                                                addSuffix: true,
+                                                                locale,
+                                                            }
+                                                        );
+                                                }
+
+                                                cellContent = (
+                                                    <Grid
+                                                        container
+                                                        direction="column"
+                                                        alignItems="center"
+                                                        justifyContent="center"
+                                                    >
+                                                        <u
+                                                            style={{
+                                                                cursor: "pointer",
+                                                            }}
+                                                            onClick={() => {
+                                                                viewBlockInExplorer(
+                                                                    blockHeight
+                                                                );
+                                                            }}
+                                                        >
+                                                            {formatAmount(
+                                                                blockHeight
+                                                            )}
+                                                        </u>
+
+                                                        {formatedTimeStamp && (
+                                                            <Typography
+                                                                color="textSecondary"
+                                                                variant="subtitle2"
+                                                            >
+                                                                {
+                                                                    formatedTimeStamp
+                                                                }
+                                                            </Typography>
+                                                        )}
+                                                    </Grid>
                                                 );
+
                                                 break;
 
                                             case "rewardAndFees":
@@ -132,32 +212,41 @@ export const PoolWonBlocks = () => {
                                                 break;
 
                                             case "miner":
-                                                cellContent = block.generator;
+                                                const miner = block.generator;
+
+                                                cellContent = (
+                                                    <u
+                                                        style={{
+                                                            cursor: "pointer",
+                                                        }}
+                                                        onClick={() => {
+                                                            viewAccountInExplorer(
+                                                                miner
+                                                            );
+                                                        }}
+                                                    >
+                                                        {asRSAddress(miner)}
+                                                    </u>
+                                                );
                                                 break;
 
-                                            case "id":
-                                                cellContent = block.id;
-                                                break;
-
-                                            case "poolShare":
-                                                const poolShare =
+                                            case "poolReward":
+                                                const poolReward =
                                                     block.poolShare;
 
                                                 if (
-                                                    poolShare ===
+                                                    poolReward ===
                                                     "Processing..."
                                                 ) {
                                                     cellContent =
                                                         processingIndicator;
                                                 } else {
-                                                    cellContent = poolShare;
+                                                    cellContent = poolReward;
                                                 }
-
                                                 break;
 
                                             default:
-                                                // cellContent = value;
-                                                break;
+                                                return null;
                                         }
 
                                         return (

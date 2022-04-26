@@ -6,7 +6,6 @@ import { useAppSelector, useAppDispatch } from "../../../../../states/hooks";
 import { actions, selectSearchedMiner } from "../../../../../states/appState";
 import { selectMiners } from "../../../../../states/minersState";
 import { asRSAddress } from "../../../../utils/functions/accountAddress";
-import { saveBookmarkedMiner } from "../../../../utils/functions/bookmarkMiner";
 import {
     SpecificMiner,
     SpecificMinerProps,

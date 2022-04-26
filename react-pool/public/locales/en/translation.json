@@ -100,7 +100,8 @@
   "configurable": "Configurable",
   "enjoyTheBonus": "No fees, Enjoy the bonus!",
   "noBlocksWon": "There are no blocks won, go get them!",
-  "rewardAndFees": "Reward + Fees",
+  "rewardAndFees": "Block Reward",
   "id": "ID",
-  "processing": "Processing..."
+  "processing": "Processing...",
+  "poolReward": "Pool Reward"
 }
