@@ -123,6 +123,7 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
             sx={{
                 mt: 2,
                 overflow: "hidden",
+                width: "100%",
             }}
         >
             <TableContainer sx={{ maxHeight: tableMaxHeight }}>
@@ -151,65 +152,69 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
                     </TableHead>
 
                     <TableBody>
-                        {/* THIS ROW IS SPECIFIC JUST FOR TOTAL POOL DATA */}
-                        <TableRow>
-                            {columns.map((column) => {
-                                let cellContent = "-";
+                        {
+                            /* THIS ROW IS SPECIFIC JUST FOR TOTAL POOL DATA */
+                            !showTopMiners && (
+                                <TableRow>
+                                    {columns.map((column) => {
+                                        let cellContent = "-";
 
-                                switch (column.id) {
-                                    case "miner":
-                                        cellContent = t("poolTotal");
-                                        break;
+                                        switch (column.id) {
+                                            case "miner":
+                                                cellContent = t("poolTotal");
+                                                break;
 
-                                    case "physicalCapacity":
-                                        cellContent = formatCapacity(
-                                            // @ts-ignore
-                                            totalPhysicalCapacity
+                                            case "physicalCapacity":
+                                                cellContent = formatCapacity(
+                                                    // @ts-ignore
+                                                    totalPhysicalCapacity
+                                                );
+                                                break;
+
+                                            case "effectiveCapacity":
+                                                cellContent = formatCapacity(
+                                                    // @ts-ignore
+                                                    totalEffectiveCapacity
+                                                );
+                                                break;
+
+                                            case "sharedCapacity":
+                                                cellContent = formatCapacity(
+                                                    // @ts-ignore
+                                                    totalSharedCapacity
+                                                );
+
+                                                break;
+
+                                            default:
+                                                break;
+                                        }
+
+                                        return (
+                                            <TableCell
+                                                key={column.id}
+                                                align={column.align}
+                                                sx={{
+                                                    minWidth: column.minWidth,
+                                                    borderRight: 1,
+                                                    borderColor: "divider",
+                                                    backgroundColor: isDarkMode
+                                                        ? "rgba(255,255,255,0.15)"
+                                                        : "rgba(0,0,0,0.05)",
+                                                }}
+                                                css={css`
+                                                    :last-child {
+                                                        border-right: 0 !important;
+                                                    }
+                                                `}
+                                            >
+                                                {cellContent}
+                                            </TableCell>
                                         );
-                                        break;
-
-                                    case "effectiveCapacity":
-                                        cellContent = formatCapacity(
-                                            // @ts-ignore
-                                            totalEffectiveCapacity
-                                        );
-                                        break;
-
-                                    case "sharedCapacity":
-                                        cellContent = formatCapacity(
-                                            // @ts-ignore
-                                            totalSharedCapacity
-                                        );
-
-                                        break;
-
-                                    default:
-                                        break;
-                                }
-
-                                return (
-                                    <TableCell
-                                        key={column.id}
-                                        align={column.align}
-                                        sx={{
-                                            minWidth: column.minWidth,
-                                            borderRight: 1,
-                                            borderColor: "divider",
-                                            backgroundColor: isDarkMode
-                                                ? "rgba(255,255,255,0.15)"
-                                                : "rgba(0,0,0,0.05)",
-                                        }}
-                                        css={css`
-                                            :last-child {
-                                                border-right: 0 !important;
-                                            }
-                                        `}
-                                    >
-                                        {cellContent}
-                                    </TableCell>
-                                );
-                            })}
-                        </TableRow>
+                                    })}
+                                </TableRow>
+                            )
+                        }
 
                         {rows
                             // Dynamic pagination

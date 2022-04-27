@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
 import { PoolBasicInfo } from "../../../../app/components/Tables/PoolBasicInfo";
 import { PoolWonBlocks } from "../../../../app/components/Tables/PoolWonBlocks";
+import { MinerOptions } from "../../../../app/components/Tables/MinerOptions";
+import { MinersList } from "../../../../app/components/Tables/MinersList";
 
 import Grid from "@mui/material/Grid";
 import AppBar from "@mui/material/AppBar";
@@ -102,12 +104,14 @@ export const PoolExtraTabsInfo = () => {
 
             {currentTab === poolInfoTabs.minerOptions && (
                 <Grid container sx={defaultContainerStyle}>
-                    Item Three
+                    <MinerOptions />
                 </Grid>
             )}
 
             {currentTab === poolInfoTabs.topMiners && (
-                <Grid container>Item topMiners</Grid>
+                <Grid container px={2}>
+                    <MinersList showTopMiners />
+                </Grid>
             )}
         </TabContext>
     );

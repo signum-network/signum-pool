@@ -4,7 +4,7 @@
 // ########################################
 
 // The name of the pool
-export const poolName = "Pool.Signumcoin.Ro";
+export const poolName = "My Testnet Pool";
 
 // The URL of the pool in order to consume its API endpoints
 export const poolNodeUrl = "https://signumpool.com/";

@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 
 interface SpecificRowProps {
     title: string;
+    bigTitle?: boolean;
     secondTitle?: string;
     value?: string | number;
     onClick?: () => void;
@@ -14,6 +15,7 @@ interface SpecificRowProps {
 
 export const SpecificRow = ({
     title,
+    bigTitle,
     secondTitle,
     value,
     onClick = undefined,
@@ -46,6 +48,7 @@ export const SpecificRow = ({
                 sx={{ flexDirection: { xs: "row", md: "column" } }}
             >
                 <Typography
+                    variant={bigTitle ? "h6" : "body1"}
                     sx={{ display: { xs: "inline-block", md: "flex" } }}
                 >
                     {title}
