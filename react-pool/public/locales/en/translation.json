@@ -125,5 +125,19 @@
   "quickJoinGuide": "Quick Join guide",
   "quickJoinGuideDescription": "Join the sustainable\nmining pool in a few steps.",
   "quickJoinOption": "Join with XT Wallet",
-  "manualJoinOption": "Read manual"
+  "manualJoinOption": "Read manual",
+  "manualJoinOptionGuideTitle": "Are you new to Signum mining?\nWelcome to the community",
+  "manualJoinOptionGuideSecondTitle": "Read this simple mining guide instead",
+  "manualOptionFirstStepTitle": "Step 1: Account Creation",
+  "manualOptionFirstStepDescription": "Before assigning the reward recipient, you must first set up a Signum wallet.\nMeet the following wallets with which you can manage your Signa and also join the pool.",
+  "manualOptionFirstStepReminder": "Reminder: Never, ever give your passphare to anyone!",
+  "onlineWallet": "Online Wallet",
+  "manualOptionSecondStepTitle": "Step 2: Reward Recipient",
+  "manualOptionSecondStepDescription": "Now with your wallet, you must set the reward recipient to the following address:",
+  "manualOptionSecondStepReminder": "Tip: It's recommended to use a local wallet",
+  "manualOptionThirdStepTitle": "Step 3: Block Confirmation",
+  "manualOptionThirdStepDescription": "After you assign the reward recipient successfully, you will need to wait for at least 4 block confirmations (approximately 20 minutes).",
+  "manualOptionForthStepTitle": "Step 4: Mining Address",
+  "manualOptionForthStepDescription": "After the wait, you must configure your miner to use the following mining address:",
+  "manualOptionForthStepReminder": "And then run your miner!"
 }

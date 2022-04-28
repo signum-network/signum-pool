@@ -30,6 +30,7 @@ export const StartMiningPage = () => {
 
     const defaultContainerStyle = {
         px: { xs: 0, lg: 2 },
+        pt: { xs: 0, lg: 2 },
         mb: 2,
         maxWidth: 800,
         mx: "auto",
