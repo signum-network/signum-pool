@@ -121,5 +121,9 @@
   "optionNoticeThirdDescription": "Once the transaction is made, the changes will be effective after 10 blocks confirmation",
   "optionNoticeWarningDescription": "The language of messages included in transaction is English",
   "minersList": "Miners List",
-  "tradingViewer": "Trading Viewer"
+  "tradingViewer": "Trading Viewer",
+  "quickJoinGuide": "Quick Join guide",
+  "quickJoinGuideDescription": "Join the sustainable\nmining pool in a few steps.",
+  "quickJoinOption": "Join with XT Wallet",
+  "manualJoinOption": "Read manual"
 }

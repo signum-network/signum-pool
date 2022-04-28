@@ -6,7 +6,11 @@ import { poolName } from "../../../../enviroments";
 import { truncateText } from "../../../../app/utils/functions/stringMethods";
 
 import { useAppSelector, useAppDispatch } from "../../../../states/hooks";
-import { actions, selectBookmarkedMiner } from "../../../../states/appState";
+import {
+    actions,
+    selectBookmarkedMiner,
+    selectIsDarkMode,
+} from "../../../../states/appState";
 
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -18,6 +22,7 @@ import SearchIcon from "@mui/icons-material/Search";
 export const WelcomeSection = () => {
     const { t } = useTranslation();
     const { setSearchMiner } = actions;
+    const isDarkMode = useAppSelector(selectIsDarkMode);
     const bookmarkedMinerID = useAppSelector(selectBookmarkedMiner);
     const dispatch = useAppDispatch();
     const searchBoxRef = useRef(null);
@@ -37,12 +42,12 @@ export const WelcomeSection = () => {
                 sx={{
                     mb: 2,
                     width: "100%",
-                    py: 4,
+                    pb: 4,
                     pt: 5,
                     borderRadius: 0,
                     overflow: "hidden",
                 }}
-                variant="outlined"
+                variant={isDarkMode ? "elevation" : "outlined"}
             >
                 <Typography
                     component="h1"

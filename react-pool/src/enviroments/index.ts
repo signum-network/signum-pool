@@ -1,6 +1,8 @@
 import * as devProperties from "./enviroment.dev";
 import * as prodProperties from "./enviroment.prod";
 
+const isDevelopmentMode = process.env.NODE_ENV === "development";
+
 const isTestNet = process.env.NODE_ENV === "development";
 
 const {
@@ -16,7 +18,7 @@ const {
     tradingEmbedsUrl,
     googleTrackingID,
     additionalLinks,
-} = isTestNet ? devProperties : prodProperties;
+} = isDevelopmentMode ? devProperties : prodProperties;
 
 export {
     isTestNet,
