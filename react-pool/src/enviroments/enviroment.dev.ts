@@ -7,10 +7,10 @@
 export const poolName = "My Testnet Pool";
 
 // The name of the dApp
-export const dAppName = "My Testnet Pool";
+export const dAppName = poolName;
 
 // The URL of the pool in order to consume its API endpoints
-export const poolNodeUrl = "https://signumpool.com/";
+export const poolNodeUrl = "http://testnet.btfg.space:9000";
 
 // The URL miners should use in order to send deadlines
 export const miningUrl = "http://testnet.btfg.space:9000";

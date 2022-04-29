@@ -68,7 +68,7 @@
   "showAllMiners": "Show all miners",
   "stopShowAllMiners": "Stop showing all miners",
   "poolTotal": "Pool Total",
-  "minerNotFound": "Miner not found ⚒️",
+  "minerNotFound": "Miner not found ⚒️. If your account joined this pool and recently started mining, you may wait around 8-16 minutes in order to appear here!",
   "noMiners": "There are no miners, start inviting them!",
   "minerAdded": "Bookmark added! ⚒️",
   "elapsedTime": "Elapsed time",
@@ -160,5 +160,10 @@
   "signTransactionSecondDescription": "We will never own your private keys and cannot access your funds without your confirmation.",
   "option": "Option",
   "option_other": "Options",
-  "signOut": "Sign Out"
+  "signOut": "Sign Out",
+  "joinedSuccess": "Congratulations, you've joined the pool successfully!",
+  "joinedSuccessDescription": "If you started mining recently, you may wait around 8-16 minutes in order to appear in the miners list!",
+  "joinPool": "Join the pool!",
+  "joinPoolNow": "Join the pool now!",
+  "joinPoolDescription": "You can easily join the pool with the Signum XT Wallet!\nOnce the transaction is executed, you will need to wait for at least 4 block confirmations (approximately 20 minutes)."
 }

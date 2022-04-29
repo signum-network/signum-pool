@@ -24,7 +24,7 @@ export const BookMarkedMiner = () => {
     };
 
     const fetchLink = bookmarkedMinerID
-        ? poolNodeUrl + "api/getMiner/" + bookmarkedMinerID
+        ? poolNodeUrl + "/api/getMiner/" + bookmarkedMinerID
         : undefined;
 
     const { data, isValidating, error } = useSWR(

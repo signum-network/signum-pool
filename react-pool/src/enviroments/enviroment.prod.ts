@@ -11,7 +11,7 @@ const prodVariable = window.reactInit;
 export const poolName = prodVariable.poolName;
 
 // The name of the dApp
-export const dAppName = prodVariable.poolName;
+export const dAppName = poolName;
 
 // The URL of the pool in order to consume its API endpoints
 // Axios will have an instance based on this URL, so by default this is empty

@@ -32,19 +32,19 @@ export const PoolDataFetcher = () => {
     };
 
     const { data: poolConfigData, isValidating: isValidatingPoolConfigData } =
-        useSWR(poolNodeUrl + "api/getConfig", Fetcher, defaultSWRSettings);
+        useSWR(poolNodeUrl + "/api/getConfig", Fetcher, defaultSWRSettings);
 
     const {
         data: currentRoundData,
         isValidating: isValidatingCurrentRoundData,
     } = useSWR(
-        poolNodeUrl + "api/getCurrentRound",
+        poolNodeUrl + "/api/getCurrentRound",
         Fetcher,
         defaultSWRSettings
     );
 
     const { data: minersData, isValidating: isValidatingMinersData } = useSWR(
-        poolNodeUrl + "api/getMiners",
+        poolNodeUrl + "/api/getMiners",
         Fetcher,
         defaultSWRSettings
     );
@@ -112,11 +112,11 @@ export const PoolDataFetcher = () => {
         const averageCommitmentNQT = info.miningInfo.averageCommitmentNQT;
 
         const bestDeadline =
-            (info.bestDeadline.name || info.bestDeadline.minerRS) &&
+            (info.bestDeadline?.name || info.bestDeadline?.minerRS) &&
             info.bestDeadline.deadline
                 ? {
                       miner:
-                          info.bestDeadline.name || info.bestDeadline.minerRS,
+                          info.bestDeadline?.name || info.bestDeadline?.minerRS,
                       deadline: info.bestDeadline.deadline,
                   }
                 : { miner: "", deadline: 0 };
@@ -152,7 +152,7 @@ export const PoolDataFetcher = () => {
             info.miners && info.miners.length
                 ? info.miners.map((miner: any) => ({
                       accountId: miner.address,
-                      name: miner.name || "",
+                      name: miner?.name || "",
                       pendingBalance: miner.pendingBalance || "",
                       physicalCapacity: miner.totalCapacity || 0,
                       effectiveCapacity: miner.totalEffectiveCapacity || 0,

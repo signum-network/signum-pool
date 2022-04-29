@@ -46,7 +46,7 @@ export const PoolWonBlocks = () => {
     };
 
     const { data, isValidating, error } = useSWR(
-        poolNodeUrl + "api/getWonBlocks",
+        poolNodeUrl + "/api/getWonBlocks",
         Fetcher,
         defaultSWRSettings
     );

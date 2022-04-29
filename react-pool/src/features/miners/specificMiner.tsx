@@ -30,7 +30,7 @@ export const SpecificMinerPage = () => {
 
     const fetchLink =
         minerId && !idContainsLetter
-            ? poolNodeUrl + "api/getMiner/" + minerId
+            ? poolNodeUrl + "/api/getMiner/" + minerId
             : undefined;
 
     const { data, isValidating, error } = useSWR(

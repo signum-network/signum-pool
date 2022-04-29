@@ -2,11 +2,13 @@ import { useTranslation } from "react-i18next";
 import { requestWalletConnection } from "../../../../app/utils/requestWalletConnection";
 import { useAppSelector } from "../../../../states/hooks";
 import { selectIsWalletConnected } from "../../../../states/appState";
+import { JoinPoolWizard } from "./components/JoinPoolWizard";
 
 import Grid from "@mui/material/Grid";
 import AppBar from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 
 export const XtWalletGuide = () => {
     const { t } = useTranslation();
@@ -34,14 +36,22 @@ export const XtWalletGuide = () => {
                 }}
             >
                 {isWalletConnected ? (
-                    <Typography align="center">Wallet is connected!</Typography>
+                    <JoinPoolWizard />
                 ) : (
-                    <Button
-                        variant="contained"
-                        onClick={requestWalletConnection}
-                    >
-                        Connect!
-                    </Button>
+                    <Grid item container direction="column">
+                        <Typography align="center" gutterBottom variant="h6">
+                            {t("tryTheXtWallet")}
+                        </Typography>
+
+                        <Button
+                            variant="contained"
+                            onClick={requestWalletConnection}
+                            startIcon={<AccountBalanceWalletIcon />}
+                            sx={{ color: "white", textTransform: "none" }}
+                        >
+                            {t("connectWallet")}
+                        </Button>
+                    </Grid>
                 )}
             </AppBar>
         </Grid>
