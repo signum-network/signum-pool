@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ExtensionWalletError } from "@signumjs/wallets";
 import {
     getSystemTheme,
     themeModeAction,
@@ -18,6 +19,13 @@ export interface AppState {
     isOpenSidebar: boolean;
     bookmarkedMiner: string;
     searchMiner: string;
+    isWalletConnected: boolean;
+    isOpenWalletModal: boolean;
+    isOpenWalletWrongNetworkModal: boolean;
+    isOpenSignTransactionModal: boolean;
+    walletNodeHost: string;
+    walletPublicKey: string;
+    walletError?: ExtensionWalletError;
 }
 
 const initialState: AppState = {
@@ -27,6 +35,13 @@ const initialState: AppState = {
     isOpenSidebar: false,
     bookmarkedMiner: getBookmarkedMiner(),
     searchMiner: "",
+    isWalletConnected: false,
+    isOpenWalletModal: false,
+    isOpenWalletWrongNetworkModal: false,
+    isOpenSignTransactionModal: false,
+    walletNodeHost: "",
+    walletPublicKey: "",
+    walletError: undefined,
 };
 
 export const appSlice = createSlice({
@@ -50,6 +65,30 @@ export const appSlice = createSlice({
         },
         setSearchMiner: (state, action: PayloadAction<string>) => {
             state.searchMiner = action.payload;
+        },
+        setIsWalletConnected: (state, action: PayloadAction<boolean>) => {
+            state.isWalletConnected = action.payload;
+        },
+        setWalletModal: (state, action: PayloadAction<boolean>) => {
+            state.isOpenWalletModal = action.payload;
+        },
+        setWalletWrongNetworkModal: (state, action: PayloadAction<boolean>) => {
+            state.isOpenWalletWrongNetworkModal = action.payload;
+        },
+        setSignTransactionModal: (state, action: PayloadAction<boolean>) => {
+            state.isOpenSignTransactionModal = action.payload;
+        },
+        setWalletNodeHost: (state, action: PayloadAction<string>) => {
+            state.walletNodeHost = action.payload;
+        },
+        setWalletPublicKey: (state, action: PayloadAction<string>) => {
+            state.walletPublicKey = action.payload;
+        },
+        setWalletError: (
+            state,
+            action: PayloadAction<ExtensionWalletError>
+        ) => {
+            state.walletError = action.payload;
         },
     },
 });

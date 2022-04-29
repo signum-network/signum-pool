@@ -24,3 +24,25 @@ export const selectBookmarkedMiner = (state: RootState): string =>
 
 export const selectSearchedMiner = (state: RootState): string =>
     state.appState.searchMiner;
+
+export const selectIsWalletConnected = (state: RootState): boolean =>
+    state.appState.isWalletConnected;
+
+export const selectIsOpenWalletModal = (state: RootState): boolean =>
+    state.appState.isOpenWalletModal;
+
+export const selectIsOpenWalletWrongNetworkModal = (
+    state: RootState
+): boolean => state.appState.isOpenWalletWrongNetworkModal;
+
+export const selectIsOpenSignTransactionModal = (state: RootState): boolean =>
+    state.appState.isOpenSignTransactionModal;
+
+export const selectWalletNodeHost = (state: RootState): string =>
+    state.appState.walletNodeHost;
+
+export const selectWalletPublicKey = (state: RootState): string =>
+    state.appState.walletPublicKey;
+
+export const selectWalletError = (state: RootState): string =>
+    state.appState.walletPublicKey;

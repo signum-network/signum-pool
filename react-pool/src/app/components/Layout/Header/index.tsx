@@ -7,6 +7,7 @@ import { Links } from "../links";
 import { NavigationMenu } from "./components/NavigationMenu";
 import { ToggleLanguageBtn } from "../components/ToggleLanguageBtn";
 import { ToggleThemeBtn } from "../components/ToggleThemeBtn";
+import { WalletConnectionBtn } from "./components/WalletConnectionBtn";
 import {
     truncateText,
     openExternalUrl,
@@ -153,9 +154,14 @@ export const Header = () => {
                         sx={shownContentDesktop}
                     >
                         <Grid item>
-                            <Stack direction="row" spacing={1}>
+                            <Stack
+                                direction="row"
+                                alignItems="center"
+                                spacing={1}
+                            >
                                 <ToggleLanguageBtn />
                                 <ToggleThemeBtn />
+                                <WalletConnectionBtn />
                             </Stack>
                         </Grid>
 

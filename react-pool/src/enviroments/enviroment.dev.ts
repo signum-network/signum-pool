@@ -6,6 +6,9 @@
 // The name of the pool
 export const poolName = "My Testnet Pool";
 
+// The name of the dApp
+export const dAppName = "My Testnet Pool";
+
 // The URL of the pool in order to consume its API endpoints
 export const poolNodeUrl = "https://signumpool.com/";
 
@@ -16,7 +19,7 @@ export const miningUrl = "http://testnet.btfg.space:9000";
 export const discordUrl = "https://discord.gg/VagTTaKM2j";
 
 // The explorer link
-export const explorerUrl = "https://explorer.signum.network";
+export const explorerUrl = "https://testnet.explorer.signum.network";
 
 // The faucet link
 export const faucetUrl = "http://nivbox.co.uk:7777";

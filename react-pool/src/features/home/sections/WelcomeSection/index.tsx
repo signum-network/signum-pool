@@ -4,26 +4,32 @@ import { isMobile } from "react-device-detect";
 import { useTranslation } from "react-i18next";
 import { poolName } from "../../../../enviroments";
 import { truncateText } from "../../../../app/utils/functions/stringMethods";
-
+import { requestWalletConnection } from "../../../../app/utils/requestWalletConnection";
+import { useAccount } from "../../../../app/hooks/useAccount";
 import { useAppSelector, useAppDispatch } from "../../../../states/hooks";
 import {
     actions,
     selectBookmarkedMiner,
     selectIsDarkMode,
+    selectIsWalletConnected,
 } from "../../../../states/appState";
 
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 
 export const WelcomeSection = () => {
     const { t } = useTranslation();
+    const { accountId } = useAccount();
     const { setSearchMiner } = actions;
     const isDarkMode = useAppSelector(selectIsDarkMode);
     const bookmarkedMinerID = useAppSelector(selectBookmarkedMiner);
+    const isWalletConnected = useAppSelector(selectIsWalletConnected);
     const dispatch = useAppDispatch();
     const searchBoxRef = useRef(null);
 
@@ -34,6 +40,15 @@ export const WelcomeSection = () => {
         if (!value) return;
 
         dispatch(setSearchMiner(value));
+    };
+
+    const handleClick = () => {
+        if (!isWalletConnected || !accountId) {
+            requestWalletConnection();
+            return;
+        }
+
+        dispatch(setSearchMiner(accountId));
     };
 
     return (
@@ -124,6 +139,31 @@ export const WelcomeSection = () => {
                         }}
                         placeholder={t("yourSignumAddressOrAccountName")}
                     />
+
+                    <Tooltip
+                        title={`${t(
+                            isWalletConnected
+                                ? "viewMinerDetails"
+                                : "connectWallet"
+                        )}`}
+                        arrow
+                    >
+                        <Button
+                            variant="contained"
+                            color="error"
+                            sx={{
+                                p: 1,
+                                height: "100%",
+                                borderRadius: 1,
+                                color: "white",
+                                mr: 1,
+                                display: { xs: "none", lg: "flex" },
+                            }}
+                            onClick={handleClick}
+                        >
+                            <AccountBalanceWalletIcon fontSize="large" />
+                        </Button>
+                    </Tooltip>
 
                     <Button
                         type="submit"

@@ -195,6 +195,7 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
                                                 key={column.id}
                                                 align={column.align}
                                                 sx={{
+                                                    fontWeight: 700,
                                                     minWidth: column.minWidth,
                                                     borderRight: 1,
                                                     borderColor: "divider",

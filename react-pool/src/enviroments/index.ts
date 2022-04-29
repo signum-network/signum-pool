@@ -5,8 +5,11 @@ const isDevelopmentMode = process.env.NODE_ENV === "development";
 
 const isTestNet = process.env.NODE_ENV === "development";
 
+const dAppNetwork = isTestNet ? "Signum-TESTNET" : "Signum";
+
 const {
     poolName,
+    dAppName,
     colors,
     poolNodeUrl,
     miningUrl,
@@ -23,6 +26,8 @@ const {
 export {
     isTestNet,
     poolName,
+    dAppName,
+    dAppNetwork,
     colors,
     poolNodeUrl,
     miningUrl,

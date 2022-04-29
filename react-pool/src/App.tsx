@@ -3,6 +3,7 @@ import { AppRoutes } from "./routes/AppRoutes";
 import { ThemeContextProvider } from "./app/contexts/ThemeContext";
 import { Layout } from "./app/components/Layout";
 import { Loading } from "./app/components/Loading";
+import { AppInitializer } from "./app/components/AppInitializer";
 import "./app/i18n";
 
 const App = () => {
@@ -10,6 +11,7 @@ const App = () => {
         <Suspense fallback={<Loading />}>
             <ThemeContextProvider>
                 <Layout>
+                    <AppInitializer />
                     <AppRoutes />
                 </Layout>
             </ThemeContextProvider>
