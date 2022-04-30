@@ -73,6 +73,12 @@ the payments.
 -   https://fomplopool.com
 -   http://signum.land
 
+## Powered by
+-   [Signum](https://github.com/signum-network/signum-node)
+-   [SignumJS](https://github.com/signum-network/signumjs)
+-   [React](https://reactjs.org/)
+-   [MUI](https://mui.com/)
+
 ## Requirements
 
 -   [Synced Signum node](https://github.com/signum-network/signum-node)
