@@ -4,6 +4,7 @@ An open-source, fair, and auditable Signum mining pool software where miners can
 
 ## Features
 
+-   Accounts can join your pool using the [Signum XT Wallet](https://github.com/signum-network/signum-xt-wallet)
 -   PoC+ boost calculated by the pool using recent deadlines (no boost drops)
 -   Pool can be audited by API (all information is available to the public)
 -   Miners can set individually their _share model_
@@ -12,7 +13,7 @@ An open-source, fair, and auditable Signum mining pool software where miners can
 -   Payouts by multi-out transactions with the current _standard_ fee (variable)
 -   Support for multiple pool IDs (a primary and many secondaries)
 
-![image](https://user-images.githubusercontent.com/31958515/122991794-d0a75f00-d37b-11eb-9d1a-71ae44b144c6.png)
+![image](https://user-images.githubusercontent.com/35440957/166112978-39c80bee-af6c-4f4d-b41c-881d2b263d23.png)
 
 ## Pool shares
 
@@ -46,12 +47,21 @@ multiple _secondary_ IDs.
 Whenever a _secondary_ ID forges a block, its balance is transfered automatically to the primary ID so it can manage
 the payments.
 
-Check a [testnet live demo](http://nivbox.co.uk:9000) to check on the latest development version.
+## Authors
 
-Originally by [Harry1453](https://github.com/harry1453),
-updated by [jjos](https://github.com/jjos2372).
+* Originally by [Harry1453](https://github.com/harry1453)
+* Updated by [jjos](https://github.com/jjos2372)
+* Web application by [ipr0310](https://github.com/ipr0310)
 
-Donations are very welcome at [S-JJQS-MMA4-GHB4-4ZNZU](https://explorer.burstcoin.network/?action=account&account=3278233074628313816).
+## Donations are very welcome
+
+* Harry1453-[S-HARR-YJSD-6JL2-9RE46](https://explorer.signum.network/address/8217266070159336183)
+* jjos-[S-JJQS-MMA4-GHB4-4ZNZU](https://explorer.signum.network/address/3278233074628313816)
+* ipr0310-[S-36WQ-GYQN-D856-9DUJH](https://explorer.signum.network/address/8629824288351884182)
+
+## Demo
+
+-   http://testnet.btfg.space:9000
 
 ## Pools using the software
 
@@ -59,12 +69,17 @@ Donations are very welcome at [S-JJQS-MMA4-GHB4-4ZNZU](https://explorer.burstcoi
 -   https://pool.signumcoin.ro
 -   http://signa.voiplanparty.com:8124
 -   http://openburstpool.ddns.net:8126
--   http://signumpool.de:8080
+-   http://signumpool.de:8080/
 -   https://signumpool.com
 -   https://signapool.notallmine.net
 -   https://fomplopool.com
 -   http://signum.land
--   https://signum.space
+
+## Powered by
+-   [Signum](https://github.com/signum-network/signum-node)
+-   [SignumJS](https://github.com/signum-network/signumjs)
+-   [React](https://reactjs.org/)
+-   [MUI](https://mui.com/)
 
 ## Requirements
 

@@ -132,3 +132,4 @@ bin/
 /logging.xml
 /pool.properties
 /jooq-schema.mv.db
+.DS_Store
