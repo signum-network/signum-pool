@@ -33,15 +33,15 @@ targetCompatibility = 1.8
 dependencies {
     implementation 'org.apache.poi:poi-ooxml:4.1.0'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
-    implementation 'com.github.signum-network:signumj:v1.0.1'
+    implementation 'com.github.signum-network:signumj:f2522b5480'
     implementation 'org.nanohttpd:nanohttpd:2.3.1'
     implementation "org.flywaydb:flyway-core:6.5.0"
     implementation "com.h2database:h2:1.4.199"
     implementation "org.jooq:jooq"
     implementation "org.jooq:jooq-meta"
     implementation "org.jooq:jooq-codegen"
-    implementation "org.apache.logging.log4j:log4j-api:2.11.2"
-    implementation "org.apache.logging.log4j:log4j-slf4j-impl:2.11.2"
+    implementation "org.apache.logging.log4j:log4j-api:2.16.0"
+    implementation "org.apache.logging.log4j:log4j-slf4j-impl:2.16.0"
     implementation "org.slf4j:slf4j-api:1.7.26"
     implementation 'com.zaxxer:HikariCP:3.3.1'
     implementation 'com.google.code.gson:gson:2.8.5'

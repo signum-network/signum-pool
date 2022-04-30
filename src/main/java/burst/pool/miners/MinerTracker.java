@@ -176,7 +176,7 @@ public class MinerTracker {
         }
     }
 
-    public void payoutIfNeeded(StorageService storageService, SignumValue transactionFee) {
+    public void payoutIfNeeded(StorageService storageService, SignumValue baseTxFee, SignumValue appendageFee) {
         logger.info("Attempting payout...");
         if (payoutSemaphore.availablePermits() == 0) {
             logger.info("Cannot payout - payout is already in progress.");
@@ -213,6 +213,8 @@ public class MinerTracker {
         }
 
         Payable[] payableMiners = payableMinersSet.size() <= 64 ? payableMinersSet.toArray(new Payable[0]) : Arrays.copyOfRange(payableMinersSet.toArray(new Payable[0]), 0, 64);
+        
+        SignumValue transactionFee = baseTxFee.add(appendageFee.multiply(payableMiners.length / 10));
 
         SignumValue transactionFeePaidPerMiner = transactionFee.divide(payableMiners.length);
         logger.info("TFPM is {}", transactionFeePaidPerMiner.toNQT());
