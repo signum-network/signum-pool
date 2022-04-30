@@ -72,7 +72,6 @@ the payments.
 -   https://signapool.notallmine.net
 -   https://fomplopool.com
 -   http://signum.land
--   https://signum.space
 
 ## Requirements
 
