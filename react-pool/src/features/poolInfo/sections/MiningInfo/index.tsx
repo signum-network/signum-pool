@@ -68,7 +68,12 @@ export const MiningInfo = () => {
                         title={t("elapsedTime")}
                         value={formattedTimeout}
                         loading={
-                            isLoadingCurrentRound || formattedTimeout === "..."
+                            isLoadingCurrentRound ||
+                            formattedTimeout === "..." ||
+                            !!(
+                                formattedTimeout &&
+                                formattedTimeout.includes("waiting")
+                            )
                         }
                     />
                 </Grid>
