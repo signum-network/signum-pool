@@ -37,7 +37,9 @@ export const tradingEmbedsUrl = {
     large: "https://www.tradingview.com/widgetembed/?frameElementId=tradingview_846da&symbol=BITTREX:SIGNAUSD&interval=D&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=[]&theme=dark&style=1&timezone=Etc/UTC&withdateranges=1&showpopupbutton=1&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&showpopupbutton=1&locale=en&utm_source=www.tradingview.com&utm_medium=widget_new&utm_campaign=chart&utm_term=BITTREX:SIGNAUSD",
 };
 
-// Google Analytics Tracking id
+// Google Analytics Tracking id, optional
+// Example of Tracking ID: G-XXXXXX
+// DO NOT USE THE DEPRECATED UNIVERSAL ANALYTICS PROPERTY, EXAMPLE: UA-XXXXX
 export const googleTrackingID = "";
 
 // Pool palette

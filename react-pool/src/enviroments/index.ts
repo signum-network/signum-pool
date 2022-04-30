@@ -24,6 +24,7 @@ const {
 } = isDevelopmentMode ? devProperties : prodProperties;
 
 export {
+    isDevelopmentMode,
     isTestNet,
     poolName,
     dAppName,

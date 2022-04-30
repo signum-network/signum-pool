@@ -43,6 +43,8 @@ export const tradingEmbedsUrl = {
 };
 
 // Google Analytics Tracking id
+// Example of Tracking ID: G-XXXXXX
+// DO NOT USE THE DEPRECATED UNIVERSAL ANALYTICS PROPERTY, EXAMPLE: UA-XXXXX
 export const googleTrackingID = prodVariable.googleTrackingID;
 
 // Pool palette
