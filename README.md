@@ -55,6 +55,7 @@ Donations are very welcome at [S-JJQS-MMA4-GHB4-4ZNZU](https://explorer.burstcoi
 
 ## Pools using the software
 
+-   http://spacepool.btfg.space
 -   https://pool.signumcoin.ro
 -   http://signa.voiplanparty.com:8124
 -   http://openburstpool.ddns.net:8126
@@ -147,14 +148,14 @@ Before making customizations, be sure to visit that folder and read it's readme.
 
 The software provides a public API that can be used to audit the pool. The same API is used by the website user interface.
 
-The API will be available at your pool address:port, similar to `http://nivbox.co.uk:9000/api/`, with the following endpoints:
+The API will be available at your pool address:port, similar to `http://testnet.btfg.space:9000/api/`, with the following endpoints:
 
--   http://nivbox.co.uk:9000/api/getConfig (returns the pool configuration details, fees, etc.)
--   http://nivbox.co.uk:9000/api/getCurrentRound (returns the details of the current round/block)
--   http://nivbox.co.uk:9000/api/getWonBlocks (returns the list of recently blocks won by the pool)
--   http://nivbox.co.uk:9000/api/getMiners (returns the list of miners with recent valid deadlines)
--   http://nivbox.co.uk:9000/api/getTop10Miners (returns the list with the top 10 miners)
--   http://nivbox.co.uk:9000/api/getMiner/S-F6NV-CCGG-ER7W-99BRL (returns the details of a specific miner address)
+-   http://testnet.btfg.space:9000/api/getConfig (returns the pool configuration details, fees, etc.)
+-   http://testnet.btfg.space:9000/api/getCurrentRound (returns the details of the current round/block)
+-   http://testnet.btfg.space:9000/api/getWonBlocks (returns the list of recently blocks won by the pool)
+-   http://testnet.btfg.space:9000/api/getMiners (returns the list of miners with recent valid deadlines)
+-   http://testnet.btfg.space:9000/api/getTop10Miners (returns the list with the top 10 miners)
+-   http://testnet.btfg.space:9000/api/getMiner/S-F6NV-CCGG-ER7W-99BRL (returns the details of a specific miner address)
 
 All the capacities returned are in TiB.
 

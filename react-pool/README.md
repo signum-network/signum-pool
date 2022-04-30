@@ -48,7 +48,6 @@ Discover the available languages you can set by default or users can freely choo
 -   `es` Spanish
 -   `de` Deutsche
 -   `it` Italiano
--   `kr` Korean
 -   `pt` Português
 -   `tr` Türk
 -   `nl` Nederlands

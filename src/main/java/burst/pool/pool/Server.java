@@ -44,7 +44,6 @@ import signumj.entity.SignumValue;
 import signumj.entity.response.Block;
 import signumj.entity.response.MiningInfo;
 import signumj.util.SignumUtils;
-import burst.pool.Constants;
 import burst.pool.miners.Deadline;
 import burst.pool.miners.Miner;
 import burst.pool.storage.config.PropertyService;
@@ -154,7 +153,10 @@ public class Server extends NanoHTTPD {
         try {
             Map<String, String> params = queryToMap(session.getQueryParameterString());
             session.parseBody(new HashMap<>());
-            params.putAll(session.getParms());
+            Map<String, List<String>> sesionParams = session.getParameters();
+            for(String key : sesionParams.keySet()) {
+                params.put(key, sesionParams.get(key).get(0));
+            }
             if (session.getUri().startsWith("/burst")) {
                 return NanoHTTPD.newFixedLengthResponse(Response.Status.OK, "application/json", handleBurstApiCall(session, params));
             } else if (session.getUri().startsWith("/api")) {
@@ -195,9 +197,23 @@ public class Server extends NanoHTTPD {
                 if (submission.getNonce() == null) {
                     throw new SubmissionException("Nonce not set or invalid");
                 }
+                
+                String blockheightParam = params.get("blockheight");
+                if(blockheightParam != null) {
+                    try {
+                        long blockHeight = Long.parseLong(blockheightParam);
+                        if(blockHeight != pool.getMiningInfo().getHeight()) {
+                            throw new SubmissionException("Submission for another block height");
+                        }
+                    }
+                    catch (Exception ignored) {}
+                }
 
-                String userAgent = session.getHeaders().get("user-agent");
-                if (userAgent == null) userAgent = "";
+                String userAgent = session.getHeaders().get("x-miner");
+                if(userAgent == null)
+                    session.getHeaders().get("user-agent");
+                if (userAgent == null)
+                    userAgent = "";
                 return gson.toJson(new NonceSubmissionResponse("success", pool.checkNewSubmission(submission, userAgent)));
             } catch (SubmissionException e) {
                 return gson.toJson(new NonceSubmissionResponse(e.getMessage(), null));
