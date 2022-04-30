@@ -174,5 +174,9 @@
   "seeTransactionInExplorer": "See transaction in explorer",
   "successfulTransaction": "Successfully executed the transaction!",
   "cannotReassignUntilPreviousInEffect": "Cannot join this pool because there is a current transaction going into effect, you can try later!",
-  "viewMinerInPage": "View miner's page"
+  "viewMinerInPage": "View miner's page",
+  "HOMETAG": "Mining Pool",
+  "notFoundPageFirstLine": "Oops! we can't find that page",
+  "notFoundPageSecondLine": "We could not find the page you were looking for.",
+  "notFoundPageGoHome": "Go home"
 }
