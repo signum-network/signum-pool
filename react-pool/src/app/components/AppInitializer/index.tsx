@@ -1,4 +1,5 @@
 import { WalletInitializer } from "./WalletInitializer";
+import { LanguageInitializer } from "./LanguageInitializer";
 
 // If google MEASUREMENT ID is set, use tracker
 import { googleTrackingID } from "../../../enviroments";
@@ -9,6 +10,7 @@ export const AppInitializer = () => {
         <>
             {googleTrackingID && <AnalyticsInitializer />}
 
+            <LanguageInitializer />
             <WalletInitializer />
         </>
     );

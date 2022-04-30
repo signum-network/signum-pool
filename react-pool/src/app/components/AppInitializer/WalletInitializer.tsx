@@ -88,6 +88,7 @@ export const WalletInitializer = () => {
                     break;
                 case "NotGrantedWalletError":
                     showWarning(t("xtWalletActionDeclined"));
+                    removeRememberStatus();
                     break;
                 default:
                     // unexpected error
