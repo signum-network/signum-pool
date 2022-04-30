@@ -121,12 +121,15 @@ If you want your pool website to be shown on iframes, you can just add the follo
 ## How to use Google Analytics (Optional)
 
 -   Go to Google Analytics website and if you’re first time user, you’ll asked to set up an account including your data sharing settings.
--   Create a new property — remember to select the Universal Analytics property option. You have the options to create UA, or GA4 or both properties.
--   Fill up the remaining information for setting up your account and properties; and then you’ll get the tracking ID (e.g. UA-123456789–1)
+-   Create a new property
+-   Add a ``Web Data Stream``
+-   Fill up the remaining information for setting up your ``web data stream``. Then you’ll get the tracking ID (e.g. G-XXXXXX)
 -   Once you get the Tracking ID, you just need to assign that value in the variable "GOOGLETRACKINGID"
 -   If you do not want google analytics, just leave the variable empty
 
-> Example of a tracking ID: **UA-200778790-1**
+> Example of a tracking ID: **G-XXXXXXX**
+
+> **DO NOT USE THE DEPRECATED UNIVERSAL ANALYTICS PROPERTY, EXAMPLE: UA-XXXXX**
 
 ## URL used for embed in trading viewer page
 
