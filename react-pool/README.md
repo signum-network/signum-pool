@@ -1,43 +1,53 @@
 # Welcome to Signum's Pool website
 
-_Maybe you will find helpful tips_
+### Featured tools
+- [SignumJS](https://github.com/signum-network/signumjs)
+- [React](https://reactjs.org/)
+- [Redux Toolkit](https://redux-toolkit.js.org/)
+- [MUI](https://mui.com/)
+- [useSWR](https://swr.vercel.app/)
 
-## How to use testing or production mode 📋
+## How to use Development or Production mode 📋
 
--   **Testing mode refers to the "development enviroment"**
+-   **Development mode refers to the "development enviroment"**
 
-    > Testing mode will fetch data from a remote pool server
+    > Development mode will fetch data from a remote pool server
 
-    > **Example: you can fetch data from different pools by just changing the variable TEST_NODE in globalParameters.js**
+    > **Example: you can fetch data from different pools by just changing the variable isDevelopmentMode in enviroments/index.ts**
 
 -   **Production mode refers to the "production enviroment"**
 
     > Production mode will fetch data from the local pool server which you will host the web app
 
-Per default the testing mode is activated automatically when running `npm start`, but `npm run build` activates production mode
+Per default the Development mode is activated automatically when running `npm start`, but `npm run build` activates Production mode
 
-> _If you need - for whatever reasons - to develop on production mode you need to override the "useTestNet" variable_
+> _If you need - for whatever reasons - to develop on production mode you need to override the "isDevelopmentMode" variable_
 
-> The variable useTestnet also refers to the "development enviroment"
-
--   Go to the folder src/utils/
--   You will find the file "globalParameter.js"
--   Find the variable "useTestNet"
+-   Go to the file "enviroments/index.ts"
+-   You will find the variable "isDevelopmentMode"
 
     -   If that variable is equal to true, the website will fetch data from a remote pool node **you can change the url**
     -   If that variable is equal to false, the website will fetch data from your local pool node!
 
-> The variable "useTestNet" is assigned correspondingly, so it's not necessary to override it
+> The variable "isDevelopmentMode" is assigned correspondingly, so it's not necessary to override it
+
+## How to use pool in Testnet or Mainet network 📋
+
+-   **The isTestNet variable refers to the network which may be used**
+
+    > **Example: you can host your pool in the Testnet or Mainnet network by modifying the variable isTestNet in enviroments/index.ts**
+
+> The variable "isTestNet" is assigned correspondingly, so it's not necessary to override it
 
 ## Commands for deployment 🛠️
 
 _Use this commands if you are going to deploy changes or start the deployment_
 
--   If you have not installed the dependencies, run "npm install", if there is already a folder called "node_modules", forget this step
--   npm run build - Build project's production site
--   After the build command has finished, you will only need the folder "Build"
--   Only use the folder "Build", you can deploy the production app in your pool node
--   Always serve the file index.html
+-   If you have not installed the dependencies, run `npm install`, if there is already a folder called `/node_modules`, forget this step
+-   `npm run build` - Build project's production site
+-   After the build command has finished, you will only need the folder `/Build`
+-   Only use the folder `/Build`, you can deploy the production app in your pool node
+-   Always serve the file `index.html`
 
 ## Available Languages 🌐
 
