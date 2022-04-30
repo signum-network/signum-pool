@@ -54,6 +54,7 @@
   "software": "Software",
   "pocBoost": "PoC+ Boost",
   "viewMinerInExplorer": "View miner in explorer",
+  "viewAccountInExplorer": "View account in explorer",
   "minimumPayout": "Minimum Payout",
   "waiting": "Waiting",
   "second": "second",
@@ -165,5 +166,11 @@
   "joinedSuccessDescription": "If you started mining recently, you may wait around 8-16 minutes in order to appear in the miners list!",
   "joinPool": "Join the pool!",
   "joinPoolNow": "Join the pool now!",
-  "joinPoolDescription": "You can easily join the pool with the Signum XT Wallet!\nOnce the transaction is executed, you will need to wait for at least 4 block confirmations (approximately 20 minutes)."
+  "joinPoolDescription": "You can easily join the pool with the Signum XT Wallet!\nOnce the transaction is executed, you will need to wait for at least 4 block confirmations (approximately 20 minutes).",
+  "txSuccesfull": "Successfully executed the transaction",
+  "txSuccesfullDescription": "Congrats, you will need to wait for at least 4 block confirmations (approximately 20 minutes).",
+  "txSuccesfullSecondDescription": "Once you can see your account reward recipient is updated, you must configure your miner to use the following mining address:",
+  "seeTransactionInExplorer": "See transaction in explorer",
+  "successfulTransaction": "Successfully executed the transaction!",
+  "cannotReassignUntilPreviousInEffect": "Cannot join this pool because there is a current transaction going into effect, you can try later!"
 }

@@ -10,6 +10,7 @@ import {
     actions,
     selectIsWalletConnected,
 } from "../../../../../states/appState";
+import { viewAccountInExplorer } from "../../../../utils/explorer";
 
 // @ts-ignore
 import hashicon from "hashicon";
@@ -22,6 +23,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import LogoutIcon from "@mui/icons-material/Logout";
+import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 
 export const WalletConnectionBtn = () => {
     const { t } = useTranslation();
@@ -51,6 +53,10 @@ export const WalletConnectionBtn = () => {
 
     const searchMyMiner = () => {
         if (accountId) dispatch(setSearchMiner(accountId));
+    };
+
+    const seeMinerInExplorer = () => {
+        if (accountId) viewAccountInExplorer(accountId);
     };
 
     const iconStyling = { margin: { xs: 0.5, md: 0 } };
@@ -129,6 +135,16 @@ export const WalletConnectionBtn = () => {
                         <AccountBoxIcon />
                     </ListItemIcon>
                     <ListItemText primary={t("viewMinerDetails")} />
+                </MenuItem>
+
+                <MenuItem
+                    onClick={seeMinerInExplorer}
+                    sx={{ ...menuOptionStyling }}
+                >
+                    <ListItemIcon>
+                        <TravelExploreIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={t("viewAccountInExplorer")} />
                 </MenuItem>
 
                 <MenuItem
