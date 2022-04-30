@@ -67,6 +67,19 @@ Discover the available languages you can set by default or users can freely choo
 
 > `code` -> language name
 
+
+## How to load specific language from URL 🌐
+
+If you want to share a link with some miners which talks a specific language, you can just add the following get parameter in the URL.
+Make sure that you assign a available language.
+
+> **lang=ru**
+
+> Example #1: **http://poolUrlExample.com/?lang=ru**
+
+> Example #2: **http://poolUrlExample.com/randomRoute/?random=true&lang=ru**
+
+
 ## How to implement extra links on your header 🕹️
 
 If you want extra links to be put in your header, you must go to the file `pool.properties` and find and customize the variable `extraMenuItems`
