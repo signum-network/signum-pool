@@ -1,4 +1,5 @@
 import { Fragment, FC } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { Sidebar } from "./Sidebar";
@@ -11,6 +12,13 @@ import { SetupWalletModal } from "./components/Modals/SetupWalletModal";
 import { SignTransactionModal } from "./components/Modals/SignTransactionModal";
 
 export const Layout: FC = ({ children }) => {
+    const [searchParams] = useSearchParams();
+
+    const isEmbedMode = !!(
+        searchParams.get("embedMode") &&
+        searchParams.get("embedMode") === "true"
+    );
+
     return (
         <Fragment>
             <PoolDataFetcher />
@@ -23,7 +31,8 @@ export const Layout: FC = ({ children }) => {
             <SetupWalletModal />
             <SignTransactionModal />
 
-            <Header />
+            {!isEmbedMode && <Header />}
+
             {children}
             <Footer />
         </Fragment>

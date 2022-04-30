@@ -26,7 +26,7 @@ export const AllMiners = () => {
                 </Typography>
             </Grid>
 
-            <Grid item px={2}>
+            <Grid container item px={2}>
                 <MinersList />
             </Grid>
         </Grid>

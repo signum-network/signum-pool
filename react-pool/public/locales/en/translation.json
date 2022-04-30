@@ -70,6 +70,7 @@
   "stopShowAllMiners": "Stop showing all miners",
   "poolTotal": "Pool Total",
   "minerNotFound": "Miner not found ⚒️. If your account joined this pool and recently started mining, you may wait around 8-16 minutes in order to appear here!",
+  "minerNotFoundShort": "Miner not found ⚒️",
   "noMiners": "There are no miners, start inviting them!",
   "minerAdded": "Bookmark added! ⚒️",
   "elapsedTime": "Elapsed time",
@@ -172,5 +173,6 @@
   "txSuccesfullSecondDescription": "Once you can see your account reward recipient is updated, you must configure your miner to use the following mining address:",
   "seeTransactionInExplorer": "See transaction in explorer",
   "successfulTransaction": "Successfully executed the transaction!",
-  "cannotReassignUntilPreviousInEffect": "Cannot join this pool because there is a current transaction going into effect, you can try later!"
+  "cannotReassignUntilPreviousInEffect": "Cannot join this pool because there is a current transaction going into effect, you can try later!",
+  "viewMinerInPage": "View miner's page"
 }

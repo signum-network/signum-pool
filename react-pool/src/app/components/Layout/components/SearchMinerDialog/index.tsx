@@ -88,7 +88,7 @@ export const SearchMinerDialog = () => {
     }, [searchedMinerState]);
 
     const btnStyling = {
-        fontSize: { xs: 12, md: 16 },
+        fontSize: 16,
         width: { xs: "100%", md: "48%" },
         mb: 2,
         textTransform: "none",
@@ -126,6 +126,7 @@ export const SearchMinerDialog = () => {
                         poolShare={minerData.poolShare || 0}
                         minimumPayout={minerData.minimumPayout || ""}
                         minerAgent={minerData.minerAgent || ""}
+                        onClose={closeDialog}
                     />
                 )}
             </DialogContent>

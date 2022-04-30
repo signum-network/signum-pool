@@ -26,7 +26,6 @@ export const TradingPage = () => {
             <Grid item mb={2}>
                 <iframe
                     scrolling="no"
-                    allowTransparency
                     frameBorder={0}
                     title="Mini widget"
                     src={mini}
@@ -45,7 +44,6 @@ export const TradingPage = () => {
             >
                 <iframe
                     scrolling="no"
-                    allowTransparency
                     frameBorder={0}
                     title="Large widget"
                     // Shortened link

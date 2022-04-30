@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../../../states/hooks";
 import { actions } from "../../../../states/appState";
 import { miner } from "../../../../states/minersState";
@@ -16,6 +17,7 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import BlurOnIcon from "@mui/icons-material/BlurOn";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 
 export interface deadlines {
     deadlines: number[];
@@ -28,6 +30,7 @@ export interface SpecificMinerProps extends miner {
     showExplorerButton?: boolean;
     showDeleteBookmarkButton?: boolean;
     deadlineData?: deadlines;
+    onClose?: () => void;
 }
 
 export const SpecificMiner = ({
@@ -51,6 +54,7 @@ export const SpecificMiner = ({
     showDeleteBookmarkButton = false,
     showExplorerButton = false,
     deadlineData,
+    onClose,
 }: SpecificMinerProps) => {
     const { t } = useTranslation();
     const { showSuccess } = useSnackbar();
@@ -70,29 +74,50 @@ export const SpecificMiner = ({
         showSuccess(t("bookmarkDeleted") + " ⚒️");
     };
 
+    const viewButtonStyling = {
+        mx: "auto",
+        textTransform: "none",
+        color: "white",
+    };
+
     return (
         <Grid container direction="column">
             {showExplorerButton && (
                 <Grid
                     item
                     container
+                    direction="row"
                     py={2}
                     sx={{ borderBottom: 1, borderColor: "divider" }}
+                    spacing={2}
                 >
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        startIcon={<BlurOnIcon />}
-                        onClick={openAccountInExplorer}
-                        sx={{
-                            width: "90%",
-                            mx: "auto",
-                            textTransform: "none",
-                            color: "white",
-                        }}
-                    >
-                        {t("viewMinerInExplorer")}
-                    </Button>
+                    <Grid item xs={12} md={6}>
+                        <Button
+                            fullWidth
+                            color="primary"
+                            variant="contained"
+                            startIcon={<TravelExploreIcon />}
+                            onClick={openAccountInExplorer}
+                            sx={viewButtonStyling}
+                        >
+                            {t("viewAccountInExplorer")}
+                        </Button>
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
+                        <Link to={"/miner/" + accountId}>
+                            <Button
+                                fullWidth
+                                color="secondary"
+                                variant="contained"
+                                startIcon={<BlurOnIcon />}
+                                sx={viewButtonStyling}
+                                onClick={onClose}
+                            >
+                                {t("viewMinerInPage")}
+                            </Button>
+                        </Link>
+                    </Grid>
                 </Grid>
             )}
 
