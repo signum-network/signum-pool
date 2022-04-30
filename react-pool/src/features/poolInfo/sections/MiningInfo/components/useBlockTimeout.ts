@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { formatTime } from "../../../../../app/utils/functions/formatTime";
 
 // '...' means that we are waiting for the render of the block elapsed time
 
 export const useBlockTimeout = (roundStart: number): string | "..." => {
-    const { t } = useTranslation();
     const [blockDuration, updateblockDuration] = useState("...");
 
     let intervalHandle = useRef<ReturnType<typeof setTimeout>>();
