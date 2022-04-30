@@ -4,7 +4,7 @@
 // ########################################
 
 // The name of the pool
-export const poolName = "My Testnet Pool";
+export const poolName = "My Pool";
 
 // The name of the dApp
 export const dAppName = poolName;
