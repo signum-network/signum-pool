@@ -4,6 +4,7 @@ An open-source, fair, and auditable Signum mining pool software where miners can
 
 ## Features
 
+-   Accounts can join your pool using the [Signum XT Wallet](https://github.com/signum-network/signum-xt-wallet)
 -   PoC+ boost calculated by the pool using recent deadlines (no boost drops)
 -   Pool can be audited by API (all information is available to the public)
 -   Miners can set individually their _share model_
