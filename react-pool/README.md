@@ -46,7 +46,7 @@ _Use this commands if you are going to deploy changes or start the deployment_
 -   If you have not installed the dependencies, run `npm install`, if there is already a folder called `/node_modules`, forget this step
 -   `npm run build` - Build project's production site
 -   After the build command has finished, you will only need the folder `/Build`
--   Only use the folder `/Build`, you can deploy the production app in your pool node
+-   You will need to move the files from  `/Build` folder to the `/html` folder, in the production app of your pool node
 -   Always serve the file `index.html`
 
 ## Available Languages 🌐
