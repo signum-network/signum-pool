@@ -26,7 +26,7 @@ export const availableLanguages: languages[] = [
     { locale: "it", label: "Italiano" },
     { locale: "pt", label: "Português" },
     { locale: "tr", label: "Türk" },
-    { locale: "nl", label: "Dutch" },
+    { locale: "nl", label: "Nederlands" },
     { locale: "pl", label: "Polskie" },
     { locale: "ru", label: "русский" },
     { locale: "zh", label: "普通话" },
