@@ -172,5 +172,12 @@
   "xtWalletPermissionAccountRemovedWarning": "Sie haben gerade das verbundene Konto oder die Berechtigung in Ihrer Brieftasche entfernt.",
   "xtWalletRequiredNetwork": "Diese DApp erfordert das folgende Netzwerk",
   "xtWalletSecondBenefit": "Ihr privater Schlüssel wird lokal in Ihrem Browser gespeichert",
-  "yourSignumAddressOrAccountName": "Geben Sie Ihre Signum-Adresse oder Ihren Kontonamen ein"
+  "yourSignumAddressOrAccountName": "Geben Sie Ihre Signum-Adresse oder Ihren Kontonamen ein",
+  "HOMETAG": "Mining-Pool",
+  "minerNotFoundShort": "Bergmann nicht gefunden ⚒️",
+  "notFoundPageFirstLine": "Hoppla! Wir können diese Seite nicht finden",
+  "notFoundPageGoHome": "Nach Hause gehen",
+  "notFoundPageSecondLine": "Wir konnten die von Ihnen gesuchte Seite nicht finden.",
+  "viewMinerInPage": "Sehen Sie sich die Miner-Seite an",
+  "notEnoughFunds": "Ihr Konto verfügt nicht über genügend Guthaben"
 }

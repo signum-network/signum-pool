@@ -172,5 +172,12 @@
   "xtWalletPermissionAccountRemovedWarning": "Vous venez de supprimer le compte connecté ou l'autorisation de votre portefeuille.",
   "xtWalletRequiredNetwork": "Ce DApp nécessite le réseau suivant",
   "xtWalletSecondBenefit": "Votre clé privée sera stockée localement dans votre navigateur",
-  "yourSignumAddressOrAccountName": "Entrez votre adresse Signum ou le nom de votre compte"
+  "yourSignumAddressOrAccountName": "Entrez votre adresse Signum ou le nom de votre compte",
+  "HOMETAG": "Piscine minière",
+  "minerNotFoundShort": "Mineur introuvable ⚒️",
+  "notFoundPageFirstLine": "Oups! nous ne pouvons pas trouver cette page",
+  "notFoundPageGoHome": "rentrer chez soi",
+  "notFoundPageSecondLine": "Nous n'avons pas pu trouver la page que vous cherchiez.",
+  "viewMinerInPage": "Voir la page du mineur",
+  "notEnoughFunds": "Votre compte n'a pas assez de fonds disponibles"
 }

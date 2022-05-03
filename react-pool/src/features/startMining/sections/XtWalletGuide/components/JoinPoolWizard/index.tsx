@@ -105,6 +105,7 @@ export const JoinPoolWizard = () => {
                     recipientId: poolAccount,
                 })) as UnsignedTransaction;
 
+            window.dispatchEvent(new Event("wallet-sign-start"));
             const { transactionId: txId } = await wallet.confirm(
                 unsignedTransactionBytes
             );
@@ -122,6 +123,12 @@ export const JoinPoolWizard = () => {
                     showInfo(t("cannotReassignUntilPreviousInEffect"));
                     break;
 
+                // Error expected from the node
+                // "Not enough funds"
+                case 6:
+                    showInfo(t("notEnoughFunds"));
+                    break;
+
                 default:
                     // unexpected error
                     console.error(e.data);
@@ -130,6 +137,8 @@ export const JoinPoolWizard = () => {
 
             console.error(e.data);
             resetParams();
+        } finally {
+            window.dispatchEvent(new Event("wallet-sign-end"));
         }
     };
 

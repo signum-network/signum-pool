@@ -172,5 +172,12 @@
   "xtWalletPermissionAccountRemovedWarning": "Je hebt zojuist het gekoppelde account of de toestemming in je portemonnee verwijderd.",
   "xtWalletRequiredNetwork": "Deze DApp vereist het volgende netwerk:",
   "xtWalletSecondBenefit": "Uw privésleutel wordt lokaal in uw browser opgeslagen",
-  "yourSignumAddressOrAccountName": "Voer uw Signum-adres of accountnaam in"
+  "yourSignumAddressOrAccountName": "Voer uw Signum-adres of accountnaam in",
+  "HOMETAG": "Mijnbouwbad",
+  "minerNotFoundShort": "Mijnwerker niet gevonden ️",
+  "notFoundPageFirstLine": "Oeps! we kunnen die pagina niet vinden",
+  "notFoundPageGoHome": "Ga naar huis",
+  "notFoundPageSecondLine": "We konden de pagina die u zocht niet vinden.",
+  "viewMinerInPage": "Bekijk mijnwerkerspagina",
+  "notEnoughFunds": "Er is onvoldoende saldo beschikbaar op uw account"
 }
