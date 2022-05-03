@@ -49,7 +49,10 @@ export const SpecificRow = ({
             >
                 <Typography
                     variant={bigTitle ? "h6" : "body1"}
-                    sx={{ display: { xs: "inline-block", md: "flex" } }}
+                    sx={{
+                        display: { xs: "inline-block", md: "flex" },
+                        minWidth: { xs: 300, lg: 600 },
+                    }}
                 >
                     {title}
                 </Typography>

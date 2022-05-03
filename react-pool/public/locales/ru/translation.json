@@ -172,5 +172,12 @@
   "xtWalletPermissionAccountRemovedWarning": "Вы только что удалили подключенную учетную запись или разрешение в своем кошельке.",
   "xtWalletRequiredNetwork": "Для этого DApp требуется следующая сеть",
   "xtWalletSecondBenefit": "Ваш закрытый ключ будет храниться локально в вашем браузере",
-  "yourSignumAddressOrAccountName": "Введите свой адрес Signum или имя учетной записи"
+  "yourSignumAddressOrAccountName": "Введите свой адрес Signum или имя учетной записи",
+  "HOMETAG": "Пул майнинга",
+  "minerNotFoundShort": "Майнер не найден ⚒️",
+  "notFoundPageFirstLine": "Ой! мы не можем найти эту страницу",
+  "notFoundPageGoHome": "Идти домой",
+  "notFoundPageSecondLine": "Мы не смогли найти страницу, которую вы искали.",
+  "viewMinerInPage": "Посмотреть страницу майнера",
+  "notEnoughFunds": "На вашем счету недостаточно доступных средств"
 }

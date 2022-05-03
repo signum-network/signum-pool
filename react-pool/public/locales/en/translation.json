@@ -178,5 +178,6 @@
   "HOMETAG": "Mining Pool",
   "notFoundPageFirstLine": "Oops! we can't find that page",
   "notFoundPageSecondLine": "We could not find the page you were looking for.",
-  "notFoundPageGoHome": "Go home"
+  "notFoundPageGoHome": "Go home",
+  "notEnoughFunds": "Your account does not have enough funds available"
 }

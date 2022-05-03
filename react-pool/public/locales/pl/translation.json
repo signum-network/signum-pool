@@ -172,5 +172,12 @@
   "xtWalletPermissionAccountRemovedWarning": "Właśnie usunąłeś połączone konto lub uprawnienia w swoim portfelu.",
   "xtWalletRequiredNetwork": "Ta aplikacja DApp wymaga następującej sieci",
   "xtWalletSecondBenefit": "Twój klucz prywatny będzie przechowywany lokalnie w Twojej przeglądarce",
-  "yourSignumAddressOrAccountName": "Wpisz swój adres Signum lub nazwę konta"
+  "yourSignumAddressOrAccountName": "Wpisz swój adres Signum lub nazwę konta",
+  "HOMETAG": "Basen górniczy",
+  "minerNotFoundShort": "Nie znaleziono górnika ⚒️",
+  "notFoundPageFirstLine": "Ups! nie możemy znaleźć tej strony",
+  "notFoundPageGoHome": "Idź do domu",
+  "notFoundPageSecondLine": "Nie mogliśmy znaleźć strony, której szukasz.",
+  "viewMinerInPage": "Wyświetl stronę górnika",
+  "notEnoughFunds": "Na Twoim koncie nie ma wystarczających środków"
 }

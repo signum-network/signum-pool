@@ -172,5 +172,12 @@
   "xtWalletPermissionAccountRemovedWarning": "Az önce bağlı hesabı veya cüzdanınızdaki izni kaldırdınız.",
   "xtWalletRequiredNetwork": "Bu DApp aşağıdaki ağı gerektirir",
   "xtWalletSecondBenefit": "Özel anahtarınız tarayıcınızda yerel olarak depolanacak",
-  "yourSignumAddressOrAccountName": "Signum adresinizi veya hesap adınızı girin"
+  "yourSignumAddressOrAccountName": "Signum adresinizi veya hesap adınızı girin",
+  "HOMETAG": "Maden Havuzu",
+  "minerNotFoundShort": "Madenci bulunamadı ⚒️",
+  "notFoundPageFirstLine": "Hata! o sayfayı bulamıyoruz",
+  "notFoundPageGoHome": "Eve git",
+  "notFoundPageSecondLine": "Aradığınız sayfayı bulamadık.",
+  "viewMinerInPage": "madenci sayfasını görüntüle",
+  "notEnoughFunds": "Hesabınızda yeterli bakiye yok"
 }

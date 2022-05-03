@@ -172,5 +172,12 @@
   "xtWalletPermissionAccountRemovedWarning": "您刚刚删除了钱包中关联的帐户或权限。",
   "xtWalletRequiredNetwork": "该 DApp 需要以下网络",
   "xtWalletSecondBenefit": "您的私钥将本地存储在您的浏览器中",
-  "yourSignumAddressOrAccountName": "输入您的 Signum 地址或帐户名称"
+  "yourSignumAddressOrAccountName": "输入您的 Signum 地址或帐户名称",
+  "HOMETAG": "矿池",
+  "minerNotFoundShort": "找不到矿工⚒️",
+  "notFoundPageFirstLine": "哎呀！我们找不到那个页面",
+  "notFoundPageGoHome": "回家",
+  "notFoundPageSecondLine": "我们找不到您要查找的页面。",
+  "viewMinerInPage": "查看矿工页面",
+  "notEnoughFunds": "您的帐户没有足够的可用资金"
 }
