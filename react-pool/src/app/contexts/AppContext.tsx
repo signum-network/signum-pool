@@ -2,11 +2,19 @@ import { FC, createContext } from "react";
 import { DeeplinkableWallet, GenericExtensionWallet } from "@signumjs/wallets";
 import { Config } from "../utils/config";
 import {
+    isDevelopmentMode,
     isTestNet,
     dAppName,
     dAppNetwork,
     explorerUrl,
 } from "../../enviroments";
+
+// XT Wallet usage
+const poolWebUrl = new URL(window.location.href);
+const isUnsafeWebsite =
+    !isDevelopmentMode &&
+    poolWebUrl.protocol !== "https:" &&
+    poolWebUrl.hostname !== "localhost";
 
 export interface AppContextType {
     Fetcher: any;
@@ -20,6 +28,7 @@ export interface AppContextType {
         Network: string;
         Explorer: string;
     };
+    isUnsafeWebsite: boolean;
 }
 
 const config: AppContextType = {
@@ -34,6 +43,7 @@ const config: AppContextType = {
         Network: dAppNetwork,
         Explorer: explorerUrl,
     },
+    isUnsafeWebsite,
 };
 
 export const AppContext = createContext<AppContextType>(config);

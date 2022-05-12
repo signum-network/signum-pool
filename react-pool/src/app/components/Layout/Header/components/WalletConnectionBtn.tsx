@@ -2,6 +2,7 @@ import { useMemo, useState, Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../../states/hooks";
 import { useAccount } from "../../../../hooks/useAccount";
+import { useAppContext } from "../../../../hooks/useAppContext";
 import {
     requestWalletConnection,
     requestWalletDisconnection,
@@ -28,6 +29,7 @@ import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 export const WalletConnectionBtn = () => {
     const { t } = useTranslation();
     const { accountId } = useAccount();
+    const { isUnsafeWebsite } = useAppContext();
     const { setSearchMiner } = actions;
     const dispatch = useAppDispatch();
     const isWalletConnected = useAppSelector(selectIsWalletConnected);
@@ -61,6 +63,8 @@ export const WalletConnectionBtn = () => {
 
     const iconStyling = { margin: { xs: 0.5, md: 0 } };
     const menuOptionStyling = { alignItems: "flex-start", py: 1.7 };
+
+    if (isUnsafeWebsite) return null;
 
     return (
         <Fragment>
