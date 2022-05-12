@@ -4,7 +4,7 @@ An open-source, fair, and auditable Signum mining pool software where miners can
 
 ## Features
 
--   Accounts can join your pool using the [Signum XT Wallet](https://github.com/signum-network/signum-xt-wallet)
+-   Accounts can join your pool using the [Signum XT Wallet](https://github.com/signum-network/signum-xt-wallet).
 -   PoC+ boost calculated by the pool using recent deadlines (no boost drops)
 -   Pool can be audited by API (all information is available to the public)
 -   Miners can set individually their _share model_
@@ -86,6 +86,12 @@ the payments.
 -   [Synced Signum node](https://github.com/signum-network/signum-node)
 -   Java 64 Bits version 8 or 11
 -   MariaDB (Optional, but recommended for advanced users)
+
+## XT Wallet integration
+
+ In order to be able to use the XT wallet module. For security reasons the pool website must be on **HTTPS** or localhost
+ 
+<img src="https://user-images.githubusercontent.com/35440957/168082091-3480557d-8bdd-455b-88f5-f0ed8d1ff87e.png" width="100" height="50">
 
 ## Installation
 
