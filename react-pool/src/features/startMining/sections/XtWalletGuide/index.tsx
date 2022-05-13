@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { requestWalletConnection } from "../../../../app/utils/requestWalletConnection";
 import { useAppSelector } from "../../../../states/hooks";
+import { useAppContext } from "../../../../app/hooks/useAppContext";
 import { selectIsWalletConnected } from "../../../../states/appState";
 import { JoinPoolWizard } from "./components/JoinPoolWizard";
 
@@ -9,10 +10,39 @@ import AppBar from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 export const XtWalletGuide = () => {
     const { t } = useTranslation();
+    const { isUnsafeWebsite } = useAppContext();
     const isWalletConnected = useAppSelector(selectIsWalletConnected);
+
+    const unsafeSiteContent = (
+        <Alert severity="warning">
+            <AlertTitle>{t("warning")}</AlertTitle>
+            {t("websiteMustBeHttps")}
+        </Alert>
+    );
+
+    const walletSetupContent = isWalletConnected ? (
+        <JoinPoolWizard />
+    ) : (
+        <Grid item container direction="column">
+            <Typography align="center" gutterBottom variant="h6">
+                {t("tryTheXtWallet")}
+            </Typography>
+
+            <Button
+                variant="contained"
+                onClick={requestWalletConnection}
+                startIcon={<AccountBalanceWalletIcon />}
+                sx={{ color: "white", textTransform: "none" }}
+            >
+                {t("connectWallet")}
+            </Button>
+        </Grid>
+    );
 
     return (
         <Grid
@@ -35,24 +65,7 @@ export const XtWalletGuide = () => {
                     padding: 2,
                 }}
             >
-                {isWalletConnected ? (
-                    <JoinPoolWizard />
-                ) : (
-                    <Grid item container direction="column">
-                        <Typography align="center" gutterBottom variant="h6">
-                            {t("tryTheXtWallet")}
-                        </Typography>
-
-                        <Button
-                            variant="contained"
-                            onClick={requestWalletConnection}
-                            startIcon={<AccountBalanceWalletIcon />}
-                            sx={{ color: "white", textTransform: "none" }}
-                        >
-                            {t("connectWallet")}
-                        </Button>
-                    </Grid>
-                )}
+                {isUnsafeWebsite ? unsafeSiteContent : walletSetupContent}
             </AppBar>
         </Grid>
     );

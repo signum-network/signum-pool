@@ -6,6 +6,7 @@ import { poolName } from "../../../../enviroments";
 import { truncateText } from "../../../../app/utils/functions/stringMethods";
 import { requestWalletConnection } from "../../../../app/utils/requestWalletConnection";
 import { useAccount } from "../../../../app/hooks/useAccount";
+import { useAppContext } from "../../../../app/hooks/useAppContext";
 import { useAppSelector, useAppDispatch } from "../../../../states/hooks";
 import {
     actions,
@@ -26,6 +27,7 @@ import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 export const WelcomeSection = () => {
     const { t } = useTranslation();
     const { accountId } = useAccount();
+    const { isUnsafeWebsite } = useAppContext();
     const { setSearchMiner } = actions;
     const isDarkMode = useAppSelector(selectIsDarkMode);
     const bookmarkedMinerID = useAppSelector(selectBookmarkedMiner);
@@ -140,30 +142,32 @@ export const WelcomeSection = () => {
                         placeholder={t("yourSignumAddressOrAccountName")}
                     />
 
-                    <Tooltip
-                        title={`${t(
-                            isWalletConnected
-                                ? "viewMinerDetails"
-                                : "connectWallet"
-                        )}`}
-                        arrow
-                    >
-                        <Button
-                            variant="contained"
-                            color="error"
-                            sx={{
-                                p: 1,
-                                height: "100%",
-                                borderRadius: 1,
-                                color: "white",
-                                mr: 1,
-                                display: { xs: "none", lg: "flex" },
-                            }}
-                            onClick={handleClick}
+                    {!isUnsafeWebsite && (
+                        <Tooltip
+                            title={`${t(
+                                isWalletConnected
+                                    ? "viewMinerDetails"
+                                    : "connectWallet"
+                            )}`}
+                            arrow
                         >
-                            <AccountBalanceWalletIcon fontSize="large" />
-                        </Button>
-                    </Tooltip>
+                            <Button
+                                variant="contained"
+                                color="error"
+                                sx={{
+                                    p: 1,
+                                    height: "100%",
+                                    borderRadius: 1,
+                                    color: "white",
+                                    mr: 1,
+                                    display: { xs: "none", lg: "flex" },
+                                }}
+                                onClick={handleClick}
+                            >
+                                <AccountBalanceWalletIcon fontSize="large" />
+                            </Button>
+                        </Tooltip>
+                    )}
 
                     <Button
                         type="submit"

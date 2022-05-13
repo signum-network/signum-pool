@@ -1,3 +1,5 @@
+import { formatUrl } from "../app/utils/functions/formatUrl";
+
 // ########################################
 // # DO NOT PUT SENSIBLE INFORMATION HERE #
 // # CLIENT SIDE VARIABLES                #
@@ -24,13 +26,13 @@ export const miningUrl = prodVariable.miningUrl;
 export const discordUrl = prodVariable.discordUrl;
 
 // The explorer link
-export const explorerUrl = prodVariable.explorerUrl;
+export const explorerUrl = formatUrl(prodVariable.explorerUrl);
 
 // The faucet link
 export const faucetUrl = prodVariable.faucetUrl;
 
 // The online wallet link
-export const walletUrl = prodVariable.walletUrl;
+export const walletUrl = formatUrl(prodVariable.walletUrl);
 
 // Signum price API
 export const signumPriceUrl =
