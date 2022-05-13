@@ -99,9 +99,11 @@ export const MiningInfo = () => {
                     <InfoCard
                         title={t("bestMiner")}
                         value={
-                            formatTime(bestDeadline.deadline) +
-                            " | " +
                             bestDeadline.miner
+                                ? formatTime(bestDeadline.deadline) +
+                                  " | " +
+                                  bestDeadline.miner
+                                : t("waiting") + "..."
                         }
                         loading={isLoadingCurrentRound}
                     />

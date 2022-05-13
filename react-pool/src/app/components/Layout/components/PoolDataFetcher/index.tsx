@@ -74,7 +74,7 @@ export const PoolDataFetcher = () => {
         if (signumPriceData && !isValidatingSignumPriceData) {
             POPULATE_SIGNUM_PRICE_DATA();
         }
-    }, [minersData]);
+    }, [signumPriceData]);
 
     // POPULATE FUNCTIONS
 
