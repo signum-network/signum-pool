@@ -40,6 +40,9 @@ export const SearchMinerDialog = () => {
         const queryLowercased = query.toLowerCase();
         const minerAmount = miners.length;
 
+        // If nor miners are found, just launch the alert on last array item
+        if (!miners.length) return minerNotFound();
+
         miners.forEach((miner, index) => {
             if (isMinerFound) return;
             const { accountId, name } = miner;
