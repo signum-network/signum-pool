@@ -96,12 +96,14 @@ export const WelcomeSection = () => {
                             </Typography>
                         </Grid>
 
-                        <Grid item>
+                        <Grid item width="100%">
                             <Link to="/start-mining">
                                 <Typography
+                                    align="center"
                                     color="primary"
                                     fontWeight={800}
                                     fontSize={18}
+                                    sx={{ width: "100%" }}
                                 >
                                     {t("startMining")}
                                 </Typography>
