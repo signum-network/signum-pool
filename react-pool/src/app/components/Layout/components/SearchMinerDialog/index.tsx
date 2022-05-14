@@ -6,6 +6,7 @@ import { useAppSelector, useAppDispatch } from "../../../../../states/hooks";
 import { actions, selectSearchedMiner } from "../../../../../states/appState";
 import { selectMiners } from "../../../../../states/minersState";
 import { asRSAddress } from "../../../../utils/functions/accountAddress";
+import { saveBookmarkedMiner } from "../../../../utils/functions/bookmarkMiner";
 import {
     SpecificMiner,
     SpecificMinerProps,
@@ -83,6 +84,7 @@ export const SearchMinerDialog = () => {
 
     const bookmarkMiner = () => {
         dispatch(setBookmarkedMiner(minerData!.accountId));
+        saveBookmarkedMiner(minerData!.accountId);
         showSuccess(t("minerAdded"));
     };
 
@@ -107,7 +109,8 @@ export const SearchMinerDialog = () => {
             <DialogTitle id="scroll-dialog-title">
                 {t("minerDetails")}
             </DialogTitle>
-            <DialogContent dividers>
+
+            <DialogContent dividers sx={{ overflowX: "hidden" }}>
                 {minerData && (
                     <SpecificMiner
                         showExplorerButton
