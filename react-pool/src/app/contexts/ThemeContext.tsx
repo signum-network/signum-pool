@@ -3,6 +3,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useAppSelector } from "../../states/hooks";
 import { selectThemeMode } from "../../states/appState/selectors";
 import { saveSystemTheme } from "../utils/functions/systemTheme";
+import { colors } from "../../enviroments";
 
 import CssBaseline from "@mui/material/CssBaseline";
 
@@ -26,15 +27,15 @@ export const ThemeContextProvider: FC = ({ children }) => {
             palette: {
                 mode: themeMode,
                 primary: {
-                    main: "#0099ff",
-                    light: "#5fb8ff",
-                    dark: "#0066ff",
+                    main: colors.primary.main,
+                    light: colors.primary.light,
+                    dark: colors.primary.dark,
                     contrastText,
                 },
                 secondary: {
-                    main: "#183173",
-                    light: "#274187",
-                    dark: "#021851",
+                    main: colors.secondary.main,
+                    light: colors.secondary.light,
+                    dark: colors.secondary.dark,
                     contrastText,
                 },
             },
