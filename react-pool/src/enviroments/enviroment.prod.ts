@@ -71,5 +71,5 @@ export const additionalLinks =
     prodVariable.extraPoolUrl.trim() !== "{}" &&
     prodVariable.extraPoolUrl.trim() !== "[]" &&
     prodVariable.extraPoolUrl.trim() !== "{EXTRAPOOLURL}"
-        ? `{ "links" :${prodVariable.extraPoolUrl} }`
+        ? JSON.parse(`{ "links" :${prodVariable.extraPoolUrl} }`)
         : null;
