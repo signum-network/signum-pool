@@ -213,6 +213,9 @@ export const PoolWonBlocks = () => {
 
                                             case "miner":
                                                 const miner = block.generator;
+                                                const minerLabel =
+                                                    block.name ||
+                                                    asRSAddress(miner);
 
                                                 cellContent = (
                                                     <u
@@ -225,7 +228,7 @@ export const PoolWonBlocks = () => {
                                                             );
                                                         }}
                                                     >
-                                                        {asRSAddress(miner)}
+                                                        {minerLabel}
                                                     </u>
                                                 );
                                                 break;
