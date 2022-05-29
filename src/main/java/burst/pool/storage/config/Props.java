@@ -47,20 +47,20 @@ public class Props {
     public static final Prop<Integer> payoutRetryCount = new Prop<>("payoutRetryCount", 3);
     public static final Prop<Integer> submitNonceRetryCount = new Prop<>("submitNonceRetryCount", 3);
 
-    public static final Prop<String> miningURL = new Prop<>("miningURL", "http://nivbox.co.uk:9000");
+    public static final Prop<String> miningURL = new Prop<>("miningURL", "http://testnet.btfg.space:9000");
     public static final Prop<String> miningGuide = new Prop<>("site.miningGuide", "https://signum.network/mining.html");
 
-    public static final Prop<String> siteTitle = new Prop<>("site.title", "Burst Pool");
+    public static final Prop<String> siteTitle = new Prop<>("site.title", "Signum Pool");
     public static final Prop<String> siteHomeFirstLine = new Prop<>("site.homeFirstLine", "");
     public static final Prop<String> siteHomeSecondLine = new Prop<>("site.homeSecondLine", "");
     public static final Prop<String> siteRoot = new Prop<>("site.root", "./html/");
     public static final Prop<String> siteIconIco = new Prop<>("site.icon.ico", "icon.ico");
     public static final Prop<String> siteIconPng = new Prop<>("site.icon.png", "icon.png");
-    public static final Prop<String> siteNodeAddress = new Prop<>("site.nodeAddress", "https://europe.signum.network/");
-    public static final Prop<String> sitePrice = new Prop<>("site.price", "https://min-api.cryptocompare.com/data/price?fsym=SIGNA&tsyms=USD");
+    public static final Prop<String> siteNodeAddress = new Prop<>("site.nodeAddress", "https://europe.signum.network");
+    public static final Prop<String> sitePrice = new Prop<>("site.price", "https://api.coingecko.com/api/v3/simple/price?ids=signum&vs_currencies=usd");
     public static final Prop<String> siteDiscordLink = new Prop<>("site.discord", "https://discord.gg/ms6eagX");
     public static final Prop<String> siteInfo = new Prop<>("site.info", "<p>Coming soon...</p>");
-    public static final Prop<String> siteExplorerURL = new Prop<>("site.explorer", "https://explorer.signum.network/");
+    public static final Prop<String> siteExplorerURL = new Prop<>("site.explorer", "https://explorer.signum.network");
     public static final Prop<String> siteFaucetURL = new Prop<>("site.faucet", "");
     public static final Prop<String> siteExplorerAccount = new Prop<>("site.explorerAccount", "?action=account&account=");
     
@@ -81,7 +81,7 @@ public class Props {
     public static final Prop<String> siteShowTradingLink = new Prop<>("site.showTradingLink", "YES");
     public static final Prop<String> siteMiniTradingLink = new Prop<>("site.miniTradingLink", "https://bit.ly/2UEd4RB");
     public static final Prop<String> siteLargeTradingLink = new Prop<>("site.largeTradingLink", "https://bit.ly/3A5BIep");
-    public static final Prop<String> siteGoogleTracking = new Prop<>("site.googleTrackingID", "https://bit.ly/3A5BIep");
+    public static final Prop<String> siteGoogleTracking = new Prop<>("site.googleTrackingID", "");
     
     public static final Prop<Boolean> siteDisableCache = new Prop<>("site.disableCache", false);
     public static final Prop<String> apiAllowOrign = new Prop<>("api.allowOrign", "");
