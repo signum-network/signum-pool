@@ -270,7 +270,7 @@ public class Pool {
                     }
                 }
                 if (won) {
-                    minerTracker.onBlockWon(transactionalStorageService, block, block.getBlockReward().add(block.getTotalFee()));
+                    minerTracker.onBlockWon(transactionalStorageService, block, block.getBlockReward().add(block.getRewardFee()));
                 } else {
                     if (myRewardRecipients.contains(block.getGenerator())) {
                         logger.error("Our miner forged but did not detect block won. Height " + block.getHeight());
