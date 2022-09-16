@@ -43,6 +43,7 @@ Per default the Development mode is activated automatically when running `npm st
 
 _Use this commands if you are going to deploy changes or start the deployment_
 
+-   Make sure to have Node.js installed
 -   If you have not installed the dependencies, run `npm install`, if there is already a folder called `/node_modules`, forget this step
 -   `npm run build` - Build project's production site
 -   After the build command has finished, you will only need the folder `/Build`
