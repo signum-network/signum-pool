@@ -31,7 +31,7 @@ Per default the Development mode is activated automatically when running `npm st
 
 > The variable "isDevelopmentMode" is assigned correspondingly, so it's not necessary to override it
 
-## How to use pool in Testnet or Mainet network 📋
+## How to use pool in Testnet or Mainnet network 📋
 
 -   **The isTestNet variable refers to the network which may be used**
 
