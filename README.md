@@ -72,7 +72,6 @@ the payments.
 -   http://signumpool.de:8080/
 -   https://signumpool.com
 -   https://signapool.notallmine.net
--   https://fomplopool.com
 -   http://signum.land
 
 ## Powered by
