@@ -356,6 +356,7 @@ public class Pool {
         try {
             // First for the primary account
             SignumAddress primaryAddress = burstCrypto.getAddressFromPassphrase(propertyService.getString(Props.passphrase));
+            primaryAddress.setPublicKey(null); // avoid trying to register a new public key
             SignumAddress[] rewardRecipients = nodeService.getAccountsWithRewardRecipient(primaryAddress).blockingGet();
             myRewardRecipients.clear();
             myRewardRecipients.addAll(Arrays.asList(rewardRecipients));
