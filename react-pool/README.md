@@ -31,7 +31,7 @@ Per default the Development mode is activated automatically when running `npm st
 
 > The variable "isDevelopmentMode" is assigned correspondingly, so it's not necessary to override it
 
-## How to use pool in Testnet or Mainet network 📋
+## How to use pool in Testnet or Mainnet network 📋
 
 -   **The isTestNet variable refers to the network which may be used**
 
@@ -43,6 +43,7 @@ Per default the Development mode is activated automatically when running `npm st
 
 _Use this commands if you are going to deploy changes or start the deployment_
 
+-   Make sure to have Node.js installed
 -   If you have not installed the dependencies, run `npm install`, if there is already a folder called `/node_modules`, forget this step
 -   `npm run build` - Build project's production site
 -   After the build command has finished, you will only need the folder `/Build`

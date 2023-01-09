@@ -360,6 +360,9 @@ public class Pool {
             myRewardRecipients.clear();
             myRewardRecipients.addAll(Arrays.asList(rewardRecipients));
             
+            // avoid trying to register a new public key
+            primaryAddress.setPublicKey(null);
+            
             // Next for the secondary accounts (if any)
             for (int i = 0; i < Props.passphraseSecondary.length; i++) {
                 @SuppressWarnings("unchecked")
