@@ -10,10 +10,10 @@ export const poolName = "My Pool";
 export const dAppName = poolName;
 
 // The URL of the pool in order to consume its API endpoints
-export const poolNodeUrl = "http://testnet.btfg.space:9000";
+export const poolNodeUrl = "https://opensignumpooltestnet.ddns.net:8139";
 
 // The URL miners should use in order to send deadlines
-export const miningUrl = "http://testnet.btfg.space:9000";
+export const miningUrl = "https://opensignumpooltestnet.ddns.net:8139";
 
 // The URL of the discord
 export const discordUrl = "https://discord.gg/VagTTaKM2j";
