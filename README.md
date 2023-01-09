@@ -174,7 +174,7 @@ The API will be available at your pool address:port, similar to `https://opensig
 -   https://opensignumpooltestnet.ddns.net:8139/api/getWonBlocks (returns the list of recently blocks won by the pool)
 -   https://opensignumpooltestnet.ddns.net:8139/api/getMiners (returns the list of miners with recent valid deadlines)
 -   https://opensignumpooltestnet.ddns.net:8139/api/getTop10Miners (returns the list with the top 10 miners)
--   https://opensignumpooltestnet.ddns.net:8139/api/getMiner/MINER-ADDRESS (returns the details of a specific miner address)
+-   https://opensignumpooltestnet.ddns.net:8139/api/getMiner/::MINER-ADDRESS (returns the details of a specific miner address)
 
 All the capacities returned are in TiB.
 
