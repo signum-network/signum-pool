@@ -47,7 +47,7 @@ public class Props {
     public static final Prop<Integer> payoutRetryCount = new Prop<>("payoutRetryCount", 3);
     public static final Prop<Integer> submitNonceRetryCount = new Prop<>("submitNonceRetryCount", 3);
 
-    public static final Prop<String> miningURL = new Prop<>("miningURL", "http://testnet.btfg.space:9000");
+    public static final Prop<String> miningURL = new Prop<>("miningURL", "https://opensignumpooltestnet.ddns.net:8139");
     public static final Prop<String> miningGuide = new Prop<>("site.miningGuide", "https://signum.network/mining.html");
 
     public static final Prop<String> siteTitle = new Prop<>("site.title", "Signum Pool");
