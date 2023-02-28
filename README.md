@@ -65,7 +65,7 @@ the payments.
 
 ## Pools using the software
 
--   http://spacepool.lmsi.club/
+-   http://pool.btfg.space/
 -   https://pool.signumcoin.ro
 -   http://signa.voiplanparty.com:8124
 -   https://opensignumpool.ddns.net:8129
