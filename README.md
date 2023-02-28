@@ -65,13 +65,12 @@ the payments.
 
 ## Pools using the software
 
--   http://pool.btfg.space/
--   https://pool.signumcoin.ro
--   http://signa.voiplanparty.com:8124
--   https://opensignumpool.ddns.net:8129
--   http://signumpool.de:8080/
--   https://signumpool.com
 -   https://signapool.notallmine.net
+-   https://pool.signumcoin.ro
+-   http://pool.btfg.space/
+-   http://signa.voiplanparty.com:8124
+-   http://signumpool.de:8080/
+-   https://opensignumpool.ddns.net:8129
 
 ## Powered by
 -   [Signum](https://github.com/signum-network/signum-node)
