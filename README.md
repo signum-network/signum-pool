@@ -59,10 +59,6 @@ the payments.
 * jjos-[S-JJQS-MMA4-GHB4-4ZNZU](https://explorer.signum.network/address/3278233074628313816)
 * ipr0310-[S-36WQ-GYQN-D856-9DUJH](https://explorer.signum.network/address/8629824288351884182)
 
-## Demo
-
--   https://opensignumpooltestnet.ddns.net:8139
-
 ## Pools using the software
 
 -   https://signapool.notallmine.net
