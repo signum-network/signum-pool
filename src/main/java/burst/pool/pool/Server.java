@@ -437,6 +437,7 @@ public class Server extends NanoHTTPD {
                             .replace("{MIN_PAYOUT}", SignumValue.fromSigna(propertyService.getFloat(Props.minimumMinimumPayout)).toUnformattedString())
                             .replace("{FAUCET}", propertyService.getString(Props.siteFaucetURL))
                             .replace("{EXPLORER}", propertyService.getString(Props.siteExplorerURL))
+                            .replace("{NETWORK_NAME}", propertyService.getBoolean(Props.testnet) ? "Signum-TESTNET" : "Signum")
 
                             .replace("\"*{PRIMARYCOLOR}*\"", propertyService.getString(Props.sitePrimaryColor))
                             .replace("\"*{PRIMARYLIGHTCOLOR}*\"", propertyService.getString(Props.sitePrimaryLightColor))
