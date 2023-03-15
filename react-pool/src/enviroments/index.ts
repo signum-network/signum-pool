@@ -3,11 +3,8 @@ import * as prodProperties from "./enviroment.prod";
 
 const isDevelopmentMode = process.env.NODE_ENV === "development";
 
-const isTestNet = process.env.NODE_ENV === "development";
-
-const dAppNetwork = isTestNet ? "Signum-TESTNET" : "Signum";
-
 const {
+    NetworkName,
     poolName,
     dAppName,
     colors,
@@ -23,12 +20,14 @@ const {
     additionalLinks,
 } = isDevelopmentMode ? devProperties : prodProperties;
 
+const isTestNet = NetworkName === "Signum-TESTNET";
+
 export {
     isDevelopmentMode,
     isTestNet,
     poolName,
     dAppName,
-    dAppNetwork,
+    NetworkName,
     colors,
     poolNodeUrl,
     miningUrl,

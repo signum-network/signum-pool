@@ -5,7 +5,7 @@ import {
     isDevelopmentMode,
     isTestNet,
     dAppName,
-    dAppNetwork,
+    NetworkName,
     explorerUrl,
 } from "../../enviroments";
 
@@ -40,7 +40,7 @@ const config: AppContextType = {
     DAppName: dAppName,
     Ledger: {
         IsTestnet: isTestNet,
-        Network: dAppNetwork,
+        Network: NetworkName,
         Explorer: explorerUrl,
     },
     isUnsafeWebsite,

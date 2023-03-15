@@ -1,11 +1,12 @@
 import { useTranslation } from "react-i18next";
-import { isFirefox, isMobile } from "react-device-detect";
+import { isMobile } from "react-device-detect";
 import { useAppDispatch, useAppSelector } from "../../../../../../states/hooks";
 import {
     selectIsOpenWalletModal,
     actions,
 } from "../../../../../../states/appState";
 import { openExternalUrl } from "../../../../../utils/functions/stringMethods";
+import { xtWalletStoreUrl } from "../../../../../utils/xtWalletStoreUrl";
 
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
@@ -27,13 +28,7 @@ export const SetupWalletModal = () => {
         dispatch(actions.setWalletModal(false));
     };
 
-    const openStore = () => {
-        const url = isFirefox
-            ? "https://addons.mozilla.org/en-US/firefox/addon/signum-xt-wallet/"
-            : "https://chrome.google.com/webstore/detail/signum-xt-wallet/kdgponmicjmjiejhifbjgembdcaclcib";
-
-        openExternalUrl(url);
-    };
+    const openStore = () => openExternalUrl(xtWalletStoreUrl);
 
     const resetWebsite = () => {
         window.location.reload();

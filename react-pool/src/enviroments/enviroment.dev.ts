@@ -3,6 +3,11 @@
 // # CLIENT SIDE VARIABLES                #
 // ########################################
 
+// Selected Network to mine on
+// Signum-TESTNET (Testnet)
+// Signum (Mainnet)
+export const NetworkName = "Signum-TESTNET";
+
 // The name of the pool
 export const poolName = "My Pool";
 
