@@ -103,6 +103,10 @@ You will need to wait some blocks before miners start to show their capacity
 
 You need to modify the `pool.properties` file to suit your needs. Properties are explained in that file.
 
+### Mine on Testnet
+
+In order to make the pool mine on testnet network, you just need to add the following line `testnet = true`
+
 ### MariaDB backend (optional, advanced users)
 
 In addition to the above steps:
