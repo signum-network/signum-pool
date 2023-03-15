@@ -9,6 +9,11 @@ import { formatUrl } from "../app/utils/functions/formatUrl";
 // @ts-ignore
 const prodVariable = window.reactInit;
 
+// Selected Network to mine on
+// Signum-TESTNET (Testnet)
+// Signum (Mainnet)
+export const NetworkName = prodVariable.networkName || "Signum";
+
 // The name of the pool
 export const poolName = prodVariable.poolName;
 

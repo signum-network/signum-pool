@@ -1,3 +1,4 @@
+import { xtWalletStoreUrl } from "../../utils/xtWalletStoreUrl";
 import { discordUrl, walletUrl } from "../../../enviroments";
 
 import BarChartIcon from "@mui/icons-material/BarChart";
@@ -6,6 +7,7 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import DnsRoundedIcon from "@mui/icons-material/DnsRounded";
 import GroupIcon from "@mui/icons-material/Group";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
+import ExtensionIcon from "@mui/icons-material/Extension";
 
 interface LinkProps {
     label: string;
@@ -39,6 +41,12 @@ export const NativeMenuLinks: LinkProps[] = [
         label: "trading",
         url: "/trading-view",
         icon: <BarChartIcon />,
+    },
+    {
+        label: "Signum XT Wallet",
+        url: xtWalletStoreUrl,
+        icon: <ExtensionIcon />,
+        newWindow: true,
     },
     {
         label: "wallet",

@@ -423,8 +423,6 @@ public class Server extends NanoHTTPD {
                     response = response
                             // Replace the TAGS
                             .replace("{TITLE}", propertyService.getString(Props.siteTitle))
-                            .replace("{HOMEFIRSTLINETITLE}", propertyService.getString(Props.siteHomeFirstLine))
-                            .replace("{HOMESECONDLINETITLE}", propertyService.getString(Props.siteHomeSecondLine))
                             .replace("{PRICEENDPOINT}", propertyService.getString(Props.sitePrice))
                             .replace("{PUBLICNODE}", propertyService.getString(Props.siteNodeAddress))
                             .replace("{DISCORD}", propertyService.getString(Props.siteDiscordLink))
@@ -437,6 +435,7 @@ public class Server extends NanoHTTPD {
                             .replace("{MIN_PAYOUT}", SignumValue.fromSigna(propertyService.getFloat(Props.minimumMinimumPayout)).toUnformattedString())
                             .replace("{FAUCET}", propertyService.getString(Props.siteFaucetURL))
                             .replace("{EXPLORER}", propertyService.getString(Props.siteExplorerURL))
+                            .replace("{NETWORK_NAME}", propertyService.getBoolean(Props.testnet) ? "Signum-TESTNET" : "Signum")
 
                             .replace("\"*{PRIMARYCOLOR}*\"", propertyService.getString(Props.sitePrimaryColor))
                             .replace("\"*{PRIMARYLIGHTCOLOR}*\"", propertyService.getString(Props.sitePrimaryLightColor))
