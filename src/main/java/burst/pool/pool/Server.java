@@ -423,8 +423,6 @@ public class Server extends NanoHTTPD {
                     response = response
                             // Replace the TAGS
                             .replace("{TITLE}", propertyService.getString(Props.siteTitle))
-                            .replace("{HOMEFIRSTLINETITLE}", propertyService.getString(Props.siteHomeFirstLine))
-                            .replace("{HOMESECONDLINETITLE}", propertyService.getString(Props.siteHomeSecondLine))
                             .replace("{PRICEENDPOINT}", propertyService.getString(Props.sitePrice))
                             .replace("{PUBLICNODE}", propertyService.getString(Props.siteNodeAddress))
                             .replace("{DISCORD}", propertyService.getString(Props.siteDiscordLink))
