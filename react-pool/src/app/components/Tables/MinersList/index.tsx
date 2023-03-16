@@ -1,6 +1,3 @@
-/* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
-/** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
 import { useState, ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
@@ -138,12 +135,8 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
                                         minWidth: column.minWidth,
                                         borderRight: 1,
                                         borderColor: "divider",
+                                        "&:last-child": { borderRight: 0 },
                                     }}
-                                    css={css`
-                                        :last-child {
-                                            border-right: 0 !important;
-                                        }
-                                    `}
                                 >
                                     {t(column.id)}
                                 </TableCell>
@@ -202,12 +195,10 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
                                                     backgroundColor: isDarkMode
                                                         ? "rgba(255,255,255,0.15)"
                                                         : "rgba(0,0,0,0.05)",
+                                                    "&:last-child": {
+                                                        borderRight: 0,
+                                                    },
                                                 }}
-                                                css={css`
-                                                    :last-child {
-                                                        border-right: 0 !important;
-                                                    }
-                                                `}
                                             >
                                                 {cellContent}
                                             </TableCell>
@@ -371,12 +362,10 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
                                                         borderColor: "divider",
                                                         fontWeight: 700,
                                                         fontSize: 14,
+                                                        "&:last-child": {
+                                                            borderRight: 0,
+                                                        },
                                                     }}
-                                                    css={css`
-                                                        :last-child {
-                                                            border-right: 0 !important;
-                                                        }
-                                                    `}
                                                 >
                                                     {cellContent}
                                                 </TableCell>
