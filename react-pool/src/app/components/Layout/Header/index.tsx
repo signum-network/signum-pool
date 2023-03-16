@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { poolName } from "../../../../enviroments";
+import { useAppContext } from "../../../hooks/useAppContext";
 import { useAppSelector, useAppDispatch } from "../../../../states/hooks";
 import { actions, selectIsDarkMode } from "../../../../states/appState";
 import { Links } from "../links";
@@ -8,6 +9,7 @@ import { NavigationMenu } from "./components/NavigationMenu";
 import { ToggleLanguageBtn } from "../components/ToggleLanguageBtn";
 import { ToggleThemeBtn } from "../components/ToggleThemeBtn";
 import { WalletConnectionBtn } from "./components/WalletConnectionBtn";
+import { TestnetStamp } from "./components/TestnetStamp";
 import {
     truncateText,
     openExternalUrl,
@@ -25,6 +27,9 @@ import styles from "./header.module.css";
 
 export const Header = () => {
     const { t } = useTranslation();
+    const {
+        Ledger: { IsTestnet },
+    } = useAppContext();
     const { setIsOpenSidebar } = actions;
     const navigate = useNavigate();
     const location = useLocation();
@@ -67,6 +72,8 @@ export const Header = () => {
                     justifyContent: "space-between",
                 }}
             >
+                {IsTestnet && <TestnetStamp />}
+
                 <Grid
                     item
                     sx={{
