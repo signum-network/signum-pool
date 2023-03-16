@@ -1,6 +1,3 @@
-/* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
-/** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
@@ -33,12 +30,8 @@ export const SpecificRow = ({
                 pb: 1,
                 borderBottom: 1,
                 borderColor: "divider",
+                "&:last-child": { border: 0 },
             }}
-            css={css`
-                :last-child {
-                    border: 0 !important;
-                }
-            `}
         >
             <Grid
                 item

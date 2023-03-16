@@ -1,6 +1,3 @@
-/* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
-/** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
 import { useTranslation } from "react-i18next";
 import { formatDistance, subMinutes } from "date-fns";
 import { useAppContext } from "../../../hooks/useAppContext";
@@ -97,12 +94,8 @@ export const PoolWonBlocks = () => {
                                         minWidth: column.minWidth,
                                         borderRight: 1,
                                         borderColor: "divider",
+                                        "&:last-child": { borderRight: 0 },
                                     }}
-                                    css={css`
-                                        :last-child {
-                                            border-right: 0 !important;
-                                        }
-                                    `}
                                 >
                                     {t(column.id)}
                                 </TableCell>
@@ -261,12 +254,10 @@ export const PoolWonBlocks = () => {
                                                     borderColor: "divider",
                                                     fontWeight: 700,
                                                     fontSize: 14,
+                                                    "&:last-child": {
+                                                        borderRight: 0,
+                                                    },
                                                 }}
-                                                css={css`
-                                                    :last-child {
-                                                        border-right: 0 !important;
-                                                    }
-                                                `}
                                             >
                                                 {cellContent}
                                             </TableCell>
