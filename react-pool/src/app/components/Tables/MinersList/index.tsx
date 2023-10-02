@@ -265,8 +265,6 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
                                                                 );
                                                             }}
                                                         >
-                                                            {index}
-                                                            {" - "}
                                                             {miner.name ||
                                                                 asRSAddress(
                                                                     miner.accountId
