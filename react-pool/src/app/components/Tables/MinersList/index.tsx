@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
 import { TableContainer as CustomTableContainer } from "../components/TableContainer";
@@ -88,6 +88,18 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
             ? "auto"
             : 600;
 
+    const filteredRows = useMemo(() => {
+        if (!rows.length || isLoading) return [];
+
+        if (canShowAllMiners) return rows;
+
+        return (
+            rows
+                // Dynamic pagination
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        );
+    }, [rows, canShowAllMiners, isLoading, page, rowsPerPage]);
+
     if (isLoading)
         return <Skeleton width="100%" height={100} animation="wave" />;
 
@@ -121,6 +133,8 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
                 mt: 2,
                 overflow: "hidden",
                 width: "100%",
+                maxWidth: "2400px",
+                marginX: "auto",
             }}
         >
             <TableContainer sx={{ maxHeight: tableMaxHeight }}>
@@ -208,172 +222,163 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
                             )
                         }
 
-                        {rows
-                            // Dynamic pagination
-                            .slice(
-                                page * rowsPerPage,
-                                page * rowsPerPage + rowsPerPage
-                            )
-                            .map((miner, index) => {
-                                return (
-                                    <TableRow
-                                        hover
-                                        role="checkbox"
-                                        tabIndex={-1}
-                                        key={index}
-                                    >
-                                        {columns.map((column) => {
-                                            // Get specific miner data
-                                            // @ts-ignore
-                                            const value = miner[column.id];
+                        {filteredRows.map((miner, index) => {
+                            return (
+                                <TableRow
+                                    hover
+                                    role="checkbox"
+                                    tabIndex={-1}
+                                    key={index}
+                                >
+                                    {columns.map((column) => {
+                                        // Get specific miner data
+                                        // @ts-ignore
+                                        const value = miner[column.id];
 
-                                            let cellContent = null;
+                                        let cellContent = null;
 
-                                            switch (column.id) {
-                                                case "miner":
+                                        switch (column.id) {
+                                            case "miner":
+                                                cellContent = (
+                                                    <Tooltip
+                                                        placement="right"
+                                                        title={
+                                                            t(
+                                                                "viewMinerDetails"
+                                                            ) || ""
+                                                        }
+                                                        arrow
+                                                    >
+                                                        <Typography
+                                                            fontWeight="inherit"
+                                                            fontSize="inherit"
+                                                            sx={{
+                                                                cursor: "pointer",
+                                                                textDecoration:
+                                                                    "underline",
+                                                            }}
+                                                            onClick={() => {
+                                                                dispatch(
+                                                                    setSearchMiner(
+                                                                        miner.accountId
+                                                                    )
+                                                                );
+                                                            }}
+                                                        >
+                                                            {index}
+                                                            {" - "}
+                                                            {miner.name ||
+                                                                asRSAddress(
+                                                                    miner.accountId
+                                                                )}
+                                                        </Typography>
+                                                    </Tooltip>
+                                                );
+                                                break;
+
+                                            case "currentDeadline":
+                                                const currentDeadlineData =
+                                                    formatTime(
+                                                        // @ts-ignore
+                                                        miner.currentRoundBestDeadline
+                                                    );
+
+                                                if (
+                                                    currentDeadlineData ===
+                                                    "waiting..."
+                                                ) {
                                                     cellContent = (
                                                         <Tooltip
-                                                            placement="right"
                                                             title={
-                                                                t(
-                                                                    "viewMinerDetails"
-                                                                ) || ""
+                                                                t("waiting") ||
+                                                                ""
                                                             }
                                                             arrow
                                                         >
-                                                            <Typography
-                                                                fontWeight="inherit"
-                                                                fontSize="inherit"
-                                                                sx={{
-                                                                    cursor: "pointer",
-                                                                    textDecoration:
-                                                                        "underline",
-                                                                }}
-                                                                onClick={() => {
-                                                                    dispatch(
-                                                                        setSearchMiner(
-                                                                            miner.accountId
-                                                                        )
-                                                                    );
-                                                                }}
-                                                            >
-                                                                {miner.name ||
-                                                                    asRSAddress(
-                                                                        miner.accountId
-                                                                    )}
-                                                            </Typography>
+                                                            <CircularProgress
+                                                                size={22}
+                                                            />
                                                         </Tooltip>
                                                     );
-                                                    break;
-
-                                                case "currentDeadline":
-                                                    const currentDeadlineData =
-                                                        formatTime(
-                                                            // @ts-ignore
-                                                            miner.currentRoundBestDeadline
-                                                        );
-
-                                                    if (
-                                                        currentDeadlineData ===
-                                                        "waiting..."
-                                                    ) {
-                                                        cellContent = (
-                                                            <Tooltip
-                                                                title={
-                                                                    t(
-                                                                        "waiting"
-                                                                    ) || ""
-                                                                }
-                                                                arrow
-                                                            >
-                                                                <CircularProgress
-                                                                    size={22}
-                                                                />
-                                                            </Tooltip>
-                                                        );
-                                                    } else {
-                                                        cellContent =
-                                                            currentDeadlineData;
-                                                    }
-
-                                                    break;
-
-                                                case "confirmedDeadline":
+                                                } else {
                                                     cellContent =
-                                                        miner.confirmedDeadlines +
-                                                        "/" +
-                                                        maxSubmissions;
-                                                    break;
+                                                        currentDeadlineData;
+                                                }
 
-                                                case "physicalCapacity":
-                                                    cellContent =
-                                                        formatCapacity(
-                                                            // @ts-ignore
-                                                            miner.physicalCapacity
-                                                        );
-                                                    break;
+                                                break;
 
-                                                case "effectiveCapacity":
-                                                    cellContent =
-                                                        formatCapacity(
-                                                            // @ts-ignore
-                                                            miner.effectiveCapacity
-                                                        );
-                                                    break;
+                                            case "confirmedDeadline":
+                                                cellContent =
+                                                    miner.confirmedDeadlines +
+                                                    "/" +
+                                                    maxSubmissions;
+                                                break;
 
-                                                case "sharedCapacity":
-                                                    cellContent =
-                                                        formatCapacity(
-                                                            // @ts-ignore
-                                                            miner.sharedCapacity
-                                                        );
-                                                    break;
+                                            case "physicalCapacity":
+                                                cellContent = formatCapacity(
+                                                    // @ts-ignore
+                                                    miner.physicalCapacity
+                                                );
+                                                break;
 
-                                                case "shareModel":
-                                                    cellContent = value + "%";
-                                                    break;
+                                            case "effectiveCapacity":
+                                                cellContent = formatCapacity(
+                                                    // @ts-ignore
+                                                    miner.effectiveCapacity
+                                                );
+                                                break;
 
-                                                case "committedBalance":
-                                                    cellContent =
-                                                        miner.totalCommitment;
-                                                    break;
+                                            case "sharedCapacity":
+                                                cellContent = formatCapacity(
+                                                    // @ts-ignore
+                                                    miner.sharedCapacity
+                                                );
+                                                break;
 
-                                                case "pocBoost":
-                                                    cellContent =
-                                                        miner.pocBostPool
-                                                            ? miner.pocBostPool.toFixed(
-                                                                  3
-                                                              )
-                                                            : 0;
+                                            case "shareModel":
+                                                cellContent = value + "%";
+                                                break;
 
-                                                    break;
+                                            case "committedBalance":
+                                                cellContent =
+                                                    miner.totalCommitment;
+                                                break;
 
-                                                default:
-                                                    cellContent = value;
-                                                    break;
-                                            }
+                                            case "pocBoost":
+                                                cellContent = miner.pocBostPool
+                                                    ? miner.pocBostPool.toFixed(
+                                                          3
+                                                      )
+                                                    : 0;
 
-                                            return (
-                                                <TableCell
-                                                    key={column.id}
-                                                    align={column.align}
-                                                    sx={{
-                                                        borderRight: 1,
-                                                        borderColor: "divider",
-                                                        fontWeight: 700,
-                                                        fontSize: 14,
-                                                        "&:last-child": {
-                                                            borderRight: 0,
-                                                        },
-                                                    }}
-                                                >
-                                                    {cellContent}
-                                                </TableCell>
-                                            );
-                                        })}
-                                    </TableRow>
-                                );
-                            })}
+                                                break;
+
+                                            default:
+                                                cellContent = value;
+                                                break;
+                                        }
+
+                                        return (
+                                            <TableCell
+                                                key={column.id}
+                                                align={column.align}
+                                                sx={{
+                                                    borderRight: 1,
+                                                    borderColor: "divider",
+                                                    fontWeight: 700,
+                                                    fontSize: 14,
+                                                    "&:last-child": {
+                                                        borderRight: 0,
+                                                    },
+                                                }}
+                                            >
+                                                {cellContent}
+                                            </TableCell>
+                                        );
+                                    })}
+                                </TableRow>
+                            );
+                        })}
                     </TableBody>
                 </Table>
             </TableContainer>
@@ -403,8 +408,10 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
                         component="div"
                         rowsPerPageOptions={[0]}
                         count={rows.length}
-                        rowsPerPage={canShowAllMiners ? 500 : rowsPerPage}
-                        page={page}
+                        rowsPerPage={
+                            canShowAllMiners ? filteredRows.length : rowsPerPage
+                        }
+                        page={canShowAllMiners ? 0 : page}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
