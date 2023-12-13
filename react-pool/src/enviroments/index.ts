@@ -1,10 +1,8 @@
-import * as defaultProperties from "./enviroment.default";
+import { signumPriceUrl } from "./enviroment.default";
 import * as devProperties from "./enviroment.dev";
 import * as prodProperties from "./enviroment.prod";
 
 const isDevelopmentMode = process.env.NODE_ENV === "development";
-
-const { signumPriceUrl, tradingEmbedsUrl } = defaultProperties;
 
 const {
     NetworkName,
@@ -36,6 +34,5 @@ export {
     faucetUrl,
     walletUrl,
     signumPriceUrl,
-    tradingEmbedsUrl,
     additionalLinks,
 };
