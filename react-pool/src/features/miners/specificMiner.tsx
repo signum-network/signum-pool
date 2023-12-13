@@ -48,7 +48,7 @@ export const SpecificMinerPage = () => {
 
                 <TableContainer>
                     <Typography align="center" variant="h6">
-                        {t("minerNotFoundShort")}
+                        {t("minerNotFound")}
                     </Typography>
                 </TableContainer>
             </Grid>

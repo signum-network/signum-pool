@@ -12,6 +12,7 @@ export const AppRoutes = () => {
     return (
         <Routes>
             <Route path="/" element={<Home />} />
+            <Route index element={<Home />} />
             <Route path="pool-info" element={<PoolInfo />} />
             <Route path="miners" element={<Miners />} />
             <Route path="miner/:accountId" element={<SpecificMiner />} />

@@ -38,7 +38,7 @@ export const currentRoundSlice = createSlice({
     initialState,
     reducers: {
         setCurrentRoundData: (
-            state,
+            _state,
             action: PayloadAction<currentRoundState>
         ) => {
             return action.payload;

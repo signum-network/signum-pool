@@ -1,4 +1,4 @@
-import { FC, createContext } from "react";
+import { ReactNode, createContext } from "react";
 import { DeeplinkableWallet, GenericExtensionWallet } from "@signumjs/wallets";
 import { Config } from "../utils/config";
 import {
@@ -48,6 +48,10 @@ const config: AppContextType = {
 
 export const AppContext = createContext<AppContextType>(config);
 
-export const AppContextProvider: FC = ({ children }) => {
+interface Props {
+    children: ReactNode;
+}
+
+export const AppContextProvider = ({ children }: Props) => {
     return <AppContext.Provider value={config}>{children}</AppContext.Provider>;
 };

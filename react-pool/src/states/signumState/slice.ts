@@ -14,7 +14,7 @@ export const signumSlice = createSlice({
     name: "signum",
     initialState,
     reducers: {
-        setSignumData: (state, action: PayloadAction<signumState>) => {
+        setSignumData: (_state, action: PayloadAction<signumState>) => {
             return action.payload;
         },
     },

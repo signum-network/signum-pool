@@ -6,6 +6,12 @@ import { Loading } from "./app/components/Loading";
 import { AppInitializer } from "./app/components/AppInitializer";
 import "./app/i18n";
 
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+import "@fontsource-variable/montserrat";
+
 const App = () => {
     return (
         <Suspense fallback={<Loading />}>

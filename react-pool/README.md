@@ -132,21 +132,14 @@ If you want your pool website to be shown on iframes, you can just add the follo
 
 > Example #2: **http://poolUrlExample.com/randomRoute/?random=true&embedMode=true**
 
-## How to use Google Analytics (Optional)
-
--   Go to Google Analytics website and if you’re first time user, you’ll asked to set up an account including your data sharing settings.
--   Create a new property
--   Add a ``Web Data Stream``
--   Fill up the remaining information for setting up your ``web data stream``. Then you’ll get the tracking ID (e.g. G-XXXXXX)
--   Once you get the Tracking ID, you just need to assign that value in the variable `GOOGLETRACKINGID`
--   If you do not want google analytics, just leave the variable empty
-
-> Example of a tracking ID: **G-XXXXXXX**
-
-> **DO NOT USE THE DEPRECATED UNIVERSAL ANALYTICS PROPERTY, EXAMPLE: UA-XXXXX**
-
 ## URL used for embed in trading viewer page
 
--   https://s.tradingview.com/embed-widget/tickers/?locale=en#%7B%22symbols%22%3A%5B%7B%22description%22%3A%22BTC%2FSIGNA%22%2C%22proName%22%3A%22BITTREX%3ASIGNABTC%22%7D%2C%7B%22description%22%3A%22SIGNA%2FUSD%22%2C%22proName%22%3A%22BITTREX%3ASIGNAUSD%22%7D%5D%2C%22colorTheme%22%3A%22dark%22%2C%22isTransparent%22%3Afalse%2C%22showSymbolLogo%22%3Atrue%2C%22width%22%3A%22100%25%22%2C%22height%22%3A104%2C%22utm_source%22%3A%22www.tradingview.com%22%2C%22utm_medium%22%3A%22widget_new%22%2C%22utm_campaign%22%3A%22tickers%22%7D
+### Mini
+```
+https://s.tradingview.com/embed-widget/tickers/?locale=en#{%22symbols%22:[{%22description%22:%22BTC/SIGNA%22,%22proName%22:%22BITTREX:SIGNABTC%22},{%22description%22:%22SIGNA/USD%22,%22proName%22:%22BITTREX:SIGNAUSD%22}],%22colorTheme%22:%22dark%22,%22isTransparent%22:false,%22showSymbolLogo%22:true,%22width%22:%22100%25%22,%22height%22:104,%22utm_source%22:%22www.tradingview.com%22,%22utm_medium%22:%22widget_new%22,%22utm_campaign%22:%22tickers%22}
+```
 
--   https://www.tradingview.com/widgetembed/?frameElementId=tradingview_846da&symbol=BITTREX%3ASIGNAUSD&interval=D&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=%5B%5D&theme=dark&style=1&timezone=Etc%2FUTC&withdateranges=1&showpopupbutton=1&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&showpopupbutton=1&locale=en&utm_source=www.tradingview.com&utm_medium=widget_new&utm_campaign=chart&utm_term=BITTREX%3ASIGNAUSD
+### Large
+```
+https://www.tradingview.com/widgetembed/?frameElementId=tradingview_846da&symbol=BITTREX:SIGNAUSD&interval=D&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=[]&theme=dark&style=1&timezone=Etc/UTC&withdateranges=1&showpopupbutton=1&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&showpopupbutton=1&locale=en&utm_source=www.tradingview.com&utm_medium=widget_new&utm_campaign=chart&utm_term=BITTREX:SIGNAUSD
+```

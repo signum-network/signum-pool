@@ -66,6 +66,8 @@ public class Server extends NanoHTTPD {
         mimeTypesAllowed.put("map", "application/json");
         mimeTypesAllowed.put("txt", "text/plain");
         mimeTypesAllowed.put("xml", "application/xml");
+        mimeTypesAllowed.put("woff", "font/woff");
+        mimeTypesAllowed.put("woff2", "font/woff2");
     }
 
     private final StorageService storageService;
@@ -423,7 +425,6 @@ public class Server extends NanoHTTPD {
                     response = response
                             // Replace the TAGS
                             .replace("{TITLE}", propertyService.getString(Props.siteTitle))
-                            .replace("{PRICEENDPOINT}", propertyService.getString(Props.sitePrice))
                             .replace("{PUBLICNODE}", propertyService.getString(Props.siteNodeAddress))
                             .replace("{DISCORD}", propertyService.getString(Props.siteDiscordLink))
                             .replace("{INFO}", propertyService.getString(Props.siteInfo))
@@ -457,13 +458,6 @@ public class Server extends NanoHTTPD {
 
                             .replace("{SEODESCRIPTION}", propertyService.getString(Props.siteSeoDescription))
                             .replace("{SEOIMGURL}", propertyService.getString(Props.siteSeoImageUrl))
-
-                            .replace("{SHOWTRADINGLINK}", propertyService.getString(Props.siteShowTradingLink))
-                            .replace("{MINITRADINGLINK}", propertyService.getString(Props.siteMiniTradingLink))
-                            .replace("{LARGETRADINGLINK}", propertyService.getString(Props.siteLargeTradingLink))
-
-                            .replace("{GOOGLETRACKINGID}", propertyService.getString(Props.siteGoogleTracking))
-
                             ;
                 }
                 if(fileCache != null) {

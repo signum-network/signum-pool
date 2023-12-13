@@ -46,7 +46,7 @@ export const poolConfigSlice = createSlice({
     name: "poolConfig",
     initialState,
     reducers: {
-        setPoolConfigData: (state, action: PayloadAction<poolConfigState>) => {
+        setPoolConfigData: (_state, action: PayloadAction<poolConfigState>) => {
             return action.payload;
         },
     },

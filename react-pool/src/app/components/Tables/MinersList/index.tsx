@@ -53,10 +53,11 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
 
     const maxSubmissions = blocksForAverage + processLag;
 
-    const defaultValue = localStorage.getItem(showAllMinersKey) || "no";
+    // @ts-expect-error Response will always be yes or no
+    const defaultValue: showAllMiners =
+        localStorage.getItem(showAllMinersKey) || "no";
 
     const [canSeeAllMiners, setCanSeeAllMiners] =
-        // @ts-ignore
         useState<showAllMiners>(defaultValue);
 
     const [page, setPage] = useState(0);
@@ -64,7 +65,7 @@ export const MinersList = ({ showTopMiners = false }: MinersListProps) => {
         isMobile ? minersPerPageMobile : minersPerPageDesktop
     );
 
-    const handleChangePage = (event: unknown, newPage: number) => {
+    const handleChangePage = (_event: unknown, newPage: number) => {
         setPage(newPage);
     };
 
