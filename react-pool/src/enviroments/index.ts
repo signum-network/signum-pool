@@ -1,3 +1,4 @@
+import { signumPriceUrl } from "./enviroment.default";
 import * as devProperties from "./enviroment.dev";
 import * as prodProperties from "./enviroment.prod";
 
@@ -14,9 +15,6 @@ const {
     explorerUrl,
     faucetUrl,
     walletUrl,
-    signumPriceUrl,
-    tradingEmbedsUrl,
-    googleTrackingID,
     additionalLinks,
 } = isDevelopmentMode ? devProperties : prodProperties;
 
@@ -36,7 +34,5 @@ export {
     faucetUrl,
     walletUrl,
     signumPriceUrl,
-    tradingEmbedsUrl,
-    googleTrackingID,
     additionalLinks,
 };

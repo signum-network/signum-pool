@@ -25,7 +25,7 @@ export const StartMiningPage = () => {
         !isMobile ? miningInfoTabs.xtWallet : miningInfoTabs.manual
     );
 
-    const handleChange = (event: SyntheticEvent, newValue: miningInfoTabs) =>
+    const handleChange = (_event: SyntheticEvent, newValue: miningInfoTabs) =>
         setCurrentTab(newValue);
 
     const defaultContainerStyle = {

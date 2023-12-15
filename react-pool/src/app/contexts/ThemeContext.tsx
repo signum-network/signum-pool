@@ -1,4 +1,4 @@
-import { useMemo, FC, createContext } from "react";
+import { useMemo, ReactNode, createContext } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useAppSelector } from "../../states/hooks";
 import { selectThemeMode } from "../../states/appState/selectors";
@@ -15,7 +15,11 @@ export const ThemeContext = createContext<ThemeContextType>({
     themeMode: "dark",
 });
 
-export const ThemeContextProvider: FC = ({ children }) => {
+interface Props {
+    children: ReactNode;
+}
+
+export const ThemeContextProvider = ({ children }: Props) => {
     const themeMode = useAppSelector(selectThemeMode);
     if (themeMode) saveSystemTheme(themeMode);
 

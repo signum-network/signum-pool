@@ -7,7 +7,7 @@ interface SpecificRowProps {
     secondTitle?: string;
     value?: string | number;
     onClick?: () => void;
-    children?: Element | React.ReactNode;
+    children?: React.ReactNode;
 }
 
 export const SpecificRow = ({

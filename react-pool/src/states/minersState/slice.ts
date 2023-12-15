@@ -40,7 +40,7 @@ export const minersSlice = createSlice({
     name: "miners",
     initialState,
     reducers: {
-        setMinersData: (state, action: PayloadAction<minersState>) => {
+        setMinersData: (_state, action: PayloadAction<minersState>) => {
             return action.payload;
         },
     },

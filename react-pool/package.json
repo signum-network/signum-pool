@@ -1,7 +1,13 @@
 {
-  "name": "web-pool",
-  "version": "0.1.0",
-  "private": true,
+  "name": "react-pool",
+  "version": "3.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
   "dependencies": {
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
@@ -9,66 +15,43 @@
     "@mui/lab": "^5.0.0-alpha.78",
     "@mui/material": "^5.5.2",
     "@reduxjs/toolkit": "^1.8.0",
-    "@signumjs/contracts": "^1.0.0-rc.60",
-    "@signumjs/core": "^1.0.0-rc.60",
-    "@signumjs/crypto": "^1.0.0-rc.60",
-    "@signumjs/http": "^1.0.0-rc.60",
-    "@signumjs/util": "^1.0.0-rc.60",
-    "@signumjs/wallets": "^1.0.0-rc.60",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^12.1.4",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.4.1",
-    "@types/node": "^16.11.26",
-    "@types/react": "^17.0.42",
-    "@types/react-dom": "^17.0.14",
-    "@types/react-redux": "^7.1.23",
+    "@signumjs/contracts": "^1.0.0-rc.75",
+    "@signumjs/core": "^1.0.0-rc.75",
+    "@signumjs/crypto": "^1.0.0-rc.75",
+    "@signumjs/http": "^1.0.0-rc.75",
+    "@signumjs/util": "^1.0.0-rc.75",
+    "@signumjs/wallets": "^1.0.0-rc.75",
     "axios": "^0.25.0",
-    "clsx": "^1.1.1",
+    "clsx": "^2.0.0",
     "copy-to-clipboard": "^3.3.1",
     "date-fns": "^2.28.0",
     "hashicon": "^0.3.0",
     "i18next": "^21.6.14",
     "i18next-browser-languagedetector": "^6.1.4",
     "i18next-http-backend": "^1.4.0",
+    "localforage": "^1.10.0",
+    "match-sorter": "^6.3.1",
     "nprogress": "^0.2.0",
-    "react": "^17.0.2",
+    "react": "^18.2.0",
     "react-device-detect": "^2.1.2",
-    "react-dom": "^17.0.2",
-    "react-ga4": "^1.4.1",
+    "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-i18next": "^11.16.1",
     "react-redux": "^7.2.6",
-    "react-router-dom": "^6.2.2",
-    "react-scripts": "^5.0.1",
+    "react-router-dom": "^6.20.1",
     "recharts": "^2.4.3",
-    "swr": "^1.2.2",
-    "typescript": "^4.6.2",
-    "web-vitals": "^2.1.4"
+    "swr": "^1.2.2"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8"
+  }
 }

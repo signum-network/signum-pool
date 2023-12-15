@@ -1,7 +1,7 @@
 import Paper from "@mui/material/Paper";
 
 interface TableContainerProps {
-    children: Element | React.ReactNode;
+    children: React.ReactNode;
 }
 
 export const TableContainer = ({ children }: TableContainerProps) => (

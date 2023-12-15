@@ -55,7 +55,6 @@ public class Props {
     public static final Prop<String> siteIconIco = new Prop<>("site.icon.ico", "icon.ico");
     public static final Prop<String> siteIconPng = new Prop<>("site.icon.png", "icon.png");
     public static final Prop<String> siteNodeAddress = new Prop<>("site.nodeAddress", "https://europe.signum.network");
-    public static final Prop<String> sitePrice = new Prop<>("site.price", "https://api.coingecko.com/api/v3/simple/price?ids=signum&vs_currencies=usd");
     public static final Prop<String> siteDiscordLink = new Prop<>("site.discord", "https://discord.gg/ms6eagX");
     public static final Prop<String> siteInfo = new Prop<>("site.info", "<p>Coming soon...</p>");
     public static final Prop<String> siteExplorerURL = new Prop<>("site.explorer", "https://explorer.signum.network");
@@ -75,11 +74,6 @@ public class Props {
 
     public static final Prop<String> siteExtraMenuItems = new Prop<>("site.extraMenuItems", "[]");
     public static final Prop<String> siteDefaultLanguage = new Prop<>("site.defaultLanguage", "en");
-
-    public static final Prop<String> siteShowTradingLink = new Prop<>("site.showTradingLink", "YES");
-    public static final Prop<String> siteMiniTradingLink = new Prop<>("site.miniTradingLink", "https://bit.ly/2UEd4RB");
-    public static final Prop<String> siteLargeTradingLink = new Prop<>("site.largeTradingLink", "https://bit.ly/3A5BIep");
-    public static final Prop<String> siteGoogleTracking = new Prop<>("site.googleTrackingID", "");
     
     public static final Prop<Boolean> siteDisableCache = new Prop<>("site.disableCache", false);
     public static final Prop<String> apiAllowOrign = new Prop<>("api.allowOrign", "");

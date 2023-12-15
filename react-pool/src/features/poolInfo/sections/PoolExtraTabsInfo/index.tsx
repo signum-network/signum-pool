@@ -31,7 +31,7 @@ export const PoolExtraTabsInfo = () => {
     );
 
     const handleChange = (
-        event: React.SyntheticEvent,
+        _event: React.SyntheticEvent,
         newValue: poolInfoTabs
     ) => setCurrentTab(newValue);
 

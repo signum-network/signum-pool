@@ -1,4 +1,4 @@
-import { Fragment, FC } from "react";
+import { Fragment, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { Header } from "./Header";
@@ -13,10 +13,14 @@ import { SetupWalletModal } from "./components/Modals/SetupWalletModal";
 import { SignTransactionModal } from "./components/Modals/SignTransactionModal";
 import { poolName } from "../../../enviroments";
 
-// @ts-ignore
+// @ts-expect-error: types not found for this dependency
 import Helmet from "react-helmet";
 
-export const Layout: FC = ({ children }) => {
+interface Props {
+    children: ReactNode;
+}
+
+export const Layout = ({ children }: Props) => {
     const { t } = useTranslation();
 
     const [searchParams] = useSearchParams();
