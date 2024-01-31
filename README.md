@@ -64,8 +64,6 @@ the payments.
 -   https://signapool.notallmine.net
 -   https://pool.signumcoin.ro
 -   http://pool.btfg.space/
--   http://signa.voiplanparty.com:8124
--   http://signumpool.de:8080/
 -   https://opensignumpool.ddns.net:8129
 
 ## Powered by
