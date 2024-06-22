@@ -66,6 +66,8 @@ public class Server extends NanoHTTPD {
         mimeTypesAllowed.put("map", "application/json");
         mimeTypesAllowed.put("txt", "text/plain");
         mimeTypesAllowed.put("xml", "application/xml");
+        mimeTypesAllowed.put("woff", MIME_HTML);
+        mimeTypesAllowed.put("woff2", MIME_HTML);
     }
 
     private final StorageService storageService;
