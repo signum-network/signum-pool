@@ -22,24 +22,24 @@ import java.util.Properties;
 
 public class Launcher {
     public static void main(String[] args) { // todo catch exception
-        
+
         // New address prefixes
         SignumUtils.addAddressPrefix("S");
         SignumUtils.addAddressPrefix("TS");
         SignumUtils.addAddressPrefix("BURST");
         SignumUtils.setValueSuffix("SIGNA");
-        
+
         if (System.getProperty("log4j.configurationFile") == null) {
             System.setProperty("log4j.configurationFile", "logging.xml");
         }
         Logger logger = LoggerFactory.getLogger(Launcher.class);
-        
+
         String propertiesFileName = "pool.properties";
         if (args.length > 0) {
             propertiesFileName = args[0];
         }
         PropertyService propertyService = new PropertyServiceImpl(propertiesFileName);
-        
+
         Properties versionProp = new Properties();
         try {
             versionProp.load(Launcher.class.getResourceAsStream("/version.properties"));
@@ -47,13 +47,16 @@ public class Launcher {
             e1.printStackTrace();
         }
         String version = versionProp.getProperty("version", "develop");
-        
+
         // Set the default prefix
         SignumUtils.setAddressPrefix(propertyService.getBoolean(Props.testnet) ? "TS" : "S");
-        
+
         MinerMaths minerMaths = new MinerMaths(propertyService.getInt(Props.nAvg) + propertyService.getInt(Props.processLag),
                 propertyService.getInt(Props.nMin), propertyService.getInt(Props.graceDeadlines));
-        NodeService nodeService = NodeService.getUseBestInstance(true, Constants.USER_AGENT + version, propertyService.getStringList(Props.nodeAddresses));
+
+        int nodeTimeout = propertyService.getInt(Props.nodeTimeout);
+        String[] nodeAddresses =  propertyService.getStringList(Props.nodeAddresses);
+        NodeService nodeService = NodeService.getUseBestInstance(true, Constants.USER_AGENT + version, nodeTimeout, nodeAddresses);
         StorageService storageService = null;
         try {
             storageService = new DbStorageService(propertyService, minerMaths, nodeService);
