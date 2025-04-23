@@ -44,7 +44,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class Pool {
     private static final Logger logger = LoggerFactory.getLogger(Pool.class);
 
-    public static final double LN_FACTOR =  240.0/Math.log(240.0);
+    public static final double BLOCK_TIME_SECS = 240.0;
+    public static final double LN_FACTOR =  BLOCK_TIME_SECS/Math.log(BLOCK_TIME_SECS);
 
     private final NodeService nodeService;
     private final SignumCrypto burstCrypto = SignumCrypto.getInstance();
@@ -188,9 +189,12 @@ public class Pool {
 
                 Block block = nodeService.getBlock(transactionalStorageService.getLastProcessedBlock() + 1).blockingGet();
 
-                // Check for commands from miners (always to the primary address)
                 SignumAddress poolAddress = burstCrypto.getAddressFromPassphrase(propertyService.getString(Props.passphrase));
-                // Having 100 should be enough to not get past it
+                int numberOfPastBlocks = 4;
+                int startLookupTimestamp = block.getTimestamp().getTimestamp() - (numberOfPastBlocks * (int)BLOCK_TIME_SECS);
+
+                // Check for commands from miners (always to the primary address)
+                // Having 100 should be enough to not get past it, using startLookupTime massively improves query execution time
                 Transaction []txs = nodeService.getAccountTransactions(poolAddress,0, 100, false).blockingGet();
                 for(Transaction tx : txs) {
                     if(tx.getBlockHeight() != block.getHeight())

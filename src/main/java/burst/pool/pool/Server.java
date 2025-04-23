@@ -199,7 +199,7 @@ public class Server extends NanoHTTPD {
                 if (submission.getNonce() == null) {
                     throw new SubmissionException("Nonce not set or invalid");
                 }
-                
+
                 String blockheightParam = params.get("blockheight");
                 if(blockheightParam != null) {
                     try {
@@ -311,7 +311,7 @@ public class Server extends NanoHTTPD {
             return response.toString();
         } else if (session.getUri().startsWith("/api/getWonBlocks")) {
             JsonArray wonBlocks = new JsonArray();
-            
+
             // Get possible pending blocks
             ArrayList<Block> recentlyForged = pool.getRecentlyForged();
             if(recentlyForged != null) {
@@ -331,7 +331,7 @@ public class Server extends NanoHTTPD {
                     wonBlocks.add(wonBlockJson);
                 }
             }
-            
+
             storageService.getWonBlocks(100)
             .forEach(wonBlock -> {
 
@@ -371,7 +371,7 @@ public class Server extends NanoHTTPD {
             isPath = true;
             mimeType = MIME_HTML;
         }
-        else {        
+        else {
             for (String extension : mimeTypesAllowed.keySet()) {
                 if (uri.endsWith(extension)) {
                     mimeType = mimeTypesAllowed.get(extension);
@@ -473,7 +473,7 @@ public class Server extends NanoHTTPD {
 
         return httpResponse;
     }
-    
+
     private String getMinerName(Miner miner) {
         if (miner != null && miner.getName() != null && miner.getName().length() > 0) {
             String name = miner.getName();
